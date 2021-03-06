@@ -1,0 +1,28 @@
+@import '../../../../variables.scss';
+
+.deadline {
+    display: flex;
+    flex-direction: row;
+
+    .deadline-spacer {
+        padding: 0 2px;
+        border-radius: 25px;
+        margin: 0 2rem;
+        background-color: $color-primary;
+    }
+
+    .time {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: auto 0;
+    }
+
+    .deadline-info {
+        overflow: hidden;
+
+        .deadline-name {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    }
+}

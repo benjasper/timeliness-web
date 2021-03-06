@@ -1,0 +1,30 @@
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr minmax(200px, 33%);
+
+    .dashboard-container {
+        padding: 4rem 4rem 0 4rem;
+    }
+
+    .main {
+        height: 100vh;
+    }
+
+    .date-spacer {
+        font-size: 2.2rem;
+        color: grey;
+    }
+
+    .deadline-list {
+        .date-spacer {
+            margin-top: 5rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    .deadlines {
+        border-left: 1px solid #B9B9B9;
+        display: flex;
+        flex-direction: column;
+    }
+}
