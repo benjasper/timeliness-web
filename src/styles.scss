@@ -1,10 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import './variables.scss';
 
 html {
     font-size: 10px;
 }
 
-body, div, h1, h2,h3,h4,h5,h6,span,ul,ol,li {
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+ul,
+ol,
+li {
     margin: 0;
     padding: 0;
     display: block;
@@ -22,6 +34,22 @@ h2 {
 
 h3 {
     font-size: 2rem;
+}
+
+.scroller {
+    scrollbar-color: $color-primary $color-light-grey;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: $color-light-grey;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: 10px;
+    }
 }
 
 .subtitle {

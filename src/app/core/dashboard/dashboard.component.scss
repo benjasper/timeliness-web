@@ -10,21 +10,22 @@
         height: 100vh;
     }
 
+    .deadlines {
+        height: 100vh;
+        border-left: 1px solid #B9B9B9;
+        display: flex;
+        flex-direction: column;
+    }
+
     .date-spacer {
         font-size: 2.2rem;
         color: grey;
     }
 
     .deadline-list {
+        overflow-y: auto;
         .date-spacer {
             margin-top: 5rem;
-            margin-bottom: 2rem;
         }
-    }
-
-    .deadlines {
-        border-left: 1px solid #B9B9B9;
-        display: flex;
-        flex-direction: column;
     }
 }
