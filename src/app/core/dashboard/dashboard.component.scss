@@ -7,7 +7,30 @@
     }
 
     .main {
+        min-width: 0;
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+        
+        .next-up-title {
+            margin-bottom: 4rem;
+        }
+
+        ul.next-up {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+
+            li {
+                margin-right: 5rem;
+            }
+        }
+
+        .upcoming-deadlines-title {
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
     }
 
     .deadlines {
@@ -25,7 +48,7 @@
     .deadline-list {
         overflow-y: auto;
         .date-spacer {
-            margin-top: 5rem;
+            margin-top: 4rem;
         }
     }
 }

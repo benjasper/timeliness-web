@@ -7,6 +7,7 @@ import { CoreComponent } from './core/core.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './core/dashboard/dashboard.component';
 import { DeadlineComponent } from './core/dashboard/deadline/deadline.component';
+import { WorkUnitComponent } from './core/dashboard/work-unit/work-unit.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { DeadlineComponent } from './core/dashboard/deadline/deadline.component'
     CoreComponent,
     LoginComponent,
     DashboardComponent,
-    DeadlineComponent
+    DeadlineComponent,
+    WorkUnitComponent
   ],
   imports: [
     BrowserModule,

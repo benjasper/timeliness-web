@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://use.typekit.net/gsz0xik.css');
 @import './variables.scss';
 
 html {
     font-size: 10px;
+
+    @media only screen and (max-width: 1366px) {
+        font-size: 8px;
+    }
 }
 
 body,
@@ -24,6 +28,12 @@ li {
     font-family: 'Noto Sans', sans-serif;
 }
 
+span, p {
+    font-size: 1.4rem;
+    padding: 0;
+    margin: 0;
+}
+
 h1 {
     font-size: 3.2rem;
 }
@@ -34,14 +44,70 @@ h2 {
 
 h3 {
     font-size: 2rem;
+    font-weight: 500;
+}
+
+button {
+    background: $color-primary;
+    border: 1px solid $color-white;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    color: $color-white;
+    font-size: 1.2rem;
+    padding: 0.6rem 1.4rem;
+    cursor: pointer;
+    transition: background-color 0.1s;
+
+    img {
+        display: inline-block;
+        width: 1rem;
+        margin-right: 0.5rem;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        background-color: $color-primary-dark;
+    }
+}
+
+::-moz-progress-bar {
+    background-color: $color-cyan;
+    border-radius: 2.5rem;
+}
+
+::-webkit-progress-bar, progress {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: $color-primary-dark;
+    color: $color-cyan;
+    border-radius: 2.5rem;
+    height: 0.5rem;
+    border: none;
+    width: 100%;
+
+    &::before {
+        content: '80%';
+        position: absolute;
+        right: 0;
+        top: -125%;
+    }
+}
+
+::-webkit-progress-value {
+    background-color: $color-cyan;
+    border-radius: 2.5rem;
 }
 
 .scroller {
-    scrollbar-color: $color-primary $color-light-grey;
+    scrollbar-color: $color-primary-dark $color-light-grey;
     scrollbar-width: thin;
 
     &::-webkit-scrollbar {
         width: 4px;
+        height: 6px;
         background-color: $color-light-grey;
         border-radius: 10px;
     }
@@ -49,6 +115,18 @@ h3 {
     &::-webkit-scrollbar-thumb {
         background: $color-primary;
         border-radius: 10px;
+    }
+
+    &.inverse {
+        scrollbar-color: $color-light-grey $color-primary-dark;
+
+        &::-webkit-scrollbar {
+            background-color: $color-primary-dark;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background: $color-light-grey;
+        }
     }
 }
 
@@ -62,3 +140,4 @@ h3 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+

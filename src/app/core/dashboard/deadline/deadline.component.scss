@@ -10,12 +10,27 @@
         border-radius: 25px;
         margin: 0 2rem;
         background-color: $color-primary;
+
+        &.green {
+            background-color: $color-green;
+        }
+
+        &.yellow {
+            background-color: $color-yellow;
+        }
+
+        &.red {
+            background-color: $color-red;
+        }
     }
 
     .time {
-        font-size: 2rem;
-        font-weight: bold;
         margin: auto 0;
+
+        span {
+            font-size: 2rem;
+            font-weight: bold;
+        }
     }
 
     .deadline-info {
