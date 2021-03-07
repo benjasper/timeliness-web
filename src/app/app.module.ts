@@ -7,7 +7,8 @@ import { CoreComponent } from './core/core.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './core/dashboard/dashboard.component';
 import { DeadlineComponent } from './core/dashboard/deadline/deadline.component';
-import { WorkUnitComponent } from './core/dashboard/work-unit/work-unit.component';
+import { WorkUnitCardComponent } from './core/dashboard/work-unit/work-unit-card.component';
+import { WorkUnitUpcomingComponent } from './core/dashboard/work-unit-upcoming/work-unit-upcoming.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { WorkUnitComponent } from './core/dashboard/work-unit/work-unit.componen
     LoginComponent,
     DashboardComponent,
     DeadlineComponent,
-    WorkUnitComponent
+    WorkUnitCardComponent,
+    WorkUnitUpcomingComponent
   ],
   imports: [
     BrowserModule,

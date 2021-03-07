@@ -15,6 +15,17 @@
         font-size: 1.4rem;
     }
 
+    .card-header {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+
+        h3 {
+            flex: 1;
+            padding-right: 2rem;
+        }
+    }
+
     .card-sections {
         display: flex;
         flex: 1;
@@ -25,11 +36,11 @@
             height: 100%;
 
             &.description {
-                padding: 0 1rem;
-                font-size: 1.3rem;
+                margin: 1rem 1rem 0 1rem;
+                font-size: 1.4rem;
                 overflow-y: auto;
 
-                height: 12.8rem;
+                height: 11.8rem;
                 line-height: 1.5;
             }
         }
