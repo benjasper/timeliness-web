@@ -20,7 +20,8 @@ h6,
 span,
 ul,
 ol,
-li {
+li,
+a {
     margin: 0;
     padding: 0;
     display: block;
@@ -51,6 +52,11 @@ h3 {
     font-weight: 500;
 }
 
+a {
+    text-decoration: none;
+    color: $color-black;
+}
+
 button {
     background: $color-primary;
     border: 1px solid $color-white;
@@ -60,6 +66,7 @@ button {
     font-size: 1.2rem;
     padding: 0.6rem 1.4rem;
     cursor: pointer;
+    user-select: none;
     transition: background-color 0.1s;
 
     img {
@@ -75,6 +82,14 @@ button {
     &:hover {
         background-color: $color-primary-dark;
     }
+
+    &.large {
+        font-size: 1.6rem;
+
+        img {
+            width: 1.2rem;
+        }
+    }
 }
 
 .tiny-button {
@@ -84,6 +99,7 @@ button {
     border-radius: 2.5rem;
     background-color: $color-primary;
     padding: 0;
+    user-select: none;
 
     img {
         display: block;

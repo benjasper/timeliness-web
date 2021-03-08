@@ -6,15 +6,18 @@
         padding: 4rem 4rem 0 4rem;
     }
 
+    .dashboard-header {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        margin-bottom: 4rem;
+    }
+
     .main {
         min-width: 0;
         height: 100vh;
         display: flex;
         flex-direction: column;
-        
-        .next-up-title {
-            margin-bottom: 4rem;
-        }
 
         ul.next-up {
             display: flex;
@@ -28,7 +31,7 @@
         }
 
         .upcoming-work-units-title {
-            margin-top: 2rem;
+            margin-top: 4rem;
             margin-bottom: 4rem;
         }
     }

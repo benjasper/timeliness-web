@@ -1,8 +1,35 @@
+@import '../../variables.scss';
+
 .core-container {
     display: grid;
-    grid-template-columns: minmax(150px, 20%) 1fr;
+    grid-template-columns: minmax(250px, 15%) 1fr;
 
-    .sidebar {
+    nav.sidebar {
         height: 100vh;
+        margin-top: 2rem;
+        text-align: center;
+
+        ul {
+            margin-top: 4rem;
+
+            li a {
+                font-size: 1.8rem;
+                padding: 1rem 2rem;
+                margin: 1rem 10%;
+                border-radius: 0.5rem;
+                text-align: start;
+                display: flex;
+
+                img {
+                    display: inline-block;
+                    width: 1.8rem;
+                    margin-right: 0.5rem;
+                }
+
+                &.active {
+                    background-color: $color-light-grey;
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@
     padding-bottom: 1rem;
     transition: all 0.2s ease-in-out;
     border-radius: 1rem;
+    cursor: default;
 
     &:hover {
         padding: 1rem;
@@ -26,6 +27,7 @@
         display: flex;
         justify-content: center;
         flex-flow: column;
+        user-select: none;
 
         color: $color-primary;
         border: 0.1rem solid $color-primary;
