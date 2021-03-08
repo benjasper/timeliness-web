@@ -6,8 +6,11 @@
 
     nav.sidebar {
         height: 100vh;
-        margin-top: 2rem;
         text-align: center;
+
+        h1 {
+            padding-top: 2rem;
+        }
 
         ul {
             margin-top: 4rem;

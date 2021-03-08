@@ -19,11 +19,11 @@
         display: flex;
         flex-direction: column;
 
-        ul.next-up {
+        .next-up {
             display: flex;
             flex-direction: row;
             overflow-x: auto;
-            padding-bottom: 2rem;
+            padding-bottom: 8rem;
 
             li {
                 margin-right: 5rem;
@@ -33,6 +33,10 @@
         .upcoming-work-units-title {
             margin-top: 4rem;
             margin-bottom: 4rem;
+        }
+
+        .upcoming-work-units-list {
+            overflow-y: auto;
         }
     }
 
