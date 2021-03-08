@@ -85,6 +85,7 @@ button {
 
     &.large {
         font-size: 1.6rem;
+        padding: 1rem 2rem;
 
         img {
             width: 1.2rem;
@@ -147,7 +148,7 @@ button {
 }
 
 .scroller {
-    scrollbar-color: $color-primary-dark $color-light-grey;
+    scrollbar-color: $color-light-grey $color-tertiary;
     scrollbar-width: thin;
 
     &::-webkit-scrollbar {
@@ -158,20 +159,8 @@ button {
     }
 
     &::-webkit-scrollbar-thumb {
-        background: $color-primary;
+        background: $color-tertiary;
         border-radius: 10px;
-    }
-
-    &.inverse {
-        scrollbar-color: $color-light-grey $color-primary-dark;
-
-        &::-webkit-scrollbar {
-            background-color: $color-primary-dark;
-        }
-    
-        &::-webkit-scrollbar-thumb {
-            background: $color-light-grey;
-        }
     }
 }
 
