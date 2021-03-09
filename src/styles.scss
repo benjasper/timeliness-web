@@ -133,13 +133,6 @@ button {
     height: 0.5rem;
     border: none;
     width: 100%;
-
-    &::before {
-        content: '80%';
-        position: absolute;
-        right: 0;
-        top: -125%;
-    }
 }
 
 ::-webkit-progress-value {
@@ -148,7 +141,7 @@ button {
 }
 
 .scroller {
-    scrollbar-color: $color-light-grey $color-tertiary;
+    scrollbar-color: $color-tertiary $color-light-grey;
     scrollbar-width: thin;
 
     &::-webkit-scrollbar {
@@ -161,6 +154,17 @@ button {
     &::-webkit-scrollbar-thumb {
         background: $color-tertiary;
         border-radius: 10px;
+    }
+
+    &.inverse {
+        scrollbar-color: $color-tertiary $color-primary-dark;
+        &::-webkit-scrollbar {
+            background-color: $color-primary-dark;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background: $color-tertiary;
+        }
     }
 }
 
