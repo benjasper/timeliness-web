@@ -21,7 +21,8 @@ span,
 ul,
 ol,
 li,
-a {
+a,
+label, textarea {
     margin: 0;
     padding: 0;
     display: block;
@@ -29,7 +30,13 @@ a {
     font-family: 'Noto Sans', sans-serif;
 }
 
-span, p {
+textarea {
+    resize: none;
+    margin: 0;
+}
+
+span,
+p {
     font-size: 1.4rem;
     padding: 0;
     margin: 0;
@@ -39,15 +46,18 @@ img {
     display: block;
 }
 
-h1 {
+h1,
+.h1 {
     font-size: 3.2rem;
 }
 
-h2 {
+h2,
+.h2 {
     font-size: 2.8rem;
 }
 
-h3 {
+h3,
+.h3 {
     font-size: 2rem;
     font-weight: 500;
 }
@@ -55,6 +65,23 @@ h3 {
 a {
     text-decoration: none;
     color: $color-black;
+}
+
+input[type='text'],
+textarea {
+    padding: 0.7rem 1rem;
+    margin-left: -1rem;
+    border: none;
+    outline: none;
+    border-radius: 0.5rem;
+
+    &.edit {
+        transition: background-color 0.2s ease-in-out;
+        &:hover,
+        &:focus {
+            background-color: $color-light-grey;
+        }
+    }
 }
 
 button {
@@ -110,12 +137,26 @@ button {
     }
 
     &.with-border {
-        border: 1px solid $color-white
+        border: 1px solid $color-white;
     }
 
     &.smaller {
         width: 2.8rem;
         height: 2.8rem;
+    }
+
+    &.no-background {
+        background: transparent;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+            background-color: $color-light-grey;
+        }
+
+        img {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
     }
 }
 
@@ -124,7 +165,8 @@ button {
     border-radius: 2.5rem;
 }
 
-::-webkit-progress-bar, progress {
+::-webkit-progress-bar,
+progress {
     -webkit-appearance: none;
     appearance: none;
     background-color: $color-primary-dark;
@@ -161,7 +203,7 @@ button {
         &::-webkit-scrollbar {
             background-color: $color-primary-dark;
         }
-    
+
         &::-webkit-scrollbar-thumb {
             background: $color-tertiary;
         }
@@ -178,4 +220,3 @@ button {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
