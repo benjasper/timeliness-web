@@ -19,8 +19,8 @@
         border-radius: 1rem;
 
         padding: 4rem;
-        height: 60vh;
-        width: 60vh;
+        min-width: 40%;
+        max-width: 200rem;
         z-index: 2;
         position: absolute;
         background-color: white;
