@@ -19,8 +19,6 @@
         border-radius: 1rem;
 
         padding: 4rem;
-        min-width: 40%;
-        max-width: 200rem;
         z-index: 2;
         position: absolute;
         background-color: white;
@@ -78,6 +76,10 @@
             display: flex;
             flex-flow: row;
             justify-content: space-between;
+
+            .workload {
+                padding: 0 4rem;
+            }
         }
     }
 }
