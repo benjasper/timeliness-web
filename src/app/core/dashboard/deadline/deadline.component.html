@@ -1,10 +1,25 @@
 <div class="deadline">
     <div class="time">
-        <span>14:00</span>
+        <span>{{
+            task.dueAt?.date?.start?.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+        }}</span>
     </div>
-    <div class="deadline-spacer red"></div>
+    <div class="deadline-spacer" [class]="getPriorityColor()"></div>
     <div class="deadline-info">
-        <span class="deadline-name truncate-text" title="Testtask 1">Testtask 1</span>
-        <span class="subtitle">33% done • 2h of work left</span>
+        <span class="deadline-name truncate-text" title="Testtask 1">{{
+            task.name
+        }}</span>
+        <span class="subtitle"
+            >{{ getProgress().toFixed() }}% done •
+            <div *ngIf="task.isDone; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock>completed</ng-template>
+            <ng-template #elseBlock>
+                {{ getRemainingWorkload() }} of work left
+            </ng-template>
+            </span
+        >
     </div>
 </div>

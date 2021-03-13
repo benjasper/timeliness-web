@@ -55,13 +55,9 @@
     <div class="dashboard-container deadlines">
         <h2>Upcoming deadlines</h2>
         <ul class="deadline-list scroller">
-            <li>
-                <span class="date-spacer">26 February</span>
-                <app-deadline></app-deadline>
-            </li>
-            <li>
+            <li *ngFor="let deadline of deadlines">
                 <span class="date-spacer">1 March</span>
-                <app-deadline></app-deadline>
+                <app-deadline [task]="deadline"></app-deadline>
             </li>
         </ul>
     </div>
