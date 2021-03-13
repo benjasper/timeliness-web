@@ -164,6 +164,12 @@ button, a.btn {
     &:hover {
         background-color: $color-primary-light;
     }
+
+    &:disabled, &[disabled] {
+        background-color: $color-light-grey;
+        color: $color-tertiary;
+        cursor: default;
+    }
 }
 
 ::-moz-progress-bar {
