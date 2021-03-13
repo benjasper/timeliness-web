@@ -1,3 +1,5 @@
+@import '../../../../variables.scss';
+
 .modal-container {
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 1;
@@ -26,6 +28,11 @@
         input,
         textarea {
             padding: 0.8rem 1.5rem;
+        }
+
+        .priority input {
+            padding: 0.8rem 0;
+            background: linear-gradient(90deg, $color-green 0%, $color-yellow 52.72%, $color-red 100%);;
         }
 
         textarea {
@@ -63,6 +70,13 @@
                     margin-left: 2rem;
                 }
             }
+        }
+
+        .row {
+            margin-top: 2rem;
+            display: flex;
+            flex-flow: row;
+            justify-content: space-between;
         }
     }
 }

@@ -53,7 +53,9 @@
         </ul>
     </div>
     <div class="dashboard-container deadlines">
-        <h2>Upcoming deadlines</h2>
+        <a [routerLink]="[{ outlets: { modal: ['task'] } }]">
+            <h2>Upcoming deadlines</h2>
+        </a>
         <ul class="deadline-list scroller">
             <li>
                 <span class="date-spacer">26 February</span>
@@ -65,5 +67,5 @@
             </li>
         </ul>
     </div>
-    <app-modal-edit-task></app-modal-edit-task>
+    <router-outlet name="modal"></router-outlet>
 </div>

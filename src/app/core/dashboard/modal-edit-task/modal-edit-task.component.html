@@ -1,13 +1,24 @@
-<div class="modal-container" (click)="close()">
+<div class="modal-container">
     <div class="modal">
         <div class="modal-header">
             <input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title">
             <div class="modal-controls">
                 <button class="tiny-button"><img src="/assets/icons/icon-trash.svg" alt="Delete"></button>
-                <button class="tiny-button no-background"><img src="/assets/icons/icon-exit.svg" alt="Delete"></button>
+                <button class="tiny-button no-background" (click)="close()"><img src="/assets/icons/icon-exit.svg" alt="Exit"></button>
             </div>
         </div>
         <label for="task-description">Description</label>
         <textarea tabindex="2" type="textarea" id="task-description" class="task-description edit scroller" rows="5" placeholder="Describe your task here"></textarea>
+        <div class="row">
+            <div class="due-date">
+                <input type="datetime-local" class="edit">
+            </div>
+            <div class="workload">
+                <input type="time" class="edit" step="900">
+            </div>
+            <div class="priority">
+                <input type="range" min="1" max="3" step="1" value="2">
+            </div>
+        </div>
     </div>
 </div>

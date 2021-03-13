@@ -22,7 +22,9 @@ ul,
 ol,
 li,
 a,
-label, textarea {
+label,
+textarea,
+input {
     margin: 0;
     padding: 0;
     display: block;
@@ -68,6 +70,8 @@ a {
 }
 
 input[type='text'],
+input[type='datetime-local'],
+input[type='time'],
 textarea {
     padding: 0.7rem 1rem;
     margin-left: -1rem;

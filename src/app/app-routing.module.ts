@@ -2,25 +2,38 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { CoreComponent } from './core/core.component'
 import { DashboardComponent } from './core/dashboard/dashboard.component'
+import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { LoginComponent } from './login/login.component'
+import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
 
 const routes: Routes = [
     {
         path: '',
-        component: CoreComponent, // this is the component with the <router-outlet> in the template
+        component: CoreComponent,
         children: [
             {
-                path: 'dashboard', // child route path
-                component: DashboardComponent, // child route component that the router renders
+                path: 'dashboard',
+                component: DashboardComponent,
+                children: [
+                    {
+                        path: 'task',
+                        component: ModalEditTaskComponent,
+                        outlet: 'modal',
+                    },
+                ],
             },
-            { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }
+            {
+                path: 'settings',
+                component: SettingsComponent,
+            },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],
     },
     {
         path: 'login',
-        component: LoginComponent, // this is the component with the <router-outlet> in the template
+        component: LoginComponent,
     },
-    { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ]
 
 @NgModule({
