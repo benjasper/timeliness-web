@@ -5,12 +5,12 @@
     </div>
     <div class="contents">
         <div class="work-unit-info">
-            <span class="task-title truncate-text" title="Testtask 1">Testtask 1</span>
+            <span class="task-title truncate-text" title="Testtask 1">Testtask 1 Testtask Testtask Testtask</span>
             <span class="subtitle">11:00 - 13:00 • 2h • Unit 2/3</span>
         </div>
         <div class="actions">
-            <button class="tiny-button"><img src="/assets/icons/icon-time.svg" alt="Reschedule task"></button>
-            <button class="tiny-button"><img src="/assets/icons/icon-edit.svg" alt="Edit task"></button>
+            <a class="btn tiny-button"><img src="/assets/icons/icon-time.svg" alt="Reschedule task"></a>
+            <a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', 1] } }]"><img src="/assets/icons/icon-edit.svg" alt="Edit task"></a>
         </div>
     </div>
 </div>

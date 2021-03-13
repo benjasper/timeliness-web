@@ -2,7 +2,7 @@
 .work-unit-upcoming {
     display: flex;
     flex-flow: row;
-    margin-top: 1rem;
+    margin: 1rem 0;
     padding-right: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -12,6 +12,9 @@
 
     &:hover {
         padding: 1rem;
+        margin-left: 0.1rem;
+        margin-right: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 
         .contents .actions {
             opacity: 1;
@@ -28,6 +31,7 @@
         justify-content: center;
         flex-flow: column;
         user-select: none;
+        margin-right: 3rem;
 
         color: $color-primary;
         border: 0.1rem solid $color-primary;
@@ -49,7 +53,6 @@
     }
 
     .contents {
-        padding-left: 3rem;
         flex: 1;
         margin: auto 0;
         display: flex;
@@ -58,6 +61,7 @@
 
         .work-unit-info {
             margin: auto 0;
+            flex: 1;
 
             .task-title {
                 font-size: 2rem;
@@ -66,10 +70,11 @@
         }
 
         .actions {
+            display: flex;
+            flex-direction: row;
             opacity: 0;
             transition: all 0.2s ease-in;
             margin: auto 0;
-            padding-right: 2rem;
 
             .tiny-button {
                 margin-left: 1rem;

@@ -20,6 +20,11 @@ const routes: Routes = [
                         component: ModalEditTaskComponent,
                         outlet: 'modal',
                     },
+                    {
+                        path: 'task/:id',
+                        component: ModalEditTaskComponent,
+                        outlet: 'modal',
+                    },
                 ],
             },
             {

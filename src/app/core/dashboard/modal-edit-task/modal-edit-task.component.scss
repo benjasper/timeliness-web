@@ -32,6 +32,7 @@
 
         .priority input {
             padding: 0.8rem 0;
+            width: 20rem;
             background: linear-gradient(90deg, $color-green 0%, $color-yellow 52.72%, $color-red 100%);;
         }
 
@@ -45,15 +46,15 @@
             margin-left: -1rem;
         }
 
+        .task-description, input {
+            font-size: 1.8rem;
+        }
+
         .task-title {
             width: 80%;
             font-size: 2.4rem;
             padding: 0.8rem 1.5rem;
             font-weight: bold;
-        }
-
-        .task-description {
-            font-size: 1.8rem;
         }
 
         .modal-header {
@@ -63,7 +64,7 @@
             .modal-controls {
                 display: flex;
                 flex: 1;
-                justify-content: space-around;
+                justify-content: space-between;
                 margin: auto 0;
 
                 .tiny-button {
