@@ -7,7 +7,7 @@
 	</div>
 	<div class="contents">
 		<div class="work-unit-info">
-			<span class="task-title truncate-text" title="Testtask 1">{{ task.name }}</span>
+			<span class="task-title truncate-text" title="{{ task.name }}">{{ task.name }}</span>
 			<span class="subtitle">{{
 						task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
 							hour: '2-digit',

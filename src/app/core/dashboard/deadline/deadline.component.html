@@ -9,7 +9,7 @@
 	</div>
 	<div class="deadline-spacer" [class]="getPriorityColor()"></div>
 	<div class="deadline-info">
-		<span class="deadline-name truncate-text" title="Testtask 1">{{ task.name }}</span>
+		<span class="deadline-name truncate-text" title="{{ task.name }}">{{ task.name }}</span>
 		<span class="subtitle">
 			{{ getProgress(task).toFixed() }}% done •
 			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
