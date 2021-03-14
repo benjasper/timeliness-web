@@ -13,6 +13,10 @@
         margin-bottom: 2rem;
     }
 
+    .date-group {
+        margin-bottom: 4rem;
+    }
+
     .main {
         min-width: 0;
         height: 100vh;
@@ -27,6 +31,10 @@
             li {
                 margin-right: 5rem;
             }
+        }
+
+        img.next-up-finished {
+            height: 28rem;
         }
 
         .upcoming-work-units-title {

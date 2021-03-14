@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Task, TaskUnwound } from 'src/app/models/task'
+import { TaskService } from 'src/app/services/task.service'
 
 @Component({
 	selector: 'app-dashboard',
@@ -7,81 +8,95 @@ import { Task, TaskUnwound } from 'src/app/models/task'
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-	constructor() {}
+	constructor(private taskService: TaskService) {}
 
+	today = new Date()
+	public groupedDeadlines: TaskDateGroup[] = []
+	public groupedUpcoming: TaskUnwoundDateGroup[] = []
 	public deadlines: Task[] = []
 	public nextUp: TaskUnwound[] = []
 	public upcoming: TaskUnwound[] = []
 
 	ngOnInit(): void {
-		this.deadlines.push({
-			id: '123456',
-			userId: '',
-			createdAt: new Date(),
-			lastModifiedAt: new Date(),
-			workUnits: [],
-			workloadOverall: 36000000000000,
-			tags: [],
-			name: 'Testtask',
-			description: 'Description',
-			isDone: false,
-			priority: 2,
-			dueAt: {
-				date: {
-					start: new Date(),
-					end: new Date(),
-				},
+		this.loadDeadlines()
+		this.loadTasksByWorkunits()
+	}
+
+	public async loadDeadlines(): Promise<void> {
+		this.taskService.getTasksByDeadlines().subscribe({
+			next: (response) => {
+				response.results.forEach((task) => {
+					if (
+						this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
+						this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
+							task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+					) {
+						this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
+						return
+					}
+
+					const dateGroup = new TaskDateGroup()
+					dateGroup.date = task.dueAt.date.start.toDate()
+					dateGroup.tasks.push(task)
+					this.groupedDeadlines.push(dateGroup)
+				})
 			},
 		})
+	}
 
-		const taskUnwound = {
-			id: '123',
-			userId: '',
-			createdAt: new Date(),
-			lastModifiedAt: new Date(),
-			workUnits: [
-				{
-					id: '',
-					scheduledAt: {
-						date: {
-							start: new Date(),
-							end: new Date(),
-						},
-					},
-					isDone: false,
-					workload: 36000000000000,
-					markedDoneAt: new Date(),
-				},
-			],
-			workloadOverall: 36000000000000,
-			tags: [],
-			name: 'Testtask',
-			description: '',
-			isDone: false,
-			priority: 2,
-			dueAt: {
-				date: {
-					start: new Date(),
-					end: new Date(),
-				},
+	public async loadTasksByWorkunits(): Promise<void> {
+		this.taskService.getTasksByWorkunits().subscribe({
+			next: (response) => {
+				response.results.forEach((task) => {
+					if (
+						task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) ===
+						this.today.setHours(0, 0, 0, 0)
+					) {
+						this.nextUp.push(task)
+						return
+					}
+
+					if (
+						this.groupedUpcoming[this.groupedUpcoming.length - 1] &&
+						this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
+							task.workUnit.scheduledAt.date.start.toDate().getMonth()
+					) {
+						this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
+						return
+					}
+
+					const dateGroup = new TaskUnwoundDateGroup()
+					dateGroup.date = task.workUnit.scheduledAt.date.start.toDate()
+					dateGroup.tasks.push(task)
+					this.groupedUpcoming.push(dateGroup)
+				})
 			},
-			workUnit: {
-				id: '1',
-				scheduledAt: {
-					date: {
-						start: new Date(),
-						end: new Date(),
-					},
-				},
-				isDone: false,
-				workload: 36000000000000,
-				markedDoneAt: new Date(),
-			},
-			workUnitsCount: 1,
-			workUnitsIndex: 0,
+		})
+	}
+
+	public getNextUpMessage(): string {
+		if (this.nextUp.length > 0) {
+			const doneTasks = this.nextUp.filter((task) => task.isDone === true)
+
+			if (doneTasks.length === 0) {
+				return 'All done for today'
+			}
 		}
 
-		this.nextUp.push(taskUnwound)
-		this.upcoming.push(taskUnwound)
+		if (this.nextUp.length === 0) {
+			return 'No tasks for today!'
+		}
+
+		return 'Next up'
 	}
+}
+
+class TaskDateGroup {
+	tasks: Task[] = []
+	date!: Date
+}
+
+class TaskUnwoundDateGroup {
+	tasks: TaskUnwound[] = []
+	date!: Date
 }

@@ -1,44 +1,67 @@
 @import '../../../../variables.scss';
 
 .deadline {
-    display: flex;
-    flex-direction: row;
-    margin: 2rem 0;
+	display: flex;
+	flex-direction: row;
+	margin: 2rem 0;
+	padding: 1rem 0;
+	transition: all 0.2s ease-out;
+	border-radius: 1rem;
+	cursor: default;
 
-    .deadline-spacer {
-        padding: 0 2px;
-        border-radius: 25px;
-        margin: 0 2rem;
-        background-color: $color-primary;
+	&:hover {
+		background-color: $color-light-grey;
+		padding-left: 1rem;
+		padding-right: 1rem;
 
-        &.green {
-            background-color: $color-green;
+        .actions {
+            opacity: 1;
         }
+	}
 
-        &.yellow {
-            background-color: $color-yellow;
-        }
+	.deadline-spacer {
+		padding: 0 2px;
+		border-radius: 25px;
+		margin: 0 2rem;
+		background-color: $color-primary;
 
-        &.red {
-            background-color: $color-red;
-        }
-    }
+		&.green {
+			background-color: $color-green;
+		}
 
-    .time {
-        margin: auto 0;
+		&.yellow {
+			background-color: $color-yellow;
+		}
 
-        span {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-    }
+		&.red {
+			background-color: $color-red;
+		}
+	}
 
-    .deadline-info {
-        overflow: hidden;
+	.time {
+		margin: auto 0;
 
-        .deadline-name {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-    }
+		span {
+			font-size: 2rem;
+			font-weight: bold;
+		}
+	}
+
+	.deadline-info {
+		overflow: hidden;
+		display: flex;
+		flex-flow: column;
+		flex: 1;
+
+		.deadline-name {
+			font-size: 2rem;
+			font-weight: bold;
+		}
+	}
+
+	.actions {
+        transition: all 0.2s ease-out;
+        opacity: 0;
+		margin: auto 0;
+	}
 }

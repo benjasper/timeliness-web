@@ -1,25 +1,25 @@
 <div class="deadline">
-    <div class="time">
-        <span>{{
-            task.dueAt?.date?.start?.toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-            })
-        }}</span>
-    </div>
-    <div class="deadline-spacer" [class]="getPriorityColor()"></div>
-    <div class="deadline-info">
-        <span class="deadline-name truncate-text" title="Testtask 1">{{
-            task.name
-        }}</span>
-        <span class="subtitle"
-            >{{ getProgress(task).toFixed() }}% done •
-            <div *ngIf="task.isDone; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock>completed</ng-template>
-            <ng-template #elseBlock>
-                {{ getRemainingWorkload(task) }} of work left
-            </ng-template>
-            </span
-        >
-    </div>
+	<div class="time">
+		<span>{{
+			task.dueAt.date.start.toDate().toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit'
+			})
+		}}</span>
+	</div>
+	<div class="deadline-spacer" [class]="getPriorityColor()"></div>
+	<div class="deadline-info">
+		<span class="deadline-name truncate-text" title="Testtask 1">{{ task.name }}</span>
+		<span class="subtitle">
+			{{ getProgress(task).toFixed() }}% done •
+			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
+			<ng-template #thenBlock>completed</ng-template>
+			<ng-template #elseBlock> {{ getRemainingWorkload(task) }} of work left </ng-template>
+		</span>
+	</div>
+	<div class="actions">
+		<a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+			><img src="/assets/icons/icon-edit.svg" alt="Edit task"
+		/></a>
+	</div>
 </div>

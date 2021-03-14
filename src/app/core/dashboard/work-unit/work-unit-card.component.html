@@ -11,7 +11,7 @@
 			<div class="info-segment">
 				<div
 					*ngIf="
-						task.workUnit.scheduledAt.date.start.getDate() === today.getDate();
+						task.workUnit.scheduledAt.date.start.toDate().getDate() === today.getDate();
 						then todayThen;
 						else todayElse
 					"
@@ -23,14 +23,14 @@
 				<span
 					>{{ task.workUnit.workload.toDuration(1).toString() }} •
 					{{
-						task.workUnit.scheduledAt.date.start.toLocaleTimeString([], {
+						task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
 							hour: '2-digit',
 							minute: '2-digit'
 						})
 					}}
 					-
 					{{
-						task.workUnit.scheduledAt.date.end.toLocaleTimeString([], {
+						task.workUnit.scheduledAt.date.end.toDate().toLocaleTimeString([], {
 							hour: '2-digit',
 							minute: '2-digit'
 						})
