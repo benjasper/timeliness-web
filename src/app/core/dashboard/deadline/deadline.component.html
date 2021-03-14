@@ -13,11 +13,11 @@
             task.name
         }}</span>
         <span class="subtitle"
-            >{{ getProgress().toFixed() }}% done •
+            >{{ getProgress(task).toFixed() }}% done •
             <div *ngIf="task.isDone; then thenBlock else elseBlock"></div>
             <ng-template #thenBlock>completed</ng-template>
             <ng-template #elseBlock>
-                {{ getRemainingWorkload() }} of work left
+                {{ getRemainingWorkload(task) }} of work left
             </ng-template>
             </span
         >

@@ -1,30 +1,53 @@
-<div class="work-unit">
-    <div class="card-header">
-        <h3 class="truncate-text">Testtask 1 Testtask 1 Testtask 1 Testtask 1 Testtask 1</h3>
-        <a class="btn tiny-button with-border smaller" [routerLink]="[{ outlets: { modal: ['task', 1] } }]"><img src="/assets/icons/icon-edit.svg" alt="Edit task"></a>
-    </div>
-    <div class="card-sections">
-        <div class="card-section infos">
-            <span>Unit 1/3</span>
-            <div class="info-segment">
-                <span>Today</span>
-                <span>2h • 11:00 - 13:00</span>
-            </div>
-            <div class="info-segment">
-                <span>Progress</span>
-                <progress max="100" value="70">70%</progress>
-            </div>
-        </div>
-        <div class="card-section description scroller inverse">
-            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem
-            ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum
-            lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem
-            ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum
-            lorem ipsum lorem ipsum lorem ipsum
-        </div>
-    </div>
-    <div class="card-footer">
-        <button><img src="/assets/icons/icon-time.svg" />Reschedule</button>
-        <button><img src="/assets/icons/icon-check.svg" />Done</button>
-    </div>
+<div class="work-unit" [class.no-description]="task.description === ''">
+	<div class="card-header">
+		<h3 class="truncate-text">{{ task.name }}</h3>
+		<a class="btn tiny-button with-border smaller" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+			><img src="/assets/icons/icon-edit.svg" alt="Edit task"
+		/></a>
+	</div>
+	<div class="card-sections">
+		<div class="card-section infos">
+			<span>Unit {{ task.workUnitsIndex + 1 }}/{{ task.workUnitsCount }}</span>
+			<div class="info-segment">
+				<div
+					*ngIf="
+						task.workUnit.scheduledAt.date.start.getDate() === today.getDate();
+						then todayThen;
+						else todayElse
+					"
+				></div>
+				<ng-template #todayThen><span>Today</span></ng-template>
+				<ng-template #todayElse
+					><span>{{ task.workUnit.scheduledAt.date.start.toLocaleString() }}</span></ng-template
+				>
+				<span
+					>{{ task.workUnit.workload.toDuration(1).toString() }} •
+					{{
+						task.workUnit.scheduledAt.date.start.toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit'
+						})
+					}}
+					-
+					{{
+						task.workUnit.scheduledAt.date.end.toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit'
+						})
+					}}</span
+				>
+			</div>
+			<div class="info-segment">
+				<span>Progress</span>
+				<progress max="100" value="{{getProgress(task)}}">{{getProgress(task)}}%</progress>
+			</div>
+		</div>
+		<div *ngIf="task.description" class="card-section description scroller inverse">
+			{{ task.description }}
+		</div>
+	</div>
+	<div class="card-footer">
+		<button><img src="/assets/icons/icon-time.svg" />Reschedule</button>
+		<button><img src="/assets/icons/icon-check.svg" />Done</button>
+	</div>
 </div>

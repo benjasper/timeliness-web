@@ -3,7 +3,7 @@ import { Event } from './event'
 export interface WorkUnit {
     id: string
     isDone: boolean
-    markedDoneAt: Event
-    scheduledAt: Date
+    markedDoneAt: Date
+    scheduledAt: Event
     workload: number
 }

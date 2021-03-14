@@ -1,16 +1,32 @@
 <div class="work-unit-upcoming">
-    <div class="calendar-date">
-        <span class="day">26</span>
-        <span class="month">Mar</span>
-    </div>
-    <div class="contents">
-        <div class="work-unit-info">
-            <span class="task-title truncate-text" title="Testtask 1">Testtask 1 Testtask Testtask Testtask</span>
-            <span class="subtitle">11:00 - 13:00 • 2h • Unit 2/3</span>
-        </div>
-        <div class="actions">
-            <a class="btn tiny-button"><img src="/assets/icons/icon-time.svg" alt="Reschedule task"></a>
-            <a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', 1] } }]"><img src="/assets/icons/icon-edit.svg" alt="Edit task"></a>
-        </div>
-    </div>
+	<div class="calendar-date">
+		<span class="day">{{task.workUnit.scheduledAt.date.start.getDate()}}</span>
+		<span class="month">{{
+			task.workUnit.scheduledAt.date.start.toLocaleString('default', { month: 'short' })
+		}}</span>
+	</div>
+	<div class="contents">
+		<div class="work-unit-info">
+			<span class="task-title truncate-text" title="Testtask 1">{{ task.name }}</span>
+			<span class="subtitle">{{
+                task.workUnit.scheduledAt.date.start.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            }}
+            -
+            {{
+                task.workUnit.scheduledAt.date.end.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            }} • {{task.workUnit.workload.toDuration(1).toString()}} • Unit {{ task.workUnitsIndex + 1 }}/{{ task.workUnitsCount }}</span>
+		</div>
+		<div class="actions">
+			<a class="btn tiny-button"><img src="/assets/icons/icon-time.svg" alt="Reschedule task" /></a>
+			<a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', 1] } }]"
+				><img src="/assets/icons/icon-edit.svg" alt="Edit task"
+			/></a>
+		</div>
+	</div>
 </div>

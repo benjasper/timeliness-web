@@ -14,3 +14,9 @@ export interface Task {
     dueAt: Event
     workUnits: WorkUnit[]
 }
+
+export interface TaskUnwound extends Task {
+    workUnit: WorkUnit
+    workUnitsIndex: number
+    workUnitsCount: number
+}

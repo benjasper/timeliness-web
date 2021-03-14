@@ -7,48 +7,15 @@
             </button>
         </div>
         <ul class="next-up scroller">
-            <li>
-                <app-work-unit-card></app-work-unit-card>
-            </li>
-            <li>
-                <app-work-unit-card></app-work-unit-card>
+            <li *ngFor="let task of nextUp">
+                <app-work-unit-card [task]="task"></app-work-unit-card>
             </li>
         </ul>
         <h2 class="upcoming-work-units-title">Upcoming work units</h2>
         <ul class="upcoming-work-units-list scroller">
-            <li>
+            <li *ngFor="let task of upcoming">
                 <span class="date-spacer">Tomorrow</span>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
-            </li>
-            <li>
-                <app-work-unit-upcoming></app-work-unit-upcoming>
+                <app-work-unit-upcoming [task]="task"></app-work-unit-upcoming>
             </li>
         </ul>
     </div>
