@@ -9,6 +9,10 @@
 	border-radius: 1rem;
 	cursor: default;
 
+	&.done {
+		opacity: 0.5;
+	}
+
 	&:hover {
 		background-color: $color-light-grey;
 		padding-left: 1rem;

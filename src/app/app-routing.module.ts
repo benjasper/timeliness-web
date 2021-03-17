@@ -7,42 +7,37 @@ import { LoginComponent } from './login/login.component'
 import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
 
 const routes: Routes = [
-    {
-        path: '',
-        component: CoreComponent,
-        children: [
-            {
-                path: 'dashboard',
-                component: DashboardComponent,
-                children: [
-                    {
-                        path: 'task',
-                        component: ModalEditTaskComponent,
-                        outlet: 'modal',
-                    },
-                    {
-                        path: 'task/:id',
-                        component: ModalEditTaskComponent,
-                        outlet: 'modal',
-                    },
-                ],
-            },
-            {
-                path: 'settings',
-                component: SettingsComponent,
-            },
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-        ],
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-    },
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+	{
+		path: '',
+		component: CoreComponent,
+		children: [
+			{
+				path: 'dashboard',
+				component: DashboardComponent,
+				children: [
+					{
+						path: 'task/:id',
+						component: ModalEditTaskComponent,
+						outlet: 'modal',
+					},
+				],
+			},
+			{
+				path: 'settings',
+				component: SettingsComponent,
+			},
+			{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+		],
+	},
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
+	{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ]
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -29,8 +29,8 @@ export class DashboardComponent implements OnInit {
 					if (
 						this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
 						this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
-							task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
-					) {
+						task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+						) {
 						this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
 						return
 					}
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
 			next: (response) => {
 				response.results.forEach((task) => {
 					if (
-						task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) ===
+						task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <=
 						this.today.setHours(0, 0, 0, 0)
 					) {
 						this.nextUp.push(task)
@@ -76,9 +76,9 @@ export class DashboardComponent implements OnInit {
 
 	public getNextUpMessage(): string {
 		if (this.nextUp.length > 0) {
-			const doneTasks = this.nextUp.filter((task) => task.isDone === true)
+			const notDoneTasks = this.nextUp.filter((task) => task.isDone === false)
 
-			if (doneTasks.length === 0) {
+			if (notDoneTasks.length === 0) {
 				return 'All done for today'
 			}
 		}

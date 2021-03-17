@@ -1,14 +1,17 @@
 <div class="work-unit" [class.no-description]="task.description === ''">
 	<div class="card-header">
 		<h3 class="truncate-text">{{ task.name }}</h3>
-		<a class="btn tiny-button with-border smaller" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
-			><img src="/assets/icons/icon-edit.svg" alt="Edit task"
-		/></a>
+		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+			<img src="/assets/icons/icon-edit.svg" alt="Edit task" />
+		</a>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">
 			<span>Unit {{ task.workUnitsIndex + 1 }}/{{ task.workUnitsCount }}</span>
-			<div class="info-segment">
+			<div
+				class="info-segment"
+				[class.red]="task.workUnit.scheduledAt.date.end.toDate() <= today && !task.workUnit.isDone"
+			>
 				<div
 					*ngIf="
 						task.workUnit.scheduledAt.date.start.toDate().getDate() === today.getDate();
@@ -17,9 +20,9 @@
 					"
 				></div>
 				<ng-template #todayThen><span>Today</span></ng-template>
-				<ng-template #todayElse
-					><span>{{ task.workUnit.scheduledAt.date.start.toLocaleString() }}</span></ng-template
-				>
+				<ng-template #todayElse>
+					<span>{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleDateString() }}</span>
+				</ng-template>
 				<span
 					>{{ task.workUnit.workload.toDuration(1).toString() }} •
 					{{
@@ -39,7 +42,7 @@
 			</div>
 			<div class="info-segment">
 				<span>Progress</span>
-				<progress max="100" value="{{getProgress(task)}}">{{getProgress(task)}}%</progress>
+				<progress max="100" value="{{ getProgress(task) }}">{{ getProgress(task) }}%</progress>
 			</div>
 		</div>
 		<div *ngIf="task.description" class="card-section description scroller inverse">
@@ -47,7 +50,7 @@
 		</div>
 	</div>
 	<div class="card-footer">
-		<button><img src="/assets/icons/icon-time.svg" />Reschedule</button>
-		<button><img src="/assets/icons/icon-check.svg" />Done</button>
+		<a class="btn with-border"><img src="/assets/icons/icon-time.svg" />Reschedule</a>
+		<a class="btn with-border"><img src="/assets/icons/icon-check.svg" />Done</a>
 	</div>
 </div>

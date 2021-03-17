@@ -1,72 +1,85 @@
 .dashboard-container {
-    display: grid;
-    grid-template-columns: 1fr minmax(300px, 25%);
+	display: grid;
+	grid-template-columns: 1fr minmax(300px, 25%);
 
-    .dashboard-container {
-        padding: 4rem 4rem 0 4rem;
-    }
+	.dashboard-container {
+		padding: 4rem 4rem 0 4rem;
+	}
 
-    .dashboard-header {
-        display: flex;
-        flex-flow: row;
-        justify-content: space-between;
-        margin-bottom: 2rem;
-    }
+	.dashboard-header {
+		display: flex;
+		flex-flow: row;
+		justify-content: space-between;
+		margin-bottom: 2rem;
+	}
 
-    .date-group {
-        margin-bottom: 4rem;
-    }
+	.date-group {
+		margin-bottom: 4rem;
+	}
 
-    .main {
-        min-width: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
+	.main {
+		min-width: 0;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
 
-        .next-up {
-            display: flex;
-            flex-direction: row;
-            //overflow-x: auto;
+		.next-up {
+			display: flex;
+			flex-direction: row;
+			//overflow-x: auto;
 
-            li {
-                margin-right: 5rem;
+			li {
+				margin-right: 5rem;
+			}
+		}
+
+		img.next-up-finished {
+			height: 28rem;
+		}
+
+		.upcoming-work-units-header {
+			margin-top: 4rem;
+			margin-bottom: 2rem;
+			display: flex;
+			flex-flow: row;
+			justify-content: space-between;
+
+            .upcoming-work-units-title {
+                margin: auto 0;
             }
-        }
 
-        img.next-up-finished {
-            height: 28rem;
-        }
+			.filters {
+                .filter {
+                    margin-left: 1.5rem;
+                }
+			}
+		}
 
-        .upcoming-work-units-title {
-            margin-top: 4rem;
-            margin-bottom: 2rem;
-        }
+		.upcoming-work-units-list {
+			overflow-y: auto;
+		}
+	}
 
-        .upcoming-work-units-list {
-            overflow-y: auto;
-        }
-    }
+	.deadlines {
+		height: 100vh;
+		border-left: 1px solid #b9b9b9;
+		display: flex;
+		flex-direction: column;
 
-    .deadlines {
-        height: 100vh;
-        border-left: 1px solid #B9B9B9;
-        display: flex;
-        flex-direction: column;
+		h2 {
+			margin-bottom: 2rem;
+		}
+	}
 
-        h2 {
-            margin-bottom: 2rem;
-        }
-    }
+	.date-spacer {
+		font-size: 2.2rem;
+		color: grey;
+	}
 
-    .date-spacer {
-        font-size: 2.2rem;
-        color: grey;
-    }
-
-    .deadline-list {
-        overflow-y: auto;
-        .date-spacer {
-            margin-bottom: 2rem;
-        }
-    }
+	.deadline-list {
+		overflow-y: auto;
+		.date-spacer {
+			margin-bottom: 2rem;
+		}
+	}
 }

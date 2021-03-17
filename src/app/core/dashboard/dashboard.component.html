@@ -3,8 +3,7 @@
 		<div class="dashboard-header">
 			<h2 class="next-up-title">{{ getNextUpMessage() }}</h2>
 			<a class="btn large" [routerLink]="[{ outlets: { modal: ['task', 'new'] } }]">
-				<img src="/assets/icons/icon-plus.svg" />New
-				task
+				<img src="/assets/icons/icon-plus.svg" />New task
 			</a>
 		</div>
 		<img *ngIf="nextUp.length === 0" class="next-up-finished" src="/assets/icons/icon-done.svg" alt="All done" />
@@ -13,12 +12,18 @@
 				<app-work-unit-card [task]="task"></app-work-unit-card>
 			</li>
 		</ul>
-		<h2 class="upcoming-work-units-title">Upcoming work units</h2>
+		<div class="upcoming-work-units-header">
+			<h2 class="upcoming-work-units-title">Upcoming work units</h2>
+			<div class="filters">
+				<button class="filter active">Upcoming</button>
+				<button class="filter">Done</button>
+			</div>
+		</div>
 		<ul class="upcoming-work-units-list scroller">
 			<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
-				<span class="date-spacer">{{
-					upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' })
-				}}</span>
+				<span class="date-spacer">
+					{{ upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' }) }}
+				</span>
 				<ul>
 					<li *ngFor="let task of upcomingGroup.tasks">
 						<app-work-unit-upcoming [task]="task"></app-work-unit-upcoming>
@@ -31,9 +36,15 @@
 		<h2>Upcoming deadlines</h2>
 		<ul class="deadline-list scroller">
 			<li *ngFor="let deadlineGroup of groupedDeadlines" class="date-group">
-				<span class="date-spacer">{{
-					deadlineGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' })
-				}}</span>
+				<span class="date-spacer">
+					{{
+						deadlineGroup.date.toLocaleDateString('default', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						})
+					}}
+				</span>
 				<ul>
 					<li *ngFor="let deadline of deadlineGroup.tasks">
 						<app-deadline [task]="deadline"></app-deadline>

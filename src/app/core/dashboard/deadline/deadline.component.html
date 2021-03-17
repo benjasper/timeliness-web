@@ -1,4 +1,4 @@
-<div class="deadline">
+<div class="deadline" [class.done]="task.isDone">
 	<div class="time">
 		<span>{{
 			task.dueAt.date.start.toDate().toLocaleTimeString([], {

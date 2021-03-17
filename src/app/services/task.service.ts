@@ -24,6 +24,12 @@ export class TaskService {
 			.pipe(retry(3), catchError(this.handleError))
 	}
 
+	public getTask(id: string): Observable<Task> {
+		return this.http
+			.get<Task>('http://localhost/v1/tasks/' + id)
+			.pipe(retry(3), catchError(this.handleError))
+	}
+
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		if (error.error instanceof ErrorEvent) {
 			// A client-side or network error occurred. Handle it accordingly.
