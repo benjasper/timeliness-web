@@ -15,14 +15,14 @@ export class Duration {
 		duration /= 1000
 
 		if (duration < 60) {
-			return duration.toFixed() + 's'
+			return Math.floor(duration) + 's'
 		}
 
 		duration /= 60
 
 		if (duration < 60) {
 			if (duration % 1 !== 0) {
-				return duration.toFixed() + 'm' + ' ' + new Duration((duration % 1) * 60000).toString()
+				return Math.floor(duration) + 'm' + ' ' + new Duration((duration % 1) * 60000).toString()
 			}
 
 			return duration + 'm'
@@ -31,7 +31,7 @@ export class Duration {
 		duration /= 60
 
 		if (duration % 1 !== 0) {
-			return duration.toFixed() + 'h' + ' ' + new Duration((duration % 1) * 3.6e6).toString()
+			return Math.floor(duration) + 'h' + ' ' + new Duration((duration % 1) * 3.6e6).toString()
 		}
 
 		return duration + 'h'
