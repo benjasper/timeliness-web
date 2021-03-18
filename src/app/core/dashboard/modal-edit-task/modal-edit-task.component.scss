@@ -2,121 +2,116 @@
 
 .modal-container {
 	background-color: rgba(0, 0, 0, 0.8);
+	opacity: 1;
 	z-index: 1;
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
 	left: 0;
 	top: 0;
+}
 
-	.modal {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+.modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 
-		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
-		border-radius: 1rem;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+	border-radius: 1rem;
 
-		padding: 4rem;
-		z-index: 2;
-		position: absolute;
-		background-color: white;
+	padding: 4rem;
+	z-index: 2;
+	position: absolute;
+	background-color: white;
 
-		input,
-		textarea {
-			padding: 0.8rem 1.5rem;
-		}
+	input,
+	textarea {
+		padding: 0.8rem 1.5rem;
+	}
 
-		.priority input {
-			padding: 0.8rem 0;
-			width: 20rem;
-			background: linear-gradient(90deg, $color-green 0%, $color-yellow 52.72%, $color-red 100%);
-		}
+	.priority input {
+		padding: 0.8rem 0;
+		width: 20rem;
+		background: linear-gradient(90deg, $color-green 0%, $color-yellow 52.72%, $color-red 100%);
+	}
 
-		textarea {
-			width: calc(100% + 1rem);
-		}
+	textarea {
+		width: calc(100% + 1rem);
+	}
 
-		label {
-			font-size: 1.4rem;
-			padding: 0.8rem 1.5rem;
-			margin-left: -1rem;
-		}
+	label {
+		font-size: 1.4rem;
+		padding: 0.8rem 1.5rem;
+		margin-left: -1rem;
+	}
 
-		.task-description,
-		input {
-			font-size: 1.8rem;
-		}
+	.task-description,
+	input {
+		font-size: 1.8rem;
+	}
 
-		.task-title {
-			width: 80%;
-			font-size: 2.4rem;
-			padding: 0.8rem 1.5rem;
-			font-weight: bold;
-		}
+	.task-title {
+		width: 80%;
+		font-size: 2.4rem;
+		padding: 0.8rem 1.5rem;
+		font-weight: bold;
+	}
 
-		.modal-header {
+	.modal-header {
+		display: flex;
+		margin-bottom: 2rem;
+
+		.modal-controls {
 			display: flex;
-			margin-bottom: 2rem;
-
-			.modal-controls {
-				display: flex;
-				flex: 1;
-				justify-content: space-between;
-				margin: auto 0;
-
-				.tiny-button {
-					margin-left: 2rem;
-				}
-			}
-		}
-
-		.row {
-			margin-top: 2rem;
-			display: flex;
-			flex-flow: row;
+			flex: 1;
 			justify-content: space-between;
+			margin: auto 0;
 
-			.workload {
-				padding: 0 4rem;
-
-				.workload-time {
-					display: flex;
-					flex-flow: row;
-				}
+			.tiny-button {
+				margin-left: 2rem;
 			}
+		}
+	}
 
-			.priority {
-				label {
-					padding-left: 0;
-					margin-left: 0;
-				}
-			}
+	.row {
+		margin-top: 2rem;
+		display: flex;
+		flex-flow: row;
+		justify-content: space-between;
 
-			.progress {
-				width: 100%;
-				//width: calc(100% - 0.4rem);
+		.workload {
+			padding: 0 4rem;
 
-				.progress-container {
-					display: flex;
-					padding: 0.2rem 0.2rem;
-					background-color: $color-primary;
-					border-radius: 2.5rem;
-					margin-left: 0.4rem;
-	
-					progress {
-						//margin-left: 0.4rem;
-					}
-				}
+			.workload-time {
+				display: flex;
+				flex-flow: row;
 			}
 		}
 
-		.modal-footer {
-			margin-top: 4rem;
-			display: flex;
-			flex-flow: row;
-			justify-content: flex-end;
+		.priority {
+			label {
+				padding-left: 0;
+			}
 		}
+
+		.progress {
+			width: 100%;
+
+			.progress-container {
+				display: flex;
+				padding: 0.2rem 0.2rem;
+				background-color: $color-primary;
+				border-radius: 2.5rem;
+				margin-left: 0.4rem;
+			}
+		}
+	}
+
+	.modal-footer {
+		margin-top: 4rem;
+		display: flex;
+		flex-flow: row;
+		justify-content: flex-end;
 	}
 }

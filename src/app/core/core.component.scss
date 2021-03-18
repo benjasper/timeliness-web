@@ -24,10 +24,11 @@
                 display: flex;
                 transition: background-color 0.2s ease-out;
 
-                img {
+                .img {
                     display: inline-block;
                     width: 1.8rem;
                     margin-right: 0.5rem;
+                    margin: auto 0.5rem auto 0;
                 }
 
                 &.active {

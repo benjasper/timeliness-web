@@ -32,6 +32,16 @@ input {
 	font-family: 'Noto Sans', sans-serif;
 }
 
+body {
+	overflow-y: hidden;
+}
+
+svg {
+	display: block;
+	width: auto;
+    height: auto;
+}
+
 textarea {
 	resize: none;
 	margin: 0;
@@ -100,13 +110,24 @@ a.btn {
 	cursor: pointer;
 	user-select: none;
 	transition: background-color 0.2s;
-	font-size: 1.4rem;
+	font-size: 1.6rem;
 	line-height: 1;
 
-	img {
+	span {
 		display: inline-block;
-		width: 1.2rem;
+	}
+
+	.img {
+		fill: $color-white;
+		display: inline-block;
+		width: 1.4rem;
 		margin-right: 0.5rem;
+	}
+
+	&.icon-only {
+		.img {
+			margin: 0;
+		}
 	}
 
 	&:focus {
@@ -114,12 +135,12 @@ a.btn {
 	}
 
 	&.large {
-		font-size: 1.6rem;
+		font-size: 1.8rem;
 		padding: 1rem 2rem;
 		border: none;
 
-		img {
-			width: 1.2rem;
+		.img {
+			width: 1.4rem;
 		}
 	}
 
@@ -151,7 +172,7 @@ a.btn {
 		padding: 0;
 		user-select: none;
 
-		img {
+		.img {
 			display: flex;
 			width: 1.4rem;
 			height: 1.4rem;
@@ -171,7 +192,8 @@ a.btn {
 				background-color: $color-light-grey;
 			}
 
-			img {
+			.img {
+				fill: $color-black;
 				width: 2.5rem;
 				height: 2.5rem;
 			}
@@ -191,6 +213,10 @@ a.btn {
 		background-color: $color-light-grey;
 		color: $color-tertiary;
 		cursor: default;
+
+		.img {
+			fill: $color-tertiary;
+		}
 	}
 }
 

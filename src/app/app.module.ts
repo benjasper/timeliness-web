@@ -13,6 +13,8 @@ import { WorkUnitUpcomingComponent } from './core/dashboard/work-unit-upcoming/w
 import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
 import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { InlineSVGModule } from 'ng-inline-svg'
 
 @NgModule({
 	declarations: [
@@ -26,7 +28,7 @@ import { httpInterceptorProviders } from './interceptors'
 		ModalEditTaskComponent,
 		SettingsComponent,
 	],
-	imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+	imports: [BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, InlineSVGModule.forRoot()],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })

@@ -16,6 +16,11 @@
         font-size: 1.6rem;
     }
 
+    &.done {
+        background: $color-light-grey;
+        color: $color-black;
+    }
+
     &.no-description {
         width: 28rem;
     }

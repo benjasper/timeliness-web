@@ -1,12 +1,22 @@
 <div class="core-container">
-    <nav class="sidebar">
-        <h1>Timeliness</h1>
-        <ul>
-            <li><a routerLink="/dashboard" routerLinkActive="active"><img src="/assets/icons/icon-dashboard.svg">Dashboard</a></li>
-            <li><a routerLink="/settings" routerLinkActive="active"><img src="/assets/icons/icon-settings.svg">Settings</a></li>
-        </ul>
-    </nav>
-    <div class="content">
-        <router-outlet></router-outlet>
-    </div>
+	<nav class="sidebar">
+		<h1>Timeliness</h1>
+		<ul>
+			<li>
+				<a routerLink="/dashboard" routerLinkActive="active">
+					<div class="img" [inlineSVG]="'/assets/icons/icon-dashboard.svg'"></div>
+					Dashboard</a
+				>
+			</li>
+			<li>
+				<a routerLink="/settings" routerLinkActive="active">
+					<div class="img" [inlineSVG]="'/assets/icons/icon-settings.svg'"></div>
+					Settings</a
+				>
+			</li>
+		</ul>
+	</nav>
+	<div class="content">
+		<router-outlet></router-outlet>
+	</div>
 </div>

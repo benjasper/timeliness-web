@@ -1,41 +1,44 @@
-<div class="modal-container" *ngIf="loaded">
-    <div class="modal">
-        <div class="modal-header">
-            <input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" [value]="task?.name">
-            <div class="modal-controls">
-                <button class="tiny-button"><img src="/assets/icons/icon-trash.svg" alt="Delete"></button>
-                <button class="tiny-button no-background" (click)="close()"><img src="/assets/icons/icon-exit.svg" alt="Exit"></button>
+<div class="modal-container" @modalBackground *ngIf="modalBackground">
+    
+</div>
+<div class="modal" @flyInOut *ngIf="loaded">
+    <div class="modal-header">
+        <input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" [value]="task?.name">
+        <div class="modal-controls">
+            <button class="tiny-button"><div class="img" [inlineSVG]="'/assets/icons/icon-trash.svg'" alt="Delete"></div></button>
+            <button class="tiny-button no-background" (click)="close()">
+                <div class="img" [inlineSVG]="'assets/icons/icon-exit.svg'"></div>
+            </button>
+        </div>
+    </div>
+    <label for="task-description">Description</label>
+    <textarea tabindex="2" type="textarea" id="task-description" class="task-description edit scroller" rows="5" placeholder="Describe your task here" [value]="task?.description" (input)="task.description"></textarea>
+    <div class="row">
+        <div class="due-date">
+            <label for="due-date">Due date</label>
+            <input id="due-date" type="datetime-local" class="edit" tabindex="3" [valueAsNumber]="task.dueAt.date.start.toDate().getTime()">
+        </div>
+        <div class="workload">
+            <label for="workload-hour">Workload</label>
+            <div class="workload-time">
+                <input id="workload-hour" type="number" min="0" max="24" class="edit" step="1" tabindex="4">
+                <input id="workload-minutes" type="number" min="0" max="59" class="edit" step="15" tabindex="4">
             </div>
         </div>
-        <label for="task-description">Description</label>
-        <textarea tabindex="2" type="textarea" id="task-description" class="task-description edit scroller" rows="5" placeholder="Describe your task here" [value]="task?.description" (input)="task.description"></textarea>
-        <div class="row">
-            <div class="due-date">
-                <label for="due-date">Due date</label>
-                <input id="due-date" type="datetime-local" class="edit" tabindex="3" [valueAsNumber]="task.dueAt.date.start.toDate().getTime()">
-            </div>
-            <div class="workload">
-                <label for="workload-hour">Workload</label>
-                <div class="workload-time">
-                    <input id="workload-hour" type="number" min="0" max="24" class="edit" step="1" tabindex="4">
-                    <input id="workload-minutes" type="number" min="0" max="59" class="edit" step="15" tabindex="4">
-                </div>
-            </div>
-            <div class="priority">
-                <label for="priority">Priority</label>
-                <input id="priority" type="range" min="1" max="3" step="1" value="2" [value]="task.priority" tabindex="5">
+        <div class="priority">
+            <label for="priority">Priority</label>
+            <input id="priority" type="range" min="1" max="3" step="1" value="2" [value]="task.priority" tabindex="5">
+        </div>
+    </div>
+    <div class="row">
+        <div class="progress">
+            <label for="modal-progress">Progress</label>
+            <div class="progress-container">
+                <progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)">{{getProgress(task)}}"%</progress>
             </div>
         </div>
-        <div class="row">
-            <div class="progress">
-                <label for="modal-progress">Progress</label>
-                <div class="progress-container">
-                    <progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)">{{getProgress(task)}}"%</progress>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a class="btn large save">Save</a>
-        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="btn large save" disabled="true"><div class="img" [inlineSVG]="'/assets/icons/icon-save.svg'"></div>Save</a>
     </div>
 </div>

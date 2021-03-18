@@ -1,8 +1,8 @@
-<div class="work-unit" [class.no-description]="task.description === ''">
+<div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnit.isDone">
 	<div class="card-header">
 		<h3 class="truncate-text">{{ task.name }}</h3>
 		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
-			<img src="/assets/icons/icon-edit.svg" alt="Edit task" />
+			<div class="img" [inlineSVG]="'/assets/icons/icon-edit.svg'"></div>
 		</a>
 	</div>
 	<div class="card-sections">
@@ -42,7 +42,9 @@
 			</div>
 			<div class="info-segment">
 				<span>Progress</span>
-				<progress max="100" value="{{ getProgress(task) }}">{{ getProgress(task) }}%</progress>
+				<div class="progress-container">
+					<progress max="100" value="{{ getProgress(task) }}">{{ getProgress(task) }}%</progress>
+				</div>
 			</div>
 		</div>
 		<div *ngIf="task.description" class="card-section description scroller inverse">
@@ -50,7 +52,11 @@
 		</div>
 	</div>
 	<div class="card-footer">
-		<a class="btn with-border"><img src="/assets/icons/icon-time.svg" />Reschedule</a>
-		<a class="btn with-border"><img src="/assets/icons/icon-check.svg" />Done</a>
+		<a class="btn with-border" *ngIf="!task.workUnit.isDone">
+			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>Reschedule
+		</a>
+		<a class="btn with-border" [class.icon-only]="task.workUnit.isDone">
+			<div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
+			<span *ngIf="!task.workUnit.isDone">Done</span></a>
 	</div>
 </div>

@@ -11,9 +11,7 @@
    sodipodi:docname="icon-check.svg"
    id="svg4"
    version="1.1"
-   viewBox="0 0 24 24"
-   height="24"
-   width="24">
+   viewBox="0 0 24 24">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -48,7 +46,6 @@
      bordercolor="#666666"
      pagecolor="#ffffff" />
   <path
-     style="fill:#ffffff"
      id="path2"
      d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
 </svg>
