@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
-import { catchError, retry } from 'rxjs/operators'
+import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
+import { catchError, retry, tap, windowTime } from 'rxjs/operators'
 import { DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
 import { Task, TaskUnwound } from '../models/task'
@@ -10,24 +10,54 @@ import { Task, TaskUnwound } from '../models/task'
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient) {}
-
-	public getTasksByDeadlines(): Observable<TasksGetResponse> {
-		return this.http
-			.get<TasksGetResponse>('http://localhost/v1/tasks')
-			.pipe(retry(3), catchError(this.handleError))
+	constructor(private http: HttpClient) {
+		this.getTasksByDeadlines()
+		this.getTasksByWorkunits()
 	}
 
-	public getTasksByWorkunits(): Observable<TasksByWorkunitsGetResponse> {
-		return this.http
+	private tasks: Task[] = []
+	private tasksUnwound: TaskUnwound[] = []
+
+	private tasksSubject = new ReplaySubject<Task[]>(1)
+	private tasksUnwoundSubject = new ReplaySubject<TaskUnwound[]>(1)
+
+	public tasksObservalble = this.tasksSubject.asObservable()
+	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
+
+	public async getTasksByDeadlines(): Promise<void> {
+		this.http
+			.get<TasksGetResponse>('http://localhost/v1/tasks')
+			.pipe(retry(3), catchError(this.handleError))
+			.subscribe((response) => {
+				this.tasks.push(...response.results)
+				this.tasksSubject.next(this.tasks)
+			})
+	}
+
+	public refreshTasks(): void {
+		this.tasks = []
+		this.tasksSubject.next()
+		this.getTasksByDeadlines()
+	}
+
+	public refreshTasksUnwound(): void {
+		this.tasksUnwound = []
+		this.tasksUnwoundSubject.next()
+		this.getTasksByWorkunits()
+	}
+
+	public async getTasksByWorkunits(): Promise<void> {
+		this.http
 			.get<TasksByWorkunitsGetResponse>('http://localhost/v1/tasks/workunits')
 			.pipe(retry(3), catchError(this.handleError))
+			.subscribe((response) => {
+				this.tasksUnwound.push(...response.results)
+				this.tasksUnwoundSubject.next(this.tasksUnwound)
+			})
 	}
 
 	public getTask(id: string): Observable<Task> {
-		return this.http
-			.get<Task>('http://localhost/v1/tasks/' + id)
-			.pipe(retry(3), catchError(this.handleError))
+		return this.http.get<Task>('http://localhost/v1/tasks/' + id).pipe(retry(3), catchError(this.handleError))
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
