@@ -16,58 +16,22 @@ export class DashboardComponent implements OnInit {
 	public nextUp: TaskUnwound[] = []
 
 	ngOnInit(): void {
+		this.groupTasks(this.taskService.tasks)
 		this.taskService.tasksObservalble.subscribe(tasks => {
 			if (!tasks) {
 				this.groupedDeadlines = []
 				return
 			}
-
-			tasks.forEach(task => {
-				if (
-					this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
-					this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
-					task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
-					) {
-					this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
-					return
-				}
-	
-				const dateGroup = new TaskDateGroup()
-				dateGroup.date = task.dueAt.date.start.toDate()
-				dateGroup.tasks.push(task)
-				this.groupedDeadlines.push(dateGroup)
-			})
+			this.groupTasks(tasks)
 		})
 
+		this.groupTasksUnwound(this.taskService.tasksUnwound)
 		this.taskService.tasksUnwoundObservalble.subscribe(tasks => {
 			if (!tasks) {
 				this.groupedUpcoming = [];
 				return
 			}
-
-			tasks.forEach((task) => {
-				if (
-					task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <=
-					this.today.setHours(0, 0, 0, 0)
-				) {
-					this.nextUp.push(task)
-					return
-				}
-
-				if (
-					this.groupedUpcoming[this.groupedUpcoming.length - 1] &&
-					this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
-						task.workUnit.scheduledAt.date.start.toDate().getMonth()
-				) {
-					this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
-					return
-				}
-
-				const dateGroup = new TaskUnwoundDateGroup()
-				dateGroup.date = task.workUnit.scheduledAt.date.start.toDate()
-				dateGroup.tasks.push(task)
-				this.groupedUpcoming.push(dateGroup)
-			})
+			this.groupTasksUnwound(tasks)
 		})
 	}
 
@@ -85,6 +49,50 @@ export class DashboardComponent implements OnInit {
 		}
 
 		return 'Next up'
+	}
+
+	private groupTasks(tasks: Task[]): void {
+		tasks.forEach(task => {
+			if (
+				this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
+				this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
+				task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+				) {
+				this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
+				return
+			}
+
+			const dateGroup = new TaskDateGroup()
+			dateGroup.date = task.dueAt.date.start.toDate()
+			dateGroup.tasks.push(task)
+			this.groupedDeadlines.push(dateGroup)
+		})
+	}
+
+	private groupTasksUnwound(tasks: TaskUnwound[]): void {
+		tasks.forEach((task) => {
+			if (
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <=
+				this.today.setHours(0, 0, 0, 0)
+			) {
+				this.nextUp.push(task)
+				return
+			}
+
+			if (
+				this.groupedUpcoming[this.groupedUpcoming.length - 1] &&
+				this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
+					task.workUnit.scheduledAt.date.start.toDate().getMonth()
+			) {
+				this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
+				return
+			}
+
+			const dateGroup = new TaskUnwoundDateGroup()
+			dateGroup.date = task.workUnit.scheduledAt.date.start.toDate()
+			dateGroup.tasks.push(task)
+			this.groupedUpcoming.push(dateGroup)
+		})
 	}
 }
 

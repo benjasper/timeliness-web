@@ -15,11 +15,11 @@ export class TaskService {
 		this.getTasksByWorkunits()
 	}
 
-	private tasks: Task[] = []
-	private tasksUnwound: TaskUnwound[] = []
+	public tasks: Task[] = []
+	public tasksUnwound: TaskUnwound[] = []
 
-	private tasksSubject = new ReplaySubject<Task[]>(1)
-	private tasksUnwoundSubject = new ReplaySubject<TaskUnwound[]>(1)
+	private tasksSubject = new Subject<Task[]>()
+	private tasksUnwoundSubject = new Subject<TaskUnwound[]>()
 
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
@@ -30,7 +30,7 @@ export class TaskService {
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
 				this.tasks.push(...response.results)
-				this.tasksSubject.next(this.tasks)
+				this.tasksSubject.next(response.results)
 			})
 	}
 
