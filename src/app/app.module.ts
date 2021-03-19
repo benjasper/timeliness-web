@@ -14,6 +14,7 @@ import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-e
 import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { FormsModule ,ReactiveFormsModule } from '@angular/forms'
 import { InlineSVGModule } from 'ng-inline-svg'
 
 @NgModule({
@@ -28,7 +29,15 @@ import { InlineSVGModule } from 'ng-inline-svg'
 		ModalEditTaskComponent,
 		SettingsComponent,
 	],
-	imports: [BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, InlineSVGModule.forRoot()],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		InlineSVGModule.forRoot(),
+	],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })

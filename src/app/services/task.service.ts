@@ -24,7 +24,7 @@ export class TaskService {
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 
-	public async getTasksByDeadlines(): Promise<void> {
+	private async getTasksByDeadlines(): Promise<void> {
 		this.http
 			.get<TasksGetResponse>('http://localhost/v1/tasks')
 			.pipe(retry(3), catchError(this.handleError))
@@ -46,9 +46,13 @@ export class TaskService {
 		this.getTasksByWorkunits()
 	}
 
-	public async getTasksByWorkunits(): Promise<void> {
+	private async getTasksByWorkunits(): Promise<void> {
+		const filters = [
+			'workUnit.isDone=false'
+		]
+
 		this.http
-			.get<TasksByWorkunitsGetResponse>('http://localhost/v1/tasks/workunits')
+			.get<TasksByWorkunitsGetResponse>('http://localhost/v1/tasks/workunits?' + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
 				this.tasksUnwound.push(...response.results)

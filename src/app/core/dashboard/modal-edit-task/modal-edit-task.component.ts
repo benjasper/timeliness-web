@@ -1,6 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { Duration, DurationUnit } from 'src/app/models/duration'
 import { Task } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
@@ -25,7 +27,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	task!: Task
 	loaded = false
 	modalBackground = false
-	priority = 0
+
+	editTask = new FormGroup({
+		name: new FormControl('', [Validators.required]),
+		description: new FormControl(''),
+		dueDate: new FormControl(new Date().toISOString().slice(0, -1)),
+		workload: new FormControl(new Duration(3600000)),
+		priority: new FormControl(2),
+	})
 
 	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService) {
 		super()
@@ -43,17 +52,25 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		}
 
 		this.taskService.getTask(this.taskId).subscribe((task) => {
+			this.editTask.setValue({
+				name: task.name,
+				description: task.description,
+				dueDate: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
+				workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
+				priority: task.priority
+			})
 			this.task = task
-			this.priority = this.getProgress(task)
 			this.loaded = true
 		})
 	}
 
-	public close(): void {
+	public close(): boolean {
 		this.loaded = false
 		this.modalBackground = false
 		setTimeout(() => {
 			this.router.navigate(['dashboard', { outlets: { modal: null } }])
 		}, 200)
+
+		return false
 	}
 }
