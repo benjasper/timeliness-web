@@ -46,14 +46,19 @@
 			flex-flow: row;
 			justify-content: space-between;
 
-            .upcoming-work-units-title {
-                margin: auto 0;
-            }
+			.upcoming-work-units-title {
+				margin: auto 0;
+			}
 
 			.filters {
-                .filter {
-                    margin-left: 1.5rem;
-                }
+				.filter {
+					margin-left: 1.5rem;
+
+					.img {
+						width: 1.6rem;
+						vertical-align: bottom;
+					}
+				}
 			}
 		}
 
