@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Duration, DurationUnit } from 'src/app/models/duration'
-import { Task } from 'src/app/models/task'
+import { EventModified, Task, TaskModified } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 
@@ -27,13 +27,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	task!: Task
 	loaded = false
 	modalBackground = false
+	isNew = false
 
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
 		description: new FormControl(''),
-		dueDate: new FormControl(new Date().toISOString().slice(0, -1)),
+		dueAt: new FormControl(new Date().toISOString().slice(0, -1)),
 		workload: new FormControl(new Duration(3600000)),
-		priority: new FormControl(2),
+		priority: new FormControl(1),
 	})
 
 	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService) {
@@ -48,6 +49,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 		if (this.taskId === 'new') {
 			this.loaded = true
+			this.isNew = true
 			return
 		}
 
@@ -55,9 +57,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.editTask.setValue({
 				name: task.name,
 				description: task.description,
-				dueDate: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
+				dueAt: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
 				workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
-				priority: task.priority
+				priority: task.priority,
 			})
 			this.task = task
 			this.loaded = true
@@ -65,11 +67,58 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	}
 
 	public close(): boolean {
+		this.closeModal()
+
+		return false
+	}
+
+	private closeModal() {
 		this.loaded = false
 		this.modalBackground = false
 		setTimeout(() => {
 			this.router.navigate(['dashboard', { outlets: { modal: null } }])
 		}, 200)
+	}
+
+	public delete() {
+		this.taskService.deleteTask(this.taskId).subscribe(() => {
+			this.taskService.refreshTasks()
+			this.taskService.refreshTasksUnwound()
+
+			this.closeModal()
+		})
+	}
+
+	public save(): boolean {
+		const updatingTask = new TaskModified()
+
+		updatingTask.name =
+			this.editTask.get('name')?.dirty || this.isNew ? this.editTask.get('name')?.value : undefined
+		updatingTask.description =
+			this.editTask.get('description')?.dirty || this.isNew ? this.editTask.get('description')?.value : undefined
+		updatingTask.dueAt =
+			this.editTask.get('dueAt')?.dirty || this.isNew
+				? new EventModified(new Date(this.editTask.get('dueAt')?.value))
+				: undefined
+		updatingTask.priority =
+			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
+
+		updatingTask.workloadOverall =
+			this.editTask.get('workloadOverall')?.dirty || this.isNew ? 3.6e+12 : undefined
+
+		if (this.isNew) {
+			this.taskService.newTask(updatingTask).subscribe((task) => {
+				this.taskService.refreshTasks()
+				this.taskService.refreshTasksUnwound()
+				this.task = task
+			})
+		} else {
+			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
+				this.taskService.refreshTasks()
+				this.taskService.refreshTasksUnwound()
+				this.task = task
+			})
+		}
 
 		return false
 	}

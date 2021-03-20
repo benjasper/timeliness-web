@@ -22,36 +22,22 @@ export interface TaskUnwound extends Task {
 }
 
 export class TaskModified {
-	constructor(
-		name: string,
-		description: string,
-		priority: number,
-		workloadOverall: number,
-		dueAt: string,
-		tags: string[] = []
-	) {
-		this.name = name
-		this.description = description
-		this.priority = priority
-		this.workloadOverall = workloadOverall
-		this.dueAt = new EventModified(dueAt)
-		this.tags = tags
-	}
-
-	name = ''
-	description = ''
-	tags: string[] = []
-	priority = 2
-	workloadOverall = 0
-	dueAt: EventModified
+	name ?: string 
+	description ?: string
+	tags ?: string[] 
+	priority ?: string
+	workloadOverall ?: number
+	dueAt ?: EventModified
 }
 
 export class EventModified {
-	date!: {
-		start: string
+	date: {
+		start: Date
+	} = {
+		start: new Date()
 	}
 
-	constructor(date: string) {
+	constructor(date: Date) {
 		this.date.start = date
 	}
 }

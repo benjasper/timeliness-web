@@ -72,6 +72,21 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 	}
 
+	public newTask(task: TaskModified): Observable<Task> {
+		return this.http
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
+			.pipe(share(), catchError(this.handleError))
+	}
+
+	public deleteTask(id: string): Observable<void> {
+		const observable = this.http
+			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${id}`)
+			.pipe(share(), catchError(this.handleError))
+		
+		observable.subscribe()
+		return observable
+	}
+
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): Observable<Task> {
 		const observable = this.http
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
