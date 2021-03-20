@@ -39,7 +39,7 @@ body {
 svg {
 	display: block;
 	width: auto;
-    height: auto;
+	height: auto;
 }
 
 textarea {
@@ -187,7 +187,7 @@ a.btn {
 			background: transparent;
 			transition: background-color 0.2s ease-in-out;
 
-			&:hover {
+			&:hover:not(:disabled) {
 				background-color: $color-light-grey;
 			}
 
@@ -213,7 +213,7 @@ a.btn {
 		color: $color-tertiary;
 		cursor: default;
 
-		.img {
+		.img, &.no-background .img {
 			fill: $color-tertiary;
 		}
 	}
@@ -240,6 +240,45 @@ progress {
 ::-webkit-progress-value {
 	background-color: $color-cyan;
 	border-radius: 2.5rem;
+}
+
+.slider {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 1rem;
+	border-radius: 2.5rem;
+	background: #d3d3d3;
+	outline: none;
+	-webkit-transition: 0.2s;
+	transition: opacity 0.2s;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	background: $color-primary;
+	cursor: pointer;
+	transition: all 0.1s;
+
+	&:hover {
+		background-color: $color-primary-light;
+	}
+}
+
+.slider::-moz-range-thumb {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	background: $color-primary;
+	cursor: pointer;
+	transition: all 0.1s;
+
+	&:hover {
+		background-color: $color-primary-light;
+	}
 }
 
 .scroller {

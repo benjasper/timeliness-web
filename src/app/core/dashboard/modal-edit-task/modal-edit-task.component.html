@@ -3,7 +3,10 @@
     <div class="modal-header">
         <input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" formControlName="name">
         <div class="modal-controls">
-            <button class="tiny-button" [disabled]="!task" (click)="delete()"><div class="img" [inlineSVG]="'/assets/icons/icon-trash.svg'" alt="Delete"></div></button>
+            <div class="dangerous-controls">
+                <button class="tiny-button no-background" [disabled]="!editTask.dirty || isNew" (click)="undo()"><div class="img" [inlineSVG]="'/assets/icons/icon-undo.svg'" alt="Undo"></div></button>
+                <button class="tiny-button" [disabled]="!task" (click)="delete()"><div class="img" [inlineSVG]="'/assets/icons/icon-trash.svg'" alt="Delete"></div></button>
+            </div>
             <button class="tiny-button no-background" (click)="close()">
                 <div class="img" [inlineSVG]="'assets/icons/icon-exit.svg'"></div>
             </button>
@@ -24,7 +27,7 @@
         </div>
         <div class="priority">
             <label for="priority">Priority</label>
-            <input id="priority" type="range" min="1" max="3" step="1" value="2" formControlName="priority" tabindex="5">
+            <input id="priority" class="slider" type="range" min="1" max="3" step="1" value="2" formControlName="priority" tabindex="5">
         </div>
     </div>
     <div class="row" *ngIf="task">

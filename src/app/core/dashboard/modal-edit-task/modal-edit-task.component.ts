@@ -72,7 +72,17 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		return false
 	}
 
-	private closeModal() {
+	public undo() {
+		this.editTask.reset({
+			name: this.task.name,
+			description: this.task.description,
+			dueAt: this.task.dueAt.date.start.toDate().toISOString().slice(0, -1),
+			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
+			priority: this.task.priority
+		})
+	}
+
+	private closeModal(): void {
 		this.loaded = false
 		this.modalBackground = false
 		setTimeout(() => {
@@ -80,7 +90,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		}, 200)
 	}
 
-	public delete() {
+	public delete(): void {
 		this.taskService.deleteTask(this.taskId).subscribe(() => {
 			this.taskService.refreshTasks()
 			this.taskService.refreshTasksUnwound()
@@ -111,6 +121,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 				this.taskService.refreshTasks()
 				this.taskService.refreshTasksUnwound()
 				this.task = task
+				this.isNew = false
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {

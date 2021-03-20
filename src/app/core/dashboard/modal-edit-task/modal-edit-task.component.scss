@@ -30,12 +30,6 @@
 		padding: 0.8rem 1.5rem;
 	}
 
-	.priority input {
-		padding: 0.8rem 0;
-		width: 20rem;
-		background: linear-gradient(90deg, $color-green 0%, $color-yellow 52.72%, $color-red 100%);
-	}
-
 	textarea {
 		width: calc(100% + 1rem);
 	}
@@ -70,6 +64,13 @@
 			.tiny-button {
 				margin-left: 2rem;
 			}
+
+			.dangerous-controls {
+				display: flex;
+				flex-flow: row;
+				margin-left: 0;
+				margin-right: 2rem;
+			}
 		}
 	}
 
@@ -91,6 +92,13 @@
 		.priority {
 			label {
 				padding-left: 0;
+			}
+
+			input {
+				margin-top: 1.5rem;
+				padding: 0.6rem 0;
+				width: 20rem;
+				background: linear-gradient(90deg, $color-green 0%, $color-yellow 50%, $color-red 100%);
 			}
 		}
 
