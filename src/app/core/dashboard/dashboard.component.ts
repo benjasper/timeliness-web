@@ -10,14 +10,14 @@ import { TaskService } from 'src/app/services/task.service'
 export class DashboardComponent implements OnInit {
 	constructor(private taskService: TaskService) {}
 
-	today = new Date()
+	public today = new Date()
 	public groupedDeadlines: TaskDateGroup[] = []
 	public groupedUpcoming: TaskUnwoundDateGroup[] = []
 	public nextUp: TaskUnwound[] = []
 
 	ngOnInit(): void {
 		this.groupTasks(this.taskService.tasks)
-		this.taskService.tasksObservalble.subscribe(tasks => {
+		this.taskService.tasksObservalble.subscribe((tasks) => {
 			if (!tasks) {
 				this.groupedDeadlines = []
 				return
@@ -26,9 +26,10 @@ export class DashboardComponent implements OnInit {
 		})
 
 		this.groupTasksUnwound(this.taskService.tasksUnwound)
-		this.taskService.tasksUnwoundObservalble.subscribe(tasks => {
+		this.taskService.tasksUnwoundObservalble.subscribe((tasks) => {
 			if (!tasks) {
-				this.groupedUpcoming = [];
+				this.nextUp = []
+				this.groupedUpcoming = []
 				return
 			}
 			this.groupTasksUnwound(tasks)
@@ -42,6 +43,20 @@ export class DashboardComponent implements OnInit {
 			if (notDoneTasks.length === 0) {
 				return 'All done for today'
 			}
+
+			let found = -1
+			notDoneTasks.forEach((task, index) => {
+				if (
+					task.workUnit.scheduledAt.date.start.toDate() < this.today &&
+					task.workUnit.scheduledAt.date.end.toDate() > this.today
+				) {
+					found = index
+				}
+			})
+
+			if (found !== -1) {
+				return `Currently working on ${notDoneTasks[found].name}`
+			}
 		}
 
 		if (this.nextUp.length === 0) {
@@ -52,12 +67,12 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private groupTasks(tasks: Task[]): void {
-		tasks.forEach(task => {
+		tasks.forEach((task) => {
 			if (
 				this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
 				this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
-				task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
-				) {
+					task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+			) {
 				this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
 				return
 			}
@@ -71,10 +86,8 @@ export class DashboardComponent implements OnInit {
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
 		tasks.forEach((task) => {
-			if (
-				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <=
-				this.today.setHours(0, 0, 0, 0)
-			) {
+			const now = new Date(this.today)
+			if (task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0)) {
 				this.nextUp.push(task)
 				return
 			}

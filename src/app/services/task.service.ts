@@ -1,10 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
-import { catchError, retry, tap, windowTime } from 'rxjs/operators'
+import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
-import { Task, TaskUnwound } from '../models/task'
+import { Task, TaskModified, TaskUnwound } from '../models/task'
+import { environment } from '../../environments/environment'
+import { WorkUnit } from '../models/workunit'
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +28,7 @@ export class TaskService {
 
 	private async getTasksByDeadlines(): Promise<void> {
 		this.http
-			.get<TasksGetResponse>('http://localhost/v1/tasks')
+			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks`)
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
 				this.tasks.push(...response.results)
@@ -47,12 +49,10 @@ export class TaskService {
 	}
 
 	private async getTasksByWorkunits(): Promise<void> {
-		const filters = [
-			'workUnit.isDone=false'
-		]
+		const filters = ['workUnit.isDone=false']
 
 		this.http
-			.get<TasksByWorkunitsGetResponse>('http://localhost/v1/tasks/workunits?' + filters.join('&'))
+			.get<TasksByWorkunitsGetResponse>(`${environment.apiBaseUrl}/v1/tasks/workunits?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
 				this.tasksUnwound.push(...response.results)
@@ -61,7 +61,26 @@ export class TaskService {
 	}
 
 	public getTask(id: string): Observable<Task> {
-		return this.http.get<Task>('http://localhost/v1/tasks/' + id).pipe(retry(3), catchError(this.handleError))
+		return this.http
+			.get<Task>(`${environment.apiBaseUrl}/v1/tasks/` + id)
+			.pipe(retry(3), catchError(this.handleError))
+	}
+
+	public patchTask(id: string, task: TaskModified): Observable<Task> {
+		return this.http
+			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
+			.pipe(share(), catchError(this.handleError))
+	}
+
+	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): Observable<Task> {
+		const observable = this.http
+			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((task) => {
+			// TODO save in task cache
+		})
+		return observable
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {

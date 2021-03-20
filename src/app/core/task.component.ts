@@ -1,7 +1,10 @@
 import { DurationUnit } from '../models/duration'
 import { Task } from '../models/task'
+import { TaskService } from '../services/task.service'
 
 export class TaskComponent {
+	public constructor() {}
+
 	public getRemainingWorkload(task: Task): string {
 		let doneWorkload = 0
 

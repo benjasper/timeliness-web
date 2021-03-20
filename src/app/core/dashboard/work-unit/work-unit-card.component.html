@@ -1,4 +1,4 @@
-<div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnit.isDone">
+<div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnit.isDone" @appear>
 	<div class="card-header">
 		<h3 class="truncate-text">{{ task.name }}</h3>
 		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
@@ -19,7 +19,10 @@
 						else todayElse
 					"
 				></div>
-				<ng-template #todayThen><span>Today</span></ng-template>
+				<ng-template #todayThen>
+					<span *ngIf="task.workUnit.scheduledAt.date.start.toDate() < today && task.workUnit.scheduledAt.date.end.toDate() > today">Now</span>
+					<span *ngIf="task.workUnit.scheduledAt.date.start.toDate() > today || task.workUnit.scheduledAt.date.end.toDate() < today">Today</span>
+				</ng-template>
 				<ng-template #todayElse>
 					<span>{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleDateString() }}</span>
 				</ng-template>
@@ -52,11 +55,12 @@
 		</div>
 	</div>
 	<div class="card-footer">
-		<a class="btn with-border" *ngIf="!task.workUnit.isDone">
+		<button class="btn with-border" *ngIf="!task.workUnit.isDone">
 			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>Reschedule
-		</a>
-		<a class="btn with-border" [class.icon-only]="task.workUnit.isDone">
+		</button>
+		<button class="btn with-border" [class.icon-only]="task.workUnit.isDone" (click)="markWorkUnitAsDone(task, task.workUnitsIndex, !task.workUnit.isDone)">
 			<div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
-			<span *ngIf="!task.workUnit.isDone">Done</span></a>
+			<span *ngIf="!task.workUnit.isDone">Done</span>
+		</button>
 	</div>
 </div>
