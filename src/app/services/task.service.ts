@@ -27,8 +27,9 @@ export class TaskService {
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 
 	private async getTasksByDeadlines(): Promise<void> {
+		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
 		this.http
-			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks`)
+			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
 				this.tasks.push(...response.results)
