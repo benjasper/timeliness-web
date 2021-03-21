@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { CoreComponent } from './core/core.component'
-import { LoginComponent } from './login/login.component'
 import { DashboardComponent } from './core/dashboard/dashboard.component'
 import { DeadlineComponent } from './core/dashboard/deadline/deadline.component'
 import { WorkUnitCardComponent } from './core/dashboard/work-unit/work-unit-card.component'
@@ -14,20 +13,21 @@ import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-e
 import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { FormsModule ,ReactiveFormsModule } from '@angular/forms'
-import { InlineSVGModule } from 'ng-inline-svg'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { InlineSVGModule } from 'ng-inline-svg';
+import { SigninComponent } from './signin/signin.component'
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		CoreComponent,
-		LoginComponent,
 		DashboardComponent,
 		DeadlineComponent,
 		WorkUnitCardComponent,
 		WorkUnitUpcomingComponent,
 		ModalEditTaskComponent,
 		SettingsComponent,
+		SigninComponent
 	],
 	imports: [
 		BrowserModule,

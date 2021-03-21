@@ -76,7 +76,15 @@ h3,
 
 a {
 	text-decoration: none;
+	font-size: 1.6rem;
 	color: $color-black;
+	cursor: pointer;
+	transition: all 0.1s;
+
+	&:hover {
+		text-decoration: underline;
+		color: $color-primary;
+	}
 }
 
 input[type='text'],
@@ -88,6 +96,7 @@ input {
 	border: none;
 	outline: none;
 	border-radius: 0.5rem;
+	font-size: 1.8rem;
 
 	&.edit {
 		transition: background-color 0.2s ease-in-out;
@@ -99,7 +108,8 @@ input {
 }
 
 button,
-a.btn {
+a.btn,
+input[type='submit'] {
 	background: $color-primary;
 	border: none;
 	box-sizing: border-box;
@@ -135,7 +145,7 @@ a.btn {
 
 	&.large {
 		font-size: 1.8rem;
-		padding: 1rem 2rem;
+		padding: 1.2rem 2.8rem;
 		border: none;
 
 		.img {
@@ -219,6 +229,7 @@ a.btn {
 
 	&:hover {
 		background-color: $color-primary-light;
+		text-decoration: none;
 	}
 
 	&:disabled,

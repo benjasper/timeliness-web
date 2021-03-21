@@ -32,12 +32,12 @@ export class TaskModified {
 
 export class EventModified {
 	date: {
-		start: Date
+		start: string
 	} = {
-		start: new Date()
+		start: ''
 	}
 
-	constructor(date: Date) {
+	constructor(date: string) {
 		this.date.start = date
 	}
 }

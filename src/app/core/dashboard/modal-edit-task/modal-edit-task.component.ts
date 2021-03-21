@@ -54,15 +54,19 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		}
 
 		this.taskService.getTask(this.taskId).subscribe((task) => {
-			this.editTask.setValue({
-				name: task.name,
-				description: task.description,
-				dueAt: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
-				workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
-				priority: task.priority,
-			})
+			this.patchForm(task)
 			this.task = task
 			this.loaded = true
+		})
+	}
+
+	private patchForm(task: Task): void {
+		this.editTask.setValue({
+			name: task.name,
+			description: task.description,
+			dueAt: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
+			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
+			priority: task.priority,
 		})
 	}
 
@@ -108,7 +112,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.editTask.get('description')?.dirty || this.isNew ? this.editTask.get('description')?.value : undefined
 		updatingTask.dueAt =
 			this.editTask.get('dueAt')?.dirty || this.isNew
-				? new EventModified(new Date(this.editTask.get('dueAt')?.value))
+				? new EventModified(new Date(this.editTask.get('dueAt')?.value).toISOString())
 				: undefined
 		updatingTask.priority =
 			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
@@ -120,13 +124,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
 				this.taskService.refreshTasks()
 				this.taskService.refreshTasksUnwound()
+				this.editTask.markAsPristine()
 				this.task = task
+				this.taskId = task.id
 				this.isNew = false
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
 				this.taskService.refreshTasks()
 				this.taskService.refreshTasksUnwound()
+				this.editTask.markAsPristine()
 				this.task = task
 			})
 		}
