@@ -62,6 +62,14 @@ export class TaskService {
 	}
 
 	public getTask(id: string): Observable<Task> {
+		const foundTask = this.tasks.find(x => x.id === id)
+		if (foundTask) {
+			return new Observable((sub) => {
+				sub.next(foundTask)
+				sub.complete()
+			})
+		}
+
 		return this.http
 			.get<Task>(`${environment.apiBaseUrl}/v1/tasks/` + id)
 			.pipe(retry(3), catchError(this.handleError))

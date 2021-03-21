@@ -39,6 +39,11 @@
 				<span class="date-spacer">
 					{{
 						deadlineGroup.date.toLocaleDateString('default', {
+							weekday: 'long'
+						})
+					}},
+					{{
+						deadlineGroup.date.toLocaleDateString('default', {
 							year: 'numeric',
 							month: 'long',
 							day: 'numeric'
