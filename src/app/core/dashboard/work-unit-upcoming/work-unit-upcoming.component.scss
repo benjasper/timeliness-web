@@ -10,7 +10,7 @@
     border-radius: 1rem;
     cursor: default;
 
-    &:hover {
+    &:hover, &.active {
         padding: 1rem;
         margin-left: 0.1rem;
         margin-right: 1rem;

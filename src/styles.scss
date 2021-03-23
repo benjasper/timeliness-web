@@ -83,7 +83,6 @@ a {
 
 	&:hover {
 		text-decoration: underline;
-		color: $color-primary;
 	}
 }
 
@@ -238,7 +237,8 @@ input[type='submit'] {
 		color: $color-tertiary;
 		cursor: default;
 
-		.img, &.no-background .img {
+		.img,
+		&.no-background .img {
 			fill: $color-tertiary;
 		}
 	}
@@ -347,4 +347,15 @@ progress {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.text-underline {
+	transition: all 0.1s;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration-color: $color-black;
+	}
 }

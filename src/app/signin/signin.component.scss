@@ -76,11 +76,8 @@
 					0% {
 						background-color: $color-primary;
 					}
-					50% {
-						background-color: $color-green;
-					}
 					100% {
-						background-color: $color-primary;
+						background-color: $color-green;
 					}
 				}
 
@@ -91,7 +88,7 @@
 
 				&.success {
 					animation-name: success;
-					animation-duration: 1s;
+					animation-duration: 0.5s;
 				}
 			}
 		}

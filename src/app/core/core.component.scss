@@ -32,6 +32,10 @@
                 }
 
                 &.active {
+                    &:hover {
+                        cursor: default;
+                        text-decoration: none;
+                    }
                     background-color: $color-light-grey;
                 }
             }

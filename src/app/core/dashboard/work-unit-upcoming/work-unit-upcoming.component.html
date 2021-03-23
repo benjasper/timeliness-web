@@ -1,4 +1,4 @@
-<div class="work-unit-upcoming">
+<div class="work-unit-upcoming" routerLinkActive="active">
 	<div class="calendar-date">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
 		<span class="month">{{
@@ -7,7 +7,7 @@
 	</div>
 	<div class="contents">
 		<div class="work-unit-info">
-			<span class="task-title truncate-text" title="{{ task.name }}">{{ task.name }}</span>
+			<a class="task-title truncate-text text-underline" title="{{ task.name }}" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">{{ task.name }}</a>
 			<span class="subtitle"
 				>{{
 					task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {

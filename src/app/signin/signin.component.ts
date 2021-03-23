@@ -22,7 +22,7 @@ export class SigninComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.route.queryParams.subscribe((params) => {
-			this.returnUrl = params.returnUrl
+			this.returnUrl = params.returnUrl ?? ''
 		})
 	}
 
@@ -36,7 +36,7 @@ export class SigninComponent implements OnInit {
 			})
 			.subscribe(
 				(response) => {
-					let route = '/dashboard'
+					let route = 'dashboard'
 					if (this.returnUrl !== '') {
 						route = this.returnUrl
 					}
