@@ -120,5 +120,11 @@
 		display: flex;
 		flex-flow: row;
 		justify-content: flex-end;
+
+		.btn {
+			.img {
+				width: 1.3rem;
+			}
+		}
 	}
 }

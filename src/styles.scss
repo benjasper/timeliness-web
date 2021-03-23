@@ -29,7 +29,7 @@ input {
 	padding: 0;
 	display: block;
 	box-sizing: border-box;
-	font-family: 'Noto Sans', sans-serif;
+	font-family: 'noto-sans', sans-serif;
 }
 
 body {
@@ -84,6 +84,11 @@ a {
 	&:hover {
 		text-decoration: underline;
 	}
+
+	&:focus, &:focus-visible {
+		outline: none;
+		border: none;
+	}
 }
 
 input[type='text'],
@@ -109,6 +114,7 @@ input {
 button,
 a.btn,
 input[type='submit'] {
+	display: inline-block;
 	background: $color-primary;
 	border: none;
 	box-sizing: border-box;
@@ -120,9 +126,12 @@ input[type='submit'] {
 	transition: background-color 0.2s;
 	font-size: 1.6rem;
 	line-height: 1;
+	margin: auto 0;
 
 	span {
 		display: inline-block;
+		font-size: inherit;
+		vertical-align: middle;
 	}
 
 	.img {
@@ -144,11 +153,11 @@ input[type='submit'] {
 
 	&.large {
 		font-size: 1.8rem;
-		padding: 1.2rem 2.8rem;
+		padding: 1rem 2.6rem;
 		border: none;
 
 		.img {
-			width: 1.4rem;
+			width: 1.2rem;
 		}
 	}
 
@@ -347,7 +356,7 @@ progress {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: inline-block;
+	display: inline-flex;
     max-width: 100%;
 }
 

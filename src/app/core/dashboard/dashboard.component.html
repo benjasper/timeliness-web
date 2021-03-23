@@ -3,7 +3,8 @@
 		<div class="dashboard-header">
 			<h2 class="next-up-title">{{ getNextUpMessage() }}</h2>
 			<a class="btn large" [routerLink]="[{ outlets: { modal: ['task', 'new'] } }]">
-				<div class="img" [inlineSVG]="'/assets/icons/icon-plus.svg'"></div>New task
+				<div class="img" [inlineSVG]="'/assets/icons/icon-plus.svg'"></div>
+				<span>New task</span>
 			</a>
 		</div>
 		<img *ngIf="nextUp.length === 0" class="next-up-finished" src="/assets/icons/icon-done.svg" alt="All done" />
