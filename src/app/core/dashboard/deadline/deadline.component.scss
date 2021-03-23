@@ -52,9 +52,8 @@
 	}
 
 	.deadline-info {
+		display: block;
 		overflow: hidden;
-		display: flex;
-		flex-flow: column;
 		flex: 1;
 
 		.deadline-name {

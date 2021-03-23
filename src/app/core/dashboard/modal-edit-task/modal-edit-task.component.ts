@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
-import { Component, OnInit } from '@angular/core'
+import { Component, HostListener, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Duration, DurationUnit } from 'src/app/models/duration'
@@ -44,6 +44,44 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		})
 	}
 
+	@HostListener('document:keydown.escape', ['$event'])
+	handleEscape(event: KeyboardEvent): void {
+		this.closeModal()
+	}
+
+	@HostListener('document:keydown', ['$event'])
+	handleKeypresses(event: KeyboardEvent): void {
+		console.log(event)
+	}
+
+	@HostListener('document:keydown', ['$event'])
+	onKeyDown($event: KeyboardEvent): void {
+		// Detect platform
+		if (navigator.platform.match('Mac')) {
+			this.handleMacKeyEvents($event)
+		} else {
+			this.handleWindowsKeyEvents($event)
+		}
+	}
+
+	handleMacKeyEvents($event: KeyboardEvent): void {
+		// MetaKey documentation
+		// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/metaKey
+		if ($event.metaKey && $event.key === 's') {
+			// Action on Cmd + S
+			$event.preventDefault()
+			this.save()
+		}
+	}
+
+	handleWindowsKeyEvents($event: KeyboardEvent): void {
+		if ($event.ctrlKey && $event.key === 's') {
+			// Action on Ctrl + S
+			$event.preventDefault()
+			this.save()
+		}
+	}
+
 	ngOnInit(): void {
 		this.modalBackground = true
 
@@ -82,7 +120,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			description: this.task.description,
 			dueAt: this.task.dueAt.date.start.toDate().toISOString().slice(0, -1),
 			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
-			priority: this.task.priority
+			priority: this.task.priority,
 		})
 	}
 
@@ -104,6 +142,10 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	}
 
 	public save(): boolean {
+		if (!this.editTask.dirty) {
+			return false;
+		}
+
 		const updatingTask = new TaskModified()
 
 		updatingTask.name =
@@ -117,8 +159,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		updatingTask.priority =
 			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
 
-		updatingTask.workloadOverall =
-			this.editTask.get('workloadOverall')?.dirty || this.isNew ? 3.6e+12 : undefined
+		updatingTask.workloadOverall = this.editTask.get('workloadOverall')?.dirty || this.isNew ? 3.6e12 : undefined
 
 		if (this.isNew) {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
