@@ -114,8 +114,8 @@ input {
 button,
 a.btn,
 input[type='submit'] {
-	display: inline-block;
-	background: $color-primary;
+	display: inline-flex;
+	background-color: $color-primary;
 	border: none;
 	box-sizing: border-box;
 	border-radius: 0.5rem;
@@ -129,16 +129,16 @@ input[type='submit'] {
 	margin: auto 0;
 
 	span {
-		display: inline-block;
+		display: inline-flex;
 		font-size: inherit;
 		vertical-align: middle;
 	}
 
 	.img {
 		fill: $color-white;
-		display: inline-block;
+		display: inline-flex;
 		width: 1.4rem;
-		margin-right: 0.5rem;
+		margin: auto 0.5rem auto 0;
 	}
 
 	&.icon-only {
