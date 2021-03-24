@@ -44,9 +44,12 @@
 				>
 			</div>
 			<div class="info-segment">
-				<span>Progress</span>
+				<div class="labels">
+					<span>Progress</span>
+					<span>{{ getProgress(task) }}%</span>
+				</div>
 				<div class="progress-container">
-					<progress max="100" value="{{ getProgress(task) }}">{{ getProgress(task) }}%</progress>
+					<progress max="100" value="{{ getProgress(task) }}"></progress>
 				</div>
 			</div>
 		</div>

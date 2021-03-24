@@ -56,6 +56,12 @@
             }
 
             .info-segment {
+                .labels {
+                    display: flex;
+                    flex-flow: row;
+                    justify-content: space-between;
+                }
+                
                 &.red {
                     color: $color-red;
                 }

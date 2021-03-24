@@ -32,9 +32,12 @@
     </div>
     <div class="row" *ngIf="task">
         <div class="progress">
-            <label for="modal-progress">Progress</label>
+            <div class="labels">
+                <label for="modal-progress">Progress</label>
+                <label class="progress-value">{{getProgress(task)}}%</label>
+            </div>
             <div class="progress-container">
-                <progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)">{{getProgress(task)}}"%</progress>
+                <progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)"></progress>
             </div>
         </div>
     </div>

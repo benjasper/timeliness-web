@@ -105,6 +105,17 @@
 		.progress {
 			width: 100%;
 
+			.labels {
+				display: flex;
+				flex-flow: row;
+				justify-content: space-between;
+				
+				.progress-value {
+					padding-right: 0;
+					margin: 0;
+				}
+			}
+
 			.progress-container {
 				display: flex;
 				padding: 0.2rem 0.2rem;
