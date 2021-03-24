@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
@@ -12,10 +13,29 @@ export class AuthService {
 	constructor(private http: HttpClient) {}
 
 	private accessToken = ''
+	private refreshToken = ''
+	private decodedAccessToken?: JwtPayload = undefined 
 
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((response) => {
+			this.setAccessToken(response.accessToken)
+			this.setRefreshToken(response.refreshToken)
+		})
+
+		return observable
+	}
+
+	public refreshAccessToken() {
+		if (this.refreshToken === '') {
+			throwError(new Error("No refresh token"))
+		}
+
+		const observable = this.http
+			.post<{accessToken: string}>(`${environment.apiBaseUrl}/v1/auth/refresh`, JSON.stringify({refreshToken: this.refreshToken}))
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe((response) => {
@@ -25,20 +45,45 @@ export class AuthService {
 		return observable
 	}
 
+	public isAccessTokenExpired(): boolean {
+		if (this.accessToken === '') {
+			return true
+		}
+
+		if (!this.decodedAccessToken) {
+			this.decodedAccessToken = jwtDecode<JwtPayload>(this.accessToken)
+		}
+
+		if (!((this.decodedAccessToken?.exp ?? 0) > Math.floor(Date.now() / 1000))) {
+			this.accessToken = ''
+			return true
+		}
+
+		return false
+	}
+
 	private setAccessToken(accessToken: string): void {
 		this.accessToken = accessToken
+		this.decodedAccessToken = jwtDecode<JwtPayload>(this.accessToken)
 		localStorage.setItem('accessToken', accessToken)
 	}
 
+	private setRefreshToken(refreshToken: string): void {
+		this.refreshToken = refreshToken
+		localStorage.setItem('refreshToken', refreshToken)
+	}
+
 	public isLoggedIn(): boolean {
-		if (this.accessToken !== '') {
+		if (this.accessToken !== '' && this.refreshToken) {
 			return true
 		}
 
 		const accessToken = localStorage.getItem('accessToken') ?? ''
+		const refreshToken = localStorage.getItem('refreshToken') ?? ''
 
-		if (accessToken !== '') {
+		if (accessToken !== '' && refreshToken !== '') {
 			this.accessToken = accessToken
+			this.refreshToken = refreshToken
 			return true
 		}
 
@@ -49,6 +94,10 @@ export class AuthService {
 		return this.accessToken
 	}
 
+	public getRefreshToken(): string {
+		return this.refreshToken
+	}
+
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		return throwError('Sign in was not successful.')
 	}
@@ -56,5 +105,6 @@ export class AuthService {
 
 interface AuthResponse {
 	accessToken: string
+	refreshToken: string
 	result: User
 }

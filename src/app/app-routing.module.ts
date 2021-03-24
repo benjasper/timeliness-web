@@ -6,6 +6,7 @@ import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
 import { SigninComponent } from './signin/signin.component'
 import { AuthGuard } from './guards/auth.guard'
+import { NoAuthGuard } from './guards/no-auth.guard'
 
 const routes: Routes = [
 	{
@@ -28,14 +29,19 @@ const routes: Routes = [
 				path: 'settings',
 				component: SettingsComponent,
 			},
-			{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+			{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 		],
 	},
 	{
 		path: 'signin',
 		component: SigninComponent,
+		canActivate: [NoAuthGuard],
 	},
-	{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+	{
+		path: '**',
+		redirectTo: '/dashboard',
+	},
 ]
 
 @NgModule({
