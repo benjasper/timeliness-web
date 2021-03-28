@@ -57,6 +57,12 @@ export class DashboardComponent implements OnInit {
 			if (found !== -1) {
 				return `Currently working on ${notDoneTasks[found].name}`
 			}
+
+			if (notDoneTasks[0].workUnitsIndex === notDoneTasks[0].workUnitsCount - 1) {
+				return `Did you finish ${notDoneTasks[0].name}?`
+			}
+
+			return `Did you successfully work on ${notDoneTasks[0].name}?`
 		}
 
 		if (this.nextUp.length === 0) {
