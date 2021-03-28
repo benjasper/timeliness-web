@@ -30,16 +30,24 @@
 		z-index: 11;
 		position: absolute;
 		background-color: white;
-		display: flex;
-		flex-flow: column;
-		justify-content: space-between;
+		display: grid;
+		grid-auto-rows: 1fr;
+		row-gap: 2rem;
 
 		h1 {
-			margin-bottom: 4rem;
+			margin-bottom: 2rem;
+		}
+
+		.modal-content {
+			align-self: center;
 		}
 
 		.modal-footer {
-			margin-top: 6rem;
+			align-self: end;
+
+			a {
+				display: inline-block;
+			}
 		}
 
 		.form-row {
