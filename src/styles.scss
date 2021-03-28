@@ -114,6 +114,8 @@ input {
 button,
 a.btn,
 input[type='submit'] {
+	-webkit-appearance: none;
+	
 	display: inline-flex;
 	background-color: $color-primary;
 	border: none;
