@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
@@ -10,7 +11,7 @@ import { User } from '../models/user'
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private router: Router) {}
 
 	private accessToken = ''
 	private refreshToken = ''
@@ -29,6 +30,15 @@ export class AuthService {
 		return observable
 	}
 
+	public logout() {
+		this.accessToken = ''
+		this.refreshToken = ''
+		this.decodedAccessToken = undefined
+
+		localStorage.clear()
+		this.router.navigate(['signin'])
+	}
+
 	public refreshAccessToken() {
 		if (this.refreshToken === '') {
 			throwError(new Error("No refresh token"))
@@ -36,7 +46,10 @@ export class AuthService {
 
 		const observable = this.http
 			.post<{accessToken: string}>(`${environment.apiBaseUrl}/v1/auth/refresh`, JSON.stringify({refreshToken: this.refreshToken}))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err, caught) => {
+				this.logout()
+				return throwError('Refresh was not successful.')
+			}))
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
@@ -74,14 +87,14 @@ export class AuthService {
 	}
 
 	public isLoggedIn(): boolean {
-		if (this.accessToken !== '' && this.refreshToken) {
+		if (this.refreshToken !== '') {
 			return true
 		}
 
 		const accessToken = localStorage.getItem('accessToken') ?? ''
 		const refreshToken = localStorage.getItem('refreshToken') ?? ''
 
-		if (accessToken !== '' && refreshToken !== '') {
+		if (refreshToken !== '') {
 			this.accessToken = accessToken
 			this.refreshToken = refreshToken
 			return true
