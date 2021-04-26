@@ -29,6 +29,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	modalBackground = false
 	isNew = false
 
+	public today = new Date()
+
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
 		description: new FormControl(''),
@@ -95,6 +97,23 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.patchForm(task)
 			this.task = task
 			this.loaded = true
+		})
+
+		setInterval(() => {
+			this.today = new Date()
+		}, 30000)
+	}
+
+	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
+		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(result => {
+			this.taskService.refreshTasksUnwound()
+			this.taskService.refreshTasks()
+			
+			this.taskService.getTask(this.taskId).subscribe((task) => {
+				this.patchForm(task)
+				this.task = task
+				this.loaded = true
+			})
 		})
 	}
 

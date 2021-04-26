@@ -1,47 +1,154 @@
 <div class="modal-container" @modalBackground *ngIf="modalBackground"></div>
 <form [formGroup]="editTask" class="modal" @flyInOut *ngIf="loaded" (ngSubmit)="save()">
-    <div class="modal-header">
-        <input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" formControlName="name">
-        <div class="modal-controls">
-            <div class="dangerous-controls">
-                <button class="tiny-button no-background" [disabled]="!editTask.dirty || isNew" (click)="undo()"><div class="img" [inlineSVG]="'/assets/icons/icon-undo.svg'" alt="Undo"></div></button>
-                <button class="tiny-button" [disabled]="!task" (click)="delete()"><div class="img" [inlineSVG]="'/assets/icons/icon-trash.svg'" alt="Delete"></div></button>
-            </div>
-            <button class="tiny-button no-background" (click)="close()">
-                <div class="img" [inlineSVG]="'assets/icons/icon-exit.svg'"></div>
-            </button>
-        </div>
-    </div>
-    <label for="task-description">Description</label>
-    <textarea tabindex="2" type="textarea" id="task-description" class="task-description edit scroller" rows="5" placeholder="Describe your task here" formControlName="description"></textarea>
-    <div class="row">
-        <div class="due-date">
-            <label for="due-date">Due date</label>
-            <input id="due-date" type="datetime-local" class="edit" tabindex="3" formControlName="dueAt">
-        </div>
-        <div class="workload">
-            <label for="workload-hour">Workload</label>
-            <div class="workload-time">
-                <input id="workload-hour" type="text" min="0" max="24" class="edit" step="1" tabindex="4" formControlName="workload">
-            </div>
-        </div>
-        <div class="priority">
-            <label for="priority">Priority</label>
-            <input id="priority" class="slider" type="range" min="1" max="3" step="1" value="2" formControlName="priority" tabindex="5">
-        </div>
-    </div>
-    <div class="row" *ngIf="task">
-        <div class="progress">
-            <div class="labels">
-                <label for="modal-progress">Progress</label>
-                <label class="progress-value">{{getProgress(task)}}%</label>
-            </div>
-            <div class="progress-container">
-                <progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)"></progress>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn large save" [disabled]="!editTask.valid || !editTask.dirty"><div class="img" [inlineSVG]="'/assets/icons/icon-save.svg'"></div><span>Save</span></button>
-    </div>
+	<div class="modal-header">
+		<input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" formControlName="name" />
+		<div class="modal-controls">
+			<div class="dangerous-controls">
+				<button class="tiny-button no-background" [disabled]="!editTask.dirty || isNew" (click)="undo()">
+					<div class="img" [inlineSVG]="'/assets/icons/icon-undo.svg'" alt="Undo"></div>
+				</button>
+				<button class="tiny-button" [disabled]="!task" (click)="delete()">
+					<div class="img" [inlineSVG]="'/assets/icons/icon-trash.svg'" alt="Delete"></div>
+				</button>
+			</div>
+			<button class="tiny-button no-background" (click)="close()">
+				<div class="img" [inlineSVG]="'assets/icons/icon-exit.svg'"></div>
+			</button>
+		</div>
+	</div>
+	<label for="task-description">Description</label>
+	<textarea
+		tabindex="2"
+		type="textarea"
+		id="task-description"
+		class="task-description edit scroller"
+		rows="5"
+		placeholder="Describe your task here"
+		formControlName="description"
+	></textarea>
+	<div class="row">
+		<div class="due-date">
+			<label for="due-date">Due date</label>
+			<input id="due-date" type="datetime-local" class="edit" tabindex="3" formControlName="dueAt" />
+		</div>
+		<div class="workload">
+			<label for="workload-hour">Workload</label>
+			<div class="workload-time">
+				<input
+					id="workload-hour"
+					type="text"
+					min="0"
+					max="24"
+					class="edit"
+					step="1"
+					tabindex="4"
+					formControlName="workload"
+				/>
+			</div>
+		</div>
+		<div class="priority">
+			<label for="priority">Priority</label>
+			<input
+				id="priority"
+				class="slider"
+				type="range"
+				min="1"
+				max="3"
+				step="1"
+				value="2"
+				formControlName="priority"
+				tabindex="5"
+			/>
+		</div>
+	</div>
+	<div class="row" *ngIf="task">
+		<div class="progress">
+			<div class="labels">
+				<label for="modal-progress">Progress</label>
+				<label class="progress-value">{{ getProgress(task) }}%</label>
+			</div>
+			<div class="progress-container">
+				<progress id="modal-progress" class="large" max="100" value="0" [value]="getProgress(task)"></progress>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="task" class="workunits-section">
+		<label>Workunits</label>
+		<ul class="workunits-list">
+			<li *ngFor="let workUnit of task.workUnits; let i = index">
+				<div class="work-unit small" [class.done]="workUnit.isDone">
+					<div class="card-header">
+						<h3 class="truncate-text">Unit {{ i + 1 }}/{{ task.workUnits.length }}</h3>
+					</div>
+					<div class="card-sections">
+						<div class="card-section infos">
+							<div
+								class="info-segment"
+								[class.red]="workUnit.scheduledAt.date.end.toDate() <= today && !workUnit.isDone"
+							>
+								<div
+									*ngIf="
+										workUnit.scheduledAt.date.start.toDate().getDate() === today.getDate();
+										then todayThen;
+										else todayElse
+									"
+								></div>
+								<ng-template #todayThen>
+									<span
+										*ngIf="
+											workUnit.scheduledAt.date.start.toDate() < today &&
+											workUnit.scheduledAt.date.end.toDate() > today
+										"
+										>Now</span
+									>
+									<span
+										*ngIf="
+											workUnit.scheduledAt.date.start.toDate() > today ||
+											workUnit.scheduledAt.date.end.toDate() < today
+										"
+										>Today</span
+									>
+								</ng-template>
+								<ng-template #todayElse>
+									<span>{{ workUnit.scheduledAt.date.start.toDate().toLocaleDateString() }}</span>
+								</ng-template>
+								<span
+									>{{ workUnit.workload.toDuration(1).toString() }} •
+									{{
+										workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
+											hour: '2-digit',
+											minute: '2-digit'
+										})
+									}}
+									-
+									{{
+										workUnit.scheduledAt.date.end.toDate().toLocaleTimeString([], {
+											hour: '2-digit',
+											minute: '2-digit'
+										})
+									}}</span
+								>
+							</div>
+						</div>
+					</div>
+                    <div class="card-footer">
+                        <button class="btn with-border" *ngIf="!workUnit.isDone">
+                            <div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
+                            <span>Reschedule</span>
+                        </button>
+                        <button class="btn with-border" [class.icon-only]="workUnit.isDone" (click)="markWorkUnitAsDone(task, i, !workUnit.isDone)">
+                            <div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
+                            <span *ngIf="!workUnit.isDone">Done</span>
+                        </button>
+                    </div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn large save" [disabled]="!editTask.valid || !editTask.dirty">
+			<div class="img" [inlineSVG]="'/assets/icons/icon-save.svg'"></div>
+			<span>Save</span>
+		</button>
+	</div>
 </form>

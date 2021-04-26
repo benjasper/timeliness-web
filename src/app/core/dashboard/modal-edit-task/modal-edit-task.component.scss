@@ -126,6 +126,23 @@
 		}
 	}
 
+	.workunits-section {
+		margin-top: 2rem;
+	}
+
+	.workunits-list {
+		display: flex;
+		flex-flow: row;
+		padding: 0 1.5rem;
+
+		.card {
+			width: 25rem;
+			height: 15rem;
+			background-color: $color-light-grey;
+			border-radius: 1rem;
+		}
+	}
+
 	.modal-footer {
 		margin-top: 4rem;
 		display: flex;

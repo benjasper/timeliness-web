@@ -20,6 +20,7 @@
 				<button class="btn filter"><div class="img" [inlineSVG]="'assets/icons/icon-check.svg'"></div>Done</button>
 			</div>
 		</div>
+		<img *ngIf="groupedUpcoming.length === 0" class="next-up-finished" src="/assets/images/no-workunits.svg" alt="No upcoming" />
 		<ul class="upcoming-work-units-list scroller">
 			<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
 				<span class="date-spacer">

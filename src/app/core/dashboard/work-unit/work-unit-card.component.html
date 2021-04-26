@@ -59,7 +59,8 @@
 	</div>
 	<div class="card-footer">
 		<button class="btn with-border" *ngIf="!task.workUnit.isDone">
-			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>Reschedule
+			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
+			<span>Reschedule</span>
 		</button>
 		<button class="btn with-border" [class.icon-only]="task.workUnit.isDone" (click)="markWorkUnitAsDone(task, task.workUnitsIndex, !task.workUnit.isDone)">
 			<div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
