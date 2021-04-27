@@ -36,6 +36,10 @@ export class Duration {
 
 		return duration + 'h'
 	}
+
+	public toNanoseconds(): number {
+		return this.milliseconds * 1e+6
+	}
 }
 
 export enum DurationUnit {

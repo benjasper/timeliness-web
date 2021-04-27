@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { InlineSVGModule } from 'ng-inline-svg';
 import { SigninComponent } from './signin/signin.component'
+import { NgSelectModule } from '@ng-select/ng-select'
 
 @NgModule({
 	declarations: [
@@ -37,6 +38,7 @@ import { SigninComponent } from './signin/signin.component'
 		FormsModule,
 		ReactiveFormsModule,
 		InlineSVGModule.forRoot(),
+		NgSelectModule
 	],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],

@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~11.2.4",
     "@angular/platform-browser-dynamic": "~11.2.4",
     "@angular/router": "~11.2.4",
+    "@ng-select/ng-select": "^6.1.0",
     "jwt-decode": "^3.1.2",
     "ng-inline-svg": "^12.0.0",
     "rxjs": "~6.6.0",

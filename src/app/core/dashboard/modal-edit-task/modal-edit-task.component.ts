@@ -30,12 +30,13 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	isNew = false
 
 	public today = new Date()
+	public durations = [new Duration(3.6e6), new Duration(7.2e6)]
 
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
 		description: new FormControl(''),
 		dueAt: new FormControl(new Date().toISOString().slice(0, -1)),
-		workload: new FormControl(new Duration(3600000)),
+		workload: new FormControl(new Duration(3600000).milliseconds),
 		priority: new FormControl(1),
 	})
 
@@ -105,10 +106,10 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(result => {
+		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe((result) => {
 			this.taskService.refreshTasksUnwound()
 			this.taskService.refreshTasks()
-			
+
 			this.taskService.getTask(this.taskId).subscribe((task) => {
 				this.patchForm(task)
 				this.task = task
@@ -122,7 +123,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			name: task.name,
 			description: task.description,
 			dueAt: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
-			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
+			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 			priority: task.priority,
 		})
 	}
@@ -138,7 +139,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			name: this.task.name,
 			description: this.task.description,
 			dueAt: this.task.dueAt.date.start.toDate().toISOString().slice(0, -1),
-			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds),
+			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 			priority: this.task.priority,
 		})
 	}
@@ -162,7 +163,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	public save(): boolean {
 		if (!this.editTask.dirty) {
-			return false;
+			return false
 		}
 
 		const updatingTask = new TaskModified()
@@ -178,7 +179,10 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		updatingTask.priority =
 			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
 
-		updatingTask.workloadOverall = this.editTask.get('workloadOverall')?.dirty || this.isNew ? 3.6e12 : undefined
+		updatingTask.workloadOverall =
+			this.editTask.get('workload')?.dirty || this.isNew
+				? this.editTask.get('workload')?.value.toDuration().toNanoseconds()
+				: undefined
 
 		if (this.isNew) {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
