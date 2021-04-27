@@ -115,7 +115,8 @@ input {
 
 .ng-select {
 	.ng-input {
-		padding: 0 1.5rem !important;
+		top: auto !important;
+		padding: 0.8rem 1.5rem !important;
 	}
 
 	&.ng-select-opened .ng-select-container, &.ng-select-focused .ng-select-container {
@@ -125,6 +126,7 @@ input {
 	}
 
 	.ng-select-container {
+		height: auto !important;
 		width: 20rem !important;
 		border: none !important;
 		outline: none !important;
@@ -147,7 +149,7 @@ input {
 				color: $color-black;
 			}
 
-			padding: 0 1.5rem;
+			padding: 0.8rem 1.5rem;
 		}
 
 		.ng-arrow-wrapper,
