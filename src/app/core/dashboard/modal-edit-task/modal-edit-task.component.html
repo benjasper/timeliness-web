@@ -34,7 +34,9 @@
 		<div class="workload">
 			<label for="workload-hour">Workload</label>
 			<ng-select class="edit" id="workload-hour" formControlName="workload" tabindex="4">
-				<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">{{duration.toString()}}</ng-option>
+				<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">{{
+					duration.toString()
+				}}</ng-option>
 			</ng-select>
 		</div>
 		<div class="priority">
@@ -90,21 +92,21 @@
 											workUnit.scheduledAt.date.start.toDate() < today &&
 											workUnit.scheduledAt.date.end.toDate() > today
 										"
-										>Now</span
 									>
+										Now
+									</span>
 									<span
 										*ngIf="
 											workUnit.scheduledAt.date.start.toDate() > today ||
 											workUnit.scheduledAt.date.end.toDate() < today
 										"
-										>Today</span
-									>
+										>Today
+									</span>
 								</ng-template>
 								<ng-template #todayElse>
 									<span>{{ workUnit.scheduledAt.date.start.toDate().toLocaleDateString() }}</span>
 								</ng-template>
-								<span
-									>{{ workUnit.workload.toDuration(1).toString() }} •
+								<span>
 									{{
 										workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
 											hour: '2-digit',
@@ -117,21 +119,26 @@
 											hour: '2-digit',
 											minute: '2-digit'
 										})
-									}}</span
-								>
+									}}
+									• {{ workUnit.workload.toDuration(1).toString() }}
+								</span>
 							</div>
 						</div>
 					</div>
-                    <div class="card-footer">
-                        <button class="btn with-border" *ngIf="!workUnit.isDone" (click)="rescheduleWorkUnit(task, i)">
-                            <div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
-                            <span>Reschedule</span>
-                        </button>
-                        <button class="btn with-border" [class.icon-only]="workUnit.isDone" (click)="markWorkUnitAsDone(task, i, !workUnit.isDone)">
-                            <div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
-                            <span *ngIf="!workUnit.isDone">Done</span>
-                        </button>
-                    </div>
+					<div class="card-footer">
+						<button class="btn with-border" *ngIf="!workUnit.isDone" (click)="rescheduleWorkUnit(task, i)">
+							<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
+							<span>Reschedule</span>
+						</button>
+						<button
+							class="btn with-border"
+							[class.icon-only]="workUnit.isDone"
+							(click)="markWorkUnitAsDone(task, i, !workUnit.isDone)"
+						>
+							<div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
+							<span *ngIf="!workUnit.isDone">Done</span>
+						</button>
+					</div>
 				</div>
 			</li>
 		</ul>
