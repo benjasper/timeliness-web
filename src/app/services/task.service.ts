@@ -153,6 +153,7 @@ export class TaskService {
 
 		observable.subscribe((task) => {
 			// TODO save in task cache
+			this.refreshTasks()
 			this.refreshTasksUnwound()
 		})
 		return observable
