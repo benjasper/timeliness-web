@@ -135,11 +135,12 @@
 		flex-flow: row;
 		padding: 0 1.5rem;
 
-		.card {
-			width: 25rem;
-			height: 15rem;
-			background-color: $color-light-grey;
-			border-radius: 1rem;
+		.work-unit {
+			margin-right: 2rem;
+		}
+
+		:last-of-type(.work-unit) {
+			margin-right: 0;
 		}
 	}
 

@@ -107,14 +107,20 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe((result) => {
-			this.taskService.refreshTasksUnwound()
-			this.taskService.refreshTasks()
 
 			this.taskService.getTask(this.taskId).subscribe((task) => {
 				this.patchForm(task)
 				this.task = task
 				this.loaded = true
 			})
+		})
+	}
+
+	public rescheduleWorkUnit(task: Task, workUnitIndex: number): void {
+		this.taskService.rescheduleWorkUnit(task, workUnitIndex).subscribe((task) => {
+			this.patchForm(task)
+			this.task = task
+			this.loaded = true
 		})
 	}
 
@@ -154,9 +160,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	public delete(): void {
 		this.taskService.deleteTask(this.taskId).subscribe(() => {
-			this.taskService.refreshTasks()
-			this.taskService.refreshTasksUnwound()
-
 			this.closeModal()
 		})
 	}
@@ -186,8 +189,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 		if (this.isNew) {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
-				this.taskService.refreshTasks()
-				this.taskService.refreshTasksUnwound()
 				this.editTask.markAsPristine()
 				this.task = task
 				this.taskId = task.id
@@ -195,8 +196,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
-				this.taskService.refreshTasks()
-				this.taskService.refreshTasksUnwound()
 				this.editTask.markAsPristine()
 				this.task = task
 			})

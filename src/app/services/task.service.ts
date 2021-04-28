@@ -26,6 +26,30 @@ export class TaskService {
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 
+	private refreshTasks(): void {
+		this.tasks = []
+		this.tasksSubject.next()
+		this.getTasksByDeadlines()
+	}
+
+	private refreshTasksUnwound(): void {
+		this.tasksUnwound = []
+		this.tasksUnwoundSubject.next()
+		this.getTasksByWorkunits()
+	}
+
+	private publishTasks(): void {
+		this.tasks = []
+		this.tasksSubject.next()
+		this.tasksSubject.next(this.tasks)
+	}
+
+	private publishTasksUnwound(): void {
+		this.tasksUnwound = []
+		this.tasksUnwoundSubject.next()
+		this.tasksUnwoundSubject.next(this.tasksUnwound)
+	}
+
 	private async getTasksByDeadlines(): Promise<void> {
 		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
 		this.http
@@ -35,18 +59,6 @@ export class TaskService {
 				this.tasks.push(...response.results)
 				this.tasksSubject.next(response.results)
 			})
-	}
-
-	public refreshTasks(): void {
-		this.tasks = []
-		this.tasksSubject.next()
-		this.getTasksByDeadlines()
-	}
-
-	public refreshTasksUnwound(): void {
-		this.tasksUnwound = []
-		this.tasksUnwoundSubject.next()
-		this.getTasksByWorkunits()
 	}
 
 	private async getTasksByWorkunits(): Promise<void> {
@@ -62,7 +74,7 @@ export class TaskService {
 	}
 
 	public getTask(id: string): Observable<Task> {
-		const foundTask = this.tasks.find(x => x.id === id)
+		const foundTask = this.tasks.find((x) => x.id === id)
 		if (foundTask) {
 			return new Observable((sub) => {
 				sub.next(foundTask)
@@ -76,23 +88,48 @@ export class TaskService {
 	}
 
 	public patchTask(id: string, task: TaskModified): Observable<Task> {
-		return this.http
+		const observable = this.http
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
 			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((task) => {
+			this.refreshTasks()
+			this.refreshTasksUnwound()
+		})
+
+		return observable
 	}
 
 	public newTask(task: TaskModified): Observable<Task> {
-		return this.http
+		const observable = this.http
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
 			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((task) => {
+			this.refreshTasks()
+			this.refreshTasksUnwound()
+		})
+
+		return observable
 	}
 
 	public deleteTask(id: string): Observable<void> {
 		const observable = this.http
 			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${id}`)
 			.pipe(share(), catchError(this.handleError))
-		
-		observable.subscribe()
+
+		observable.subscribe(() => {
+			this.tasksUnwound = this.tasksUnwound.filter(element => {
+				return element.id !== id
+			});
+
+			this.tasks = this.tasks.filter(element => {
+				return element.id !== id
+			});
+
+			this.publishTasks()
+			this.publishTasksUnwound()
+		})
 		return observable
 	}
 
@@ -103,6 +140,20 @@ export class TaskService {
 
 		observable.subscribe((task) => {
 			// TODO save in task cache
+			this.refreshTasks()
+			this.refreshTasksUnwound()
+		})
+		return observable
+	}
+
+	public rescheduleWorkUnit(task: Task, index: number): Observable<Task> {
+		const observable = this.http
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((task) => {
+			// TODO save in task cache
+			this.refreshTasksUnwound()
 		})
 		return observable
 	}

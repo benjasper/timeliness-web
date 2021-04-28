@@ -31,9 +31,10 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(result => {
-			this.taskService.refreshTasksUnwound()
-			this.taskService.refreshTasks()
-		})
+		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe()
+	}
+
+	public rescheduleWorkUnit(task: TaskUnwound): void {
+		this.taskService.rescheduleWorkUnit(task, task.workUnitsIndex).subscribe()
 	}
 }
