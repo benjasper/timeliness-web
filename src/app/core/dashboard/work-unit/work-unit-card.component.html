@@ -58,7 +58,7 @@
 		</div>
 	</div>
 	<div class="card-footer">
-		<button class="btn with-border" *ngIf="!task.workUnit.isDone">
+		<button class="btn with-border" *ngIf="!task.workUnit.isDone" (click)="rescheduleWorkUnit(task)">
 			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
 			<span>Reschedule</span>
 		</button>
