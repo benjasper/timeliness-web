@@ -30,7 +30,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	isNew = false
 
 	public today = new Date()
-	public durations = [new Duration(3.6e6), new Duration(7.2e6)]
+	public durations: Duration[] = []
 
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
@@ -45,6 +45,13 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
 		})
+
+		for (let i = 1; i <= 10; i++) {
+			this.durations.push(new Duration(i * 3.6e+6))
+			this.durations.push(new Duration((i + 0.25) * 3.6e+6))
+			this.durations.push(new Duration((i + 0.5) * 3.6e+6))
+			this.durations.push(new Duration((i + 0.75) * 3.6e+6))
+		}
 	}
 
 	@HostListener('document:keydown.escape', ['$event'])

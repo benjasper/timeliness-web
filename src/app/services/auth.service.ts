@@ -69,6 +69,7 @@ export class AuthService {
 
 		if (!((this.decodedAccessToken?.exp ?? 0) > Math.floor(Date.now() / 1000))) {
 			this.accessToken = ''
+			this.decodedAccessToken = undefined
 			return true
 		}
 
