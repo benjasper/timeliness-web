@@ -1,8 +1,8 @@
 <div class="work-unit-upcoming" routerLinkActive="active">
 	<div class="calendar-date">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
-		<span class="month">{{
-			task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { month: 'short' })
+		<span class="weekday">{{
+			task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' })
 		}}</span>
 	</div>
 	<div class="contents">
