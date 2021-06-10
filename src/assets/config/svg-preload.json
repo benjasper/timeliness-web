@@ -24,5 +24,6 @@
 			"iconName": "icon-undo",
 			"iconPath": "/assets/icons/icon-undo.svg"
 		}
-	]
+	],
+	"customIcons": []
 }
