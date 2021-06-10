@@ -14,9 +14,10 @@ import { SettingsComponent } from './core/dashboard/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { InlineSVGModule } from 'ng-inline-svg';
 import { SigninComponent } from './signin/signin.component'
 import { NgSelectModule } from '@ng-select/ng-select'
+import { AngularSvgIconModule } from 'angular-svg-icon'
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 
 @NgModule({
 	declarations: [
@@ -37,7 +38,10 @@ import { NgSelectModule } from '@ng-select/ng-select'
 		BrowserAnimationsModule,
 		FormsModule,
 		ReactiveFormsModule,
-		InlineSVGModule.forRoot(),
+		AngularSvgIconModule.forRoot(),
+		AngularSvgIconPreloaderModule.forRoot({
+			configUrl: './assets/config/svg-preload.json',
+		}),
 		NgSelectModule
 	],
 	providers: [httpInterceptorProviders],

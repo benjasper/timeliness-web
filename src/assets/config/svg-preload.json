@@ -1,0 +1,28 @@
+{
+	"iconImageFiles": [
+		{
+			"iconName": "icon-check",
+			"iconPath": "/assets/icons/icon-check.svg"
+		},
+		{
+			"iconName": "icon-time",
+			"iconPath": "/assets/icons/icon-time.svg"
+		},
+		{
+			"iconName": "icon-save",
+			"iconPath": "/assets/icons/icon-save.svg"
+		},
+		{
+			"iconName": "icon-exit",
+			"iconPath": "/assets/icons/icon-time.svg"
+		},
+		{
+			"iconName": "icon-trash",
+			"iconPath": "/assets/icons/icon-trash.svg"
+		},
+		{
+			"iconName": "icon-undo",
+			"iconPath": "/assets/icons/icon-undo.svg"
+		}
+	]
+}

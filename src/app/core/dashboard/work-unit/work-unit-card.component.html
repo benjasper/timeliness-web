@@ -2,7 +2,7 @@
 	<div class="card-header">
 		<h3 class="truncate-text">{{ task.name }}</h3>
 		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
-			<div class="img" [inlineSVG]="'/assets/icons/icon-edit.svg'"></div>
+			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
 		</a>
 	</div>
 	<div class="card-sections">
@@ -71,7 +71,7 @@
 	</div>
 	<div class="card-footer">
 		<button class="btn with-border" *ngIf="!task.workUnit.isDone" (click)="rescheduleWorkUnit(task)">
-			<div class="img" [inlineSVG]="'/assets/icons/icon-time.svg'"></div>
+			<svg-icon class="img" src="/assets/icons/icon-time.svg"></svg-icon>
 			<span>Reschedule</span>
 		</button>
 		<button
@@ -79,7 +79,7 @@
 			[class.icon-only]="task.workUnit.isDone"
 			(click)="markWorkUnitAsDone(task, task.workUnitsIndex, !task.workUnit.isDone)"
 		>
-			<div class="img" [inlineSVG]="'/assets/icons/icon-check.svg'"></div>
+			<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
 			<span *ngIf="!task.workUnit.isDone">Done</span>
 		</button>
 	</div>
