@@ -159,6 +159,11 @@ input {
 	}
 
 	.ng-dropdown-panel {
+		&, .ng-dropdown-panel-items {
+			border-bottom-left-radius: 1.0rem;
+			border-bottom-right-radius: 1.0rem;
+		}
+
 		.ng-option-label {
 			font-size: 1.8rem;
 		}
@@ -167,6 +172,14 @@ input {
 			font-size: 1.8rem;
 			padding-left: calc(1.5rem - 1px);
 			padding-right: calc(1.5rem - 1px);
+
+			&:hover {
+				background-color: $color-light-grey;
+			}
+
+			&.ng-option-selected {
+				background-color: $color-light-grey !important;
+			}
 		}
 	}
 }
@@ -382,7 +395,7 @@ progress {
 	}
 }
 
-.scroller {
+.scroller, .scroll-host {
 	scrollbar-color: $color-tertiary $color-light-grey;
 	scrollbar-width: thin;
 
