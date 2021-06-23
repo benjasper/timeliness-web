@@ -12,10 +12,7 @@ import { WorkUnit } from '../models/workunit'
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient) {
-		this.getTasksByDeadlines()
-		this.getTasksByWorkunits()
-	}
+	constructor(private http: HttpClient) {}
 
 	public tasks: Task[] = []
 	public tasksUnwound: TaskUnwound[] = []
@@ -26,13 +23,13 @@ export class TaskService {
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 
-	private refreshTasks(): void {
+	public refreshTasks(): void {
 		this.tasks = []
 		this.tasksSubject.next()
 		this.getTasksByDeadlines()
 	}
 
-	private refreshTasksUnwound(): void {
+	public refreshTasksUnwound(): void {
 		this.tasksUnwound = []
 		this.tasksUnwoundSubject.next()
 		this.getTasksByWorkunits()
