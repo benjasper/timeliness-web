@@ -45,13 +45,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
 		})
-
-		for (let i = 1; i <= 10; i++) {
-			this.durations.push(new Duration(i * 3.6e+6))
-			this.durations.push(new Duration((i + 0.25) * 3.6e+6))
-			this.durations.push(new Duration((i + 0.5) * 3.6e+6))
-			this.durations.push(new Duration((i + 0.75) * 3.6e+6))
-		}
 	}
 
 	@HostListener('document:keydown.escape', ['$event'])
@@ -94,6 +87,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.modalBackground = true
+		this.generateDurations()
 
 		if (this.taskId === 'new') {
 			this.loaded = true
@@ -110,6 +104,37 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		setInterval(() => {
 			this.today = new Date()
 		}, 30000)
+	}
+
+	public generateDurations(task?: Task): void {
+		this.durations = []
+
+		const hoursMax = 10
+		const quarterHoursMax = 3
+
+		let doneWorkUnitsDuration = 0
+
+		if (task) {
+			const doneWorkUnits = task.workUnits.filter(x => x.isDone)
+
+			for (const doneWorkUnit of doneWorkUnits) {
+				doneWorkUnitsDuration += doneWorkUnit.workload
+			}
+
+			doneWorkUnitsDuration /= 1e+6
+		}
+
+		for (let i = 1; i <= hoursMax; i++) {
+			for (let j = 0; j <= quarterHoursMax; j += 0.25) {
+				const duration = (i + j) * 3.6e+6
+
+				if (doneWorkUnitsDuration !== 0 && duration < doneWorkUnitsDuration) {
+					continue
+				}
+
+				this.durations.push(new Duration(duration))
+			}
+		}
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
@@ -139,6 +164,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 			priority: task.priority,
 		})
+		this.generateDurations(task)
 	}
 
 	public close(): boolean {
@@ -147,7 +173,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		return false
 	}
 
-	public undo() {
+	public undo(): void {
 		this.editTask.reset({
 			name: this.task.name,
 			description: this.task.description,
@@ -155,6 +181,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 			priority: this.task.priority,
 		})
+
+		this.generateDurations(this.task)
 	}
 
 	private closeModal(): void {
