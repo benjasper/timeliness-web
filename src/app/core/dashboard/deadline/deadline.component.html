@@ -11,7 +11,7 @@
 	<div class="deadline-info">
 		<a class="deadline-name truncate-text text-underline" title="{{ task.name }}" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">{{ task.name }}</a>
 		<span class="subtitle">
-			{{ getProgress(task).toFixed() }}% done •
+			{{ getProgress(task) }}% done •
 			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
 			<ng-template #thenBlock>completed</ng-template>
 			<ng-template #elseBlock> {{ getRemainingWorkload(task) }} of work left </ng-template>

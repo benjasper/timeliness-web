@@ -17,7 +17,7 @@ export class TaskComponent {
 		return (task.workloadOverall - doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
 	}
 
-	public getProgress(task: Task): number {
+	public getProgress(task: Task): string {
 		let doneWorkload = 0
 
 		task.workUnits
@@ -28,6 +28,6 @@ export class TaskComponent {
 
 		const percentage = (doneWorkload / task.workloadOverall) * 100
 
-		return percentage
+		return percentage.toFixed(0)
 	}
 }
