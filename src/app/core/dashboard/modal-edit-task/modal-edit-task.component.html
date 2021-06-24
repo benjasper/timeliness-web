@@ -133,6 +133,7 @@
 						<button
 							class="btn with-border"
 							[class.icon-only]="workUnit.isDone"
+							title="{{workUnit.isDone ? 'Mark as un-done' : 'Mark as done'}}"
 							(click)="markWorkUnitAsDone(task, i, !workUnit.isDone)"
 						>
 							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
