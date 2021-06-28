@@ -7,6 +7,7 @@ import { Pagination } from '../models/paginations'
 import { Task, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
+import { element } from 'protractor'
 
 @Injectable({
 	providedIn: 'root',
@@ -36,13 +37,11 @@ export class TaskService {
 	}
 
 	private publishTasks(): void {
-		this.tasks = []
 		this.tasksSubject.next()
 		this.tasksSubject.next(this.tasks)
 	}
 
 	private publishTasksUnwound(): void {
-		this.tasksUnwound = []
 		this.tasksUnwoundSubject.next()
 		this.tasksUnwoundSubject.next(this.tasksUnwound)
 	}
