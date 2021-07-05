@@ -99,6 +99,8 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
+		const nextWeek = this.today.addDays(7).getWeekNumber(true)
+
 		tasks.forEach((task) => {
 			const now = new Date(this.today)
 			if (task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0)) {
@@ -106,13 +108,18 @@ export class DashboardComponent implements OnInit {
 				return
 			}
 
-			if (
-				this.groupedUpcoming[this.groupedUpcoming.length - 1] &&
-				this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
-					task.workUnit.scheduledAt.date.start.toDate().getMonth()
-			) {
-				this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
-				return
+			if (this.groupedUpcoming[this.groupedUpcoming.length - 1]) {
+				if (
+					(this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getWeekNumber(true) ===
+						task.workUnit.scheduledAt.date.start.toDate().getWeekNumber(true) &&
+						task.workUnit.scheduledAt.date.start.toDate().getWeekNumber(true) <= nextWeek) ||
+					(this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
+						task.workUnit.scheduledAt.date.start.toDate().getMonth() &&
+						this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getWeekNumber(true) > nextWeek)
+				) {
+					this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
+					return
+				}
 			}
 
 			const dateGroup = new TaskUnwoundDateGroup()

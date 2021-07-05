@@ -5,4 +5,9 @@ declare global {
     interface Number {
         toDuration: (unit?: DurationUnit) => Duration
     }
+
+    interface Date {
+        getWeekNumber: (includeYear?: boolean) => number
+        addDays: (days: number) => Date
+    }
 }

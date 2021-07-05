@@ -29,8 +29,15 @@
 		<img *ngIf="groupedUpcoming.length === 0" class="next-up-finished" src="/assets/images/no-workunits.svg" alt="No upcoming" />
 		<ul class="upcoming-work-units-list scroller">
 			<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
-				<span class="date-spacer">
+				<span *ngIf="today.getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true) &&
+					today.addDays(7).getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
 					{{ upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' }) }}
+				</span>
+				<span *ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
+					This week
+				</span>
+				<span *ngIf="today.addDays(7).getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
+					Next week
 				</span>
 				<ul>
 					<li *ngFor="let task of upcomingGroup.tasks">
