@@ -1,10 +1,10 @@
 <div class="work-unit-upcoming" routerLinkActive="active">
-	<div class="calendar-date">
+	<a class="calendar-date" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
 		<span class="weekday">{{
 			task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' })
 		}}</span>
-	</div>
+	</a>
 	<div class="contents">
 		<div class="work-unit-info">
 			<a class="task-title truncate-text text-underline" title="{{ task.name }}" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">{{ task.name }}</a>
