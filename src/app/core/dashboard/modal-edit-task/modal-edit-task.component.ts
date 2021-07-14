@@ -109,7 +109,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 	public generateDurations(task?: Task): void {
 		this.durations = []
 
-		const hoursMax = 8
+		const hoursMax = 16
 		const quarterHoursMax = 0.75
 
 		let doneWorkUnitsDuration = 0
