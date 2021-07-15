@@ -101,9 +101,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.loaded = true
 		})
 
-		setInterval(() => {
-			this.today = new Date()
-		}, 30000)
+		this.taskService.now.subscribe(date => {
+			this.today = date
+		})
 	}
 
 	public generateDurations(task?: Task): void {

@@ -13,16 +13,22 @@ import { element } from 'protractor'
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {
+		setInterval(() => {
+			this.nowSubject.next(new Date())
+		}, 30000)
+	}
 
 	public tasks: Task[] = []
 	public tasksUnwound: TaskUnwound[] = []
 
 	private tasksSubject = new Subject<Task[]>()
 	private tasksUnwoundSubject = new Subject<TaskUnwound[]>()
+	private nowSubject = new Subject<Date>()
 
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
+	public now = this.nowSubject.asObservable()
 
 	public refreshTasks(): void {
 		this.tasks = []
@@ -88,7 +94,7 @@ export class TaskService {
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe((task) => {
+		observable.subscribe(() => {
 			this.refreshTasks()
 			this.refreshTasksUnwound()
 		})
@@ -101,7 +107,7 @@ export class TaskService {
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe((task) => {
+		observable.subscribe(() => {
 			this.refreshTasks()
 			this.refreshTasksUnwound()
 		})
@@ -115,12 +121,12 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			this.tasksUnwound = this.tasksUnwound.filter(element => {
-				return element.id !== id
+			this.tasksUnwound = this.tasksUnwound.filter(newElement => {
+				return newElement.id !== id
 			});
 
-			this.tasks = this.tasks.filter(element => {
-				return element.id !== id
+			this.tasks = this.tasks.filter(newElement => {
+				return newElement.id !== id
 			});
 
 			this.publishTasks()
@@ -134,7 +140,7 @@ export class TaskService {
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe((task) => {
+		observable.subscribe(() => {
 			// TODO save in task cache
 			this.refreshTasks()
 			this.refreshTasksUnwound()
@@ -147,7 +153,7 @@ export class TaskService {
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe((task) => {
+		observable.subscribe(() => {
 			// TODO save in task cache
 			this.refreshTasks()
 			this.refreshTasksUnwound()

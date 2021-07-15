@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { DurationUnit } from 'src/app/models/duration'
 import { Task } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'

@@ -16,6 +16,10 @@ export class DashboardComponent implements OnInit {
 	public nextUp: TaskUnwound[] = []
 
 	ngOnInit(): void {
+		this.taskService.now.subscribe(date => {
+			this.today = date
+		})
+
 		if (this.taskService.tasks.length === 0) {
 			this.taskService.refreshTasks()
 		}

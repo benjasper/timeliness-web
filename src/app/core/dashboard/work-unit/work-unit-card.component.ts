@@ -25,9 +25,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	@Input() task!: TaskUnwound
 
 	ngOnInit(): void {
-		setInterval(() => {
-			this.today = new Date()
-		}, 30000)
+		this.taskService.now.subscribe(date => {
+			this.today = date
+		})
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {

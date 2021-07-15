@@ -30,7 +30,7 @@ export class AuthService {
 		return observable
 	}
 
-	public logout() {
+	public logout(): void {
 		this.accessToken = ''
 		this.refreshToken = ''
 		this.decodedAccessToken = undefined
@@ -39,9 +39,9 @@ export class AuthService {
 		this.router.navigate(['signin'])
 	}
 
-	public refreshAccessToken() {
+	public refreshAccessToken(): Observable<{accessToken: string}> {
 		if (this.refreshToken === '') {
-			throwError(new Error("No refresh token"))
+			throwError(new Error('No refresh token'))
 		}
 
 		const observable = this.http
