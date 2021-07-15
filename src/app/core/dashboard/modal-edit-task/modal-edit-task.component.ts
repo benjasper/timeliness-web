@@ -147,12 +147,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe((result) => {
-
-			this.taskService.getTask(this.taskId).subscribe((newTask) => {
-				this.patchForm(newTask)
-				this.task = newTask
-				this.loaded = true
-			})
+			this.patchForm(result)
+			this.task = result
+			this.loaded = true
 		})
 	}
 

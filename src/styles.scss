@@ -463,28 +463,6 @@ progress {
 		font-size: 1.6rem;
 	}
 
-	&.done {
-		background: $color-light-grey;
-		color: $color-black;
-	}
-
-	&.no-description {
-		width: 28rem;
-	}
-
-	&.small {
-		width: 30rem;
-		height: 20rem;
-
-		h3 {
-			font-size: 2rem;
-		}
-
-		.infos {
-			justify-content: center;
-		}
-	}
-
 	.card-header {
 		display: flex;
 		flex-flow: row;
@@ -551,6 +529,33 @@ progress {
 			}
 			
 			margin-left: 1rem;
+		}
+	}
+
+	&.no-description {
+		width: 28rem;
+	}
+
+	&.small {
+		width: 30rem;
+		height: 20rem;
+
+		h3 {
+			font-size: 2rem;
+		}
+
+		.infos {
+			justify-content: center;
+		}
+	}
+
+	&.done {
+		background: $color-light-grey;
+		color: $color-black;
+		border: 0.1rem solid $color-black;
+
+		h3 {
+			color: $color-black;
 		}
 	}
 }

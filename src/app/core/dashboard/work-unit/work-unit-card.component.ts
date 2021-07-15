@@ -21,13 +21,42 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		super()
 	}
 
+	progress = 0
+
 	public today = new Date()
 	@Input() task!: TaskUnwound
 
 	ngOnInit(): void {
+		this.progress = this.getWorkUnitProgress(new Date())
+
+		setInterval(() => {
+			this.progress = this.getWorkUnitProgress(new Date())
+		}, 1000)
+
 		this.taskService.now.subscribe(date => {
 			this.today = date
 		})
+	}
+
+	public getWorkUnitProgress(now: Date): number {
+		const start = this.task.workUnit.scheduledAt.date.start.toDate().getTime()
+		if (start > now.getTime()) {
+			return 0
+		}
+
+		const end = this.task.workUnit.scheduledAt.date.end.toDate().getTime()
+
+		const progressInMiliseconds = end - now.getTime()
+
+		if (end < now.getTime() || progressInMiliseconds <= 0) {
+			return 100
+		}
+
+		const duration = end - start;
+
+		const progress = 100 - ((progressInMiliseconds / duration) * 100)
+
+		return progress
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {

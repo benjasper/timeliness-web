@@ -57,11 +57,11 @@
 			</div>
 			<div class="info-segment">
 				<div class="labels">
-					<span>Progress</span>
-					<span>{{ getProgress(task) }}%</span>
+					<span>Unit progress</span>
+					<span>{{ progress.toFixed() }}%</span>
 				</div>
 				<div class="progress-container">
-					<progress max="100" value="{{ getProgress(task) }}"></progress>
+					<progress max="100" value="{{ progress }}"></progress>
 				</div>
 			</div>
 		</div>

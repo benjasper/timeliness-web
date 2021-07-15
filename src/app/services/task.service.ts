@@ -88,8 +88,7 @@ export class TaskService {
 						)
 					})
 
-					this.tasksSubject.next()
-					this.tasksSubject.next(this.tasks)
+					this.publishTasks()
 					return
 				}
 
@@ -129,8 +128,7 @@ export class TaskService {
 						)
 					})
 
-					this.tasksUnwoundSubject.next()
-					this.tasksUnwoundSubject.next(this.tasksUnwound)
+					this.publishTasksUnwound()
 					return
 				}
 
@@ -159,8 +157,8 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			this.refreshTasks()
-			this.refreshTasksUnwound()
+			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
+			this.getTasksByDeadlines(this.lastTaskSync)
 		})
 
 		return observable
@@ -172,8 +170,8 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			this.refreshTasks()
-			this.refreshTasksUnwound()
+			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
+			this.getTasksByDeadlines(this.lastTaskSync)
 		})
 
 		return observable
@@ -204,10 +202,15 @@ export class TaskService {
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe(() => {
+		observable.subscribe((task) => {
 			// TODO save in task cache
-			this.refreshTasks()
-			this.refreshTasksUnwound()
+			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
+			this.getTasksByDeadlines(this.lastTaskSync)
+
+			if (done === true) {
+				this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id && x.workUnitsIndex !== workUnitIndex)
+				this.publishTasksUnwound()
+			}
 		})
 		return observable
 	}
@@ -219,8 +222,8 @@ export class TaskService {
 
 		observable.subscribe(() => {
 			// TODO save in task cache
-			this.refreshTasks()
-			this.refreshTasksUnwound()
+			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
+			this.getTasksByDeadlines(this.lastTaskSync)
 		})
 		return observable
 	}
