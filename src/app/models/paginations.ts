@@ -1,5 +1,5 @@
 export interface Pagination {
-	pageCount: number
+	resultCount: number
 	pageIndex: number
 	pageSize: number
 	pages: number

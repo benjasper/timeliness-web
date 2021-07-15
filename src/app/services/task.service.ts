@@ -16,8 +16,13 @@ export class TaskService {
 	constructor(private http: HttpClient) {
 		setInterval(() => {
 			this.nowSubject.next(new Date())
+			this.getTasksByDeadlines(this.lastTaskSync)
+			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
 		}, 30000)
 	}
+
+	public lastTaskSync: Date = new Date(0)
+	public lastTaskUnwoundSync: Date = new Date(0)
 
 	public tasks: Task[] = []
 	public tasksUnwound: TaskUnwound[] = []
@@ -52,24 +57,83 @@ export class TaskService {
 		this.tasksUnwoundSubject.next(this.tasksUnwound)
 	}
 
-	private async getTasksByDeadlines(): Promise<void> {
+	private async getTasksByDeadlines(sync?: Date): Promise<void> {
 		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
+
+		if (sync) {
+			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+		}
+
+		this.lastTaskSync = new Date()
+
 		this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
+				if (sync) {
+					if (response.pagination.resultCount === 0) {
+						return
+					}
+
+					response.results.forEach((syncTask: Task) => {
+						this.tasks = this.tasks.filter((x) => x.id !== syncTask.id)
+					})
+
+					this.tasks.push(...response.results)
+
+					this.tasks.sort((a, b) => {
+						return (
+							a.dueAt.date.start.toDate().getTime() -
+							b.dueAt.date.end.toDate().getTime()
+						)
+					})
+
+					this.tasksSubject.next()
+					this.tasksSubject.next(this.tasks)
+					return
+				}
+
 				this.tasks.push(...response.results)
 				this.tasksSubject.next(response.results)
 			})
 	}
 
-	private async getTasksByWorkunits(): Promise<void> {
+	private async getTasksByWorkunits(sync?: Date): Promise<void> {
 		const filters = ['workUnit.isDone=false']
+
+		if (sync) {
+			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+		}
+
+		this.lastTaskUnwoundSync = new Date()
 
 		this.http
 			.get<TasksByWorkunitsGetResponse>(`${environment.apiBaseUrl}/v1/tasks/workunits?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
 			.subscribe((response) => {
+				if (sync) {
+					if (response.pagination.resultCount === 0) {
+						return
+					}
+
+					response.results.forEach((syncTask: TaskUnwound) => {
+						this.tasksUnwound = this.tasksUnwound.filter((x) => x.id !== syncTask.id)
+					})
+
+					this.tasksUnwound.push(...response.results)
+
+					this.tasksUnwound.sort((a, b) => {
+						return (
+							a.workUnits[a.workUnitsIndex].scheduledAt.date.start.toDate().getTime() -
+							b.workUnits[b.workUnitsIndex].scheduledAt.date.start.toDate().getTime()
+						)
+					})
+
+					this.tasksUnwoundSubject.next()
+					this.tasksUnwoundSubject.next(this.tasksUnwound)
+					return
+				}
+
 				this.tasksUnwound.push(...response.results)
 				this.tasksUnwoundSubject.next(this.tasksUnwound)
 			})
@@ -121,13 +185,13 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			this.tasksUnwound = this.tasksUnwound.filter(newElement => {
+			this.tasksUnwound = this.tasksUnwound.filter((newElement) => {
 				return newElement.id !== id
-			});
+			})
 
-			this.tasks = this.tasks.filter(newElement => {
+			this.tasks = this.tasks.filter((newElement) => {
 				return newElement.id !== id
-			});
+			})
 
 			this.publishTasks()
 			this.publishTasksUnwound()
