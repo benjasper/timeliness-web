@@ -233,6 +233,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 				this.task = task
 				this.taskId = task.id
 				this.isNew = false
+				this.router.navigate(['dashboard', { outlets: { modal: ['task', task.id] } }])
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
