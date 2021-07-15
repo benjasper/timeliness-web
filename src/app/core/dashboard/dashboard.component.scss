@@ -6,6 +6,14 @@
 
 	.dashboard-container {
 		padding: 4rem 4rem 0 4rem;
+
+		::ng-deep {
+			button {
+				&.prev {
+					left: -4.5rem;
+				}
+			}
+		}
 	}
 
 	.dashboard-header {

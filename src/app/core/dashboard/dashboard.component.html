@@ -8,11 +8,13 @@
 			</a>
 		</div>
 		<img *ngIf="nextUp.length === 0" class="next-up-finished" src="/assets/icons/icon-done.svg" alt="All done" />
-		<ul *ngIf="nextUp.length > 0" class="next-up scroller">
-			<li *ngFor="let task of nextUp">
-				<app-work-unit-card [task]="task"></app-work-unit-card>
-			</li>
-		</ul>
+		<app-slider class="next-up-slider" [showButtons]="nextUp.length > 2">
+			<ul *ngIf="nextUp.length > 0" class="next-up scroller">
+				<li *ngFor="let task of nextUp">
+					<app-work-unit-card [task]="task"></app-work-unit-card>
+				</li>
+			</ul>
+		</app-slider>
 		<div class="upcoming-work-units-header">
 			<h2 class="upcoming-work-units-title">Upcoming work units</h2>
 			<div class="filters">
@@ -26,17 +28,30 @@
 				</button>
 			</div>
 		</div>
-		<img *ngIf="groupedUpcoming.length === 0" class="next-up-finished" src="/assets/images/no-workunits.svg" alt="No upcoming" />
+		<img
+			*ngIf="groupedUpcoming.length === 0"
+			class="next-up-finished"
+			src="/assets/images/no-workunits.svg"
+			alt="No upcoming"
+		/>
 		<ul class="upcoming-work-units-list scroller">
 			<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
-				<span *ngIf="today.getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true) &&
-					today.addDays(7).getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
+				<span
+					*ngIf="
+						today.getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true) &&
+						today.addDays(7).getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true)
+					"
+					class="date-spacer"
+				>
 					{{ upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' }) }}
 				</span>
 				<span *ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
 					This week
 				</span>
-				<span *ngIf="today.addDays(7).getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
+				<span
+					*ngIf="today.addDays(7).getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
+					class="date-spacer"
+				>
 					Next week
 				</span>
 				<ul>

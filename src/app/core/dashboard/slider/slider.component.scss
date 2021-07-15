@@ -8,24 +8,23 @@
 		overflow: hidden;
 		position: relative;
 
-		li{
+		li {
 			position: relative;
 
 			&:last-child {
 				width: 100%;
-				margin-right: 50rem;
+				margin-right: 100% !important;
 			}
 		}
 	}
 }
 
 button {
-	font-size: 32px;
+	font-size: 3.2rem;
 	color: $color-primary;
 	background: transparent;
 	position: absolute;
-	top: 80px;
-	
+	top: calc(50% - 3.2rem);
 }
 
 button:hover {
