@@ -1,0 +1,45 @@
+@import '../../../../variables.scss';
+
+:host {
+	position: relative;
+	display: block;
+
+	::ng-deep ul {
+		overflow: hidden;
+		position: relative;
+
+		li{
+			position: relative;
+
+			&:last-child {
+				width: 100%;
+				margin-right: 50rem;
+			}
+		}
+	}
+}
+
+button {
+	font-size: 32px;
+	color: $color-primary;
+	background: transparent;
+	position: absolute;
+	top: 80px;
+	
+}
+
+button:hover {
+	color: $color-primary-light;
+}
+button.prev {
+	left: -3.5rem;
+}
+button.next {
+	right: -4.5rem;
+}
+button.prev::after {
+	content: '\276E';
+}
+button.next::after {
+	content: '\276F';
+}

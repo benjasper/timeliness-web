@@ -17,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SigninComponent } from './signin/signin.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { AngularSvgIconModule } from 'angular-svg-icon'
-import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
+import { SliderComponent } from './core/dashboard/slider/slider.component'
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,8 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 		WorkUnitUpcomingComponent,
 		ModalEditTaskComponent,
 		SettingsComponent,
-		SigninComponent
+		SigninComponent,
+  SliderComponent
 	],
 	imports: [
 		BrowserModule,

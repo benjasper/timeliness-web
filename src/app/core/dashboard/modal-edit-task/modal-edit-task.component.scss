@@ -16,12 +16,11 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	max-width: 85rem;
+	width: 95rem;
 
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
 	border-radius: 1rem;
 
-	padding: 4rem;
 	z-index: 11;
 	position: absolute;
 	background-color: white;
@@ -38,6 +37,10 @@
 	label {
 		font-size: 1.4rem;
 		padding: 0.8rem 1.5rem;
+	}
+
+	.wrapper {
+		padding: 4rem 4.8rem 4rem 4rem;
 	}
 
 	.task-description,
@@ -98,7 +101,7 @@
 			input {
 				margin-top: 1.5rem;
 				padding: 0.6rem 0;
-				width: 25rem;
+				width: 20rem;
 				background: linear-gradient(90deg, $color-green 0%, $color-yellow 50%, $color-red 100%);
 			}
 		}
@@ -128,14 +131,13 @@
 	}
 
 	.workunits-section {
-		margin-top: 2rem;
-		overflow: hidden;
+		padding: 0 4.8rem 0 4rem;
 	}
 
 	.workunits-list {
 		display: flex;
 		flex-flow: row;
-		padding: 0 1.5rem;
+		margin-left: 1.5rem;
 
 		.work-unit {
 			margin-right: 2rem;
@@ -151,6 +153,7 @@
 		display: flex;
 		flex-flow: row;
 		justify-content: flex-end;
+		padding: 2rem 4rem 4rem 4rem;
 
 		.btn {
 			.img {

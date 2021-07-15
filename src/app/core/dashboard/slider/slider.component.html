@@ -1,0 +1,3 @@
+<ng-content></ng-content>
+<button *ngIf="showButtons" class="prev" (click)="show($event, -1)"></button>
+<button *ngIf="showButtons" class="next" (click)="show($event, +1)"></button>
