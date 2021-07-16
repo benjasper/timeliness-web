@@ -43,7 +43,6 @@ export class SliderComponent implements OnInit {
 			this.previousActive = false
 		}
 
-		console.log(this.index)
 		if (this.index === this.listArray.length - 1) {
 			this.nextActive = false
 		}
