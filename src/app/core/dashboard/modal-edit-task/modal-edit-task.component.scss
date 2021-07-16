@@ -139,12 +139,8 @@
 		flex-flow: row;
 		margin-left: 1.5rem;
 
-		.work-unit {
+		li {
 			margin-right: 2rem;
-		}
-
-		:last-of-type(.work-unit) {
-			margin-right: 0;
 		}
 	}
 

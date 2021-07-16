@@ -26,9 +26,10 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	public today = new Date()
 	@Input() task!: Task
 	@Input() workUnitIndex!: number
+	@Input() small = false
 
 	ngOnInit(): void {
-		if (!this.task || this.workUnitIndex) {
+		if (this.task === undefined || this.workUnitIndex === undefined) {
 			throw Error('Missing required arguments!')
 		}
 

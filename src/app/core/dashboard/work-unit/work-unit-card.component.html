@@ -1,15 +1,17 @@
-<div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnits[workUnitIndex].isDone" @appear>
+<div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnits[workUnitIndex].isDone" [class.small]="small" @appear>
 	<div class="card-header">
-		<a [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+		<a *ngIf="!small" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 			<h3 class="truncate-text">{{ task.name }}</h3>
 		</a>
-		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+		<h3 *ngIf="small" class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>
+		<a *ngIf="!small" class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
 		</a>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">
-			<span>Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
+			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
+			<span *ngIf="small"></span>
 			<div
 				class="info-segment"
 				[class.red]="task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today && !task.workUnits[workUnitIndex].isDone"
@@ -69,7 +71,7 @@
 				</div>
 			</div>
 		</div>
-		<div *ngIf="task.description" class="card-section description scroller inverse">
+		<div *ngIf="task.description && !small" class="card-section description scroller inverse">
 			{{ task.description }}
 		</div>
 	</div>
@@ -81,6 +83,7 @@
 		<button
 			class="btn with-border"
 			[class.icon-only]="task.workUnits[workUnitIndex].isDone"
+			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as un-done' : 'Mark as done' }}"
 			(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)"
 		>
 			<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
