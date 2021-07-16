@@ -11,7 +11,7 @@ import { animate, style, transition, trigger } from '@angular/animations'
 	styleUrls: ['./work-unit-card.component.scss'],
 	animations: [
 		trigger('appear', [
-			transition(':enter', [style({ opacity: 0, transform: 'translateX(50%)'}), animate(200)]),
+			transition(':enter', [style({ opacity: 0}), animate(200)]),
 			transition(':leave', [animate(200, style({ opacity: 0 }))]),
 		]),
 	]
