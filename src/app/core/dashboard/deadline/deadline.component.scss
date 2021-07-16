@@ -3,11 +3,15 @@
 .deadline {
 	display: flex;
 	flex-direction: row;
-	margin: 1rem 0;
+	margin: 1rem 8rem;
 	padding: 1rem 0;
 	transition: all 0.2s ease-out;
 	border-radius: 1rem;
 	cursor: default;
+	background-color: $color-white;
+	padding-left: 2rem;
+	padding-right: 2rem;
+	box-shadow: $box-shadow;
 
 	&.done {
 		opacity: 0.5;
@@ -15,9 +19,7 @@
 
 	&:hover,
 	&.active {
-		background-color: $color-light-grey;
-		padding-left: 1rem;
-		padding-right: 1rem;
+		background-color: $color-white;
 
 		.actions {
 			opacity: 1;

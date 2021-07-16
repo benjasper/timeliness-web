@@ -2,10 +2,10 @@
 
 .dashboard-container {
 	display: grid;
-	grid-template-columns: 1fr minmax(45rem, 25%);
+	grid-template-columns: 1fr minmax(45rem, 30%);
 
 	.dashboard-container {
-		padding: 4rem 4rem 0 4rem;
+		padding-top: 6rem;
 
 		::ng-deep {
 			button {
@@ -28,6 +28,7 @@
 	}
 
 	.main {
+		padding: 6rem 8rem 0 8rem;
 		min-width: 0;
 		height: 100vh;
 		display: flex;
@@ -77,14 +78,17 @@
 
 	.deadlines {
 		height: 100vh;
-		border-left: 1px solid #b9b9b9;
 		display: flex;
 		flex-direction: column;
 		z-index: 2;
-		background-color: $color-white;
+		background-color: $color-very-light-grey;
+
+		.date-spacer {
+			margin: 0 8rem;
+		}
 
 		h2 {
-			margin-bottom: 2rem;
+			margin: 0 8rem 2rem 8rem;
 		}
 	}
 
