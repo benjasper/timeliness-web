@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit } from '@angular/core'
 
 @Component({
 	selector: 'app-slider',
@@ -20,6 +20,15 @@ export class SliderComponent implements OnInit {
 			throw Error('Slider needs the array in param listArray that builds the list')
 		}
 		this.checkButtonsActive()
+	}
+
+	@HostListener('mousewheel', ['$event']) onMousewheel(event: any): void {
+		if (event.wheelDelta > 0) {
+			this.show(event, -1)
+		}
+		if (event.wheelDelta < 0) {
+			this.show(event, 1)
+		}
 	}
 
 	public show(event: any, increase: number): void {
