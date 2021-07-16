@@ -75,7 +75,7 @@
 	</div>
 	<div *ngIf="task" class="workunits-section">
 		<label>Workunits</label>
-		<app-slider [listArray]="task.workUnits" [showButtons]="task.workUnits.length > 2">
+		<app-slider [listArray]="task.workUnits" [showButtons]="task.workUnits.length > 2" [startsAtIndex]="getStartsAtWorkUnit()">
 			<ul class="workunits-list">
 				<li *ngFor="let workUnit of task.workUnits; let i = index">
 					<div class="work-unit small" [class.done]="workUnit.isDone">

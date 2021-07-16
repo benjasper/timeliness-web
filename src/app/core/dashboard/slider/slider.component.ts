@@ -5,12 +5,13 @@ import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit } fro
 	templateUrl: './slider.component.html',
 	styleUrls: ['./slider.component.scss'],
 })
-export class SliderComponent implements OnInit {
+export class SliderComponent implements OnInit, AfterViewInit {
 	constructor(private elRef: ElementRef) {}
 
 	index = 0
 	@Input() showButtons = true
-	@Input() listArray?: any[]
+	@Input() listArray: any[] = []
+	@Input() startsAtIndex = 0
 
 	previousActive = false
 	nextActive = false
@@ -19,7 +20,13 @@ export class SliderComponent implements OnInit {
 		if (!this.listArray) {
 			throw Error('Slider needs the array in param listArray that builds the list')
 		}
+		
+		this.index = this.startsAtIndex
 		this.checkButtonsActive()
+	}
+
+	ngAfterViewInit(): void {
+		this.show(undefined, 0, true)
 	}
 
 	@HostListener('wheel', ['$event']) onMousewheel(event: WheelEvent): void {
@@ -40,13 +47,23 @@ export class SliderComponent implements OnInit {
 		}
 	}
 
-	public show(event: any, increase: number): void {
+	public show(event: any, increase: number, direct = false): void {
+		if (this.listArray?.length <= 1) {
+			return
+		}
+
 		const liEls: HTMLElement[] = this.elRef.nativeElement.querySelectorAll('li')
 		this.index = (this.index + liEls.length + increase) % liEls.length
 
 		this.checkButtonsActive()
 
-		liEls[this.index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' })
+		let behaviour: ScrollBehavior = 'smooth'
+
+		if (direct) {
+			behaviour = 'auto'
+		}
+
+		liEls[this.index].scrollIntoView({ behavior: behaviour, inline: 'start', block: 'start' })
 	}
 
 	private checkButtonsActive(): void {

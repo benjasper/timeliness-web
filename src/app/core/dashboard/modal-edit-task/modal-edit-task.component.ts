@@ -1,7 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
-import { Component, HostListener, OnInit } from '@angular/core'
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { Subject } from 'rxjs'
+import { switchMap, takeUntil } from 'rxjs/operators'
 import { Duration, DurationUnit } from 'src/app/models/duration'
 import { EventModified, Task, TaskModified } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
@@ -22,7 +24,7 @@ import { TaskComponent } from '../../task.component'
 		]),
 	],
 })
-export class ModalEditTaskComponent extends TaskComponent implements OnInit {
+export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
 	taskId!: string
 	task!: Task
 	loaded = false
@@ -31,6 +33,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 
 	public today = new Date()
 	public durations: Duration[] = []
+
+	private ngUnsubscribe = new Subject()
 
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
@@ -99,11 +103,40 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			this.patchForm(task)
 			this.task = task
 			this.loaded = true
+
+			this.taskService.tasksObservalble.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tasks) => {
+				if (!tasks) {
+					return
+				}
+
+				tasks.forEach((x) => {
+					if (x.id === this.task.id) {
+						this.patchForm(x)
+						this.task = x
+						this.loaded = true
+					}
+				})
+			})
 		})
 
-		this.taskService.now.subscribe(date => {
+		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
 			this.today = date
 		})
+	}
+
+	ngOnDestroy(): void {
+		this.ngUnsubscribe.next()
+		this.ngUnsubscribe.complete()
+	}
+
+	public getStartsAtWorkUnit(): number {
+		if (!this.task) {
+			return 0
+		} 
+
+		const index = this.task.workUnits.findIndex(x => !x.isDone)
+
+		return index === -1 ? 0 : index 
 	}
 
 	public generateDurations(task?: Task): void {
@@ -115,18 +148,18 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 		let doneWorkUnitsDuration = 0
 
 		if (task) {
-			const doneWorkUnits = task.workUnits.filter(x => x.isDone)
+			const doneWorkUnits = task.workUnits.filter((x) => x.isDone)
 
 			for (const doneWorkUnit of doneWorkUnits) {
 				doneWorkUnitsDuration += doneWorkUnit.workload
 			}
 
-			doneWorkUnitsDuration /= 1e+6
+			doneWorkUnitsDuration /= 1e6
 		}
 
 		for (let i = 0; i <= hoursMax; i++) {
-			if (i > 0 && (doneWorkUnitsDuration === 0 || i * 3.6e+6 >= doneWorkUnitsDuration)) {
-				this.durations.push(new Duration(i * 3.6e+6))
+			if (i > 0 && (doneWorkUnitsDuration === 0 || i * 3.6e6 >= doneWorkUnitsDuration)) {
+				this.durations.push(new Duration(i * 3.6e6))
 			}
 
 			if (i === hoursMax) {
@@ -134,7 +167,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit {
 			}
 
 			for (let j = 0.25; j <= quarterHoursMax; j += 0.25) {
-				const duration = (i + j) * 3.6e+6
+				const duration = (i + j) * 3.6e6
 
 				if (doneWorkUnitsDuration !== 0 && duration < doneWorkUnitsDuration) {
 					continue
