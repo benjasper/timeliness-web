@@ -24,9 +24,14 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	progress = 0
 
 	public today = new Date()
-	@Input() task!: TaskUnwound
+	@Input() task!: Task
+	@Input() workUnitIndex!: number
 
 	ngOnInit(): void {
+		if (!this.task || this.workUnitIndex) {
+			throw Error('Missing required arguments!')
+		}
+
 		this.progress = this.getWorkUnitProgress(new Date())
 
 		setInterval(() => {
@@ -39,12 +44,12 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	}
 
 	public getWorkUnitProgress(now: Date): number {
-		const start = this.task.workUnit.scheduledAt.date.start.toDate().getTime()
+		const start = this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime()
 		if (start > now.getTime()) {
 			return 0
 		}
 
-		const end = this.task.workUnit.scheduledAt.date.end.toDate().getTime()
+		const end = this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime()
 
 		const progressInMiliseconds = end - now.getTime()
 
@@ -63,7 +68,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe()
 	}
 
-	public rescheduleWorkUnit(task: TaskUnwound): void {
-		this.taskService.rescheduleWorkUnit(task, task.workUnitsIndex).subscribe()
+	public rescheduleWorkUnit(task: Task): void {
+		this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe()
 	}
 }
