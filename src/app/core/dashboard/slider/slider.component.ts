@@ -23,9 +23,18 @@ export class SliderComponent implements OnInit {
 	}
 
 	@HostListener('mousewheel', ['$event']) onMousewheel(event: any): void {
+		if (!this.listArray) {
+			throw Error('Slider needs the array in param listArray that builds the list')
+		}
+
+		if (this.listArray?.length <= 1) {
+			return
+		}
+
 		if (event.wheelDelta > 0) {
 			this.show(event, -1)
 		}
+
 		if (event.wheelDelta < 0) {
 			this.show(event, 1)
 		}
