@@ -20,7 +20,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 		if (!this.listArray) {
 			throw Error('Slider needs the array in param listArray that builds the list')
 		}
-		
+
 		this.index = this.startsAtIndex
 		this.checkButtonsActive()
 	}

@@ -82,10 +82,7 @@ export class TaskService {
 					this.tasks.push(...response.results)
 
 					this.tasks.sort((a, b) => {
-						return (
-							a.dueAt.date.start.toDate().getTime() -
-							b.dueAt.date.end.toDate().getTime()
-						)
+						return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.end.toDate().getTime()
 					})
 
 					this.publishTasks()
@@ -208,8 +205,8 @@ export class TaskService {
 			this.getTasksByDeadlines(this.lastTaskSync)
 
 			if (done === true) {
-				this.tasksUnwound = this.tasksUnwound.filter(x => {
-					return !(x.id === newTask.id && x.workUnitsIndex === workUnitIndex) 
+				this.tasksUnwound = this.tasksUnwound.filter((x) => {
+					return !(x.id === newTask.id && x.workUnitsIndex === workUnitIndex)
 				})
 				this.publishTasksUnwound()
 			}

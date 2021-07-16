@@ -15,7 +15,7 @@ export class AuthService {
 
 	private accessToken = ''
 	private refreshToken = ''
-	private decodedAccessToken?: JwtPayload = undefined 
+	private decodedAccessToken?: JwtPayload = undefined
 
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
@@ -39,17 +39,23 @@ export class AuthService {
 		this.router.navigate(['signin'])
 	}
 
-	public refreshAccessToken(): Observable<{accessToken: string}> {
+	public refreshAccessToken(): Observable<{ accessToken: string }> {
 		if (this.refreshToken === '') {
 			throwError(new Error('No refresh token'))
 		}
 
 		const observable = this.http
-			.post<{accessToken: string}>(`${environment.apiBaseUrl}/v1/auth/refresh`, JSON.stringify({refreshToken: this.refreshToken}))
-			.pipe(share(), catchError((err, caught) => {
-				this.logout()
-				return throwError('Refresh was not successful.')
-			}))
+			.post<{ accessToken: string }>(
+				`${environment.apiBaseUrl}/v1/auth/refresh`,
+				JSON.stringify({ refreshToken: this.refreshToken })
+			)
+			.pipe(
+				share(),
+				catchError((err, caught) => {
+					this.logout()
+					return throwError('Refresh was not successful.')
+				})
+			)
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
