@@ -202,13 +202,15 @@ export class TaskService {
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe((task) => {
+		observable.subscribe((newTask) => {
 			// TODO save in task cache
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
 			this.getTasksByDeadlines(this.lastTaskSync)
 
 			if (done === true) {
-				this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id && x.workUnitsIndex !== workUnitIndex)
+				this.tasksUnwound = this.tasksUnwound.filter(x => {
+					return !(x.id === newTask.id && x.workUnitsIndex === workUnitIndex) 
+				})
 				this.publishTasksUnwound()
 			}
 		})
