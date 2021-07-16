@@ -35,9 +35,9 @@
 			<div class="workload">
 				<label for="workload-hour">Workload</label>
 				<ng-select class="edit" id="workload-hour" formControlName="workload" tabindex="4">
-					<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">{{
-						duration.toString()
-					}}</ng-option>
+					<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">
+						{{ duration.toString() }}
+					</ng-option>
 				</ng-select>
 			</div>
 			<div class="priority">
@@ -113,7 +113,8 @@
 												workUnit.scheduledAt.date.start.toDate() > today ||
 												workUnit.scheduledAt.date.end.toDate() < today
 											"
-											>Today
+										>
+											Today
 										</span>
 									</ng-template>
 									<ng-template #todayElse>

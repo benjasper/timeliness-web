@@ -1,8 +1,8 @@
 <div class="work-unit" [class.no-description]="task.description === ''" [class.done]="task.workUnit.isDone" @appear>
 	<div class="card-header">
-		<a [routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
-			><h3 class="truncate-text">{{ task.name }}</h3></a
-		>
+		<a [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+			<h3 class="truncate-text">{{ task.name }}</h3>
+		</a>
 		<a class="btn tiny-button with-border" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
 		</a>
@@ -27,15 +27,17 @@
 							task.workUnit.scheduledAt.date.start.toDate() < today &&
 							task.workUnit.scheduledAt.date.end.toDate() > today
 						"
-						>Now</span
 					>
+						Now
+					</span>
 					<span
 						*ngIf="
 							task.workUnit.scheduledAt.date.start.toDate() > today ||
 							task.workUnit.scheduledAt.date.end.toDate() < today
 						"
-						>Today</span
 					>
+						Today
+					</span>
 				</ng-template>
 				<ng-template #todayElse>
 					<span>{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleDateString() }}</span>

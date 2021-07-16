@@ -1,15 +1,21 @@
 <div class="work-unit-upcoming" routerLinkActive="active">
 	<a class="calendar-date" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
-		<span class="weekday">{{
-			task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' })
-		}}</span>
+		<span class="weekday">
+			{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' }) }}
+		</span>
 	</a>
 	<div class="contents">
 		<div class="work-unit-info">
-			<a class="task-title truncate-text text-underline" title="{{ task.name }}" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">{{ task.name }}</a>
-			<span class="subtitle"
-				>{{
+			<a
+				class="task-title truncate-text text-underline"
+				title="{{ task.name }}"
+				[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+			>
+				{{ task.name }}
+			</a>
+			<span class="subtitle">
+				{{
 					task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
 						hour: '2-digit',
 						minute: '2-digit'
@@ -24,8 +30,8 @@
 				}}
 				• {{ task.workUnit.workload.toDuration(1).toString() }} • Unit {{ task.workUnitsIndex + 1 }}/{{
 					task.workUnitsCount
-				}}</span
-			>
+				}}
+			</span>
 		</div>
 		<div class="actions">
 			<a class="btn tiny-button">

@@ -1,11 +1,13 @@
 <div class="deadline" [class.done]="task.isDone" routerLinkActive="active">
 	<div class="time">
-		<span>{{
-			task.dueAt.date.start.toDate().toLocaleTimeString([], {
-				hour: '2-digit',
-				minute: '2-digit'
-			})
-		}}</span>
+		<span>
+			{{
+				task.dueAt.date.start.toDate().toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit'
+				})
+			}}
+		</span>
 	</div>
 	<div class="deadline-spacer" [class]="getPriorityColor()"></div>
 	<div class="deadline-info">
@@ -13,13 +15,14 @@
 			class="deadline-name truncate-text text-underline"
 			title="{{ task.name }}"
 			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
-			>{{ task.name }}</a
 		>
+			{{ task.name }}
+		</a>
 		<span class="subtitle">
 			{{ getProgress(task) }}% done •
 			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
 			<ng-template #thenBlock>completed</ng-template>
-			<ng-template #elseBlock> {{ getRemainingWorkload(task) }} of work left </ng-template>
+			<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
 		</span>
 	</div>
 	<div class="actions">
