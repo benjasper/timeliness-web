@@ -25,6 +25,11 @@ button {
 	background: transparent;
 	position: absolute;
 	top: calc(50% - 3.2rem);
+	visibility: hidden;
+
+	&.active {
+		visibility: visible;
+	}
 }
 
 button:hover {
