@@ -22,7 +22,7 @@ export class SliderComponent implements OnInit {
 		this.checkButtonsActive()
 	}
 
-	@HostListener('mousewheel', ['$event']) onMousewheel(event: any): void {
+	@HostListener('wheel', ['$event']) onMousewheel(event: WheelEvent): void {
 		if (!this.listArray) {
 			throw Error('Slider needs the array in param listArray that builds the list')
 		}
@@ -31,11 +31,11 @@ export class SliderComponent implements OnInit {
 			return
 		}
 
-		if (event.wheelDelta > 0) {
+		if (event.deltaY < 0) {
 			this.show(event, -1)
 		}
 
-		if (event.wheelDelta < 0) {
+		if (event.deltaY > 0) {
 			this.show(event, 1)
 		}
 	}
