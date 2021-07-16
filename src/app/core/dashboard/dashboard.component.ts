@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
 	public nextUp: TaskUnwound[] = []
 
 	ngOnInit(): void {
-		this.taskService.now.subscribe(date => {
+		this.taskService.now.subscribe((date) => {
 			this.today = date
 		})
 
@@ -75,10 +75,12 @@ export class DashboardComponent implements OnInit {
 			}
 
 			if (notDoneTasks[0].workUnit.scheduledAt.date.start.toDate() > this.today) {
-				return `Next up: ${notDoneTasks[0].name} at ${notDoneTasks[0].workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
-					hour: '2-digit',
-					minute: '2-digit'
-				})}`
+				return `Next up: ${notDoneTasks[0].name} at ${notDoneTasks[0].workUnit.scheduledAt.date.start
+					.toDate()
+					.toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit',
+					})}`
 			}
 
 			return `Did you successfully work on ${notDoneTasks[0].name}?`

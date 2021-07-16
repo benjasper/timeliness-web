@@ -1,91 +1,92 @@
 @import '../../../../variables.scss';
 .work-unit-upcoming {
-    display: flex;
-    flex-flow: row;
-    margin: 1rem 0;
-    padding-right: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    transition: all 0.2s ease-in-out;
-    border-radius: 1rem;
-    cursor: default;
+	display: flex;
+	flex-flow: row;
+	margin: 1rem 0;
+	padding-right: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	transition: all 0.2s ease-in-out;
+	border-radius: 1rem;
+	cursor: default;
 
-    &:hover, &.active {
-        padding: 1rem;
-        margin-left: 0.1rem;
-        margin-right: 1rem;
-        background-color: $color-light-grey;
+	&:hover,
+	&.active {
+		padding: 1rem;
+		margin-left: 0.1rem;
+		margin-right: 1rem;
+		background-color: $color-light-grey;
 
-        .contents .actions {
-            opacity: 1;
-        }
+		.contents .actions {
+			opacity: 1;
+		}
 
-        .calendar-date {
-            background-color: $color-primary;
-            color: $color-white;
-        }
-    }
+		.calendar-date {
+			background-color: $color-primary;
+			color: $color-white;
+		}
+	}
 
-    .calendar-date {
-        display: flex;
-        justify-content: center;
-        flex-flow: column;
-        user-select: none;
-        margin-right: 2rem;
-        text-decoration: none;
+	.calendar-date {
+		display: flex;
+		justify-content: center;
+		flex-flow: column;
+		user-select: none;
+		margin-right: 2rem;
+		text-decoration: none;
 
-        color: $color-primary;
-        border: 0.1rem solid $color-primary;
-        border-radius: 1rem;
-        height: 6.2rem;
-        width: 6.2rem;
-        text-align: center;
-        transition: all 0.2s ease-in;
+		color: $color-primary;
+		border: 0.1rem solid $color-primary;
+		border-radius: 1rem;
+		height: 6.2rem;
+		width: 6.2rem;
+		text-align: center;
+		transition: all 0.2s ease-in;
 
-        .day {
-            font-size: 2.2rem;
-            line-height: 1;
-        }
+		.day {
+			font-size: 2.2rem;
+			line-height: 1;
+		}
 
-        .weekday {
-            font-size: 1.4rem;
-        }
-    }
+		.weekday {
+			font-size: 1.4rem;
+		}
+	}
 
-    .contents {
-        flex: 1;
-        margin: auto 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        overflow: hidden;
+	.contents {
+		flex: 1;
+		margin: auto 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		overflow: hidden;
 
-        .work-unit-info {
-            margin: auto 0;
-            overflow: hidden;
-            flex: 1;
+		.work-unit-info {
+			margin: auto 0;
+			overflow: hidden;
+			flex: 1;
 
-            .task-title {
-                font-size: 2rem;
-                font-weight: 500;
-                margin-bottom: -0.1rem;
-            }
+			.task-title {
+				font-size: 2rem;
+				font-weight: 500;
+				margin-bottom: -0.1rem;
+			}
 
-            .subtitle {
-                margin-top: -0.1rem;
-            }
-        }
+			.subtitle {
+				margin-top: -0.1rem;
+			}
+		}
 
-        .actions {
-            display: flex;
-            flex-direction: row;
-            opacity: 0;
-            transition: all 0.2s ease-in;
-            margin: auto 0;
+		.actions {
+			display: flex;
+			flex-direction: row;
+			opacity: 0;
+			transition: all 0.2s ease-in;
+			margin: auto 0;
 
-            .tiny-button {
-                margin-left: 1rem;
-            }
-        }
-    }
+			.tiny-button {
+				margin-left: 1rem;
+			}
+		}
+	}
 }

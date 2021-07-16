@@ -9,7 +9,12 @@
 	</div>
 	<div class="deadline-spacer" [class]="getPriorityColor()"></div>
 	<div class="deadline-info">
-		<a class="deadline-name truncate-text text-underline" title="{{ task.name }}" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">{{ task.name }}</a>
+		<a
+			class="deadline-name truncate-text text-underline"
+			title="{{ task.name }}"
+			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+			>{{ task.name }}</a
+		>
 		<span class="subtitle">
 			{{ getProgress(task) }}% done •
 			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>

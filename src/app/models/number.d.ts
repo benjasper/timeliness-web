@@ -1,13 +1,13 @@
-import { Duration, DurationUnit } from "./duration";
+import { Duration, DurationUnit } from './duration'
 
-export { }
+export {}
 declare global {
-    interface Number {
-        toDuration: (unit?: DurationUnit) => Duration
-    }
+	interface Number {
+		toDuration: (unit?: DurationUnit) => Duration
+	}
 
-    interface Date {
-        getWeekNumber: (includeYear?: boolean) => number
-        addDays: (days: number) => Date
-    }
+	interface Date {
+		getWeekNumber: (includeYear?: boolean) => number
+		addDays: (days: number) => Date
+	}
 }

@@ -1,44 +1,44 @@
 @import '../../variables.scss';
 
 .core-container {
-    display: grid;
-    grid-template-columns: minmax(250px, 15%) 1fr;
+	display: grid;
+	grid-template-columns: minmax(250px, 15%) 1fr;
 
-    nav.sidebar {
-        height: 100vh;
-        text-align: center;
+	nav.sidebar {
+		height: 100vh;
+		text-align: center;
 
-        h1 {
-            padding-top: 2rem;
-        }
+		h1 {
+			padding-top: 2rem;
+		}
 
-        ul {
-            margin-top: 4rem;
+		ul {
+			margin-top: 4rem;
 
-            li a {
-                font-size: 1.8rem;
-                padding: 1rem 2rem;
-                margin: 1rem 10%;
-                border-radius: 0.5rem;
-                text-align: start;
-                display: flex;
-                transition: background-color 0.2s ease-out;
+			li a {
+				font-size: 1.8rem;
+				padding: 1rem 2rem;
+				margin: 1rem 10%;
+				border-radius: 0.5rem;
+				text-align: start;
+				display: flex;
+				transition: background-color 0.2s ease-out;
 
-                .img {
-                    display: inline-block;
-                    width: 1.8rem;
-                    margin-right: 0.5rem;
-                    margin: auto 0.5rem auto 0;
-                }
+				.img {
+					display: inline-block;
+					width: 1.8rem;
+					margin-right: 0.5rem;
+					margin: auto 0.5rem auto 0;
+				}
 
-                &.active {
-                    &:hover {
-                        cursor: default;
-                        text-decoration: none;
-                    }
-                    background-color: $color-light-grey;
-                }
-            }
-        }
-    }
+				&.active {
+					&:hover {
+						cursor: default;
+						text-decoration: none;
+					}
+					background-color: $color-light-grey;
+				}
+			}
+		}
+	}
 }

@@ -1,24 +1,38 @@
 <div class="signin-container">
-	<img class="login-background" src="/assets/images/sign-in-background.png" loading="eager" alt="Timeliness login background" draggable="false">
+	<img
+		class="login-background"
+		src="/assets/images/sign-in-background.png"
+		loading="eager"
+		alt="Timeliness login background"
+		draggable="false"
+	/>
 	<div class="signin-modal">
 		<div class="modal-header">
 			<h1>Timeliness</h1>
 
-			<h2>Sign in<br>to your account</h2>
+			<h2>Sign in<br />to your account</h2>
 		</div>
-		
+
 		<form class="modal-content" [formGroup]="signinForm">
 			<div class="form-row">
 				<label for="signup-email">E-Mail</label>
-				<input type="text" id="signup-email" formControlName="email" placeholder="Your e-mail">
+				<input type="text" id="signup-email" formControlName="email" placeholder="Your e-mail" />
 			</div>
 			<div class="form-row">
 				<label for="signup-password">Password</label>
-				<input type="password" id="signup-password" formControlName="password" placeholder="Your password">
+				<input type="password" id="signup-password" formControlName="password" placeholder="Your password" />
 			</div>
 
 			<div class="form-row">
-				<input type="submit" class="btn large" [class.invalid]="invalidCredentials" [class.success]="success" value="Sign in" [disabled]="!signinForm.valid" (click)="submit()">
+				<input
+					type="submit"
+					class="btn large"
+					[class.invalid]="invalidCredentials"
+					[class.success]="success"
+					value="Sign in"
+					[disabled]="!signinForm.valid"
+					(click)="submit()"
+				/>
 			</div>
 		</form>
 		<div class="modal-footer">

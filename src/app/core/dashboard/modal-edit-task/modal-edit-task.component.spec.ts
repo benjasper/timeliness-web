@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ModalEditTaskComponent } from './modal-edit-task.component';
+import { ModalEditTaskComponent } from './modal-edit-task.component'
 
 describe('ModalEditTaskComponent', () => {
-  let component: ModalEditTaskComponent;
-  let fixture: ComponentFixture<ModalEditTaskComponent>;
+	let component: ModalEditTaskComponent
+	let fixture: ComponentFixture<ModalEditTaskComponent>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ModalEditTaskComponent ]
-    })
-    .compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ModalEditTaskComponent],
+		}).compileComponents()
+	})
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ModalEditTaskComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ModalEditTaskComponent)
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	})
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+	it('should create', () => {
+		expect(component).toBeTruthy()
+	})
+})

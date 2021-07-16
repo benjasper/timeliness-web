@@ -1,8 +1,7 @@
-import { Duration, DurationUnit } from "./duration";
+import { Duration, DurationUnit } from './duration'
 
 declare global {
-    interface String {
-        toDate: () => Date
-    }
+	interface String {
+		toDate: () => Date
+	}
 }
-

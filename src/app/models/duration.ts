@@ -38,7 +38,7 @@ export class Duration {
 	}
 
 	public toNanoseconds(): number {
-		return this.milliseconds * 1e+6
+		return this.milliseconds * 1e6
 	}
 }
 

@@ -22,19 +22,19 @@ export interface TaskUnwound extends Task {
 }
 
 export class TaskModified {
-	name ?: string 
-	description ?: string
-	tags ?: string[] 
-	priority ?: string
-	workloadOverall ?: number
-	dueAt ?: EventModified
+	name?: string
+	description?: string
+	tags?: string[]
+	priority?: string
+	workloadOverall?: number
+	dueAt?: EventModified
 }
 
 export class EventModified {
 	date: {
 		start: string
 	} = {
-		start: ''
+		start: '',
 	}
 
 	constructor(date: string) {

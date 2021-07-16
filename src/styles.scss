@@ -119,7 +119,8 @@ input {
 		padding: 0.8rem 1.5rem !important;
 	}
 
-	&.ng-select-opened .ng-select-container, &.ng-select-focused .ng-select-container {
+	&.ng-select-opened .ng-select-container,
+	&.ng-select-focused .ng-select-container {
 		box-shadow: none !important;
 		background-color: $color-light-grey;
 		background: $color-light-grey !important;
@@ -133,7 +134,8 @@ input {
 		box-shadow: none !important;
 		transition: background-color 0.2s ease-in-out;
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			box-shadow: none !important;
 			background-color: $color-light-grey;
 			background: $color-light-grey !important;
@@ -159,9 +161,10 @@ input {
 	}
 
 	.ng-dropdown-panel {
-		&, .ng-dropdown-panel-items {
-			border-bottom-left-radius: 1.0rem;
-			border-bottom-right-radius: 1.0rem;
+		&,
+		.ng-dropdown-panel-items {
+			border-bottom-left-radius: 1rem;
+			border-bottom-right-radius: 1rem;
 		}
 
 		.ng-option-label {
@@ -395,7 +398,8 @@ progress {
 	}
 }
 
-.scroller, .scroll-host {
+.scroller,
+.scroll-host {
 	scrollbar-color: $color-tertiary $color-light-grey;
 	scrollbar-width: thin;
 
@@ -527,7 +531,7 @@ progress {
 				padding: 1.2rem;
 				border-radius: 2.5rem;
 			}
-			
+
 			margin-left: 1rem;
 		}
 	}

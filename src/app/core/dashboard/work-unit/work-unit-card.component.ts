@@ -11,10 +11,10 @@ import { animate, style, transition, trigger } from '@angular/animations'
 	styleUrls: ['./work-unit-card.component.scss'],
 	animations: [
 		trigger('appear', [
-			transition(':enter', [style({ opacity: 0}), animate(200)]),
+			transition(':enter', [style({ opacity: 0 }), animate(200)]),
 			transition(':leave', [animate(200, style({ opacity: 0 }))]),
 		]),
-	]
+	],
 })
 export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	constructor(private taskService: TaskService) {
@@ -33,7 +33,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			this.progress = this.getWorkUnitProgress(new Date())
 		}, 1000)
 
-		this.taskService.now.subscribe(date => {
+		this.taskService.now.subscribe((date) => {
 			this.today = date
 		})
 	}
@@ -52,9 +52,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			return 100
 		}
 
-		const duration = end - start;
+		const duration = end - start
 
-		const progress = 100 - ((progressInMiliseconds / duration) * 100)
+		const progress = 100 - (progressInMiliseconds / duration) * 100
 
 		return progress
 	}

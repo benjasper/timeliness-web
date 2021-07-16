@@ -132,11 +132,11 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	public getStartsAtWorkUnit(): number {
 		if (!this.task) {
 			return 0
-		} 
+		}
 
-		const index = this.task.workUnits.findIndex(x => !x.isDone)
+		const index = this.task.workUnits.findIndex((x) => !x.isDone)
 
-		return index === -1 ? 0 : index 
+		return index === -1 ? 0 : index
 	}
 
 	public generateDurations(task?: Task): void {
