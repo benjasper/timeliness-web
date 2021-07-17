@@ -271,7 +271,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
 				this.editTask.markAsPristine()
-				this.task = task
 			})
 		}
 
