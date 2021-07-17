@@ -2,20 +2,17 @@
 .work-unit-upcoming {
 	display: flex;
 	flex-flow: row;
-	margin: 1rem 0;
+	margin-top: 1rem;
 	padding-right: 1rem;
 	padding-top: 1rem;
-	padding-bottom: 1rem;
 	transition: all 0.2s ease-in-out;
 	border-radius: 1rem;
 	cursor: default;
+	padding: 1rem;
 
 	&:hover,
 	&.active {
-		padding: 1rem;
-		margin-left: 0.1rem;
 		margin-right: 1rem;
-		background-color: $color-light-grey;
 
 		.contents .actions {
 			opacity: 1;
