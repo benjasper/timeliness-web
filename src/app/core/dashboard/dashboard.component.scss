@@ -83,8 +83,13 @@
 		z-index: 2;
 		background-color: $color-very-light-grey;
 
-		.date-spacer {
+		.date-group {
 			margin: 0 8rem;
+			background-color: $color-white;
+			padding: 2rem;
+			box-shadow: $box-shadow;
+			border-radius: 1rem;
+			margin-bottom: 4rem;
 		}
 
 		h2 {

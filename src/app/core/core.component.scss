@@ -17,7 +17,7 @@
 		}
 
 		.child {
-			padding: 2rem 0;
+			padding: 4rem 0;
 		}
 
 		ul {
@@ -25,10 +25,13 @@
 
 			li a {
 				font-size: 1.8rem;
-				padding: 1.5rem 2rem;
+				padding: 2rem 2rem;
+				padding-left: 25%;
 				text-align: start;
 				display: flex;
 				transition: background-color 0.2s ease-out;
+				border-left: 0.5rem solid transparent;
+				border-right: 0.5rem solid transparent;
 
 				.img {
 					display: block;
@@ -37,7 +40,6 @@
 				}
 
 				span {
-					margin: auto;
 					text-align: left;
 					font-size: 1.8rem;
 					display: flex;
@@ -50,8 +52,7 @@
 						color: $color-primary;
 					}
 
-					border-right: 0.5rem solid transparent;
-					border-left: 0.5rem solid $color-primary;
+					border-right: 0.5rem solid $color-primary;
 					color: $color-primary;
 
 					svg {
