@@ -53,10 +53,13 @@
 		}
 
 		.upcoming-work-units-header {
+			width: 50%;
 			margin-top: 8rem;
 			display: flex;
 			flex-flow: row;
 			justify-content: space-between;
+			padding-left: 8rem;
+			padding-right: 4rem;
 
 			.upcoming-work-units-title {
 				margin: auto 0;
@@ -74,13 +77,11 @@
 			}
 		}
 
-		.upcoming-work-units-header {
-			width: 50%;
-		}
-
 		.upcoming-work-units-list {
 			overflow-y: auto;
 			width: 50%;
+			padding-left: 8rem;
+			padding-right: 4rem;
 
 			.date-group {
 				background-color: $color-white;

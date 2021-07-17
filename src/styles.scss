@@ -322,6 +322,7 @@ input[type='submit'] {
 		background-color: $color-light-grey;
 		color: $color-tertiary;
 		cursor: default;
+		border: none;
 
 		.img,
 		&.no-background .img {
