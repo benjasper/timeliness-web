@@ -269,6 +269,7 @@ input[type='submit'] {
 		}
 
 		&:hover:not(.active) {
+			background-color: $color-primary-light;
 			color: $color-white;
 
 			.img {
@@ -318,7 +319,6 @@ input[type='submit'] {
 			}
 
 			.img {
-				fill: $color-black;
 				width: 2.5rem;
 				height: 2.5rem;
 			}
