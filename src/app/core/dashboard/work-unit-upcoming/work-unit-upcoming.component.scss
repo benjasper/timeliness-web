@@ -2,28 +2,24 @@
 .work-unit-upcoming {
 	display: flex;
 	flex-flow: row;
-	margin: 1rem 0;
+	margin-top: 1rem;
 	padding-right: 1rem;
 	padding-top: 1rem;
-	padding-bottom: 1rem;
 	transition: all 0.2s ease-in-out;
-	border-radius: 1rem;
+	border-radius: 1.5rem;
 	cursor: default;
+	padding: 1rem;
 
 	&:hover,
 	&.active {
-		padding: 1rem;
-		margin-left: 0.1rem;
 		margin-right: 1rem;
-		background-color: $color-light-grey;
 
 		.contents .actions {
 			opacity: 1;
 		}
 
 		.calendar-date {
-			background-color: $color-primary;
-			color: $color-white;
+			background-color: $color-primary-pastelle;
 		}
 	}
 
@@ -37,7 +33,7 @@
 
 		color: $color-primary;
 		border: 0.1rem solid $color-primary;
-		border-radius: 1rem;
+		border-radius: 1.5rem;
 		height: 6.2rem;
 		width: 6.2rem;
 		text-align: center;

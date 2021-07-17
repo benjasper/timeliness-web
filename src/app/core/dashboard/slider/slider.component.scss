@@ -33,8 +33,9 @@ button {
 }
 
 button:hover {
-	color: $color-primary-light;
+	color: $color-primary;
 }
+
 button.prev {
 	left: -3.5rem;
 }

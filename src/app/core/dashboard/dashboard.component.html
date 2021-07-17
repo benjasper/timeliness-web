@@ -1,20 +1,27 @@
 <div class="dashboard-container">
 	<div class="dashboard-container main">
-		<div class="dashboard-header">
-			<h2 class="next-up-title">{{ getNextUpMessage() }}</h2>
-			<a class="btn large" [routerLink]="[{ outlets: { modal: ['task', 'new'] } }]">
-				<svg-icon class="img" src="/assets/icons/icon-plus.svg"></svg-icon>
-				<span>New task</span>
-			</a>
-		</div>
-		<img *ngIf="nextUp.length === 0" class="next-up-finished" src="/assets/icons/icon-done.svg" alt="All done" />
-		<app-slider class="next-up-slider" [listArray]="nextUp" [showButtons]="nextUp.length > 1">
-			<ul *ngIf="nextUp.length > 0" class="next-up scroller">
-				<li *ngFor="let task of nextUp">
-					<app-work-unit-card [task]="task" [workUnitIndex]="task.workUnitsIndex"></app-work-unit-card>
-				</li>
-			</ul>
-		</app-slider>
+		<section class="next-up-section wrapper">
+			<div class="dashboard-header">
+				<h2 class="next-up-title">{{ getNextUpMessage() }}</h2>
+				<a class="btn large" [routerLink]="[{ outlets: { modal: ['task', 'new'] } }]">
+					<svg-icon class="img" src="/assets/icons/icon-plus.svg"></svg-icon>
+					<span>New task</span>
+				</a>
+			</div>
+			<img
+				*ngIf="nextUp.length === 0"
+				class="next-up-finished"
+				src="/assets/icons/icon-done.svg"
+				alt="All done"
+			/>
+			<app-slider class="next-up-slider" [listArray]="nextUp" [showButtons]="nextUp.length > 1">
+				<ul *ngIf="nextUp.length > 0" class="next-up scroller">
+					<li *ngFor="let task of nextUp">
+						<app-work-unit-card [task]="task" [workUnitIndex]="task.workUnitsIndex"></app-work-unit-card>
+					</li>
+				</ul>
+			</app-slider>
+		</section>
 		<div class="upcoming-work-units-header">
 			<h2 class="upcoming-work-units-title">Upcoming work units</h2>
 			<div class="filters">

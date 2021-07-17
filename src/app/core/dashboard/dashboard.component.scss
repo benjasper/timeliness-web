@@ -2,10 +2,10 @@
 
 .dashboard-container {
 	display: grid;
-	grid-template-columns: 1fr minmax(45rem, 25%);
+	grid-template-columns: 1fr minmax(45rem, 30%);
 
 	.dashboard-container {
-		padding: 4rem 4rem 0 4rem;
+		padding-top: 6rem;
 
 		::ng-deep {
 			button {
@@ -28,10 +28,15 @@
 	}
 
 	.main {
+		padding-top: 6rem;
 		min-width: 0;
 		height: 100vh;
 		display: flex;
 		flex-direction: column;
+
+		.wrapper {
+			margin: 0 8rem 0 8rem;
+		}
 
 		.next-up {
 			display: flex;
@@ -48,11 +53,13 @@
 		}
 
 		.upcoming-work-units-header {
-			margin-top: 4rem;
-			margin-bottom: 2rem;
+			width: 50%;
+			margin-top: 8rem;
 			display: flex;
 			flex-flow: row;
 			justify-content: space-between;
+			padding-left: 8rem;
+			padding-right: 4rem;
 
 			.upcoming-work-units-title {
 				margin: auto 0;
@@ -72,25 +79,49 @@
 
 		.upcoming-work-units-list {
 			overflow-y: auto;
+			width: 50%;
+			padding-left: 8rem;
+			padding-right: 4rem;
+
+			.date-group {
+				background-color: $color-white;
+				border-radius: 1.5rem;
+				padding: 2rem;
+				margin-top: 4rem;
+				margin-bottom: 4rem;
+				box-shadow: $box-shadow;
+
+				.date-spacer {
+					padding: 0 1rem;
+				}
+			}
 		}
 	}
 
 	.deadlines {
 		height: 100vh;
-		border-left: 1px solid #b9b9b9;
 		display: flex;
 		flex-direction: column;
 		z-index: 2;
-		background-color: $color-white;
+		background-color: $color-very-light-grey;
+
+		.date-group {
+			margin: 0 8rem;
+			background-color: $color-white;
+			padding: 2rem;
+			box-shadow: $box-shadow;
+			border-radius: 1.5rem;
+			margin-bottom: 4rem;
+		}
 
 		h2 {
-			margin-bottom: 2rem;
+			margin: 0 8rem 2rem 8rem;
 		}
 	}
 
 	.date-spacer {
 		font-size: 2.2rem;
-		color: grey;
+		color: $color-tertiary;
 	}
 
 	.deadline-list {

@@ -1,20 +1,21 @@
 <div class="core-container">
 	<nav class="sidebar">
-		<h1>Timeliness</h1>
-		<ul>
+		<h1 class="child">Timeliness</h1>
+		<ul class="child">
 			<li>
 				<a class="text-underline" routerLink="/dashboard" routerLinkActive="active">
-					<svg-icon class="img" src="/assets/icons/icon-dashboard.svg"></svg-icon>
-					Dashboard
+					<span><svg-icon class="img" src="/assets/icons/icon-dashboard.svg"></svg-icon>Dashboard</span>
 				</a>
 			</li>
 			<li>
 				<a class="text-underline" routerLink="/settings" routerLinkActive="active">
-					<svg-icon class="img" src="/assets/icons/icon-settings.svg"></svg-icon>
-					Settings
+					<span><svg-icon class="img" src="/assets/icons/icon-settings.svg"></svg-icon>Settings</span>
 				</a>
 			</li>
 		</ul>
+		<div class="child bottom">
+			<h2>Logout</h2>
+		</div>
 	</nav>
 	<div class="content">
 		<router-outlet></router-outlet>

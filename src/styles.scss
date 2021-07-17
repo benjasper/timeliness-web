@@ -191,10 +191,9 @@ button,
 a.btn,
 input[type='submit'] {
 	appearance: none;
-
+	border: none;
 	display: inline-flex;
 	background-color: $color-primary;
-	border: none;
 	box-sizing: border-box;
 	border-radius: 0.5rem;
 	color: $color-white;
@@ -230,6 +229,24 @@ input[type='submit'] {
 		outline: none;
 	}
 
+	&:hover {
+		background-color: $color-primary-light;
+		text-decoration: none;
+	}
+
+	&:disabled,
+	&[disabled] {
+		background-color: $color-light-grey;
+		color: $color-tertiary;
+		cursor: default;
+		border: none;
+
+		.img,
+		&.no-background .img {
+			fill: $color-tertiary;
+		}
+	}
+
 	&.large {
 		font-size: 1.8rem;
 		padding: 1rem 2.6rem;
@@ -251,13 +268,8 @@ input[type='submit'] {
 			fill: $color-black;
 		}
 
-		&.active {
-			.img {
-				fill: $color-white;
-			}
-		}
-
 		&:hover:not(.active) {
+			background-color: $color-primary-light;
 			color: $color-white;
 
 			.img {
@@ -269,6 +281,10 @@ input[type='submit'] {
 			background-color: $color-primary;
 			color: $color-white;
 			cursor: default;
+
+			.img {
+				fill: $color-white;
+			}
 		}
 	}
 
@@ -303,7 +319,6 @@ input[type='submit'] {
 			}
 
 			.img {
-				fill: $color-black;
 				width: 2.5rem;
 				height: 2.5rem;
 			}
@@ -311,29 +326,17 @@ input[type='submit'] {
 	}
 
 	&.with-border {
-		border: 1px solid $color-white;
-	}
+		border: 1px solid $color-primary;
+		background-color: transparent;
 
-	&:hover {
-		background-color: $color-primary-light;
-		text-decoration: none;
-	}
-
-	&:disabled,
-	&[disabled] {
-		background-color: $color-light-grey;
-		color: $color-tertiary;
-		cursor: default;
-
-		.img,
-		&.no-background .img {
-			fill: $color-tertiary;
+		.img {
+			fill: $color-primary;
 		}
 	}
 }
 
 ::-moz-progress-bar {
-	background-color: $color-cyan;
+	background-color: $color-primary;
 	border-radius: 2.5rem;
 }
 
@@ -341,8 +344,8 @@ input[type='submit'] {
 progress {
 	-webkit-appearance: none;
 	appearance: none;
-	background-color: $color-primary-dark;
-	color: $color-cyan;
+	background-color: $color-very-light-grey;
+	color: $color-primary;
 	border-radius: 2.5rem;
 	height: 0.6rem;
 	border: none;
@@ -351,7 +354,7 @@ progress {
 }
 
 ::-webkit-progress-value {
-	background-color: $color-cyan;
+	background-color: $color-primary;
 	border-radius: 2.5rem;
 }
 
@@ -379,7 +382,7 @@ progress {
 	transition: all 0.1s;
 
 	&:hover {
-		background-color: $color-primary-light;
+		background-color: $color-primary-pastelle;
 	}
 }
 
@@ -394,7 +397,7 @@ progress {
 	transition: all 0.1s;
 
 	&:hover {
-		background-color: $color-primary-light;
+		background-color: $color-primary-pastelle;
 	}
 }
 
@@ -416,9 +419,9 @@ progress {
 	}
 
 	&.inverse {
-		scrollbar-color: $color-tertiary $color-primary-dark;
+		scrollbar-color: $color-tertiary $color-primary;
 		&::-webkit-scrollbar {
-			background-color: $color-primary-dark;
+			background-color: $color-primary;
 		}
 
 		&::-webkit-scrollbar-thumb {
@@ -448,114 +451,5 @@ progress {
 
 	&:hover {
 		text-decoration-color: $color-black;
-	}
-}
-
-.work-unit {
-	display: flex;
-	flex-flow: column;
-	height: 28rem;
-	width: 56rem;
-	background: linear-gradient(45deg, #22125a 0%, #2b3481 100%);
-
-	border-radius: 1rem;
-	padding: 2rem;
-	color: $color-white;
-	font-size: 1.6rem;
-
-	span {
-		font-size: 1.6rem;
-	}
-
-	.card-header {
-		display: flex;
-		flex-flow: row;
-		justify-content: space-between;
-
-		h3 {
-			color: $color-white;
-			flex: 1;
-			padding-right: 2rem;
-		}
-	}
-
-	.card-sections {
-		display: flex;
-		flex: 1;
-		flex-direction: row;
-
-		.card-section {
-			flex: 1;
-			height: 100%;
-
-			&.description {
-				margin: 1rem 0rem 0 1rem;
-				padding-right: 1rem;
-				font-size: 1.6rem;
-				overflow-y: auto;
-
-				height: 14rem;
-				line-height: 1.4;
-				white-space: pre-line;
-			}
-
-			.info-segment {
-				.labels {
-					display: flex;
-					flex-flow: row;
-					justify-content: space-between;
-				}
-
-				&.red {
-					color: $color-red;
-				}
-			}
-		}
-	}
-
-	.infos {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		padding-right: 1rem;
-	}
-
-	.card-footer {
-		display: flex;
-		flex-flow: row;
-		justify-content: flex-end;
-		padding-top: 1.5rem;
-
-		.btn {
-			&.icon-only {
-				padding: 1.2rem;
-				border-radius: 2.5rem;
-			}
-
-			margin-left: 1rem;
-		}
-	}
-
-	&.no-description {
-		width: 28rem;
-	}
-
-	&.small {
-		width: 30rem;
-		height: 25rem;
-
-		h3 {
-			font-size: 2rem;
-		}
-	}
-
-	&.done {
-		background: $color-light-grey;
-		color: $color-black;
-		border: 0.1rem solid $color-black;
-
-		h3 {
-			color: $color-black;
-		}
 	}
 }

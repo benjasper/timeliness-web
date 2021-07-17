@@ -3,10 +3,9 @@
 .deadline {
 	display: flex;
 	flex-direction: row;
-	margin: 1rem 0;
-	padding: 1rem 0;
+	margin-top: 1rem;
+	padding-top: 1rem;
 	transition: all 0.2s ease-out;
-	border-radius: 1rem;
 	cursor: default;
 
 	&.done {
@@ -15,9 +14,7 @@
 
 	&:hover,
 	&.active {
-		background-color: $color-light-grey;
-		padding-left: 1rem;
-		padding-right: 1rem;
+		background-color: $color-white;
 
 		.actions {
 			opacity: 1;
@@ -28,19 +25,7 @@
 		padding: 0 2px;
 		border-radius: 25px;
 		margin: 0 2rem;
-		background-color: $color-primary;
-
-		&.green {
-			background-color: $color-green;
-		}
-
-		&.yellow {
-			background-color: $color-yellow;
-		}
-
-		&.red {
-			background-color: $color-red;
-		}
+		background-color: $color-primary-pastelle;
 	}
 
 	.time {

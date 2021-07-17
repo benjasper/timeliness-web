@@ -9,6 +9,7 @@
 	height: 100vh;
 	left: 0;
 	top: 0;
+	overflow: hidden;
 }
 
 .modal {
@@ -18,8 +19,8 @@
 	transform: translate(-50%, -50%);
 	width: 95rem;
 
-	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
-	border-radius: 1rem;
+	box-shadow: $box-shadow;
+	border-radius: 1.5rem;
 
 	z-index: 11;
 	position: absolute;
@@ -67,6 +68,12 @@
 
 			.tiny-button {
 				margin-left: 2rem;
+
+				&:not(:disabled) {
+					.img {
+						fill: $color-primary;
+					}
+				}
 			}
 
 			.dangerous-controls {
@@ -122,8 +129,6 @@
 
 			.progress-container {
 				display: flex;
-				padding: 0.2rem 0.2rem;
-				background-color: $color-primary;
 				border-radius: 2.5rem;
 				margin-left: 1.4rem;
 			}
@@ -145,7 +150,6 @@
 	}
 
 	.modal-footer {
-		margin-top: 4rem;
 		display: flex;
 		flex-flow: row;
 		justify-content: flex-end;

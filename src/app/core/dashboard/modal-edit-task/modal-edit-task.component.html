@@ -8,7 +8,7 @@
 					<button class="tiny-button no-background" [disabled]="!editTask.dirty || isNew" (click)="undo()">
 						<svg-icon class="img" src="/assets/icons/icon-undo.svg" alt="Undo"></svg-icon>
 					</button>
-					<button class="tiny-button" [disabled]="!task" (click)="delete()">
+					<button class="tiny-button with-border" [disabled]="!task" (click)="delete()">
 						<svg-icon class="img" src="/assets/icons/icon-trash.svg" alt="Delete"></svg-icon>
 					</button>
 				</div>
