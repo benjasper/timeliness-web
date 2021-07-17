@@ -74,22 +74,24 @@
 			}
 		}
 
-		.upcoming-section {
+		.upcoming-work-units-header {
 			width: 50%;
-			.upcoming-work-units-list {
-				overflow-y: auto;
+		}
 
-				.date-group {
-					background-color: $color-white;
-					border-radius: 1.5rem;
-					padding: 2rem;
-					margin-top: 4rem;
-					margin-bottom: 4rem;
-					box-shadow: $box-shadow;
+		.upcoming-work-units-list {
+			overflow-y: auto;
+			width: 50%;
 
-					.date-spacer {
-						padding: 0 1rem;
-					}
+			.date-group {
+				background-color: $color-white;
+				border-radius: 1.5rem;
+				padding: 2rem;
+				margin-top: 4rem;
+				margin-bottom: 4rem;
+				box-shadow: $box-shadow;
+
+				.date-spacer {
+					padding: 0 1rem;
 				}
 			}
 		}
