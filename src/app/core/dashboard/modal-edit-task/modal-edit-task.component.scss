@@ -19,7 +19,7 @@
 	transform: translate(-50%, -50%);
 	width: 95rem;
 
-	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+	box-shadow: $box-shadow;
 	border-radius: 1.5rem;
 
 	z-index: 11;
@@ -68,6 +68,12 @@
 
 			.tiny-button {
 				margin-left: 2rem;
+
+				&:not(:disabled) {
+					.img {
+						fill: $color-primary;
+					}
+				}
 			}
 
 			.dangerous-controls {

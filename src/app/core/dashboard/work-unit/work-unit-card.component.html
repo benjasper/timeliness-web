@@ -81,7 +81,7 @@
 			<span>Reschedule</span>
 		</button>
 		<button
-			class="btn with-border"
+			class="btn with-border no-background"
 			[class.icon-only]="task.workUnits[workUnitIndex].isDone"
 			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as un-done' : 'Mark as done' }}"
 			(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)"
