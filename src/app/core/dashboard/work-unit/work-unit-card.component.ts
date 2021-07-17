@@ -35,9 +35,11 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 
 		this.progress = this.getWorkUnitProgress(new Date())
 
-		setInterval(() => {
-			this.progress = this.getWorkUnitProgress(new Date())
-		}, 1000)
+		if (!this.task.isDone) {
+			setInterval(() => {
+				this.progress = this.getWorkUnitProgress(new Date())
+			}, 1000)
+		}
 
 		this.taskService.now.subscribe((date) => {
 			this.today = date
