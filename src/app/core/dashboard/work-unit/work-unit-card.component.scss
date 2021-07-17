@@ -5,11 +5,11 @@
 	flex-flow: column;
 	height: 28rem;
 	width: 56rem;
-	background-color: $color-pastelle-yellow;
+	background-color: $color-primary-pastelle;
 
 	border-radius: 1.5rem;
 	padding: 2rem;
-	color: $color-pastelle-yellow-dark;
+	color: $color-primary;
 	font-size: 1.6rem;
 
 	span {
@@ -110,7 +110,6 @@
 	&.done {
 		background: $color-light-grey;
 		color: $color-black;
-		border: 0.1rem solid $color-black;
 
 		h3 {
 			color: $color-black;

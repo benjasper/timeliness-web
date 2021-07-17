@@ -193,10 +193,10 @@ input[type='submit'] {
 	appearance: none;
 	border: none;
 	display: inline-flex;
-	background-color: $color-primary-pastelle;
+	background-color: $color-primary;
 	box-sizing: border-box;
 	border-radius: 0.5rem;
-	color: $color-primary;
+	color: $color-white;
 	padding: 0.8rem 1.4rem;
 	cursor: pointer;
 	user-select: none;
@@ -213,7 +213,7 @@ input[type='submit'] {
 	}
 
 	.img {
-		fill: $color-primary;
+		fill: $color-white;
 		display: inline-flex;
 		width: 1.4rem;
 		margin: auto 0.5rem auto 0;
@@ -227,6 +227,24 @@ input[type='submit'] {
 
 	&:focus {
 		outline: none;
+	}
+
+	&:hover {
+		background-color: $color-primary-light;
+		text-decoration: none;
+	}
+
+	&:disabled,
+	&[disabled] {
+		background-color: $color-light-grey;
+		color: $color-tertiary;
+		cursor: default;
+		border: none;
+
+		.img,
+		&.no-background .img {
+			fill: $color-tertiary;
+		}
 	}
 
 	&.large {
@@ -251,20 +269,20 @@ input[type='submit'] {
 		}
 
 		&:hover:not(.active) {
-			color: $color-primary;
+			color: $color-white;
 
 			.img {
-				fill: $color-primary;
+				fill: $color-white;
 			}
 		}
 
 		&.active {
-			background-color: $color-primary-pastelle;
-			color: $color-primary;
+			background-color: $color-primary;
+			color: $color-white;
 			cursor: default;
 
 			.img {
-				fill: $color-primary;
+				fill: $color-white;
 			}
 		}
 	}
@@ -275,7 +293,7 @@ input[type='submit'] {
 		height: 3.5rem;
 		text-align: center;
 		border-radius: 3rem;
-		background-color: transparent;
+		background-color: $color-primary;
 		padding: 0;
 		user-select: none;
 
@@ -310,29 +328,15 @@ input[type='submit'] {
 	&.with-border {
 		border: 1px solid $color-primary;
 		background-color: transparent;
-	}
 
-	&:hover {
-		background-color: $color-primary-pastelle-light;
-		text-decoration: none;
-	}
-
-	&:disabled,
-	&[disabled] {
-		background-color: $color-light-grey;
-		color: $color-tertiary;
-		cursor: default;
-		border: none;
-
-		.img,
-		&.no-background .img {
-			fill: $color-tertiary;
+		.img {
+			fill: $color-primary;
 		}
 	}
 }
 
 ::-moz-progress-bar {
-	background-color: $color-primary-pastelle;
+	background-color: $color-primary;
 	border-radius: 2.5rem;
 }
 
@@ -340,7 +344,7 @@ input[type='submit'] {
 progress {
 	-webkit-appearance: none;
 	appearance: none;
-	background-color: $color-primary-pastelle;
+	background-color: $color-very-light-grey;
 	color: $color-primary;
 	border-radius: 2.5rem;
 	height: 0.6rem;
