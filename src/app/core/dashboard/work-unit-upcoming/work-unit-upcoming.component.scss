@@ -6,7 +6,7 @@
 	padding-right: 1rem;
 	padding-top: 1rem;
 	transition: all 0.2s ease-in-out;
-	border-radius: 1rem;
+	border-radius: 1.5rem;
 	cursor: default;
 	padding: 1rem;
 
@@ -19,8 +19,7 @@
 		}
 
 		.calendar-date {
-			background-color: $color-primary;
-			color: $color-white;
+			background-color: $color-pastelle-yellow;
 		}
 	}
 
@@ -32,9 +31,9 @@
 		margin-right: 2rem;
 		text-decoration: none;
 
-		color: $color-primary;
-		border: 0.1rem solid $color-primary;
-		border-radius: 1rem;
+		color: $color-pastelle-yellow-dark;
+		border: 0.1rem solid $color-pastelle-yellow-dark;
+		border-radius: 1.5rem;
 		height: 6.2rem;
 		width: 6.2rem;
 		text-align: center;
