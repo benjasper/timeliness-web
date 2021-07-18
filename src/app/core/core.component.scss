@@ -2,7 +2,7 @@
 
 .core-container {
 	display: grid;
-	grid-template-columns: minmax(250px, 15%) 1fr;
+	grid-template-columns: minmax(3rem, 14vw) 1fr;
 
 	nav.sidebar {
 		height: 100vh;
@@ -17,44 +17,86 @@
 		}
 
 		.child {
-			padding: 4rem 0;
+			padding: 1rem 0;
+			flex-grow: 1;
 		}
 
-		ul {
-			li a {
-				padding: 2rem 2rem;
-				padding-left: 25%;
-				text-align: start;
-				display: flex;
-				transition: background-color 0.2s ease-out;
-				border-left: 0.5rem solid transparent;
-				border-right: 0.5rem solid transparent;
+		.bottom {
+			margin-bottom: 4rem;
+			flex-grow: 0;
+		}
 
-				.img {
-					display: block;
-					width: 2.8rem;
-					margin-right: 1rem;
-				}
+		.middle {
+			display: flex;
+			flex-flow: column;
+			flex-grow: 2;
 
-				span {
-					text-align: left;
-					font-size: 2rem;
+			ul {
+				li a {
+					padding: 1.5rem 2rem;
+					margin: 1rem 2rem;
+					border-radius: 1.5rem;
+					text-align: start;
 					display: flex;
+					transition: background-color 0.2s ease-out;
+					border-left: 0.5rem solid transparent;
+					border-right: 0.5rem solid transparent;
+
+					.img {
+						display: block;
+						width: 2.8rem;
+						margin-right: 1rem;
+					}
+
+					span {
+						text-align: left;
+						font-size: 1.8rem;
+						display: flex;
+					}
+
+					&.active {
+						&:hover {
+							cursor: default;
+							text-decoration: none;
+							color: $color-primary;
+						}
+
+						background-color: $color-primary-pastelle;
+						color: $color-primary;
+
+						svg {
+							fill: $color-primary;
+						}
+					}
+				}
+			}
+		}
+
+		.user {
+			margin: 0 2rem 2rem 2rem;
+			display: flex;
+			flex-flow: row;
+			flex-grow: 0;
+
+			.profile-picture {
+				border-radius: 100%;
+				background-color: $color-primary-pastelle;
+				width: 6rem;
+				height: 6rem;
+			}
+
+			.user-info {
+				text-align: left;
+				margin: auto 0;
+				margin-left: 2rem;
+
+				.name {
+					font-size: 2rem;
+					font-weight: bold;
 				}
 
-				&.active {
-					&:hover {
-						cursor: default;
-						text-decoration: none;
-						color: $color-primary;
-					}
-
-					border-right: 0.5rem solid $color-primary;
-					color: $color-primary;
-
-					svg {
-						fill: $color-primary;
-					}
+				.info-text {
+					color: grey;
 				}
 			}
 		}
