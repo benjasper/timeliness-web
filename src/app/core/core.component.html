@@ -2,10 +2,12 @@
 	<nav class="sidebar">
 		<div class="child logo-container">
 			<h1 *ngIf="!collapsed" class="logo" (click)="switchSidebarCollapsed()">Timeliness</h1>
-			<h1 *ngIf="collapsed" class="logo-small" (click)="switchSidebarCollapsed()">T</h1>
+			<h1 *ngIf="collapsed" class="logo logo-small" (click)="switchSidebarCollapsed()">T</h1>
 		</div>
 		<div class="child user">
-			<div class="profile-picture"></div>
+			<div class="profile-picture">
+				<span>JD</span>
+			</div>
 			<div class="user-info">
 				<span class="name">John Doe</span>
 				<span class="info-text">Joined yesterday</span>
