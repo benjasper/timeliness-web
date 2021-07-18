@@ -20,10 +20,10 @@ export class CoreComponent implements OnInit {
 	public switchSidebarCollapsed(): void {
 		if (this.collapsed) {
 			this.collapsed = false
-			return
+		} else {
+			this.collapsed = true
 		}
 
-		this.collapsed = true
 
 		localStorage.setItem('dashboard-sidebar', this.collapsed ? 'collapsed' : '')
 	}
