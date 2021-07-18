@@ -18,7 +18,7 @@ import { SigninComponent } from './signin/signin.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { AngularSvgIconModule } from 'angular-svg-icon'
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
-import { SliderComponent } from './core/dashboard/slider/slider.component';
+import { SliderComponent } from './core/dashboard/slider/slider.component'
 import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-completed/stats-week-completed.component'
 
 @NgModule({
@@ -33,7 +33,7 @@ import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-complet
 		SettingsComponent,
 		SigninComponent,
 		SliderComponent,
-  StatsWeekCompletedComponent,
+		StatsWeekCompletedComponent,
 	],
 	imports: [
 		BrowserModule,
