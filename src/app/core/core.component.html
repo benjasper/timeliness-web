@@ -1,7 +1,9 @@
 <div class="core-container" [class.collapsed]="collapsed">
 	<nav class="sidebar">
-		<h1 class="child logo" (click)="switchSidebarCollapsed()">Timeliness</h1>
-		<h1 class="child logo-small" (click)="switchSidebarCollapsed()">T</h1>
+		<div class="child logo-container">
+			<h1 *ngIf="!collapsed" class="logo" (click)="switchSidebarCollapsed()">Timeliness</h1>
+			<h1 *ngIf="collapsed" class="logo-small" (click)="switchSidebarCollapsed()">T</h1>
+		</div>
 		<div class="child user">
 			<div class="profile-picture"></div>
 			<div class="user-info">
