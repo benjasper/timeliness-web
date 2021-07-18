@@ -22,52 +22,68 @@
 				</ul>
 			</app-slider>
 		</section>
-		<div class="upcoming-work-units-header">
-			<h2 class="upcoming-work-units-title">Upcoming work units</h2>
-			<div class="filters">
-				<button class="btn filter active">
-					<svg-icon class="img" src="/assets/icons/icon-arrow.svg"></svg-icon>
-					Upcoming
-				</button>
-				<button class="btn filter">
-					<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
-					Done
-				</button>
-			</div>
-		</div>
-		<img
-			*ngIf="groupedUpcoming.length === 0"
-			class="next-up-finished"
-			src="/assets/images/no-workunits.svg"
-			alt="No upcoming"
-		/>
-		<ul class="upcoming-work-units-list scroller">
-			<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
-				<span
-					*ngIf="
-						today.getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true) &&
-						today.addDays(7).getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true)
-					"
-					class="date-spacer"
-				>
-					{{ upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' }) }}
-				</span>
-				<span *ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)" class="date-spacer">
-					This week
-				</span>
-				<span
-					*ngIf="today.addDays(7).getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
-					class="date-spacer"
-				>
-					Next week
-				</span>
-				<ul>
-					<li *ngFor="let task of upcomingGroup.tasks">
-						<app-work-unit-upcoming [task]="task"></app-work-unit-upcoming>
+		<section class="lower-dashboard">
+			<div class="upcoming-workunits">
+				<div class="upcoming-work-units-header">
+					<h2 class="upcoming-work-units-title">Upcoming work units</h2>
+					<div class="filters">
+						<button class="btn filter active">
+							<svg-icon class="img" src="/assets/icons/icon-arrow.svg"></svg-icon>
+							Upcoming
+						</button>
+						<button class="btn filter">
+							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+							Done
+						</button>
+					</div>
+				</div>
+				<img
+					*ngIf="groupedUpcoming.length === 0"
+					class="next-up-finished"
+					src="/assets/images/no-workunits.svg"
+					alt="No upcoming"
+				/>
+				<ul class="upcoming-work-units-list scroller">
+					<li *ngFor="let upcomingGroup of groupedUpcoming" class="date-group">
+						<span
+							*ngIf="
+								today.getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true) &&
+								today.addDays(7).getWeekNumber(true) !== upcomingGroup.date.getWeekNumber(true)
+							"
+							class="date-spacer"
+						>
+							{{ upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' }) }}
+						</span>
+						<span
+							*ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
+							class="date-spacer"
+						>
+							This week
+						</span>
+						<span
+							*ngIf="today.addDays(7).getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
+							class="date-spacer"
+						>
+							Next week
+						</span>
+						<ul>
+							<li *ngFor="let task of upcomingGroup.tasks">
+								<app-work-unit-upcoming [task]="task"></app-work-unit-upcoming>
+							</li>
+						</ul>
 					</li>
 				</ul>
-			</li>
-		</ul>
+			</div>
+
+			<div class="section-stats">
+				<!--
+				<h2 class="stats-title">Statistics</h2>
+				<div class="grid">
+					<app-stats-week-completed></app-stats-week-completed> 
+				</div>
+				-->
+			</div>
+		</section>
 	</div>
 	<div class="dashboard-container deadlines">
 		<h2>Upcoming deadlines</h2>

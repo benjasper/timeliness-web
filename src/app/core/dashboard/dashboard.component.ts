@@ -20,10 +20,6 @@ export class DashboardComponent implements OnInit {
 			this.today = date
 		})
 
-		if (this.taskService.tasks.length === 0) {
-			this.taskService.refreshTasks()
-		}
-
 		this.groupTasks(this.taskService.tasks)
 		this.taskService.tasksObservalble.subscribe((tasks) => {
 			if (!tasks) {
@@ -32,10 +28,6 @@ export class DashboardComponent implements OnInit {
 			}
 			this.groupTasks(tasks)
 		})
-
-		if (this.taskService.tasksUnwound.length === 0) {
-			this.taskService.refreshTasksUnwound()
-		}
 
 		this.groupTasksUnwound(this.taskService.tasksUnwound)
 		this.taskService.tasksUnwoundObservalble.subscribe((tasks) => {

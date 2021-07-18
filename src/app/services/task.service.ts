@@ -14,6 +14,8 @@ import { element } from 'protractor'
 })
 export class TaskService {
 	constructor(private http: HttpClient) {
+		this.refreshTasks()
+		this.refreshTasksUnwound()
 		setInterval(() => {
 			this.nowSubject.next(new Date())
 			this.getTasksByDeadlines(this.lastTaskSync)
