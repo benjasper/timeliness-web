@@ -4,6 +4,31 @@
 	display: grid;
 	grid-template-columns: minmax(30rem, 14vw) 1fr;
 
+	&.collapsed {
+		grid-template-columns: 12rem 1fr;
+
+		.logo {
+			display: none;
+			margin: auto;
+		}
+
+		.logo-small {
+			display: block !important;
+		}
+
+		.sidebar .labels {
+			display: none !important;
+		}
+
+		.user {
+			justify-content: center;
+
+			.user-info {
+				display: none;
+			}
+		}
+	}
+
 	nav.sidebar {
 		height: 100vh;
 		text-align: center;
@@ -11,14 +36,57 @@
 		display: flex;
 		justify-content: space-between;
 		flex-flow: column;
+		transition: all 0.2s;
 
 		h1 {
 			padding-top: 2rem;
 		}
 
+		.logo-small {
+			display: none;
+		}
+
 		.child {
 			padding: 1rem 0;
 			flex-grow: 1;
+
+			.img {
+				display: block;
+				width: 2.8rem;
+			}
+
+			span {
+				text-align: left;
+				font-size: 1.8rem;
+				display: flex;
+				margin-left: 1rem;
+			}
+
+			a {
+				padding: 1.5rem 2rem;
+				margin: 1rem 2rem;
+				border-radius: 1.5rem;
+				text-align: start;
+				display: flex;
+				transition: background-color 0.2s ease-out;
+				border-left: 0.5rem solid transparent;
+				border-right: 0.5rem solid transparent;
+
+				&.active {
+					&:hover {
+						cursor: default;
+						text-decoration: none;
+						color: $color-primary;
+					}
+
+					background-color: $color-primary-pastelle;
+					color: $color-primary;
+
+					svg {
+						fill: $color-primary;
+					}
+				}
+			}
 		}
 
 		.bottom {
@@ -30,46 +98,6 @@
 			display: flex;
 			flex-flow: column;
 			flex-grow: 2;
-
-			ul {
-				li a {
-					padding: 1.5rem 2rem;
-					margin: 1rem 2rem;
-					border-radius: 1.5rem;
-					text-align: start;
-					display: flex;
-					transition: background-color 0.2s ease-out;
-					border-left: 0.5rem solid transparent;
-					border-right: 0.5rem solid transparent;
-
-					.img {
-						display: block;
-						width: 2.8rem;
-						margin-right: 1rem;
-					}
-
-					span {
-						text-align: left;
-						font-size: 1.8rem;
-						display: flex;
-					}
-
-					&.active {
-						&:hover {
-							cursor: default;
-							text-decoration: none;
-							color: $color-primary;
-						}
-
-						background-color: $color-primary-pastelle;
-						color: $color-primary;
-
-						svg {
-							fill: $color-primary;
-						}
-					}
-				}
-			}
 		}
 
 		.user {

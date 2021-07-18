@@ -1,6 +1,7 @@
-<div class="core-container">
+<div class="core-container" [class.collapsed]="collapsed">
 	<nav class="sidebar">
-		<h1 class="child">Timeliness</h1>
+		<h1 class="child logo" (click)="switchSidebarCollapsed()">Timeliness</h1>
+		<h1 class="child logo-small" (click)="switchSidebarCollapsed()">T</h1>
 		<div class="child user">
 			<div class="profile-picture"></div>
 			<div class="user-info">
@@ -12,16 +13,16 @@
 			<ul>
 				<li>
 					<a class="text-underline" routerLink="/dashboard" routerLinkActive="active">
-						<span>
-							<svg-icon class="img" src="/assets/icons/icon-dashboard.svg"></svg-icon>
+						<svg-icon class="img" src="/assets/icons/icon-dashboard.svg"></svg-icon>
+						<span class="labels">
 							Dashboard
 						</span>
 					</a>
 				</li>
 				<li>
 					<a class="text-underline" routerLink="/settings" routerLinkActive="active">
-						<span>
-							<svg-icon class="img" src="/assets/icons/icon-settings.svg"></svg-icon>
+						<svg-icon class="img" src="/assets/icons/icon-settings.svg"></svg-icon>
+						<span class="labels">
 							Settings
 						</span>
 					</a>
@@ -29,7 +30,10 @@
 			</ul>
 		</div>
 		<div class="child bottom">
-			<h2>Logout</h2>
+			<a class="text-underline" (click)="logout()">
+				<svg-icon class="img" src="/assets/icons/icon-logout.svg"></svg-icon>
+				<span class="labels">Logout</span>
+			</a>
 		</div>
 	</nav>
 	<div class="content">

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core'
+import { AuthService } from '../services/auth.service'
 
 @Component({
 	selector: 'app-core',
@@ -6,7 +7,28 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core'
 	styleUrls: ['./core.component.scss'],
 })
 export class CoreComponent implements OnInit {
-	constructor() {}
+	constructor(private authService: AuthService) {}
 
-	ngOnInit(): void {}
+	public collapsed = false
+
+	ngOnInit(): void {
+		if (localStorage.getItem('dashboard-sidebar') === 'collapsed') {
+			this.collapsed = true
+		}
+	}
+
+	public switchSidebarCollapsed(): void {
+		if (this.collapsed) {
+			this.collapsed = false
+			return
+		}
+
+		this.collapsed = true
+
+		localStorage.setItem('dashboard-sidebar', this.collapsed ? 'collapsed' : '')
+	}
+
+	public logout(): void {
+		this.authService.logout()
+	}
 }
