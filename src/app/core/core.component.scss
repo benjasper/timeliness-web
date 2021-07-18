@@ -73,15 +73,17 @@
 				border-left: 0.5rem solid transparent;
 				border-right: 0.5rem solid transparent;
 
+				&:hover {
+					cursor: default;
+					text-decoration: none;
+					background-color: $color-primary-pastelle;
+					cursor: pointer;
+				}
+				
 				&.active {
-					&:hover {
-						cursor: default;
-						text-decoration: none;
-						color: $color-primary;
-					}
-
 					background-color: $color-primary-pastelle;
 					color: $color-primary;
+					cursor: default;
 
 					svg {
 						fill: $color-primary;
