@@ -2,10 +2,20 @@
 
 .core-container {
 	display: grid;
-	grid-template-columns: minmax(30rem, 14vw) 1fr;
+	grid-template-columns: min-content 1fr;
+
+	.sidebar {
+		width: 35rem;
+
+		.labels {
+			white-space: nowrap;
+		}
+	}
 
 	&.collapsed {
-		grid-template-columns: 12rem 1fr;
+		.sidebar {
+			width: 12rem;
+		}
 
 		.logo {
 			display: none;
@@ -54,6 +64,7 @@
 			.img {
 				display: block;
 				width: 2.8rem;
+				min-width: 2.8rem;
 			}
 
 			span {
@@ -79,7 +90,7 @@
 					background-color: $color-primary-pastelle;
 					cursor: pointer;
 				}
-				
+
 				&.active {
 					background-color: $color-primary-pastelle;
 					color: $color-primary;
@@ -113,6 +124,7 @@
 				border-radius: 100%;
 				background-color: $color-primary-pastelle;
 				width: 6rem;
+				min-width: 6rem;
 				height: 6rem;
 				text-align: center;
 				display: flex;
@@ -129,6 +141,10 @@
 				text-align: left;
 				margin: auto 0;
 				margin-left: 1rem;
+
+				span {
+					white-space: nowrap;
+				}
 
 				.name {
 					font-size: 2rem;
