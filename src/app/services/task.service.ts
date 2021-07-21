@@ -26,11 +26,8 @@ export class TaskService {
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
 
-	public tasks: Task[] = []
-	public tasksUnwound: TaskUnwound[] = []
-
-	private tasksSubject = new Subject<Task[]>()
-	private tasksUnwoundSubject = new Subject<TaskUnwound[]>()
+	private tasksSubject = new BehaviorSubject<Task[]|undefined>(undefined)
+	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[]|undefined>(undefined)
 	private nowSubject = new Subject<Date>()
 
 	public tasksObservalble = this.tasksSubject.asObservable()
@@ -38,25 +35,23 @@ export class TaskService {
 	public now = this.nowSubject.asObservable()
 
 	public refreshTasks(): void {
-		this.tasks = []
-		this.tasksSubject.next()
+		this.tasksSubject.next(undefined)
 		this.getTasksByDeadlines()
 	}
 
 	public refreshTasksUnwound(): void {
-		this.tasksUnwound = []
-		this.tasksUnwoundSubject.next()
+		this.tasksUnwoundSubject.next(undefined)
 		this.getTasksByWorkunits()
 	}
 
-	private publishTasks(): void {
-		this.tasksSubject.next()
-		this.tasksSubject.next(this.tasks)
+	private publishTasks(tasks: Task[]): void {
+		this.tasksSubject.next(undefined)
+		this.tasksSubject.next(tasks)
 	}
 
-	private publishTasksUnwound(): void {
-		this.tasksUnwoundSubject.next()
-		this.tasksUnwoundSubject.next(this.tasksUnwound)
+	private publishTasksUnwound(tasks: TaskUnwound[]): void {
+		this.tasksUnwoundSubject.next(undefined)
+		this.tasksUnwoundSubject.next(tasks)
 	}
 
 	private async getTasksByDeadlines(sync?: Date): Promise<void> {
@@ -77,22 +72,23 @@ export class TaskService {
 						return
 					}
 
+					let tasks: Task[] = this.tasksSubject.getValue() ?? []
+
 					response.results.forEach((syncTask: Task) => {
-						this.tasks = this.tasks.filter((x) => x.id !== syncTask.id)
+						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					this.tasks.push(...response.results)
+					tasks.push(...response.results)
 
-					this.tasks.sort((a, b) => {
+					tasks.sort((a, b) => {
 						return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.end.toDate().getTime()
 					})
 
-					this.publishTasks()
+					this.publishTasks(tasks)
 					return
 				}
 
-				this.tasks.push(...response.results)
-				this.tasksSubject.next(response.results)
+				this.publishTasks(response.results)
 			})
 	}
 
@@ -114,30 +110,31 @@ export class TaskService {
 						return
 					}
 
+					let tasks = this.tasksUnwoundSubject.getValue() ?? []
+
 					response.results.forEach((syncTask: TaskUnwound) => {
-						this.tasksUnwound = this.tasksUnwound.filter((x) => x.id !== syncTask.id)
+						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					this.tasksUnwound.push(...response.results)
+					tasks.push(...response.results)
 
-					this.tasksUnwound.sort((a, b) => {
+					tasks.sort((a, b) => {
 						return (
 							a.workUnits[a.workUnitsIndex].scheduledAt.date.start.toDate().getTime() -
 							b.workUnits[b.workUnitsIndex].scheduledAt.date.start.toDate().getTime()
 						)
 					})
 
-					this.publishTasksUnwound()
+					this.publishTasksUnwound(tasks)
 					return
 				}
 
-				this.tasksUnwound.push(...response.results)
-				this.tasksUnwoundSubject.next(this.tasksUnwound)
+				this.publishTasksUnwound(response.results)
 			})
 	}
 
 	public getTask(id: string): Observable<Task> {
-		const foundTask = this.tasks.find((x) => x.id === id)
+		const foundTask = this.tasksSubject.getValue()?.find((x) => x.id === id)
 		if (foundTask) {
 			return new Observable((sub) => {
 				sub.next(foundTask)
@@ -182,16 +179,16 @@ export class TaskService {
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			this.tasksUnwound = this.tasksUnwound.filter((newElement) => {
+			const tasksUnwound = this.tasksUnwoundSubject.getValue()?.filter((newElement) => {
 				return newElement.id !== id
 			})
 
-			this.tasks = this.tasks.filter((newElement) => {
+			const tasks = this.tasksSubject.getValue()?.filter((newElement) => {
 				return newElement.id !== id
 			})
 
-			this.publishTasks()
-			this.publishTasksUnwound()
+			this.publishTasks(tasks ?? [])
+			this.publishTasksUnwound(tasksUnwound ?? [])
 		})
 		return observable
 	}
@@ -207,10 +204,10 @@ export class TaskService {
 			this.getTasksByDeadlines(this.lastTaskSync)
 
 			if (done === true) {
-				this.tasksUnwound = this.tasksUnwound.filter((x) => {
+				const tasks = this.tasksUnwoundSubject.getValue()?.filter((x) => {
 					return !(x.id === newTask.id && x.workUnitsIndex === workUnitIndex)
 				})
-				this.publishTasksUnwound()
+				this.publishTasksUnwound(tasks ?? [])
 			}
 		})
 		return observable

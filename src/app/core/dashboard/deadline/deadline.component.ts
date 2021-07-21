@@ -14,19 +14,7 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 	}
 
 	@Input() task!: Task
-
-	public getPriorityColor(): string {
-		switch (this.task.priority) {
-			case 1:
-				return 'green'
-			case 2:
-				return 'yellow'
-			case 3:
-				return 'red'
-			default:
-				return 'green'
-		}
-	}
+	@Input() loading = false
 
 	ngOnInit(): void {}
 }

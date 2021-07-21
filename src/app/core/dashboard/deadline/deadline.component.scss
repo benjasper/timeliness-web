@@ -8,6 +8,31 @@
 	transition: all 0.2s ease-out;
 	cursor: default;
 
+	&.loading {
+		margin: 2rem 8rem;
+		border-radius: 1.5rem;
+		padding: 1rem 4rem;
+
+		.loading-component {
+			background-color: $color-light-grey;
+			border-radius: 1.5rem;
+		}
+
+		.time {
+			width: 6rem;
+			border-radius: 1rem;
+		}
+
+		.deadline-name {
+			width: 75%;
+			margin-bottom: -0.3rem;
+		}
+
+		.deadline-spacer {
+			background: transparent;
+		}
+	}
+
 	&.done {
 		opacity: 0.5;
 	}

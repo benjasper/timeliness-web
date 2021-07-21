@@ -88,31 +88,38 @@
 	<div class="dashboard-container deadlines">
 		<h2>Upcoming deadlines</h2>
 		<ul class="deadline-list scroller">
-			<li *ngIf="groupedDeadlines.length === 0" class="list-message">
+			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks" class="list-message">
 				<span class="big">No tasks right now?</span>
 				<span>That's awesome! But in case you have something to do tap "New task" to create a task.</span>
 			</li>
-			<li *ngFor="let deadlineGroup of groupedDeadlines" class="date-group">
-				<span class="date-spacer">
-					{{
-						deadlineGroup.date.toLocaleDateString('default', {
-							weekday: 'long'
-						})
-					}},
-					{{
-						deadlineGroup.date.toLocaleDateString('default', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric'
-						})
-					}}
-				</span>
-				<ul>
-					<li *ngFor="let deadline of deadlineGroup.tasks">
-						<app-deadline [task]="deadline"></app-deadline>
-					</li>
-				</ul>
-			</li>
+			<ng-container *ngIf="loadingTasks">
+				<li *ngFor="let index of [1, 2, 3]">
+					<app-deadline [loading]="true"></app-deadline>
+				</li>
+			</ng-container>
+			<ng-container *ngIf="!loadingTasks">
+				<li *ngFor="let deadlineGroup of groupedDeadlines" class="date-group">
+					<span class="date-spacer">
+						{{
+							deadlineGroup.date.toLocaleDateString('default', {
+								weekday: 'long'
+							})
+						}},
+						{{
+							deadlineGroup.date.toLocaleDateString('default', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric'
+							})
+						}}
+					</span>
+					<ul>
+						<li *ngFor="let deadline of deadlineGroup.tasks">
+							<app-deadline [task]="deadline"></app-deadline>
+						</li>
+					</ul>
+				</li>
+			</ng-container>
 		</ul>
 	</div>
 	<router-outlet name="modal"></router-outlet>
