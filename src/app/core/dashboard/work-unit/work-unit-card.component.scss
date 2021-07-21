@@ -115,4 +115,35 @@
 			color: $color-black;
 		}
 	}
+
+	&.loading {
+		.card-header {
+			width: 75%;
+		}
+
+		.info-segment {
+			span {
+				margin: 1rem 0;
+				width: 33%;
+			}
+		}
+
+		.loading-component {
+			background-color: $color-light-grey;
+			border-radius: 1.5rem;
+			
+			&.btn {
+				background-color: $color-light-grey;
+				width: 10rem;
+				padding: .8rem 1.4rem;
+				border: none;
+			}
+
+			&.progress-container {
+				margin-top: 2rem;
+				width: 100%;
+				height: 1rem;
+			}
+		}
+	}
 }

@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
 
 		this.loadingWorkUnits = true
 		this.taskService.tasksUnwoundObservalble.subscribe((tasks) => {
-			this.loadingWorkUnits = false
 			if (!tasks) {
 				this.nextUp = []
 				this.groupedUpcoming = []

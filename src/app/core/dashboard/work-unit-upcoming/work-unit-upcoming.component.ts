@@ -10,5 +10,6 @@ export class WorkUnitUpcomingComponent implements OnInit {
 	constructor() {}
 
 	@Input() task!: TaskUnwound
+	@Input() loading = false
 	ngOnInit(): void {}
 }

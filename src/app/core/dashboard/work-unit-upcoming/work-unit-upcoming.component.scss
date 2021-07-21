@@ -85,4 +85,28 @@
 			}
 		}
 	}
+
+	&.loading {
+		margin-top: 4rem;
+		padding: 2rem 2rem;
+
+		.calendar-date {
+			border: none;
+			background-color: $color-light-grey;
+		}
+
+		&:hover {
+			background-color: $color-light-grey;
+			margin-right: 0;
+		}
+
+		.loading-component {
+			background-color: $color-light-grey;
+			border-radius: 1.5rem;
+		}
+
+		.task-title {
+			width: 60%;
+		}
+	}
 }
