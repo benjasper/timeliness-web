@@ -26,8 +26,8 @@ export class TaskService {
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
 
-	private tasksSubject = new BehaviorSubject<Task[]|undefined>(undefined)
-	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[]|undefined>(undefined)
+	private tasksSubject = new BehaviorSubject<Task[] | undefined>(undefined)
+	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[] | undefined>(undefined)
 	private nowSubject = new Subject<Date>()
 
 	public tasksObservalble = this.tasksSubject.asObservable()
