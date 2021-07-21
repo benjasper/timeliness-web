@@ -15,15 +15,14 @@ export class DashboardComponent implements OnInit {
 	public groupedUpcoming: TaskUnwoundDateGroup[] = []
 	public nextUp: TaskUnwound[] = []
 
-	public loadingTasks = false
-	public loadingWorkUnits = false
+	public loadingTasks = true
+	public loadingWorkUnits = true
 
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
 			this.today = date
 		})
 
-		this.loadingTasks = true
 		this.taskService.tasksObservalble.subscribe((tasks) => {
 			if (!tasks) {
 				this.groupedDeadlines = []
@@ -34,7 +33,6 @@ export class DashboardComponent implements OnInit {
 			this.loadingTasks = false
 		})
 
-		this.loadingWorkUnits = true
 		this.taskService.tasksUnwoundObservalble.subscribe((tasks) => {
 			if (!tasks) {
 				this.nextUp = []
