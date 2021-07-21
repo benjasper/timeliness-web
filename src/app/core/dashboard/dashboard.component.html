@@ -88,6 +88,10 @@
 	<div class="dashboard-container deadlines">
 		<h2>Upcoming deadlines</h2>
 		<ul class="deadline-list scroller">
+			<li *ngIf="groupedDeadlines.length === 0" class="list-message">
+				<span class="big">No tasks right now?</span>
+				<span>That's awesome! But in case you have something to do tap "New task" to create a task.</span>
+			</li>
 			<li *ngFor="let deadlineGroup of groupedDeadlines" class="date-group">
 				<span class="date-spacer">
 					{{

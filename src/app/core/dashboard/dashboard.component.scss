@@ -143,6 +143,20 @@
 			margin-bottom: 4rem;
 		}
 
+		.list-message {
+			margin: 0 8rem;
+
+			span {
+				font-size: 1.8rem;
+				color: $color-tertiary;
+
+				&.big {
+					font-size: 2.2rem;
+					font-weight: bold;
+				}
+			}
+		}
+
 		h2 {
 			margin: 0 8rem 2rem 8rem;
 		}
