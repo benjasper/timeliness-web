@@ -20,6 +20,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon'
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { SliderComponent } from './core/dashboard/slider/slider.component'
 import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-completed/stats-week-completed.component'
+import { AngularFireModule } from '@angular/fire'
+import { AngularFireMessagingModule } from '@angular/fire/messaging'
+import { environment } from 'src/environments/environment'
 
 @NgModule({
 	declarations: [
@@ -47,6 +50,8 @@ import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-complet
 			configUrl: './assets/config/svg-preload.json',
 		}),
 		NgSelectModule,
+		AngularFireModule.initializeApp(environment.firebase),
+		AngularFireMessagingModule
 	],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],

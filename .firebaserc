@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "project-tasks-294214": {
+      "hosting": {
+        "timeliness-web": [
+          "project-tasks-294214"
+        ]
+      }
+    }
+  }
+}

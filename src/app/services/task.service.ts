@@ -8,12 +8,13 @@ import { Task, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
+import { UserService } from './user.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private userService: UserService) {
 		this.refreshTasks()
 		this.refreshTasksUnwound()
 		setInterval(() => {
