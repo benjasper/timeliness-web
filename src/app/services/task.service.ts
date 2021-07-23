@@ -18,9 +18,12 @@ export class TaskService {
 		this.refreshTasksUnwound()
 		setInterval(() => {
 			this.nowSubject.next(new Date())
+		}, 30000)
+
+		setInterval(() => {
 			this.getTasksByDeadlines(this.lastTaskSync)
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-		}, 30000)
+		}, 60000)
 	}
 
 	public lastTaskSync: Date = new Date(0)
