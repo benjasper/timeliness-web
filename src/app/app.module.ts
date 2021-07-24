@@ -19,7 +19,8 @@ import { NgSelectModule } from '@ng-select/ng-select'
 import { AngularSvgIconModule } from 'angular-svg-icon'
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { SliderComponent } from './core/dashboard/slider/slider.component'
-import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-completed/stats-week-completed.component'
+import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-completed/stats-week-completed.component';
+import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
 
 @NgModule({
 	declarations: [
@@ -34,6 +35,7 @@ import { StatsWeekCompletedComponent } from './core/dashboard/stats-week-complet
 		SigninComponent,
 		SliderComponent,
 		StatsWeekCompletedComponent,
+  TagComponent,
 	],
 	imports: [
 		BrowserModule,

@@ -6,6 +6,7 @@ import { Subject } from 'rxjs'
 import { switchMap, takeUntil } from 'rxjs/operators'
 import { Duration, DurationUnit } from 'src/app/models/duration'
 import { EventModified, Task, TaskModified } from 'src/app/models/task'
+import { Tag } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 
@@ -30,6 +31,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	loaded = false
 	modalBackground = false
 	isNew = false
+
+	emptyTag: Tag = {
+		id: '',
+		value: '',
+		lastModifiedAt: '',
+		color: '',
+		createdAt: '',
+	}
+
+	public tags: Tag[] = []
 
 	public today = new Date()
 	public durations: Duration[] = []
@@ -119,6 +130,21 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			})
 		})
 
+		this.taskService.tagsObservable.subscribe((newTags) => {
+			if (!this.task) {
+				return
+			}
+
+			this.tags = []
+
+			this.task.tags.forEach((id) => {
+				const foundTag = newTags.find((x) => x.id === id)
+				if (foundTag) {
+					this.tags.push(foundTag)
+				}
+			})
+		})
+
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
 			this.today = date
 		})
@@ -195,6 +221,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	private patchForm(task: Task): void {
+		this.tags = []
+		task.tags.forEach((id) => {
+			const tag = this.taskService.getTag(id)
+			if (tag) {
+				this.tags.push(tag)
+			}
+		})
+
 		this.editTask.setValue({
 			name: task.name,
 			description: task.description,
@@ -203,6 +237,28 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			priority: task.priority,
 		})
 		this.generateDurations(task)
+	}
+
+	public changeTag(tag: Tag, newValue: string) {
+		if (tag.id === '') {
+			const newTag: Tag = {
+				id: '123',
+				value: newValue,
+				lastModifiedAt: '',
+				color: '',
+				createdAt: '',
+			}
+
+			this.tags.push(newTag)
+		}
+	}
+
+	public deleteTag(id: string) {
+		if (id === '') {
+			return
+		}
+		console.log(id)
+		console.log(this.tags)
 	}
 
 	public close(): boolean {

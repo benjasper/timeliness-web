@@ -1,0 +1,66 @@
+@import '../../../../../variables.scss';
+
+.tag {
+	padding: 1rem 2.5rem;
+	border-radius: 5rem;
+	color: $color-primary;
+	background-color: $color-primary-pastelle;
+	transition: all 0.2s;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+
+	display: flex;
+	flex-flow: row;
+
+	&.new {
+		background-color: $color-light-grey;
+	}
+
+	&.isFocused {
+		opacity: 1 !important;
+	}
+
+	span {
+		font-size: 1.6rem;
+	}
+
+	.hashtag {
+		font-weight: bolder;
+	}
+
+	.tag-content {
+		padding: 0.1rem;
+		border: none;
+		outline: none;
+
+		&[contentEditable='true']:empty:not(:focus):before {
+			content: attr(placeholder);
+			color: $color-tertiary;
+			cursor: text;
+		}
+
+		&[contentEditable='true']:empty:before {
+			content: attr(placeholder);
+			color: $color-tertiary;
+			cursor: text;
+		}
+	}
+
+	.controls {
+		display: flex;
+		flex-flow: row;
+		margin-left: 0.5rem;
+
+		button {
+			border-radius: 2rem;
+			padding: 0.8rem;
+			margin: 0 0.5rem;
+
+			.img {
+				width: 1rem;
+				height: 1rem;
+				margin: 0;
+			}
+		}
+	}
+}

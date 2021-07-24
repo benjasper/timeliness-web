@@ -1,0 +1,7 @@
+<div class="tag" draggable="true" [class.new]="new" [class.isFocused]="isFocused" [ngClass]="getColorClass('background')">
+	<span class="hashtag">#</span><span class="tag-content" (focus)="focus($event)" (blur)="leaveFocus($event)" contenteditable="true" [textContent]="actualContent" (input)="logInput($event)" placeholder="Add tag"></span>
+	<div *ngIf="isFocused" class="controls">
+		<button class="btn small" [disabled]="!allowSave" (click)="save($event)"><svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon></button>
+		<button class="btn small" (click)="delete($event)"><svg-icon class="img" src="/assets/icons/icon-trash.svg"></svg-icon></button>
+	</div>
+</div>

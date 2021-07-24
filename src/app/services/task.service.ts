@@ -91,6 +91,10 @@ export class TaskService {
 			})
 	}
 
+	public getTag(id: string): Tag | undefined {
+		return this.tagsSubject.getValue().find((x) => x.id === id)
+	}
+
 	private async getTags(sync?: Date): Promise<void> {
 		const filters = []
 

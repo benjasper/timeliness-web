@@ -100,16 +100,25 @@
 			}
 		}
 
-		.priority {
-			label {
-				padding-left: 0;
+		.tags {
+			width: 100%;
+
+			.tags-container {
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
 			}
 
-			input {
-				margin-top: 1.5rem;
-				padding: 0.6rem 0;
-				width: 20rem;
-				background: linear-gradient(90deg, $color-green 0%, $color-yellow 50%, $color-red 100%);
+			::ng-deep {
+				&:hover {
+					.tag.new {
+						opacity: 1;
+					}
+				}
+
+				.tag.new {
+					opacity: 0;
+				}
 			}
 		}
 
