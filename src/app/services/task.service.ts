@@ -8,14 +8,17 @@ import { Task, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
+import { Tag } from '../models/tag'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
 	constructor(private http: HttpClient) {
-		this.refreshTasks()
-		this.refreshTasksUnwound()
+		this.getTags()
+		this.getTasksByDeadlines()
+		this.getTasksByWorkunits()
+
 		setInterval(() => {
 			this.nowSubject.next(new Date())
 		}, 30000)
@@ -28,24 +31,17 @@ export class TaskService {
 
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
+	public lastTagSync: Date = new Date(0)
 
 	private tasksSubject = new BehaviorSubject<Task[] | undefined>(undefined)
 	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[] | undefined>(undefined)
 	private nowSubject = new Subject<Date>()
+	private tagsSubject = new BehaviorSubject<Tag[]>([])
 
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 	public now = this.nowSubject.asObservable()
-
-	public refreshTasks(): void {
-		this.tasksSubject.next(undefined)
-		this.getTasksByDeadlines()
-	}
-
-	public refreshTasksUnwound(): void {
-		this.tasksUnwoundSubject.next(undefined)
-		this.getTasksByWorkunits()
-	}
+	public tagsObservable = this.tagsSubject.asObservable()
 
 	private publishTasks(tasks: Task[]): void {
 		this.tasksSubject.next(undefined)
@@ -64,7 +60,7 @@ export class TaskService {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
 		}
 
-		this.lastTaskSync = new Date()
+		this.lastTagSync = new Date()
 
 		this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
@@ -92,6 +88,40 @@ export class TaskService {
 				}
 
 				this.publishTasks(response.results)
+			})
+	}
+
+	private async getTags(sync?: Date): Promise<void> {
+		const filters = []
+
+		if (sync) {
+			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+		}
+
+		this.lastTaskSync = new Date()
+
+		this.http
+			.get<TagsGetResponse>(`${environment.apiBaseUrl}/v1/tags?` + filters.join('&'))
+			.pipe(retry(3), catchError(this.handleError))
+			.subscribe((response) => {
+				if (sync) {
+					if (response.pagination.resultCount === 0) {
+						return
+					}
+
+					let tags: Tag[] = this.tagsSubject.getValue() ?? []
+
+					response.results.forEach((syncTag: Tag) => {
+						tags = tags.filter((x) => x.id !== syncTag.id)
+					})
+
+					tags.push(...response.results)
+
+					this.tagsSubject.next(tags)
+					return
+				}
+
+				this.tagsSubject.next(response.results)
 			})
 	}
 
@@ -251,4 +281,9 @@ interface TasksGetResponse {
 interface TasksByWorkunitsGetResponse {
 	pagination: Pagination
 	results: TaskUnwound[]
+}
+
+interface TagsGetResponse {
+	pagination: Pagination
+	results: Tag[]
 }
