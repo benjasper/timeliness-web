@@ -106,11 +106,20 @@
 		overflow: hidden;
 		margin-right: 8rem;
 
+		@media (max-width: 1399.98px) {
+			flex-flow: column;
+		}
+
 		.upcoming-workunits {
 			width: 50%;
 			display: flex;
 			flex-flow: column;
 			height: 100%;
+
+			@media (max-width: 1399.98px) {
+				height: 50%;
+				width: 100%;
+			}
 		}
 
 		.section-stats {
