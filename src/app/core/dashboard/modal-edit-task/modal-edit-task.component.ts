@@ -248,9 +248,15 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					createdAt: '',
 				})
 			}
+		} else {
+			const newTag = Object.assign({}, tag)
 
-			this.editTask.markAsDirty()
+			newTag.value = newValue
+			const index = this.tags.findIndex((x) => x.id === tag.id)
+			this.tags[index] = newTag
 		}
+
+		this.editTask.markAsDirty()
 	}
 
 	public deleteTag(id: string, value: string) {
@@ -320,9 +326,34 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 						value: tag.value,
 						color: tag.color,
 					})
-					.toPromise().then(newTag => {
-						this.tags = this.tags.filter(x => x.value !== newTag.value)
+					.toPromise()
+					.then((newTag) => {
+						this.tags = this.tags.filter((x) => x.value !== newTag.value)
 						this.tags.push(newTag)
+					})
+			})
+		)
+
+		const potentiallyChangedTags = this.tags.filter((x) => x.id !== '')
+		await Promise.all(
+			potentiallyChangedTags.map(async (potentiallyChangedTag) => {
+				const original = this.taskService.getTag(potentiallyChangedTag.id)
+				const changedTag: TagModified = {}
+
+				if (original?.color !== potentiallyChangedTag.color) {
+					changedTag.color = potentiallyChangedTag.color
+				}
+
+				if (original?.value !== potentiallyChangedTag.value) {
+					changedTag.value = potentiallyChangedTag.value
+				}
+
+				await this.taskService
+					.changeTag(potentiallyChangedTag.id, changedTag)
+					.toPromise()
+					.then((newTag) => {
+						const index = this.tags.findIndex((x) => x.id !== newTag.id)
+						this.tags[index] = newTag
 					})
 			})
 		)

@@ -131,6 +131,21 @@ export class TaskService {
 		this.tagsSubject.next(newTags)
 	}
 
+	public changeTag(id: string, tag: TagModified): Observable<Tag> {
+		const observable = this.http
+			.patch<Tag>(`${environment.apiBaseUrl}/v1/tags/${id}`, JSON.stringify(tag))
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((updatedTag) => {
+			const newTags = this.tagsSubject.getValue().filter(x => x.id !== id)
+			newTags.push(updatedTag)
+
+			this.tagsSubject.next(newTags)
+		})
+
+		return observable
+	}
+
 	private async getTags(sync?: Date): Promise<void> {
 		const filters = []
 

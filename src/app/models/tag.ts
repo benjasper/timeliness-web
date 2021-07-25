@@ -7,6 +7,6 @@ export interface Tag {
 }
 
 export interface TagModified {
-	value: string
-	color: string
+	value?: string
+	color?: string
 }
