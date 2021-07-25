@@ -257,7 +257,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		if (id === '') {
 			return
 		}
-		this.tags = this.tags.filter(x => x.value !== value)
+		this.tags = this.tags.filter((x) => x.value !== value)
+		this.taskService.deleteTagFromTask(id)
 		this.editTask.markAsDirty()
 	}
 
@@ -320,7 +321,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 						color: tag.color,
 					})
 					.toPromise().then(newTag => {
-						this.tags = this.tags.filter(x => x.value === newTag.value)
+						this.tags = this.tags.filter(x => x.value !== newTag.value)
 						this.tags.push(newTag)
 					})
 			})
@@ -328,7 +329,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 		let newTagsHash = ''
 		this.tags.forEach((x) => (newTagsHash += x.id))
-		
+
 		const originalTagsHash = this.task.tags.join()
 
 		if (newTagsHash !== originalTagsHash) {

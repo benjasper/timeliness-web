@@ -31,7 +31,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 	}
 
 	@HostListener('document:keydown', ['$event'])
-	handleKeypresses(event: KeyboardEvent): void {
+	handleKeypresses(event: any): void {
 		if (event.key === 'Enter' && this.isFocused) {
 			event.preventDefault()
 			this.save(event)
@@ -68,7 +68,6 @@ export class TagComponent extends TaskComponent implements OnInit {
 	}
 
 	focus(event: any) {
-		console.log("FOCUS")
 		this.isFocused = true
 	}
 

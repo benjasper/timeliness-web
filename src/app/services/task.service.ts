@@ -122,6 +122,15 @@ export class TaskService {
 		return observable
 	}
 
+	public deleteTagFromTask(id: string): void {
+		const tasksWithTag = this.tasksSubject.getValue()?.filter(x => x.tags.includes(id))
+		if (tasksWithTag && tasksWithTag.length > 1) {
+			return
+		}
+		const newTags = this.tagsSubject.getValue().filter(x => x.id !== id)
+		this.tagsSubject.next(newTags)
+	}
+
 	private async getTags(sync?: Date): Promise<void> {
 		const filters = []
 

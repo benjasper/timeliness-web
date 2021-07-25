@@ -473,6 +473,14 @@ $colors: (
 		'light': $color-pastelle-yellow,
 		'dark': $color-pastelle-yellow-dark,
 	),
+	'green': (
+		'light': $color-pastelle-green,
+		'dark': $color-pastelle-green-dark,
+	),
+	'violet': (
+		'light': $color-pastelle-violet,
+		'dark': $color-pastelle-violet-dark,
+	),
 );
 
 @each $name, $map in $colors {
