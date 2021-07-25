@@ -1,5 +1,6 @@
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { TaskComponent } from 'src/app/core/task.component'
 import { Tag } from 'src/app/models/tag'
 
 @Component({
@@ -7,8 +8,10 @@ import { Tag } from 'src/app/models/tag'
 	templateUrl: './tag.component.html',
 	styleUrls: ['./tag.component.scss'],
 })
-export class TagComponent implements OnInit {
-	constructor() {}
+export class TagComponent extends TaskComponent implements OnInit {
+	constructor() {
+		super()
+	}
 
 	actualContent = ""
 
@@ -57,7 +60,8 @@ export class TagComponent implements OnInit {
 	}
 
 	leaveFocus(event: any) {
-		if (event.relatedTarget) {
+		console.log(event)
+		if (event.relatedTarget && event.relatedTarget.localName === "button") {
 			return
 		}
 
@@ -72,9 +76,5 @@ export class TagComponent implements OnInit {
 		if (this.tag.id === "") {
 			this.new = true
 		}
-	}
-
-	getColorClass(kind: string): string {
-		return this.tag.color + '-' + kind
 	}
 }

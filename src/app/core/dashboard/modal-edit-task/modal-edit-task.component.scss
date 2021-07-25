@@ -17,7 +17,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 95rem;
+	width: 110rem;
 
 	box-shadow: $box-shadow;
 	border-radius: 1.5rem;
@@ -112,11 +112,13 @@
 			::ng-deep {
 				&:hover {
 					.tag.new {
+						visibility: visible;
 						opacity: 1;
 					}
 				}
 
 				.tag.new {
+					visibility: hidden;
 					opacity: 0;
 				}
 			}

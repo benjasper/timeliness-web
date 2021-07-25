@@ -30,4 +30,13 @@ export class TaskComponent {
 
 		return percentage.toFixed(0)
 	}
+
+	getColorClass(color: string, kind: string): string {
+		if (color === '') {
+			color = 'blue'
+		}
+		return color + '-' + kind
+	}
+
+	
 }

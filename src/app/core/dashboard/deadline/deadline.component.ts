@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
+import { Tag } from 'src/app/models/tag'
 import { Task } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
@@ -13,8 +14,25 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 		super()
 	}
 
+	tag?: Tag
+
 	@Input() task!: Task
 	@Input() loading = false
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		if (this.loading) {
+			return
+		}
+
+		if (this.task.tags[0]) {
+			this.tag = this.taskService.getTag(this.task.tags[0])
+
+			this.taskService.tagsObservable.subscribe(newTags => {
+				const foundTag = newTags.find(x => x.id === this.task.tags[0])
+				if (foundTag) {
+					this.tag = foundTag
+				}
+			})
+		}
+	}
 }
