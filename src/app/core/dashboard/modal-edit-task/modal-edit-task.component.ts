@@ -340,19 +340,26 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				const original = this.taskService.getTag(potentiallyChangedTag.id)
 				const changedTag: TagModified = {}
 
+				let changed = false
 				if (original?.color !== potentiallyChangedTag.color) {
 					changedTag.color = potentiallyChangedTag.color
+					changed = true
 				}
 
 				if (original?.value !== potentiallyChangedTag.value) {
 					changedTag.value = potentiallyChangedTag.value
+					changed = true
+				}
+
+				if (!changed) {
+					return
 				}
 
 				await this.taskService
 					.changeTag(potentiallyChangedTag.id, changedTag)
 					.toPromise()
 					.then((newTag) => {
-						const index = this.tags.findIndex((x) => x.id !== newTag.id)
+						const index = this.tags.findIndex((x) => x.id === newTag.id)
 						this.tags[index] = newTag
 					})
 			})
