@@ -123,11 +123,11 @@ export class TaskService {
 	}
 
 	public deleteTagFromTask(id: string): void {
-		const tasksWithTag = this.tasksSubject.getValue()?.filter(x => x.tags.includes(id))
+		const tasksWithTag = this.tasksSubject.getValue()?.filter((x) => x.tags.includes(id))
 		if (tasksWithTag && tasksWithTag.length > 1) {
 			return
 		}
-		const newTags = this.tagsSubject.getValue().filter(x => x.id !== id)
+		const newTags = this.tagsSubject.getValue().filter((x) => x.id !== id)
 		this.tagsSubject.next(newTags)
 	}
 
@@ -136,8 +136,18 @@ export class TaskService {
 			.patch<Tag>(`${environment.apiBaseUrl}/v1/tags/${id}`, JSON.stringify(tag))
 			.pipe(share(), catchError(this.handleError))
 
+		if (tag.value) {
+			const foundTag = this.getTagByValue(tag.value)
+			if (foundTag) {
+				return new Observable<Tag>((s) => {
+					s.next(this.getTag(id))
+					s.complete()
+				})
+			}
+		}
+
 		observable.subscribe((updatedTag) => {
-			const newTags = this.tagsSubject.getValue().filter(x => x.id !== id)
+			const newTags = this.tagsSubject.getValue().filter((x) => x.id !== id)
 			newTags.push(updatedTag)
 
 			this.tagsSubject.next(newTags)

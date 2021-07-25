@@ -249,10 +249,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				})
 			}
 		} else {
+			const index = this.tags.findIndex((x) => x.id === tag.id)
 			const newTag = Object.assign({}, tag)
+			const existingTag = this.taskService.getTagByValue(newValue)
+			if (existingTag) {
+				console.log(newTag)
+				this.tags[index] = newTag
+				return
+			}
 
 			newTag.value = newValue
-			const index = this.tags.findIndex((x) => x.id === tag.id)
 			this.tags[index] = newTag
 		}
 
