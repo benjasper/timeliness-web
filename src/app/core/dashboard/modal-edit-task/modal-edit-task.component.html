@@ -56,7 +56,7 @@
 					<label for="modal-progress">Progress</label>
 					<label class="progress-value">{{ getProgress(task) }}%</label>
 				</div>
-				<div class="progress-container">
+				<div class="progress-container" [ngClass]="getColorClass(tags[0] ? tags[0].color: '', 'color')">
 					<progress
 						id="modal-progress"
 						class="large"
