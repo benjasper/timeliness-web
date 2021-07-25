@@ -60,7 +60,7 @@ export class TaskService {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
 		}
 
-		this.lastTagSync = new Date()
+		this.lastTaskSync = new Date()
 
 		this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
@@ -128,7 +128,7 @@ export class TaskService {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
 		}
 
-		this.lastTaskSync = new Date()
+		this.lastTagSync = new Date()
 
 		this.http
 			.get<TagsGetResponse>(`${environment.apiBaseUrl}/v1/tags?` + filters.join('&'))

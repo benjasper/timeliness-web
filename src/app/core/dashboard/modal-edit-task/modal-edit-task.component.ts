@@ -68,11 +68,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	@HostListener('document:keydown', ['$event'])
-	handleKeypresses(event: KeyboardEvent): void {
-		console.log(event)
-	}
-
-	@HostListener('document:keydown', ['$event'])
 	onKeyDown($event: KeyboardEvent): void {
 		// Detect platform
 		if (navigator.platform.match('Mac')) {
@@ -264,8 +259,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		}
 		this.tags = this.tags.filter(x => x.value !== value)
 		this.editTask.markAsDirty()
-		console.log(id)
-		console.log(this.tags)
 	}
 
 	public close(): boolean {
@@ -335,10 +328,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 		let newTagsHash = ''
 		this.tags.forEach((x) => (newTagsHash += x.id))
-		console.log(newTagsHash)
 		
 		const originalTagsHash = this.task.tags.join()
-		console.log(originalTagsHash)
 
 		if (newTagsHash !== originalTagsHash) {
 			updatingTask.tags = []
