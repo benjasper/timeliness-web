@@ -15,9 +15,10 @@ import { Tag, TagModified } from '../models/tag'
 })
 export class TaskService {
 	constructor(private http: HttpClient) {
-		this.getTags()
-		this.getTasksByDeadlines()
-		this.getTasksByWorkunits()
+		this.getTags().finally(() => {
+			this.getTasksByDeadlines()
+			this.getTasksByWorkunits()
+		})
 
 		setInterval(() => {
 			this.nowSubject.next(new Date())

@@ -42,8 +42,6 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		}
 
 		if (this.task.tags[0]) {
-			this.tag = this.taskService.getTag(this.task.tags[0])
-
 			this.taskService.tagsObservable.subscribe(newTags => {
 				const foundTag = newTags.find(x => x.id === this.task.tags[0])
 				if (foundTag) {
