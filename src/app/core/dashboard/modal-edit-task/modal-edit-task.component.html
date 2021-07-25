@@ -42,11 +42,9 @@
 			</div>
 			<div class="tags" [class.empty]="tags.length === 0">
 				<label for="tags">Tags</label>
-				<ul class="tags-container">
-					<li *ngFor="let tag of tags">
-						<app-tag [tag]="tag" (valueChange)="changeTag(tag, $event)" (onDelete)="deleteTag($event)"></app-tag>
-					</li>
-					<app-tag class="new" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)" (onDelete)="deleteTag($event)"></app-tag>
+				<ul class="tags-container scroller">
+					<app-tag *ngFor="let tag of tags" [tag]="tag" (valueChange)="changeTag(tag, $event)" (onDelete)="deleteTag(tag.id, tag.value)"></app-tag>
+					<app-tag class="new" [new]="true" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)"></app-tag>
 				</ul>
 			</div>
 		</div>
@@ -72,7 +70,6 @@
 		<label>Workunits</label>
 		<app-slider
 			[listArray]="task.workUnits"
-			[showButtons]="task.workUnits.length > 2"
 			[startsAtIndex]="getStartsAtWorkUnit()"
 		>
 			<ul class="workunits-list">

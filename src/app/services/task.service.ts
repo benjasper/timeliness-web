@@ -8,7 +8,7 @@ import { Task, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
-import { Tag } from '../models/tag'
+import { Tag, TagModified } from '../models/tag'
 
 @Injectable({
 	providedIn: 'root',
@@ -93,6 +93,32 @@ export class TaskService {
 
 	public getTag(id: string): Tag | undefined {
 		return this.tagsSubject.getValue().find((x) => x.id === id)
+	}
+
+	public getTagByValue(value: string): Tag | undefined {
+		return this.tagsSubject.getValue().find((x) => x.value === value)
+	}
+
+	public newTag(tag: TagModified): Observable<Tag> {
+		const foundTag = this.tagsSubject.getValue().find((x) => x.value === tag.value)
+		if (foundTag) {
+			return new Observable<Tag>((s) => {
+				s.next(foundTag)
+				s.complete()
+			})
+		}
+
+		const observable = this.http
+			.post<Tag>(`${environment.apiBaseUrl}/v1/tags`, JSON.stringify(tag))
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((tag) => {
+			const tags = this.tagsSubject.getValue()
+			tags.push(tag)
+			this.tagsSubject.next(tags)
+		})
+
+		return observable
 	}
 
 	private async getTags(sync?: Date): Promise<void> {

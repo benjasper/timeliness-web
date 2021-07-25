@@ -5,3 +5,8 @@ export interface Tag {
 	createdAt: string
 	lastModifiedAt: string
 }
+
+export interface TagModified {
+	value: string
+	color: string
+}

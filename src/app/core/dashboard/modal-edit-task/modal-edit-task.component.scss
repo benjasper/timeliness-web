@@ -107,20 +107,8 @@
 				width: 100%;
 				display: flex;
 				flex-wrap: wrap;
-			}
-
-			::ng-deep {
-				&:hover {
-					.tag.new {
-						visibility: visible;
-						opacity: 1;
-					}
-				}
-
-				.tag.new {
-					visibility: hidden;
-					opacity: 0;
-				}
+				height: 12rem;
+				overflow-y: auto;
 			}
 		}
 

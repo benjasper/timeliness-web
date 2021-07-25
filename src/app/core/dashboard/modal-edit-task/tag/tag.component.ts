@@ -1,5 +1,5 @@
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { TaskComponent } from 'src/app/core/task.component'
 import { Tag } from 'src/app/models/tag'
 
@@ -13,40 +13,52 @@ export class TagComponent extends TaskComponent implements OnInit {
 		super()
 	}
 
-	actualContent = ""
+	actualContent = ''
 
 	@Input() tag!: Tag
+	@Input() new = false
 	@Output() valueChange = new EventEmitter<string>()
 	@Output() onDelete = new EventEmitter<string>()
 
+	@ViewChild('input') input!: ElementRef;
+
 	isFocused = false
 	allowSave = false
-	new = false
 
-	@HostListener("click", ["$event"])
-    public onClick(event: any): void
-    {
-        event.stopPropagation();
-    }
+	@HostListener('click', ['$event'])
+	public onClick(event: any): void {
+		event.stopPropagation()
+	}
+
+	@HostListener('document:keydown', ['$event'])
+	handleKeypresses(event: KeyboardEvent): void {
+		if (event.key === 'Enter' && this.isFocused) {
+			event.preventDefault()
+			this.save(event)
+		}
+	}
 
 	logInput($event: any) {
 		this.actualContent = $event.target.textContent
-		if ((this.actualContent !== this.tag.value) && this.actualContent !== "") {
+		if (this.actualContent !== this.tag.value && this.actualContent !== '') {
 			this.allowSave = true
 		} else {
 			this.allowSave = false
 		}
 	}
 
-	save(event: Event) {
-		const id = this.tag.id
+	save(event: any) {
+		event.stopPropagation()
+		event.preventDefault()
+
 		this.allowSave = false
 		this.isFocused = false
 		this.valueChange.emit(this.actualContent)
-		
-		if (id === "") {
-			this.actualContent = ""
+
+		if (this.new) {
+			this.actualContent = ''
 		}
+		this.input.nativeElement.blur()
 	}
 
 	delete(event: Event) {
@@ -56,12 +68,12 @@ export class TagComponent extends TaskComponent implements OnInit {
 	}
 
 	focus(event: any) {
+		console.log("FOCUS")
 		this.isFocused = true
 	}
 
 	leaveFocus(event: any) {
-		console.log(event)
-		if (event.relatedTarget && event.relatedTarget.localName === "button") {
+		if (event.relatedTarget && event.relatedTarget.localName === 'button') {
 			return
 		}
 
@@ -73,8 +85,5 @@ export class TagComponent extends TaskComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.actualContent = this.tag.value
-		if (this.tag.id === "") {
-			this.new = true
-		}
 	}
 }

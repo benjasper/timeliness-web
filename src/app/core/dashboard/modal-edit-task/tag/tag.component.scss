@@ -6,14 +6,20 @@
 	color: $color-primary;
 	background-color: $color-primary-pastelle;
 	transition: all 0.2s;
-	margin-right: 1rem;
+	margin-left: 1rem;
 	margin-bottom: 1rem;
+	flex: 1;
 
 	display: flex;
 	flex-flow: row;
 
 	&.new {
 		background-color: $color-light-grey;
+		opacity: 0;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 
 	&.isFocused {
@@ -32,6 +38,7 @@
 		padding: 0.1rem;
 		border: none;
 		outline: none;
+		white-space: nowrap;
 
 		&[contentEditable='true']:empty:not(:focus):before {
 			content: attr(placeholder);

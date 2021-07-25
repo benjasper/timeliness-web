@@ -6,7 +6,7 @@ import { Subject } from 'rxjs'
 import { switchMap, takeUntil } from 'rxjs/operators'
 import { Duration, DurationUnit } from 'src/app/models/duration'
 import { EventModified, Task, TaskModified } from 'src/app/models/task'
-import { Tag } from 'src/app/models/tag'
+import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 
@@ -241,22 +241,29 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	public changeTag(tag: Tag, newValue: string) {
 		if (tag.id === '') {
-			const newTag: Tag = {
-				id: '123',
-				value: newValue,
-				lastModifiedAt: '',
-				color: '',
-				createdAt: '',
+			const existingTag = this.taskService.getTagByValue(newValue)
+			if (existingTag) {
+				this.tags.push(existingTag)
+			} else {
+				this.tags.push({
+					id: '',
+					value: newValue,
+					color: 'blue',
+					lastModifiedAt: '',
+					createdAt: '',
+				})
 			}
 
-			this.tags.push(newTag)
+			this.editTask.markAsDirty()
 		}
 	}
 
-	public deleteTag(id: string) {
+	public deleteTag(id: string, value: string) {
 		if (id === '') {
 			return
 		}
+		this.tags = this.tags.filter(x => x.value !== value)
+		this.editTask.markAsDirty()
 		console.log(id)
 		console.log(this.tags)
 	}
@@ -268,13 +275,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public undo(): void {
-		this.editTask.reset({
-			name: this.task.name,
-			description: this.task.description,
-			dueAt: this.task.dueAt.date.start.toDate().toISOString().slice(0, -1),
-			workload: this.task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
-			priority: this.task.priority,
-		})
+		this.patchForm(this.task)
+		this.editTask.markAsPristine()
 
 		this.generateDurations(this.task)
 	}
@@ -293,7 +295,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		})
 	}
 
-	public save(): boolean {
+	public async save(): Promise<boolean> {
 		if (!this.editTask.dirty) {
 			return false
 		}
@@ -315,6 +317,35 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.editTask.get('workload')?.dirty || this.isNew
 				? this.editTask.get('workload')?.value.toDuration().toNanoseconds()
 				: undefined
+
+		const newTags = this.tags.filter((x) => x.id === '')
+		await Promise.all(
+			newTags.map(async (tag) => {
+				await this.taskService
+					.newTag({
+						value: tag.value,
+						color: tag.color,
+					})
+					.toPromise().then(newTag => {
+						this.tags = this.tags.filter(x => x.value === newTag.value)
+						this.tags.push(newTag)
+					})
+			})
+		)
+
+		let newTagsHash = ''
+		this.tags.forEach((x) => (newTagsHash += x.id))
+		console.log(newTagsHash)
+		
+		const originalTagsHash = this.task.tags.join()
+		console.log(originalTagsHash)
+
+		if (newTagsHash !== originalTagsHash) {
+			updatingTask.tags = []
+			this.tags.forEach((tag) => {
+				updatingTask.tags?.push(tag.id)
+			})
+		}
 
 		if (this.isNew) {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
