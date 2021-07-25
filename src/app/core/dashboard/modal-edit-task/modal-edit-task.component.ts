@@ -330,9 +330,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		let newTagsHash = ''
 		this.tags.forEach((x) => (newTagsHash += x.id))
 
-		const originalTagsHash = this.task.tags.join()
+		const originalTagsHash = this.task?.tags.join('')
 
-		if (newTagsHash !== originalTagsHash) {
+		if (newTagsHash !== originalTagsHash || this.isNew) {
 			updatingTask.tags = []
 			this.tags.forEach((tag) => {
 				updatingTask.tags?.push(tag.id)
