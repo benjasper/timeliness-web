@@ -4,6 +4,7 @@ export interface Tag {
 	color: string
 	createdAt: string
 	lastModifiedAt: string
+	deleted: boolean
 }
 
 export interface TagModified {

@@ -13,6 +13,7 @@ export interface Task {
 	workloadOverall: number
 	dueAt: Event
 	workUnits: WorkUnit[]
+	deleted: boolean
 }
 
 export interface TaskUnwound extends Task {

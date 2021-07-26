@@ -55,7 +55,7 @@ export class TaskService {
 	}
 
 	private async getTasksByDeadlines(sync?: Date): Promise<void> {
-		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
+		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `includeDeleted=true`]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -78,7 +78,7 @@ export class TaskService {
 						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					tasks.push(...response.results)
+					tasks.push(...response.results.filter(x => x.deleted === false))
 
 					tasks.sort((a, b) => {
 						return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.end.toDate().getTime()
@@ -88,7 +88,7 @@ export class TaskService {
 					return
 				}
 
-				this.publishTasks(response.results)
+				this.publishTasks(response.results.filter(x => x.deleted === false))
 			})
 	}
 
@@ -191,7 +191,7 @@ export class TaskService {
 	}
 
 	private async getTasksByWorkunits(sync?: Date): Promise<void> {
-		const filters = ['workUnit.isDone=false']
+		const filters = ['workUnit.isDone=false', 'includeDeleted=true']
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -214,7 +214,7 @@ export class TaskService {
 						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					tasks.push(...response.results)
+					tasks.push(...response.results.filter(x => x.deleted === false))
 
 					tasks.sort((a, b) => {
 						return (
@@ -227,7 +227,7 @@ export class TaskService {
 					return
 				}
 
-				this.publishTasksUnwound(response.results)
+				this.publishTasksUnwound(response.results.filter(x => x.deleted === false))
 			})
 	}
 

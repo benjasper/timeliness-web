@@ -38,6 +38,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		lastModifiedAt: '',
 		color: '',
 		createdAt: '',
+		deleted: false
 	}
 
 	public tags: Tag[] = []
@@ -250,6 +251,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					color: 'blue',
 					lastModifiedAt: '',
 					createdAt: '',
+					deleted: false
 				})
 			}
 		} else {
