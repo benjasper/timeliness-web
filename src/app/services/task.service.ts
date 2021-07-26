@@ -55,10 +55,11 @@ export class TaskService {
 	}
 
 	private async getTasksByDeadlines(sync?: Date): Promise<void> {
-		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `includeDeleted=true`]
+		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+			filters.push(`includeDeleted=true`)
 		}
 
 		this.lastTaskSync = new Date()
@@ -88,7 +89,7 @@ export class TaskService {
 					return
 				}
 
-				this.publishTasks(response.results.filter(x => x.deleted === false))
+				this.publishTasks(response.results)
 			})
 	}
 
@@ -191,10 +192,11 @@ export class TaskService {
 	}
 
 	private async getTasksByWorkunits(sync?: Date): Promise<void> {
-		const filters = ['workUnit.isDone=false', 'includeDeleted=true']
+		const filters = ['workUnit.isDone=false']
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+			filters.push(`includeDeleted=true`)
 		}
 
 		this.lastTaskUnwoundSync = new Date()
@@ -227,7 +229,7 @@ export class TaskService {
 					return
 				}
 
-				this.publishTasksUnwound(response.results.filter(x => x.deleted === false))
+				this.publishTasksUnwound(response.results)
 			})
 	}
 
