@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate } from '@angular/animations'
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { TaskComponent } from 'src/app/core/task.component'
@@ -7,6 +8,12 @@ import { Tag } from 'src/app/models/tag'
 	selector: 'app-tag',
 	templateUrl: './tag.component.html',
 	styleUrls: ['./tag.component.scss'],
+	animations: [
+		trigger('appear', [
+			transition(':enter', [style({ opacity: 0 }), animate(200)]),
+			transition(':leave', [animate(200, style({ opacity: 0 }))]),
+		]),
+	],
 })
 export class TagComponent extends TaskComponent implements OnInit {
 	constructor() {

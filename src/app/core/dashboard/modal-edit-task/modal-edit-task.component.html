@@ -44,7 +44,7 @@
 				<label for="tags">Tags</label>
 				<ul class="tags-container scroller">
 					<app-tag *ngFor="let tag of tags" [tag]="tag" (valueChange)="changeTag(tag, $event)" (onDelete)="deleteTag(tag.id, tag.value)"></app-tag>
-					<app-tag class="new" [new]="true" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)"></app-tag>
+					<app-tag class="new" [class.first]="tags.length === 0" [new]="true" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)"></app-tag>
 				</ul>
 			</div>
 		</div>
