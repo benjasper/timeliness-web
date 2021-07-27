@@ -31,6 +31,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	loaded = false
 	modalBackground = false
 	isNew = false
+	loading = false
 
 	emptyTag: Tag = {
 		id: '',
@@ -389,17 +390,21 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			})
 		}
 
+		this.loading = true
+
 		if (this.isNew) {
 			this.taskService.newTask(updatingTask).subscribe((task) => {
 				this.editTask.markAsPristine()
 				this.task = task
 				this.taskId = task.id
 				this.isNew = false
+				this.loading = false
 				this.router.navigate(['dashboard', { outlets: { modal: ['task', task.id] } }])
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
 				this.editTask.markAsPristine()
+				this.loading = false
 			})
 		}
 

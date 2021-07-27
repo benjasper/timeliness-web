@@ -1,4 +1,4 @@
-<div class="modal-container" @modalBackground *ngIf="modalBackground" (click)="close()"></div>
+<div class="modal-container" *ngIf="modalBackground" (click)="close()"></div>
 <form [formGroup]="editTask" class="modal" @flyInOut *ngIf="loaded" (ngSubmit)="save()">
 	<div class="wrapper">
 		<div class="modal-header">
@@ -66,11 +66,18 @@
 			</div>
 		</div>
 	</div>
-	<div *ngIf="task" class="workunits-section">
-		<label>Workunits</label>
+	<div class="workunits-section">
+		<label *ngIf="task">Workunits</label>
+		<ng-container *ngIf="loading">
+			<ul class="workunits-list">
+				<li><app-work-unit-card [loading]="true" [small]="true"></app-work-unit-card></li>
+				<li><app-work-unit-card [loading]="true" [small]="true"></app-work-unit-card></li>
+			</ul>
+		</ng-container>
 		<app-slider
 			[listArray]="task.workUnits"
 			[startsAtIndex]="getStartsAtWorkUnit()"
+			*ngIf="task && !loading"
 		>
 			<ul class="workunits-list">
 				<li *ngFor="let workUnit of task.workUnits; let i = index">
@@ -80,7 +87,7 @@
 		</app-slider>
 	</div>
 	<div class="modal-footer">
-		<button type="submit" class="btn large save" [disabled]="!editTask.valid || !editTask.dirty">
+		<button type="submit" class="btn large save" [disabled]="!editTask.valid || !editTask.dirty || loading">
 			<svg-icon class="img" src="/assets/icons/icon-save.svg"></svg-icon>
 			<span>Save</span>
 		</button>
