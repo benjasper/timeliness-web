@@ -2,7 +2,7 @@ import { trigger, transition, style, animate } from '@angular/animations'
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { TaskComponent } from 'src/app/core/task.component'
-import { Tag } from 'src/app/models/tag'
+import { Tag, TagModified } from 'src/app/models/tag'
 
 @Component({
 	selector: 'app-tag',
@@ -16,25 +16,40 @@ import { Tag } from 'src/app/models/tag'
 	],
 })
 export class TagComponent extends TaskComponent implements OnInit {
-	constructor() {
+	constructor(private elementRef: ElementRef) {
 		super()
 	}
 
+	colorsAvailable: Color[] = [
+		{ name: 'Blue', key: 'blue' },
+		{ name: 'Violet', key: 'violet' },
+		{ name: 'Green', key: 'green' },
+		{ name: 'Yellow', key: 'yellow' },
+		{ name: 'Pink', key: 'pink' },
+	]
+
 	actualContent = ''
+	selectedColor = ''
 
 	@Input() tag!: Tag
 	@Input() new = false
-	@Output() valueChange = new EventEmitter<string>()
+	@Output() valueChange = new EventEmitter<TagModified>()
 	@Output() onDelete = new EventEmitter<string>()
 
-	@ViewChild('input') input!: ElementRef;
+	@ViewChild('input') input!: ElementRef
 
 	isFocused = false
 	allowSave = false
+	showDropdown = false
 
-	@HostListener('click', ['$event'])
-	public onClick(event: any): void {
-		event.stopPropagation()
+	@HostListener('window:click', ['$event'])
+	clickout(event: any) {
+		const clickedInside = this.elementRef.nativeElement.contains(event.target)
+		if (!clickedInside) {
+			this.leaveFocus()
+		} else {
+			this.isFocused = true
+		}
 	}
 
 	@HostListener('document:keydown', ['$event'])
@@ -54,42 +69,64 @@ export class TagComponent extends TaskComponent implements OnInit {
 		}
 	}
 
+	assignColor(event: any, color: string) {
+		event.stopPropagation()
+		event.preventDefault()
+
+		this.selectedColor = color
+		this.allowSave = true
+	}
+
 	save(event: any) {
 		event.stopPropagation()
 		event.preventDefault()
 
-		this.allowSave = false
-		this.isFocused = false
-		this.valueChange.emit(this.actualContent)
+		this.valueChange.emit({ value: this.actualContent, color: this.selectedColor })
 
 		if (this.new) {
 			this.actualContent = ''
+			this.tag.color = ''
 		}
 		this.input.nativeElement.blur()
+		this.leaveFocus()
 	}
 
 	delete(event: Event) {
+		event.stopPropagation()
+		event.preventDefault()
+
 		this.onDelete.emit(this.tag.id)
 		this.allowSave = false
 		this.isFocused = false
 	}
 
-	focus(event: any) {
-		this.isFocused = true
-	}
-
-	leaveFocus(event: any) {
-		if (event.relatedTarget && event.relatedTarget.localName === 'button') {
-			return
-		}
-
+	leaveFocus() {
 		this.isFocused = false
 
 		this.actualContent = this.tag.value
+		this.selectedColor = this.tag.color
 		this.allowSave = false
+		this.showDropdown = false
+	}
+
+	toggleDropdown(event: any, close?: boolean): void {
+		event.stopPropagation()
+		event.preventDefault()
+
+		if (this.showDropdown || close) {
+			this.showDropdown = false
+		} else {
+			this.showDropdown = true
+		}
 	}
 
 	ngOnInit(): void {
 		this.actualContent = this.tag.value
+		this.selectedColor = this.tag.color
 	}
+}
+
+interface Color {
+	name: string
+	key: string
 }

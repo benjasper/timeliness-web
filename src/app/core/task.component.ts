@@ -33,7 +33,7 @@ export class TaskComponent {
 
 	getColorClass(color: string, kind: string): string {
 		if (color === '') {
-			color = 'blue'
+			color = 'no-color'
 		}
 		return color + '-' + kind
 	}

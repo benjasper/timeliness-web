@@ -236,20 +236,20 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.generateDurations(task)
 	}
 
-	public changeTag(tag: Tag, newValue: string) {
+	public changeTag(tag: Tag, newValue: TagModified) {
 		if (this.tags.find(x => x.value === newValue)) {
 			return
 		}
 		
 		if (tag.id === '') {
-			const existingTag = this.taskService.getTagByValue(newValue)
+			const existingTag = this.taskService.getTagByValue(newValue.value ?? '')
 			if (existingTag) {
 				this.tags.push(existingTag)
 			} else {
 				this.tags.push({
 					id: '',
-					value: newValue,
-					color: 'blue',
+					value: newValue.value ?? '',
+					color: newValue.color ?? 'blue',
 					lastModifiedAt: '',
 					createdAt: '',
 					deleted: false
@@ -258,14 +258,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		} else {
 			const index = this.tags.findIndex((x) => x.id === tag.id)
 			const newTag = Object.assign({}, tag)
-			const existingTag = this.taskService.getTagByValue(newValue)
-			if (existingTag) {
-				console.log(newTag)
+			const existingTag = this.taskService.getTagByValue(newValue.value ?? '')
+			if (existingTag && existingTag.color === newValue.color) {
 				this.tags[index] = newTag
 				return
 			}
 
-			newTag.value = newValue
+			newTag.value = newValue.value ?? ''
+			newTag.color = newValue.color ?? ''
 			this.tags[index] = newTag
 		}
 

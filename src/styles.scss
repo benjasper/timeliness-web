@@ -169,6 +169,7 @@ input {
 
 		.ng-option-label {
 			font-size: 1.8rem;
+			font-weight: inherit !important;
 		}
 
 		.ng-option {
@@ -177,11 +178,21 @@ input {
 			padding-right: calc(1.5rem - 1px);
 
 			&:hover {
-				background-color: $color-light-grey;
+				background-color: $color-very-light-grey;
+
+				&.ng-option-selected {
+					.ng-option-label {
+						font-weight: inherit;
+					}
+				}
 			}
 
 			&.ng-option-selected {
 				background-color: $color-light-grey !important;
+
+				.ng-option-label {
+					font-weight: inherit;
+				}
 			}
 		}
 	}
@@ -469,6 +480,10 @@ progress {
 }
 
 $colors: (
+	'blue': (
+		'light': $color-primary-pastelle,
+		'dark': $color-primary,
+	),
 	'yellow': (
 		'light': $color-pastelle-yellow,
 		'dark': $color-pastelle-yellow-dark,
@@ -480,6 +495,10 @@ $colors: (
 	'violet': (
 		'light': $color-pastelle-violet,
 		'dark': $color-pastelle-violet-dark,
+	),
+	'pink': (
+		'light': $color-pastelle-pink,
+		'dark': $color-pastelle-pink-dark,
 	),
 );
 
@@ -523,6 +542,20 @@ $colors: (
 		&:hover,
 		&.active {
 			.calendar-date {
+				border-color: map-get($map, 'dark') !important;
+			}
+		}
+	}
+
+	.#{$name}-border-hover {
+		.color {
+			background-color: map-get($map, 'light') !important;
+			border-color: map-get($map, 'light') !important;
+		}
+
+		&:hover,
+		&.active {
+			.color {
 				border-color: map-get($map, 'dark') !important;
 			}
 		}
