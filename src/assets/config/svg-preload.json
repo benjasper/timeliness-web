@@ -23,6 +23,10 @@
 		{
 			"iconName": "icon-undo",
 			"iconPath": "/assets/icons/icon-undo.svg"
+		},
+		{
+			"iconName": "icon-arrow-down",
+			"iconPath": "/assets/icons/icon-arrow-down.svg"
 		}
 	],
 	"customIcons": []
