@@ -163,8 +163,10 @@ input {
 	.ng-dropdown-panel {
 		&,
 		.ng-dropdown-panel-items {
-			border-bottom-left-radius: 1rem;
-			border-bottom-right-radius: 1rem;
+			border-bottom-left-radius: 1.5rem;
+			border-bottom-right-radius: 0.5rem;
+			border: none;
+			box-shadow: $box-shadow;
 		}
 
 		.ng-option-label {
