@@ -133,7 +133,7 @@ export class TaskService {
 
 	public deleteTagFromTask(id: string): void {
 		const tasksWithTag = this.tasksSubject.getValue()?.filter((x) => x.tags.includes(id))
-		if (tasksWithTag && tasksWithTag.length > 1) {
+		if (tasksWithTag && tasksWithTag.length > 0) {
 			return
 		}
 		const newTags = this.tagsSubject.getValue().filter((x) => x.id !== id)

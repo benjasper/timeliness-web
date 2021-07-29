@@ -39,7 +39,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		lastModifiedAt: '',
 		color: '',
 		createdAt: '',
-		deleted: false
+		deleted: false,
 	}
 
 	public tags: Tag[] = []
@@ -132,14 +132,17 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				return
 			}
 
-			this.tags = []
-
-			this.task.tags.forEach((id) => {
-				const foundTag = newTags.find((x) => x.id === id)
+			const removalList: string[] = []
+			this.tags.forEach((tag, index) => {
+				const foundTag = newTags.find((x) => x.id === tag.id)
 				if (foundTag) {
-					this.tags.push(foundTag)
+					this.tags[index] = foundTag
+				} else {
+					removalList.push(tag.id)
 				}
 			})
+
+			this.tags = this.tags.filter((x) => !removalList.includes(x.id))
 		})
 
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
@@ -237,14 +240,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public changeTag(tag: Tag, newValue: TagModified) {
-		if (this.tags.find(x => x.value === newValue.value)) {
+		if (this.tags.find((x) => x.value === newValue.value)) {
 			return
 		}
-		
+
 		if (tag.id === '') {
 			const existingTag = this.taskService.getTagByValue(newValue.value ?? '')
 			if (existingTag) {
-				this.tags.push(existingTag)
+				const newTag = Object.assign({}, existingTag)
+				newTag.color = newValue.color ?? newTag.color
+				this.tags.push(newTag)
 			} else {
 				this.tags.push({
 					id: '',
@@ -252,7 +257,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					color: newValue.color ?? 'blue',
 					lastModifiedAt: '',
 					createdAt: '',
-					deleted: false
+					deleted: false,
 				})
 			}
 		} else {
@@ -341,6 +346,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					})
 					.toPromise()
 					.then((newTag) => {
+						// TODO: put back into right index
 						this.tags = this.tags.filter((x) => x.value !== newTag.value)
 						this.tags.push(newTag)
 					})
