@@ -13,7 +13,6 @@
 		[textContent]="actualContent"
 		(input)="logInput($event)"
 		(focus)="textFocus($event)"
-		(blur)="textleavesFocus($event)"
 		placeholder="Add a new tag"
 	></span>
 	<div *ngIf="isFocused" class="controls">
@@ -43,7 +42,7 @@
 	</ul>
 </div>
 
-<div *ngIf="showSuggestionDropdown && suggestions.length > 0" class="dropdown suggestion-dropdown scroller">
+<div *ngIf="showSuggestionDropdown && suggestions.length > 0" class="dropdown suggestion-dropdown scroller" #suggestionDropdown>
 	<ul>
 		<li
 			*ngFor="let suggestion of suggestions"

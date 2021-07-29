@@ -40,6 +40,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 	@Output() onDelete = new EventEmitter<string>()
 
 	@ViewChild('input') input!: ElementRef
+	@ViewChild('suggestionDropdown') suggestionDropdown!: ElementRef
 
 	isFocused = false
 	allowSave = false
@@ -123,6 +124,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 		if (this.showColorDropdown || close) {
 			this.showColorDropdown = false
 		} else {
+			this.showSuggestionDropdown = false
 			this.showColorDropdown = true
 		}
 	}
@@ -157,10 +159,6 @@ export class TagComponent extends TaskComponent implements OnInit {
 		this.getSuggestions()
 		this.showSuggestionDropdown = true
 		this.showColorDropdown = false
-	}
-
-	textleavesFocus(event: Event) {
-		this.showSuggestionDropdown = false
 	}
 
 	ngOnInit(): void {
