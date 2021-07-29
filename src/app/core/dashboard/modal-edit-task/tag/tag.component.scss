@@ -134,7 +134,7 @@
 	}
 
 	.color-dropdown {
-		transform: translateX(80%);
+		right: 0;
 
 		ul {
 			li {
@@ -152,7 +152,7 @@
 	.suggestion-dropdown {
 		overflow-y: auto;
 		max-height: 30rem;
-		transform: translateX(20%);
+		left: 2rem;
 
 		ul {
 			li {
