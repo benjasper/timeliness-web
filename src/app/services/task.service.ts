@@ -101,6 +101,14 @@ export class TaskService {
 		return this.tagsSubject.getValue().find((x) => x.value === value)
 	}
 
+	public getTagsBySearch(value: string): Tag[] {
+		return this.tagsSubject.getValue().filter((x) => x.value.includes(value)).sort((a,b) => {return a.value.localeCompare(b.value)})
+	}
+
+	public getAllTags(): Tag[] {
+		return this.tagsSubject.getValue()
+	}
+
 	public newTag(tag: TagModified): Observable<Tag> {
 		const foundTag = this.tagsSubject.getValue().find((x) => x.value === tag.value)
 		if (foundTag) {

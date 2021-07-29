@@ -3,6 +3,7 @@ import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { TaskComponent } from 'src/app/core/task.component'
 import { Tag, TagModified } from 'src/app/models/tag'
+import { TaskService } from 'src/app/services/task.service'
 
 @Component({
 	selector: 'app-tag',
@@ -16,7 +17,7 @@ import { Tag, TagModified } from 'src/app/models/tag'
 	],
 })
 export class TagComponent extends TaskComponent implements OnInit {
-	constructor(private elementRef: ElementRef) {
+	constructor(private elementRef: ElementRef, private taskService: TaskService) {
 		super()
 	}
 
@@ -30,9 +31,11 @@ export class TagComponent extends TaskComponent implements OnInit {
 
 	actualContent = ''
 	selectedColor = ''
+	suggestions: Tag[] = []
 
 	@Input() tag!: Tag
 	@Input() new = false
+	@Input() existingTags: Tag[]  = []
 	@Output() valueChange = new EventEmitter<TagModified>()
 	@Output() onDelete = new EventEmitter<string>()
 
@@ -40,10 +43,11 @@ export class TagComponent extends TaskComponent implements OnInit {
 
 	isFocused = false
 	allowSave = false
-	showDropdown = false
+	showColorDropdown = false
+	showSuggestionDropdown = false
 
-	@HostListener('window:click', ['$event'])
-	clickout(event: any) {
+	@HostListener('document:click', ['$event'])
+	clickout(event: Event) {
 		const clickedInside = this.elementRef.nativeElement.contains(event.target)
 		if (!clickedInside) {
 			this.leaveFocus()
@@ -53,31 +57,33 @@ export class TagComponent extends TaskComponent implements OnInit {
 	}
 
 	@HostListener('document:keydown', ['$event'])
-	handleKeypresses(event: any): void {
+	handleKeypresses(event: KeyboardEvent): void {
 		if (event.key === 'Enter' && this.isFocused) {
 			event.preventDefault()
 			this.save(event)
 		}
 	}
 
-	logInput($event: any) {
-		this.actualContent = $event.target.textContent
+	logInput(event: Event) {
+		this.actualContent = (event.target as HTMLElement).textContent ?? ''
 		if (this.actualContent !== this.tag.value && this.actualContent !== '') {
 			this.allowSave = true
 		} else {
 			this.allowSave = false
 		}
+		this.getSuggestions()
 	}
 
-	assignColor(event: any, color: string) {
+	assignColor(event: Event, color: string) {
 		event.stopPropagation()
 		event.preventDefault()
 
 		this.selectedColor = color
 		this.allowSave = true
+		this.getSuggestions()
 	}
 
-	save(event: any) {
+	save(event: Event) {
 		event.stopPropagation()
 		event.preventDefault()
 
@@ -106,18 +112,55 @@ export class TagComponent extends TaskComponent implements OnInit {
 		this.actualContent = this.tag.value
 		this.selectedColor = this.tag.color
 		this.allowSave = false
-		this.showDropdown = false
+		this.showColorDropdown = false
+		this.showSuggestionDropdown = false
 	}
 
-	toggleDropdown(event: any, close?: boolean): void {
+	toggleDropdown(event: Event, close?: boolean): void {
 		event.stopPropagation()
 		event.preventDefault()
 
-		if (this.showDropdown || close) {
-			this.showDropdown = false
+		if (this.showColorDropdown || close) {
+			this.showColorDropdown = false
 		} else {
-			this.showDropdown = true
+			this.showColorDropdown = true
 		}
+	}
+
+	getSuggestions() {
+		const prompt = this.actualContent
+		let suggestions: Tag[]
+
+		if (prompt === '') {
+			suggestions = this.taskService.getAllTags()
+		} else {
+			suggestions = this.taskService.getTagsBySearch(prompt)
+		}
+
+		suggestions = suggestions.filter((x) => x.value !== prompt || (x.value === prompt && x.color !== this.selectedColor))
+		const exisitngTagValues = this.existingTags.map(x => x.value)
+		suggestions = suggestions.filter((x) => !exisitngTagValues.includes(x.value))
+		this.suggestions = suggestions
+	}
+
+	assignSuggestion(tag: Tag, event: Event) {
+		event.stopPropagation()
+
+		this.selectedColor = tag.color
+		this.actualContent = tag.value
+
+		this.allowSave = true
+		this.getSuggestions()
+	}
+
+	textFocus(event: Event) {
+		this.getSuggestions()
+		this.showSuggestionDropdown = true
+		this.showColorDropdown = false
+	}
+
+	textleavesFocus(event: Event) {
+		// this.showSuggestionDropdown = false
 	}
 
 	ngOnInit(): void {

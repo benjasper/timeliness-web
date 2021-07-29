@@ -12,6 +12,8 @@
 		contenteditable="true"
 		[textContent]="actualContent"
 		(input)="logInput($event)"
+		(focus)="textFocus($event)"
+		(blur)="textleavesFocus($event)"
 		placeholder="Add a new tag"
 	></span>
 	<div *ngIf="isFocused" class="controls">
@@ -22,15 +24,36 @@
 			<svg-icon class="img" src="/assets/icons/icon-exit.svg"></svg-icon>
 		</button>
 		<button class="btn small" (click)="toggleDropdown($event)">
-			<svg-icon class="img" src="/assets/icons/icon-arrow-down.svg" [class.isOpen]="showDropdown"></svg-icon>
+			<svg-icon class="img" src="/assets/icons/icon-arrow-down.svg" [class.isOpen]="showColorDropdown"></svg-icon>
 		</button>
 	</div>
 </div>
-<div *ngIf="showDropdown" class="dropdown">
+
+<div *ngIf="showColorDropdown" class="dropdown color-dropdown">
 	<ul>
-		<li *ngFor="let color of colorsAvailable" [ngClass]="getColorClass(color.key, 'border-hover')" [class.active]="selectedColor === color.key" (click)="assignColor($event, color.key)">
+		<li
+			*ngFor="let color of colorsAvailable"
+			[ngClass]="getColorClass(color.key, 'border-hover')"
+			[class.active]="selectedColor === color.key"
+			(click)="assignColor($event, color.key)"
+		>
 			<div class="color"></div>
 			{{ color.name }}
+		</li>
+	</ul>
+</div>
+
+<div *ngIf="showSuggestionDropdown && suggestions.length > 0" class="dropdown suggestion-dropdown scroller">
+	<ul>
+		<li
+			*ngFor="let suggestion of suggestions"
+			[ngClass]="getColorClass(suggestion.color, 'border-hover')"
+			(click)="assignSuggestion(suggestion, $event)"
+		>
+			<div class="tag" [ngClass]="getColorClass(suggestion.color, 'background')" @appear>
+				<span class="hashtag">#</span>
+				<span class="tag-content" placeholder="Add a new tag">{{ suggestion.value }}</span>
+			</div>
 		</li>
 	</ul>
 </div>

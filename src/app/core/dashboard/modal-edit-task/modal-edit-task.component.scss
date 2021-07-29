@@ -107,8 +107,7 @@
 				width: 100%;
 				display: flex;
 				flex-wrap: wrap;
-				height: 12rem;
-				overflow-y: auto;
+				min-height: 12rem;
 			}
 		}
 

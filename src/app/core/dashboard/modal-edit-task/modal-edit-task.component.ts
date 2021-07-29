@@ -237,7 +237,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public changeTag(tag: Tag, newValue: TagModified) {
-		if (this.tags.find(x => x.value === newValue)) {
+		if (this.tags.find(x => x.value === newValue.value)) {
 			return
 		}
 		

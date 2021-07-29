@@ -42,9 +42,9 @@
 			</div>
 			<div class="tags" [class.empty]="tags.length === 0">
 				<label for="tags">Tags</label>
-				<ul class="tags-container scroller">
-					<app-tag *ngFor="let tag of tags" [tag]="tag" (valueChange)="changeTag(tag, $event)" (onDelete)="deleteTag(tag.id, tag.value)"></app-tag>
-					<app-tag class="new" [class.first]="tags.length === 0" [new]="true" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)"></app-tag>
+				<ul class="tags-container">
+					<app-tag *ngFor="let tag of tags" [tag]="tag" (valueChange)="changeTag(tag, $event)" (onDelete)="deleteTag(tag.id, tag.value)" [existingTags]="tags"></app-tag>
+					<app-tag class="new" [class.first]="tags.length === 0" [new]="true" [tag]="emptyTag" (valueChange)="changeTag(emptyTag, $event)" [existingTags]="tags"></app-tag>
 				</ul>
 			</div>
 		</div>
