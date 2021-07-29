@@ -247,19 +247,6 @@ input[type='submit'] {
 		text-decoration: none;
 	}
 
-	&:disabled,
-	&[disabled] {
-		background-color: $color-light-grey;
-		color: $color-tertiary;
-		cursor: default;
-		border: none;
-
-		.img,
-		&.no-background .img {
-			fill: $color-tertiary;
-		}
-	}
-
 	&.large {
 		font-size: 1.8rem;
 		padding: 1rem 2.6rem;
@@ -344,6 +331,19 @@ input[type='submit'] {
 
 		.img {
 			fill: $color-primary;
+		}
+	}
+
+	&:disabled,
+	&[disabled] {
+		background-color: $color-light-grey;
+		color: $color-tertiary;
+		cursor: default;
+		border: none;
+
+		.img,
+		&.no-background .img {
+			fill: $color-tertiary;
 		}
 	}
 }
