@@ -160,7 +160,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 	}
 
 	textleavesFocus(event: Event) {
-		// this.showSuggestionDropdown = false
+		this.showSuggestionDropdown = false
 	}
 
 	ngOnInit(): void {
