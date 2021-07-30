@@ -1,6 +1,5 @@
 <div
 	class="tag"
-	draggable="true"
 	[class.isFocused]="isFocused"
 	[ngClass]="getColorClass(selectedColor, 'background')"
 >
@@ -13,6 +12,7 @@
 		(input)="logInput($event)"
 		(focus)="textFocus($event)"
 		placeholder="Add a new tag"
+		spellcheck="false"
 	></span>
 	<div *ngIf="isFocused" class="controls">
 		<button class="btn small" [disabled]="!allowSave" (click)="save($event)">
