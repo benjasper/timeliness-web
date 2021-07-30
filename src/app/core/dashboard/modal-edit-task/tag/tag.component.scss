@@ -88,6 +88,10 @@
 					&.isOpen {
 						transform: rotateX(180deg);
 					}
+
+					&.back-arrow {
+						transform: rotateY(180deg);
+					}
 				}
 			}
 		}

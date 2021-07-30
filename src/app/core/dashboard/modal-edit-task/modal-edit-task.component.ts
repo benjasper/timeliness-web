@@ -155,6 +155,19 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.ngUnsubscribe.complete()
 	}
 
+	promoteToFirst(tag: Tag) {
+		const index = this.tags.findIndex(x => x.value === tag.value)
+		this.arraymove(this.tags, index, 0)
+		this.editTask.markAsDirty()
+	}
+
+	private arraymove(arr: any, fromIndex: number, toIndex: number) {
+		var element = arr[fromIndex];
+		arr.splice(fromIndex, 1);
+
+		arr.splice(toIndex, 0, element);
+	}
+
 	public getStartsAtWorkUnit(): number {
 		if (!this.task) {
 			return 0

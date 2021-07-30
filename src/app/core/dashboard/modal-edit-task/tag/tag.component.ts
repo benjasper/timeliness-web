@@ -36,8 +36,10 @@ export class TagComponent extends TaskComponent implements OnInit {
 	@Input() tag!: Tag
 	@Input() new = false
 	@Input() existingTags: Tag[]  = []
+	@Input() isFirst = false
 	@Output() valueChange = new EventEmitter<TagModified>()
 	@Output() onDelete = new EventEmitter<string>()
+	@Output() promoteTag = new EventEmitter<Tag>()
 
 	@ViewChild('input') input!: ElementRef
 	@ViewChild('suggestionDropdown') suggestionDropdown!: ElementRef
@@ -159,6 +161,12 @@ export class TagComponent extends TaskComponent implements OnInit {
 		this.getSuggestions()
 		this.showSuggestionDropdown = true
 		this.showColorDropdown = false
+	}
+
+	promoteToFirst(event: Event) {
+		event.stopPropagation()
+
+		this.promoteTag.emit(this.tag)
 	}
 
 	ngOnInit(): void {
