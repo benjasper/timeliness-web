@@ -98,12 +98,34 @@
 			</div>
 
 			<div class="section-stats">
-				<!--
-				<h2 class="stats-title">Statistics</h2>
-				<div class="grid">
-					<app-stats-week-completed></app-stats-week-completed> 
+				<h2 class="stats-title">Stats</h2>
+				<div class="grid widgets-large">
+					<app-stats class="large-widget">
+						<div class="left">
+							<span class="info">Your plan today</span>
+							<span class="title">1 of 3 work units completed</span>
+						</div>
+						<div class="progress">
+							<span class="info progress-bar">33%</span>
+						</div>
+					</app-stats>
 				</div>
-				-->
+				<div class="grid widgets-small">
+					<app-stats class="simple-widget">
+						<span class="info">7</span>
+						<span class="title">
+							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+							Tasks completed this week
+						</span>
+					</app-stats>
+					<app-stats class="simple-widget">
+						<span class="info">12</span>
+						<span class="title">
+							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+							Work units completed this week
+						</span>
+					</app-stats>
+				</div>
 			</div>
 		</section>
 	</div>

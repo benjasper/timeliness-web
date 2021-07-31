@@ -126,12 +126,84 @@
 			margin-top: 8rem;
 			padding-left: 4rem;
 			width: 50%;
+			height: 100%;
+			
+			@media (max-width: 1399.98px) {
+				height: 50%;
+				width: 100%;
+			}
 
 			.grid {
 				display: grid;
-				grid-template-columns: 1fr 1fr;
 				gap: 10%;
 				margin-top: 4rem;
+
+				&.widgets-small {
+					grid-template-columns: 1fr 1fr;
+				}
+
+				&.widgets-large {
+					grid-template-columns: 1fr;
+				}
+
+				.simple-widget {
+					background-color: $color-pastelle-green;
+					color: $color-pastelle-green-dark;
+					fill: $color-pastelle-green-dark;
+
+					.img {
+						display: inline-block;
+						width: 1.6rem;
+						margin-right: 0.5rem;
+					}
+	
+					.info {
+						font-size: 2.8rem;
+						font-weight: bold;
+					}
+			
+					.title {
+						margin-top: 1rem;
+						font-size: 1.8rem;
+					}
+				}
+
+				.large-widget {
+					color: $color-primary;
+					fill: $color-primary;
+					background-color: $color-primary-pastelle;
+
+					::ng-deep.content {
+						display: flex;
+						flex-flow: row;
+						justify-content: space-between;
+
+						.left {
+							margin: auto 0;
+						}
+	
+						.img {
+							display: inline-block;
+							width: 1.6rem;
+							margin-right: 0.5rem;
+						}
+		
+						.info {
+							font-size: 2.8rem;
+							font-weight: bold;
+						}
+				
+						.title {
+							margin-top: 1rem;
+							font-size: 1.8rem;
+						}
+
+						.progress {
+							margin: auto 0;
+							padding: 4rem 0;
+						}
+					}
+				}
 			}
 		}
 	}
