@@ -288,13 +288,13 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			const index = this.tags.findIndex((x) => x.id === tag.id)
 			const newTag = Object.assign({}, tag)
 			const existingTag = this.taskService.getTagByValue(newValue.value ?? '')
-			if (existingTag && existingTag.color === newValue.color) {
-				this.tags[index] = newTag
+			if (existingTag) {
+				this.tags[index] = existingTag
 				return
 			}
 
-			newTag.value = newValue.value ?? existingTag?.value ?? ''
-			newTag.color = newValue.color ?? existingTag?.color ?? ''
+			newTag.value = newValue.value ?? ''
+			newTag.color = newValue.color ?? ''
 			this.tags[index] = newTag
 		}
 
@@ -303,7 +303,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	public deleteTag(id: string, value: string) {
 		this.tags = this.tags.filter((x) => x.value !== value)
-		this.taskService.deleteTagFromTask(id)
+		// this.taskService.deleteTagFromTask(id)
 		this.editTask.markAsDirty()
 	}
 
