@@ -28,7 +28,7 @@ import { smoothHeight } from 'src/app/animations'
 			state('in', style({ height: '*' })),
 			transition('* => void', [style({ height: '*' }), animate(250, style({ height: '*' }))]),
 		]),
-		smoothHeight
+		smoothHeight,
 	],
 })
 export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
@@ -259,7 +259,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public changeTag(tag: Tag, newValue: TagModified) {
-		if (this.tags.find((x) => x.value === newValue.value)) {
+		if (this.tags.find((x) => x.value === newValue.value && tag.id !== x.id)) {
 			return
 		}
 
@@ -269,11 +269,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				const newTag = Object.assign({}, existingTag)
 				newTag.color = newValue.color ?? newTag.color
 				this.tags.push(newTag)
+			} else if (this.tags.find((x) => x.value === newValue.value)) {
+				const index = this.tags.findIndex((x) => x.value === newValue.value)
+				tag.value = newValue.value ?? tag.value
+				tag.color = newValue.color ?? tag.color
+				this.tags[index] = tag
 			} else {
 				this.tags.push({
 					id: '',
 					value: newValue.value ?? '',
-					color: newValue.color ?? 'blue',
+					color: newValue.color && newValue.color !== '' ? newValue.color : 'blue',
 					lastModifiedAt: '',
 					createdAt: '',
 					deleted: false,
@@ -288,8 +293,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				return
 			}
 
-			newTag.value = newValue.value ?? ''
-			newTag.color = newValue.color ?? ''
+			newTag.value = newValue.value ?? existingTag?.value ?? ''
+			newTag.color = newValue.color ?? existingTag?.color ?? ''
 			this.tags[index] = newTag
 		}
 
@@ -297,9 +302,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public deleteTag(id: string, value: string) {
-		if (id === '') {
-			return
-		}
 		this.tags = this.tags.filter((x) => x.value !== value)
 		this.taskService.deleteTagFromTask(id)
 		this.editTask.markAsDirty()
