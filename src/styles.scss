@@ -1,5 +1,4 @@
 @import url('https://use.typekit.net/gsz0xik.css');
-@import '~@ng-select/ng-select/themes/default.theme.css';
 @import './variables.scss';
 
 html {
@@ -116,7 +115,7 @@ input {
 .ng-select {
 	.ng-input {
 		top: auto !important;
-		padding: 0.8rem 1.5rem !important;
+		padding: 0 1.5rem !important;
 	}
 
 	&.ng-select-opened .ng-select-container,
@@ -161,6 +160,7 @@ input {
 	}
 
 	.ng-dropdown-panel {
+		background-color: $color-white;
 		&,
 		.ng-dropdown-panel-items {
 			border-bottom-left-radius: 1.5rem;
@@ -176,6 +176,7 @@ input {
 
 		.ng-option {
 			font-size: 1.8rem;
+			padding: 1rem 0;
 			padding-left: calc(1.5rem - 1px);
 			padding-right: calc(1.5rem - 1px);
 

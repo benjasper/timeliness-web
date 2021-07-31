@@ -34,7 +34,7 @@
 		</section>
 		<section class="lower-dashboard">
 			<div class="upcoming-workunits">
-				<div class="upcoming-work-units-header">
+				<div class="upcoming-work-units-header padding-wrapper">
 					<h2 class="upcoming-work-units-title">Upcoming work units</h2>
 					<!--
 					// TODO: Not working yet
@@ -56,7 +56,7 @@
 					src="/assets/images/no-workunits.svg"
 					alt="No upcoming"
 				/>
-				<ul class="upcoming-work-units-list scroller">
+				<ul class="upcoming-work-units-list scroller padding-wrapper">
 					<ng-container *ngIf="loadingWorkUnits">
 						<li *ngFor="let index of [1, 2, 3]">
 							<app-work-unit-upcoming [loading]="true"></app-work-unit-upcoming>

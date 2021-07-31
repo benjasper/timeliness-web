@@ -23,10 +23,6 @@
 		margin-bottom: 2rem;
 	}
 
-	.date-group {
-		margin-bottom: 2rem;
-	}
-
 	.main {
 		padding-top: 6rem;
 		min-width: 0;
@@ -38,10 +34,14 @@
 			margin: 0 8rem 0 8rem;
 		}
 
+		.padding-wrapper {
+			padding-left: 8rem;
+			padding-right: 4rem;
+		}
+
 		.next-up {
 			display: flex;
 			flex-direction: row;
-			//overflow-x: auto;
 
 			li {
 				margin-right: 5rem;
@@ -58,8 +58,6 @@
 			display: flex;
 			flex-flow: row;
 			justify-content: space-between;
-			padding-left: 8rem;
-			padding-right: 4rem;
 
 			.upcoming-work-units-title {
 				margin: auto 0;
@@ -79,8 +77,6 @@
 
 		.upcoming-work-units-list {
 			overflow-y: auto;
-			padding-left: 8rem;
-			padding-right: 4rem;
 
 			.date-group {
 				background-color: $color-white;
@@ -146,26 +142,26 @@
 					grid-template-columns: 1fr;
 				}
 
+				.info {
+					font-size: 2.8rem;
+					font-weight: bold;
+				}
+		
+				.title {
+					margin-top: 1rem;
+					font-size: 1.8rem;
+				}
+
+				.img {
+					display: inline-block;
+					width: 1.6rem;
+					margin-right: 0.5rem;
+				}
+
 				.simple-widget {
 					background-color: $color-pastelle-green;
 					color: $color-pastelle-green-dark;
 					fill: $color-pastelle-green-dark;
-
-					.img {
-						display: inline-block;
-						width: 1.6rem;
-						margin-right: 0.5rem;
-					}
-	
-					.info {
-						font-size: 2.8rem;
-						font-weight: bold;
-					}
-			
-					.title {
-						margin-top: 1rem;
-						font-size: 1.8rem;
-					}
 				}
 
 				.large-widget {
@@ -182,22 +178,6 @@
 							margin: auto 0;
 						}
 	
-						.img {
-							display: inline-block;
-							width: 1.6rem;
-							margin-right: 0.5rem;
-						}
-		
-						.info {
-							font-size: 2.8rem;
-							font-weight: bold;
-						}
-				
-						.title {
-							margin-top: 1rem;
-							font-size: 1.8rem;
-						}
-
 						.progress {
 							margin: auto 0;
 							padding: 4rem 0;
