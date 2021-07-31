@@ -14,6 +14,10 @@ import { TaskService } from 'src/app/services/task.service'
 			transition(':enter', [style({ opacity: 0 }), animate(200)]),
 			transition(':leave', [animate(200, style({ opacity: 0 }))]),
 		]),
+		trigger('flyInOut', [
+			transition(':enter', [style({ transform: 'translate(-20%, 0)', opacity: 0 }), animate(100)]),
+			transition(':leave', [animate(100, style({ transform: 'translate(-20%, 0)', opacity: 0 }))]),
+		]),
 	],
 })
 export class TagComponent extends TaskComponent implements OnInit {

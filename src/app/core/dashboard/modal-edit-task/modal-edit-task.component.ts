@@ -9,6 +9,7 @@ import { EventModified, Task, TaskModified } from 'src/app/models/task'
 import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
+import { smoothHeight } from 'src/app/animations'
 
 @Component({
 	selector: 'app-modal-edit-task',
@@ -23,6 +24,11 @@ import { TaskComponent } from '../../task.component'
 			transition(':enter', [style({ transform: 'translate(-50%, -250%)', opacity: 0 }), animate(200)]),
 			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
 		]),
+		trigger('shrinkOut', [
+			state('in', style({ height: '*' })),
+			transition('* => void', [style({ height: '*' }), animate(250, style({ height: '*' }))]),
+		]),
+		smoothHeight
 	],
 })
 export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
@@ -156,16 +162,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	promoteToFirst(tag: Tag) {
-		const index = this.tags.findIndex(x => x.value === tag.value)
+		const index = this.tags.findIndex((x) => x.value === tag.value)
 		this.arraymove(this.tags, index, 0)
 		this.editTask.markAsDirty()
 	}
 
 	private arraymove(arr: any, fromIndex: number, toIndex: number) {
-		var element = arr[fromIndex];
-		arr.splice(fromIndex, 1);
+		var element = arr[fromIndex]
+		arr.splice(fromIndex, 1)
 
-		arr.splice(toIndex, 0, element);
+		arr.splice(toIndex, 0, element)
 	}
 
 	public getStartsAtWorkUnit(): number {
