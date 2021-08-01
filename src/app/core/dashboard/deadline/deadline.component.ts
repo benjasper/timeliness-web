@@ -15,6 +15,7 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 	}
 
 	tag?: Tag
+	tags: Tag[] = []
 
 	@Input() task!: Task
 	@Input() loading = false
@@ -26,10 +27,16 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 
 		if (this.task.tags[0]) {
 			this.taskService.tagsObservable.subscribe(newTags => {
-				const foundTag = newTags.find(x => x.id === this.task.tags[0])
-				if (foundTag) {
-					this.tag = foundTag
-				}
+				this.tags = []
+				this.task.tags.forEach(tagId => {
+					const foundTag = newTags.find(x => x.id === tagId)
+					if (!foundTag) {
+						return
+					}
+					this.tags.push(foundTag)
+				})
+
+				this.tag = this.tags[0]
 			})
 		}
 	}

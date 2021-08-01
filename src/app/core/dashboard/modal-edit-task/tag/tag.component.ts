@@ -157,8 +157,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 		this.selectedColor = tag.color
 		this.actualContent = tag.value
 
-		this.allowSave = true
-		this.getSuggestions()
+		this.save(event)
 	}
 
 	textFocus(event: Event) {

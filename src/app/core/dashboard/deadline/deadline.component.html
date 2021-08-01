@@ -24,6 +24,11 @@
 			<ng-template #thenBlock>completed</ng-template>
 			<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
 		</span>
+		<div class="tags">
+			<span class="tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
+				#{{ tag.value }}
+			</span>
+		</div>
 	</div>
 	<div class="actions">
 		<a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
