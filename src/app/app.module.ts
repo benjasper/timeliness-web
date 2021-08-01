@@ -21,6 +21,7 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { SliderComponent } from './core/dashboard/slider/slider.component'
 import { StatsComponent } from './core/dashboard/stats/stats.component'
 import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
+import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component'
 
 @NgModule({
 	declarations: [
@@ -36,6 +37,7 @@ import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component
 		SliderComponent,
 		StatsComponent,
 		TagComponent,
+		CircularProgressComponent,
 	],
 	imports: [
 		BrowserModule,
