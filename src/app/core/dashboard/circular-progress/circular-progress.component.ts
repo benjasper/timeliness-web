@@ -1,43 +1,52 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	Input,
+	OnChanges,
+	OnInit,
+	Renderer2,
+	SimpleChanges,
+	ViewChild,
+} from '@angular/core'
 
 @Component({
-  selector: 'app-circular-progress',
-  templateUrl: './circular-progress.component.html',
-  styleUrls: ['./circular-progress.component.scss']
+	selector: 'app-circular-progress',
+	templateUrl: './circular-progress.component.html',
+	styleUrls: ['./circular-progress.component.scss'],
 })
 export class CircularProgressComponent implements OnInit, OnChanges, AfterViewInit {
+	constructor(private renderer: Renderer2) {}
 
-  constructor(private renderer: Renderer2) { }
-  
-  @ViewChild('left') left!: ElementRef; 
-  @ViewChild('right') right!: ElementRef; 
+	@ViewChild('left') left!: ElementRef
+	@ViewChild('right') right!: ElementRef
 
-  @Input() progress!: number;
-  leftBar = 0
-  rightBar = 0
+	@Input() progress!: number
+	leftBar = 0
+	rightBar = 0
 
-  ngOnInit(): void {
-  }
+	ngOnInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    //this.evaluateProgress()
-  }
+	ngOnChanges(changes: SimpleChanges): void {
+		if (!this.left) {
+			return
+		}
+	}
 
-  ngAfterViewInit(): void {
-    this.evaluateProgress()
-  }
+	ngAfterViewInit(): void {
+		this.evaluateProgress()
+	}
 
-  private evaluateProgress() {
-    if (this.progress <= 50) {
-      const rotation = this.progress * 0.01 * 360
-      this.renderer.setStyle(this.left.nativeElement, 'transform', `rotate(${rotation}deg)`)
-      this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(0deg)`)
-    } else {
-      const rotation = (this.progress - 50) * 0.01 * 360
-      console.log(rotation)
-      this.renderer.setStyle(this.left.nativeElement, 'transform', `rotate(180deg)`)
-      this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(${rotation}deg)`)
-    }
-  }
-
+	private evaluateProgress() {
+		if (this.progress <= 50) {
+			const rotation = this.progress * 0.01 * 360
+			this.renderer.setStyle(this.left.nativeElement, 'transform', `rotate(${rotation}deg)`)
+			this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(0deg)`)
+		} else {
+			const rotation = (this.progress - 50) * 0.01 * 360
+			console.log(rotation)
+			this.renderer.setStyle(this.left.nativeElement, 'transform', `rotate(180deg)`)
+			this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(${rotation}deg)`)
+		}
+	}
 }
