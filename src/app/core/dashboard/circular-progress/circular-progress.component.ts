@@ -44,7 +44,6 @@ export class CircularProgressComponent implements OnInit, OnChanges, AfterViewIn
 			this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(0deg)`)
 		} else {
 			const rotation = (this.progress - 50) * 0.01 * 360
-			console.log(rotation)
 			this.renderer.setStyle(this.left.nativeElement, 'transform', `rotate(180deg)`)
 			this.renderer.setStyle(this.right.nativeElement, 'transform', `rotate(${rotation}deg)`)
 		}
