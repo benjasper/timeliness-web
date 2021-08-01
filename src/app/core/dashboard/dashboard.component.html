@@ -106,7 +106,7 @@
 							<span class="title">1 of 3 work units completed</span>
 						</div>
 						<div class="progress">
-							<span class="info progress-bar">33%</span>
+							<app-circular-progress [progress]="33"></app-circular-progress>
 						</div>
 					</app-stats>
 				</div>
@@ -114,14 +114,14 @@
 					<app-stats class="simple-widget">
 						<span class="info">7</span>
 						<span class="title">
-							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+							<svg-icon class="img" src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
 							Tasks completed this week
 						</span>
 					</app-stats>
 					<app-stats class="simple-widget">
 						<span class="info">12</span>
 						<span class="title">
-							<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+							<svg-icon class="img" src="/assets/icons/icon-check-multiple.svg"></svg-icon>
 							Work units completed this week
 						</span>
 					</app-stats>
@@ -157,7 +157,7 @@
 							})
 						}}
 					</span>
-					<ul>
+					<ul class="dategroup-list">
 						<li *ngFor="let deadline of deadlineGroup.tasks">
 							<app-deadline [task]="deadline"></app-deadline>
 						</li>

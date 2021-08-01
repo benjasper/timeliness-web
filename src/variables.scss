@@ -24,6 +24,9 @@ $color-pastelle-violet-dark: $color-primary;
 $color-pastelle-pink: #F6DFEB;
 $color-pastelle-pink-dark: #c4307c;
 
+$color-pastelle-mango: #ffdfcb;
+$color-pastelle-mango-dark: #854e28;
+
 $color-cyan: #84ffff;
 
 $color-red: #ef233c;
@@ -31,3 +34,30 @@ $color-yellow: #ffe66d;
 $color-green: #62c370;
 
 $box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+$colors: (
+	'blue': (
+		'light': $color-primary-pastelle,
+		'dark': $color-primary,
+	),
+	'yellow': (
+		'light': $color-pastelle-yellow,
+		'dark': $color-pastelle-yellow-dark,
+	),
+	'green': (
+		'light': $color-pastelle-green,
+		'dark': $color-pastelle-green-dark,
+	),
+	'violet': (
+		'light': $color-pastelle-violet,
+		'dark': $color-pastelle-violet-dark,
+	),
+	'pink': (
+		'light': $color-pastelle-pink,
+		'dark': $color-pastelle-pink-dark,
+	),
+	'mango': (
+		'light': $color-pastelle-mango,
+		'dark': $color-pastelle-mango-dark,
+	),
+);

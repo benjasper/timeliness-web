@@ -77,6 +77,20 @@
 		.subtitle {
 			margin-top: -0.1rem;
 		}
+
+		.tags {
+			display: flex;
+			flex-flow: row;
+			gap: 1rem;
+			margin-top: 0.8rem;
+			flex-wrap: wrap;
+
+			.tag {
+				border-radius: 1.5rem;
+				padding: 0.2rem 1rem;
+				font-size: 1.4rem;
+			}
+		}
 	}
 
 	.actions {
