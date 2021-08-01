@@ -30,6 +30,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 		{ name: 'Violet', key: 'violet' },
 		{ name: 'Green', key: 'green' },
 		{ name: 'Yellow', key: 'yellow' },
+		{ name: 'Mango', key: 'mango' },
 		{ name: 'Pink', key: 'pink' },
 	]
 
