@@ -50,9 +50,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			})
 		}
 
-		this.progress = this.getWorkUnitProgress(new Date())
+		this.progress = this.task.workUnits[this.workUnitIndex].isDone ? 100 : this.getWorkUnitProgress(new Date())
 
-		if (!this.task.isDone) {
+		if (!this.task.workUnits[this.workUnitIndex].isDone) {
 			setInterval(() => {
 				this.progress = this.getWorkUnitProgress(new Date())
 			}, 1000)

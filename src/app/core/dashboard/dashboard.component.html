@@ -14,7 +14,7 @@
 				src="/assets/icons/icon-done.svg"
 				alt="All done"
 			/>
-			<app-slider class="next-up-slider" [listArray]="nextUp" [showButtons]="nextUp.length > 1">
+			<app-slider *ngIf="nextUp.length > 0 && !loadingWorkUnits" class="next-up-slider" [listArray]="nextUp" [showButtons]="nextUp.length > 1" [startsAtIndex]="getStartsAtWorkUnit()">
 				<ul class="next-up scroller">
 					<ng-container *ngIf="loadingWorkUnits">
 						<li *ngFor="let index of [1, 2]">

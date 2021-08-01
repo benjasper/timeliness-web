@@ -200,7 +200,9 @@ export class TaskService {
 	}
 
 	private async getTasksByWorkunits(sync?: Date): Promise<void> {
-		const filters = ['workUnit.isDone=false']
+		const today = new Date()
+		today.setHours(0,0,0,0)
+		const filters = ['workUnit.isDone=false', `isDoneAndScheduledAt=${today.toISOString()}`]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)

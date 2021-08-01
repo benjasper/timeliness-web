@@ -113,7 +113,10 @@ export class DashboardComponent implements OnInit {
 
 		tasks.forEach((task) => {
 			const now = new Date(this.today)
-			if (task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0)) {
+			if (
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) ||
+				task.workUnit.isDone
+			) {
 				this.nextUp.push(task)
 				return
 			}
@@ -137,6 +140,11 @@ export class DashboardComponent implements OnInit {
 			dateGroup.tasks.push(task)
 			this.groupedUpcoming.push(dateGroup)
 		})
+	}
+
+	public getStartsAtWorkUnit() {
+		const startIndex = this.nextUp.findIndex((x) => x.workUnit.isDone === false)
+		return startIndex === -1 ? 0 : startIndex
 	}
 }
 
