@@ -21,7 +21,13 @@ export class TaskService {
 		})
 
 		setInterval(() => {
-			this.nowSubject.next(new Date())
+			const newDate = new Date()
+			this.lastNow = newDate
+			this.nowSubject.next(newDate)
+
+			if (this.lastNow.getDate() !== newDate.getDate()) {
+				this.dateChangeSubject.next(newDate)
+			}
 		}, 30000)
 
 		setInterval(() => {
@@ -33,15 +39,18 @@ export class TaskService {
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
 	public lastTagSync: Date = new Date(0)
+	private lastNow: Date = new Date()
 
 	private tasksSubject = new BehaviorSubject<Task[] | undefined>(undefined)
 	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[] | undefined>(undefined)
 	private nowSubject = new Subject<Date>()
+	private dateChangeSubject = new Subject<Date>()
 	private tagsSubject = new BehaviorSubject<Tag[]>([])
 
 	public tasksObservalble = this.tasksSubject.asObservable()
 	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
 	public now = this.nowSubject.asObservable()
+	public dateChangeObservable = this.nowSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
 
 	private publishTasks(tasks: Task[]): void {

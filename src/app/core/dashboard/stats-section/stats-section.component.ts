@@ -12,6 +12,8 @@ export class StatsSectionComponent implements OnInit {
 	workUnitsCompleted: number = 0
 	workUnitsToComplete: number = 0
 
+	lastWorkUnitsUpdate: TaskUnwound[] = []
+
 	constructor(private taskService: TaskService) {}
 
 	ngOnInit(): void {
@@ -20,12 +22,17 @@ export class StatsSectionComponent implements OnInit {
 				return
 			}
 
-			this.computePlanToday(workUnits)
+			this.lastWorkUnitsUpdate = workUnits
+			this.computePlanToday()
+		})
+
+		this.taskService.dateChangeObservable.subscribe(() => {
+			this.computePlanToday()
 		})
 	}
 
-	computePlanToday(workUnits: TaskUnwound[]) {
-		const todaysWorkUnits = workUnits.filter((x) => {
+	computePlanToday() {
+		const todaysWorkUnits = this.lastWorkUnitsUpdate.filter((x) => {
 			return x.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= this.now.setHours(0, 0, 0, 0)
 		})
 
