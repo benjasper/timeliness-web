@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 
 @Component({
 	selector: 'app-slider',
 	templateUrl: './slider.component.html',
 	styleUrls: ['./slider.component.scss'],
 })
-export class SliderComponent implements OnInit, AfterViewInit {
+export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
 	constructor(private elRef: ElementRef) {}
 
 	index = 0
@@ -26,6 +26,12 @@ export class SliderComponent implements OnInit, AfterViewInit {
 	}
 
 	ngAfterViewInit(): void {
+		this.show(undefined, 0, true)
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		this.index = this.startsAtIndex
+		this.checkButtonsActive()
 		this.show(undefined, 0, true)
 	}
 
