@@ -54,11 +54,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
 	}
 
 	public show(event: any, increase: number, direct = false): void {
-		if (this.listArray?.length <= 1) {
+		const liEls: HTMLElement[] = this.elRef.nativeElement.querySelectorAll('li')
+
+		if (this.listArray?.length <= 1 || !this.elRef || liEls.length === 0) {
 			return
 		}
 
-		const liEls: HTMLElement[] = this.elRef.nativeElement.querySelectorAll('li')
 		this.index = (this.index + liEls.length + increase) % liEls.length
 
 		this.checkButtonsActive()
