@@ -1,0 +1,62 @@
+@import '../../../../variables.scss';
+
+.grid {
+	display: grid;
+	gap: 4rem;
+	margin-top: 4rem;
+
+	&.widgets-small {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	&.widgets-large {
+		grid-template-columns: 1fr;
+	}
+
+	.info {
+		font-size: 2.6rem;
+		font-weight: bold;
+	}
+
+	.title {
+		margin-top: 1rem;
+		font-size: 1.6rem;
+	}
+
+	.img {
+		display: inline-block;
+		width: 2rem;
+		margin-right: 0.5rem;
+	}
+
+	.simple-widget {
+		background-color: $color-pastelle-green;
+		color: $color-pastelle-green-dark;
+		fill: $color-pastelle-green-dark;
+
+		.info {
+			font-size: 3.2rem;
+		}
+	}
+
+	.large-widget {
+		color: $color-primary;
+		fill: $color-primary;
+		background-color: $color-primary-pastelle;
+
+		::ng-deep.content {
+			display: flex;
+			flex-flow: row;
+			justify-content: space-between;
+
+			.left {
+				margin: auto 0;
+			}
+
+			.progress {
+				margin: auto 0;
+				padding: 3rem 0;
+			}
+		}
+	}
+}

@@ -99,33 +99,7 @@
 
 			<div class="section-stats">
 				<h2 class="stats-title">Stats</h2>
-				<div class="grid widgets-large">
-					<app-stats class="large-widget">
-						<div class="left">
-							<span class="info">Your plan today</span>
-							<span class="title">1 of 3 work units completed</span>
-						</div>
-						<div class="progress">
-							<app-circular-progress [progress]="33"></app-circular-progress>
-						</div>
-					</app-stats>
-				</div>
-				<div class="grid widgets-small">
-					<app-stats class="simple-widget">
-						<span class="info">7</span>
-						<span class="title">
-							<svg-icon class="img" src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
-							Tasks completed this week
-						</span>
-					</app-stats>
-					<app-stats class="simple-widget">
-						<span class="info">12</span>
-						<span class="title">
-							<svg-icon class="img" src="/assets/icons/icon-check-multiple.svg"></svg-icon>
-							Work units completed this week
-						</span>
-					</app-stats>
-				</div>
+				<app-stats-section></app-stats-section>
 			</div>
 		</section>
 	</div>

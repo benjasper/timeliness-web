@@ -1,0 +1,35 @@
+<div class="grid widgets-large">
+	<app-stats class="large-widget">
+		<div class="left">
+			<span class="info">Your plan today</span>
+			<span class="title">
+				<ng-container *ngIf="workUnitsToComplete > 0">
+					{{ workUnitsCompleted }} of {{ workUnitsToComplete }} work units completed
+				</ng-container>
+				<ng-container *ngIf="workUnitsToComplete === 0">Nothing to do today. Have a nive day!</ng-container>
+			</span>
+		</div>
+		<div class="progress">
+			<app-circular-progress
+				*ngIf="workUnitsToComplete > 0"
+				[progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
+			></app-circular-progress>
+		</div>
+	</app-stats>
+</div>
+<div class="grid widgets-small">
+	<app-stats class="simple-widget">
+		<span class="info">7</span>
+		<span class="title">
+			<svg-icon class="img" src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
+			Tasks completed this week
+		</span>
+	</app-stats>
+	<app-stats class="simple-widget">
+		<span class="info">12</span>
+		<span class="title">
+			<svg-icon class="img" src="/assets/icons/icon-check-multiple.svg"></svg-icon>
+			Work units completed this week
+		</span>
+	</app-stats>
+</div>

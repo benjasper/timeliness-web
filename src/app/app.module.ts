@@ -21,7 +21,8 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { SliderComponent } from './core/dashboard/slider/slider.component'
 import { StatsComponent } from './core/dashboard/stats/stats.component'
 import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
-import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component'
+import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component';
+import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component'
 
 @NgModule({
 	declarations: [
@@ -38,6 +39,7 @@ import { CircularProgressComponent } from './core/dashboard/circular-progress/ci
 		StatsComponent,
 		TagComponent,
 		CircularProgressComponent,
+  StatsSectionComponent,
 	],
 	imports: [
 		BrowserModule,
