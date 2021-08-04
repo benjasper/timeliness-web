@@ -22,6 +22,7 @@ export class CircularProgressComponent implements OnInit, OnChanges, AfterViewIn
 	@ViewChild('right') right!: ElementRef
 
 	@Input() progress!: number
+	@Input() loading: boolean = false
 	leftBar = 0
 	rightBar = 0
 

@@ -1,20 +1,33 @@
 <div class="grid widgets-large">
-	<app-stats class="large-widget">
-		<div class="left">
-			<span class="info">Your plan today</span>
-			<span class="title">
-				<ng-container *ngIf="workUnitsToComplete > 0">
-					{{ workUnitsCompleted }} of {{ workUnitsToComplete }} work units completed
-				</ng-container>
-				<ng-container *ngIf="workUnitsToComplete === 0">Nothing to do today. Have a nive day!</ng-container>
-			</span>
-		</div>
-		<div class="progress">
-			<app-circular-progress
-				*ngIf="workUnitsToComplete > 0"
-				[progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
-			></app-circular-progress>
-		</div>
+	<app-stats class="large-widget" [class.loading]="loadingPlan">
+		<ng-container *ngIf="!loadingPlan">
+			<div class="left">
+				<span class="info">Your plan today</span>
+				<span class="title">
+					<ng-container *ngIf="workUnitsToComplete > 0">
+						{{ workUnitsCompleted }} of {{ workUnitsToComplete }} work units completed
+					</ng-container>
+					<ng-container *ngIf="workUnitsToComplete === 0">Nothing to do today. Have a nive day!</ng-container>
+				</span>
+			</div>
+			<div class="progress">
+				<app-circular-progress
+					*ngIf="workUnitsToComplete > 0"
+					[progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
+				></app-circular-progress>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="loadingPlan">
+			<div class="left">
+				<span class="info loading-text loading">&nbsp;</span>
+				<span class="title loading-text loading">&nbsp;</span>
+			</div>
+			<div class="progress">
+				<app-circular-progress
+				[loading]="true"
+				></app-circular-progress>
+			</div>
+		</ng-container>
 	</app-stats>
 </div>
 <div class="grid widgets-small">

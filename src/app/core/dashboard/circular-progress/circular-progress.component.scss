@@ -6,6 +6,25 @@
 	position: relative;
 	transform: scale(1);
 
+	&.loading {
+		background: transparent !important;
+
+		.inner {
+			background: $color-light-grey;
+			border-radius: 100%;
+		}
+		
+		.right {
+			transform: rotate(0);
+		}
+
+		.bar {
+			background: $color-grey;
+			border: none;
+			width: auto;
+		}
+	}
+
 	.inner {
 		position: absolute;
 		z-index: 6;

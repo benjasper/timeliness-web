@@ -13,6 +13,13 @@
 		grid-template-columns: 1fr;
 	}
 
+	.loading-text {
+		background: $color-light-grey;
+		background-color: $color-light-grey;
+		width: 20rem;
+		border-radius: 1.5rem;
+	}
+
 	.info {
 		font-size: 2.6rem;
 		font-weight: bold;

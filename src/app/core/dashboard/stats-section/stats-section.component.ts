@@ -14,9 +14,12 @@ export class StatsSectionComponent implements OnInit {
 
 	lastWorkUnitsUpdate: TaskUnwound[] = []
 
+	loadingPlan = false
+
 	constructor(private taskService: TaskService) {}
 
 	ngOnInit(): void {
+		this.loadingPlan = true
 		this.taskService.tasksUnwoundObservalble.subscribe((workUnits) => {
 			if (!workUnits) {
 				return
@@ -24,6 +27,7 @@ export class StatsSectionComponent implements OnInit {
 
 			this.lastWorkUnitsUpdate = workUnits
 			this.computePlanToday()
+			this.loadingPlan = false
 		})
 
 		this.taskService.dateChangeObservable.subscribe(() => {
