@@ -47,10 +47,10 @@ export class DashboardComponent implements OnInit {
 
 	public getNextUpMessage(): string {
 		if (this.nextUp.length > 0) {
-			const notDoneTasks = this.nextUp.filter((task) => task.isDone === false)
+			const notDoneTasks = this.nextUp.filter((task) => task.workUnit.isDone === false)
 
 			if (notDoneTasks.length === 0) {
-				return 'All done for today'
+				return 'All done for today!'
 			}
 
 			let found = -1
