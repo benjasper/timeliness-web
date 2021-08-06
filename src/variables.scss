@@ -27,6 +27,9 @@ $color-pastelle-pink-dark: #c4307c;
 $color-pastelle-mango: #ffdfcb;
 $color-pastelle-mango-dark: #854e28;
 
+$color-pastelle-ice-blue: #DEECFF;
+$color-pastelle-ice-blue-dark: #1b519c;
+
 $color-cyan: #84ffff;
 
 $color-red: #ef233c;
@@ -60,4 +63,8 @@ $colors: (
 		'light': $color-pastelle-mango,
 		'dark': $color-pastelle-mango-dark,
 	),
+	'ice-blue': (
+		'light': $color-pastelle-ice-blue,
+		'dark': $color-pastelle-ice-blue-dark,
+	)
 );

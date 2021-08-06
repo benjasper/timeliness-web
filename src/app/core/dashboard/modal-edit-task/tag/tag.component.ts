@@ -27,11 +27,12 @@ export class TagComponent extends TaskComponent implements OnInit {
 
 	colorsAvailable: Color[] = [
 		{ name: 'Blue', key: 'blue' },
+		{ name: 'Ice Blue', key: 'ice-blue' },
 		{ name: 'Violet', key: 'violet' },
 		{ name: 'Green', key: 'green' },
 		{ name: 'Yellow', key: 'yellow' },
 		{ name: 'Mango', key: 'mango' },
-		{ name: 'Pink', key: 'pink' },
+		{ name: 'Pink', key: 'pink' }
 	]
 
 	actualContent = ''
