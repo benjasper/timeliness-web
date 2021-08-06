@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
 
 	public loadingTasks = true
 	public loadingWorkUnits = true
+	public deadlinesCollapsed = false
 
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
@@ -145,6 +146,10 @@ export class DashboardComponent implements OnInit {
 	public getStartsAtWorkUnit() {
 		const startIndex = this.nextUp.findIndex((x) => x.workUnit.isDone === false)
 		return startIndex === -1 ? 0 : startIndex
+	}
+
+	public toggleDeadlines() {
+		this.deadlinesCollapsed = !this.deadlinesCollapsed;
 	}
 }
 

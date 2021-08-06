@@ -1,5 +1,12 @@
 @import '../../../../variables.scss';
 
+:host {
+	overflow-y: auto;
+	overflow-y: auto;
+    display: inline-block;
+    height: 100%;
+}
+
 .grid {
 	display: grid;
 	gap: 4rem;

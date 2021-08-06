@@ -2,7 +2,7 @@
 
 .dashboard-container {
 	display: grid;
-	grid-template-columns: 1fr minmax(45rem, 30%);
+	grid-template-columns: 1fr auto;
 
 	.dashboard-container {
 		::ng-deep {
@@ -82,7 +82,7 @@
 		position: relative;
 		overflow: hidden;
 
-		@media (max-width: 1399.98px) {
+		@media (max-width: 780px) {
 			flex-flow: column;
 		}
 
@@ -92,7 +92,7 @@
 			flex-flow: column;
 			height: 100%;
 
-			@media (max-width: 1399.98px) {
+			@media (max-width: 780px) {
 				height: 50%;
 				width: 100%;
 			}
@@ -102,10 +102,11 @@
 			padding-left: 4rem;
 			width: 50%;
 			height: 100%;
-			
-			@media (max-width: 1399.98px) {
+
+			@media (max-width: 780px) {
 				height: 50%;
 				width: 100%;
+				padding: 0;
 			}
 		}
 	}
@@ -116,6 +117,68 @@
 		flex-direction: column;
 		z-index: 2;
 		background-color: $color-very-light-grey;
+		min-width: 50rem;
+		width: 30vw;
+		transition: all 0.2s;
+		overflow: hidden;
+
+		.toggle {
+			display: none;
+			margin-top: 6rem;
+			cursor: pointer;
+
+			.img {
+				display: block;
+				width: 4rem;
+			}
+		}
+
+		@mixin collapsed() {
+			position: relative;
+			width: 6rem;
+			min-width: 0;
+
+			ul {
+				overflow: hidden;
+				opacity: 0;
+			}
+
+			.hide-collapsed {
+				display: none;
+			}
+
+			.toggle {
+				display: flex;
+			}
+		}
+
+		@media (max-width: 1399.98px) {
+			&:not(.extended) {
+				@include collapsed();
+
+				.deadlines-header {
+					justify-content: center;
+				}
+			}
+
+			&.extended {
+				position: absolute;
+				right: 0;
+				width: 80vw;
+				min-width: 0;
+
+				.toggle {
+					display: inline-block;
+					margin-left: 6rem;
+				}
+			}
+		}
+
+		.deadlines-header {
+			display: flex;
+			flex-flow: row;
+			justify-content: flex-start;
+		}
 
 		.date-group {
 			margin: 0 6rem;
