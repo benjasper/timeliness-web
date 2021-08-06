@@ -3,8 +3,8 @@
 :host {
 	overflow-y: auto;
 	overflow-y: auto;
-    display: inline-block;
-    height: 100%;
+	display: inline-block;
+	height: 100%;
 }
 
 .grid {
@@ -44,20 +44,12 @@
 	}
 
 	.simple-widget {
-		background-color: $color-pastelle-green;
-		color: $color-pastelle-green-dark;
-		fill: $color-pastelle-green-dark;
-
 		.info {
 			font-size: 3.2rem;
 		}
 	}
 
 	.large-widget {
-		color: $color-primary;
-		fill: $color-primary;
-		background-color: $color-primary-pastelle;
-
 		::ng-deep.content {
 			display: flex;
 			flex-flow: row;
@@ -72,5 +64,11 @@
 				padding: 3rem 0;
 			}
 		}
+	}
+
+	app-stats {
+		color: $color-primary;
+		fill: $color-primary;
+		background-color: $color-primary-pastelle;
 	}
 }
