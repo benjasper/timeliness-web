@@ -164,7 +164,8 @@
 			&.extended {
 				position: absolute;
 				right: 0;
-				width: 80vw;
+				width: 75vw;
+				max-width: 65rem;
 				min-width: 0;
 
 				.toggle {
