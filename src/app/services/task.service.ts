@@ -64,7 +64,7 @@ export class TaskService {
 	}
 
 	private async getTasksByDeadlines(sync?: Date): Promise<void> {
-		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `isDone=${false}`]
+		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `includeIsNotDone=${true}`]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
