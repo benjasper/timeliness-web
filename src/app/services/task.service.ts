@@ -64,7 +64,7 @@ export class TaskService {
 	}
 
 	private async getTasksByDeadlines(sync?: Date): Promise<void> {
-		const filters = [`dueAt.date.start=${new Date().toISOString()}`]
+		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `isDone=${false}`]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -88,7 +88,7 @@ export class TaskService {
 						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					tasks.push(...response.results.filter(x => x.deleted === false))
+					tasks.push(...response.results.filter((x) => x.deleted === false))
 
 					tasks.sort((a, b) => {
 						return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.end.toDate().getTime()
@@ -111,7 +111,12 @@ export class TaskService {
 	}
 
 	public getTagsBySearch(value: string): Tag[] {
-		return this.tagsSubject.getValue().filter((x) => x.value.includes(value)).sort((a,b) => {return a.value.localeCompare(b.value)})
+		return this.tagsSubject
+			.getValue()
+			.filter((x) => x.value.includes(value))
+			.sort((a, b) => {
+				return a.value.localeCompare(b.value)
+			})
 	}
 
 	public getAllTags(): Tag[] {
@@ -210,7 +215,7 @@ export class TaskService {
 
 	private async getTasksByWorkunits(sync?: Date): Promise<void> {
 		const today = new Date()
-		today.setHours(0,0,0,0)
+		today.setHours(0, 0, 0, 0)
 		const filters = ['workUnit.isDone=false', `isDoneAndScheduledAt=${today.toISOString()}`]
 
 		if (sync) {
@@ -235,7 +240,7 @@ export class TaskService {
 						tasks = tasks.filter((x) => x.id !== syncTask.id)
 					})
 
-					tasks.push(...response.results.filter(x => x.deleted === false))
+					tasks.push(...response.results.filter((x) => x.deleted === false))
 
 					tasks.sort((a, b) => {
 						return (
