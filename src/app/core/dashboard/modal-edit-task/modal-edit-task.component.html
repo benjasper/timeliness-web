@@ -1,5 +1,5 @@
 <div class="modal-container" *ngIf="modalBackground" (click)="close()"></div>
-<form [formGroup]="editTask" class="modal" @flyInOut *ngIf="loaded" (ngSubmit)="save()">
+<form [formGroup]="editTask" class="modal scroller" @flyInOut *ngIf="loaded" (ngSubmit)="save()">
 	<div class="wrapper">
 		<div class="modal-header">
 			<input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" formControlName="name" />

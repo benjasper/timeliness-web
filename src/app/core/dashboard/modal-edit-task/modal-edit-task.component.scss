@@ -25,6 +25,22 @@
 	z-index: 11;
 	position: absolute;
 	background-color: white;
+	transition: all 0.2s;
+
+	@mixin fullscreen() {
+		height: 100vh;
+		overflow-y: auto;
+		border-radius: 0;
+		width: 100vw;
+	}
+
+	@media screen and (max-height: 868px) {
+		@include fullscreen();
+	}
+
+	@media screen and (max-width: 990px) {
+		@include fullscreen();
+	}
 
 	input,
 	textarea {
@@ -90,10 +106,10 @@
 		display: flex;
 		flex-flow: row;
 		justify-content: space-between;
+		flex-flow: wrap;
+		gap: 2rem;
 
 		.workload {
-			padding: 0 4rem;
-
 			.workload-time {
 				display: flex;
 				flex-flow: row;
@@ -101,7 +117,8 @@
 		}
 
 		.tags {
-			width: 100%;
+			min-width: 40rem;
+			width: auto;
 
 			.tags-container {
 				width: 100%;
