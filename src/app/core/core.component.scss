@@ -17,13 +17,14 @@
 			width: 12rem;
 		}
 
-		.logo {
-			display: none;
+		.img.logo {
+			display: none !important;
 			margin: auto;
 		}
 
-		.logo-small {
+		.img.logo-small {
 			display: block !important;
+			margin: auto;
 		}
 
 		.sidebar .labels {
@@ -49,12 +50,20 @@
 		transition: all 0.2s;
 
 		h1 {
-			padding-top: 4rem;
+			padding-top: 2rem;
 			cursor: pointer;
-		}
 
-		.logo-small {
-			display: none;
+			.img.logo {
+				width: 18rem;
+				margin: auto;
+				height: auto;
+			}
+
+			.img.logo-small {
+				margin-top: 2rem;
+				display: none;
+				width: 5rem;
+			}
 		}
 
 		.child {
