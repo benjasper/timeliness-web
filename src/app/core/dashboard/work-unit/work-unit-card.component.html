@@ -7,7 +7,7 @@
 	[ngClass]="getColorClass(tag ? tag.color: '', 'background')"
 >
 	<div class="card-header" [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
-		<a *ngIf="!small" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+		<a class="header-link" *ngIf="!small" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 			<h3 class="truncate-text">{{ task.name }}</h3>
 		</a>
 		<h3 *ngIf="small" class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>

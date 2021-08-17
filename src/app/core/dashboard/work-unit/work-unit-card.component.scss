@@ -21,10 +21,16 @@
 		flex-flow: row;
 		justify-content: space-between;
 
+		.header-link {
+			width: auto;
+			display: contents;
+			text-decoration: none;
+		}
+
 		h3 {
 			color: $color-primary;
 			flex: 1;
-			padding-right: 2rem;
+			padding-right: 1rem;
 			font-weight: bold;
 		}
 	}
@@ -131,11 +137,11 @@
 		.loading-component {
 			background-color: $color-light-grey;
 			border-radius: 1.5rem;
-			
+
 			&.btn {
 				background-color: $color-light-grey;
 				width: 10rem;
-				padding: .8rem 1.4rem;
+				padding: 0.8rem 1.4rem;
 				border: none;
 			}
 
