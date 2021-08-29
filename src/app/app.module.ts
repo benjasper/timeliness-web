@@ -10,7 +10,7 @@ import { DeadlineComponent } from './core/dashboard/deadline/deadline.component'
 import { WorkUnitCardComponent } from './core/dashboard/work-unit/work-unit-card.component'
 import { WorkUnitUpcomingComponent } from './core/dashboard/work-unit-upcoming/work-unit-upcoming.component'
 import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
-import { SettingsComponent } from './core/dashboard/settings/settings.component'
+import { SettingsComponent } from './core/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -22,7 +22,8 @@ import { SliderComponent } from './core/dashboard/slider/slider.component'
 import { StatsComponent } from './core/dashboard/stats/stats.component'
 import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
 import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component';
-import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component'
+import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component';
+import { AgendaComponent } from './core/agenda/agenda.component'
 
 @NgModule({
 	declarations: [
@@ -40,6 +41,7 @@ import { StatsSectionComponent } from './core/dashboard/stats-section/stats-sect
 		TagComponent,
 		CircularProgressComponent,
   StatsSectionComponent,
+  AgendaComponent,
 	],
 	imports: [
 		BrowserModule,

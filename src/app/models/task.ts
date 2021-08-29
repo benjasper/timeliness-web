@@ -1,6 +1,6 @@
 import { Event } from './event'
 import { WorkUnit } from './workunit'
-export interface Task {
+export type Task = {
 	id: string
 	userId: string
 	createdAt: string
@@ -16,7 +16,7 @@ export interface Task {
 	deleted: boolean
 }
 
-export interface TaskUnwound extends Task {
+export type TaskUnwound = Task & {
 	workUnit: WorkUnit
 	workUnitsIndex: number
 	workUnitsCount: number

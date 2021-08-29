@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { CoreComponent } from './core/core.component'
 import { DashboardComponent } from './core/dashboard/dashboard.component'
-import { SettingsComponent } from './core/dashboard/settings/settings.component'
+import { SettingsComponent } from './core/settings/settings.component'
 import { ModalEditTaskComponent } from './core/dashboard/modal-edit-task/modal-edit-task.component'
 import { SigninComponent } from './signin/signin.component'
 import { AuthGuard } from './guards/auth.guard'
 import { NoAuthGuard } from './guards/no-auth.guard'
+import { AgendaComponent } from './core/agenda/agenda.component'
 
 const routes: Routes = [
 	{
@@ -24,6 +25,10 @@ const routes: Routes = [
 						outlet: 'modal',
 					},
 				],
+			},
+			{
+				path: 'agenda',
+				component: AgendaComponent,
 			},
 			{
 				path: 'settings',
