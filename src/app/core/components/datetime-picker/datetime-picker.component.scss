@@ -1,0 +1,54 @@
+@import '../../../../variables.scss';
+
+.dropdown {
+	position: absolute;
+	background-color: $color-white;
+	box-shadow: $box-shadow;
+	padding: 2rem;
+	z-index: 15;
+	border-radius: 1.5rem;
+
+	.top {
+		display: flex;
+		flex-flow: row;
+		justify-content: space-between;
+		padding-bottom: 2rem;
+	}
+
+	.calendar {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+		gap: 1rem;
+
+		.date {
+			font-size: 1.8rem;
+			text-align: center;
+			padding: 1rem;
+			border-radius: 1rem;
+		}
+
+		.day {
+			cursor: pointer;
+			user-select: none;
+			transition: all 0.2s;
+
+			&.active {
+				background-color: $color-primary-pastelle;
+				cursor: default;
+			}
+
+			&:hover:not(.active) {
+				background-color: $color-light-grey;
+			}
+		}
+
+		.weekday {
+			color: $color-primary;
+		}
+	}
+}
+
+.input {
+	padding: 0.8rem 1.5rem;
+	cursor: pointer;
+}

@@ -96,7 +96,7 @@ input[type='text'],
 input[type='datetime-local'],
 input[type='time'],
 textarea,
-input {
+input, .input {
 	padding: 0.7rem 1rem;
 	border: none;
 	outline: none;

@@ -1,0 +1,35 @@
+<span class="input"
+	  (click)="toggleDropdown()">{{ selected.toLocaleDateString() }}</span>
+
+<div *ngIf="isFocused"
+	 class="dropdown">
+	<div class="top">
+		<button (click)="selectDate($event)">Today</button>
+		<span>{{month}}</span>
+		<span>{{year}}</span>
+		<div class="navigation">
+			<button (click)="previousMonth()"> < </button>
+			<button (click)="nextMonth()"> > </button>
+		</div>
+		
+	</div>
+	<div class="calendar">
+		<div class="date weekday">M</div>
+		<div class="date weekday">D</div>
+		<div class="date weekday">M</div>
+		<div class="date weekday">D</div>
+		<div class="date weekday">F</div>
+		<div class="date weekday">S</div>
+		<div class="date weekday">S</div>
+		<div *ngFor="let empty of emptyDays"
+			 class="date empty-day">
+
+		</div>
+		<div class="date day"
+			 *ngFor="let date of monthDates"
+			 [class.active]="date.getDate() === selected.getDate() && date.getMonth() === selected.getMonth() && date.getFullYear() === selected.getFullYear()"
+			 (click)="selectDate($event, date)">
+			{{ date.getDate() }}
+		</div>
+	</div>
+</div>

@@ -23,7 +23,8 @@ import { StatsComponent } from './core/dashboard/stats/stats.component'
 import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
 import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component';
 import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component';
-import { AgendaComponent } from './core/agenda/agenda.component'
+import { AgendaComponent } from './core/agenda/agenda.component';
+import { DatetimePickerComponent } from './core/components/datetime-picker/datetime-picker.component'
 
 @NgModule({
 	declarations: [
@@ -42,6 +43,7 @@ import { AgendaComponent } from './core/agenda/agenda.component'
 		CircularProgressComponent,
   StatsSectionComponent,
   AgendaComponent,
+  DatetimePickerComponent,
 	],
 	imports: [
 		BrowserModule,
