@@ -3,7 +3,7 @@ import { Task } from '../models/task'
 import { TaskService } from '../services/task.service'
 
 export class TaskComponent {
-	public constructor() {}
+	public constructor() { }
 
 	public getRemainingWorkload(task: Task): string {
 		let doneWorkload = 0
@@ -19,6 +19,10 @@ export class TaskComponent {
 
 	public getProgress(task: Task): string {
 		let doneWorkload = 0
+
+		if (!task || !task.workUnits || task.workUnits.length === 0) {
+			return '0'
+		}
 
 		task.workUnits
 			.filter((x) => x.isDone)
@@ -38,5 +42,5 @@ export class TaskComponent {
 		return color + '-' + kind
 	}
 
-	
+
 }

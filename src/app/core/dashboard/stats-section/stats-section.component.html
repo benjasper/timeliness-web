@@ -1,5 +1,6 @@
 <div class="grid widgets-large">
-	<app-stats class="large-widget" [class.loading]="loadingPlan">
+	<app-stats class="large-widget"
+			   [class.loading]="loadingPlan">
 		<ng-container *ngIf="!loadingPlan">
 			<div class="left">
 				<span class="info">Your plan today</span>
@@ -11,10 +12,10 @@
 				</span>
 			</div>
 			<div class="progress">
-				<app-circular-progress
-					*ngIf="workUnitsToComplete > 0"
-					[progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
-				></app-circular-progress>
+				<app-circular-progress *ngIf="workUnitsToComplete > 0"
+									   [progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
+									   [radius]="65">
+				</app-circular-progress>
 			</div>
 		</ng-container>
 		<ng-container *ngIf="loadingPlan">
@@ -23,9 +24,7 @@
 				<span class="title loading-text loading">&nbsp;</span>
 			</div>
 			<div class="progress">
-				<app-circular-progress
-				[loading]="true"
-				></app-circular-progress>
+				<app-circular-progress [loading]="true" [radius]="65"></app-circular-progress>
 			</div>
 		</ng-container>
 	</app-stats>
@@ -34,14 +33,16 @@
 	<app-stats class="simple-widget">
 		<span class="info">7</span>
 		<span class="title">
-			<svg-icon class="img" src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
+			<svg-icon class="img"
+					  src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
 			Tasks completed this week
 		</span>
 	</app-stats>
 	<app-stats class="simple-widget">
 		<span class="info">12</span>
 		<span class="title">
-			<svg-icon class="img" src="/assets/icons/icon-check-multiple.svg"></svg-icon>
+			<svg-icon class="img"
+					  src="/assets/icons/icon-check-multiple.svg"></svg-icon>
 			Work units completed this week
 		</span>
 	</app-stats>

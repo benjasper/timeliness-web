@@ -117,6 +117,40 @@
 		gap: 2rem;
 
 		.workload {
+			::ng-deep {
+				.inner {
+					display: flex;
+					flex-flow: column;
+					justify-content: center;
+
+					.ng-select-container {
+						margin: 0 2rem;
+
+						&:hover {
+							cursor: text;
+						}
+					}
+
+					.ng-value {
+						margin: 0 auto;
+
+						span {
+							font-size: 2.2rem;
+						}
+					}
+
+					.workload-left {
+						margin: 0 auto;
+						font-size: 1.4rem;
+						text-align: center;
+					}
+					
+					input {
+						font-size: 2.2rem;
+						text-align: center;
+					}
+				}
+			}	
 			.workload-time {
 				display: flex;
 				flex-flow: row;
@@ -131,27 +165,6 @@
 				display: flex;
 				flex-wrap: wrap;
 				min-height: 12rem;
-			}
-		}
-
-		.progress {
-			width: 100%;
-
-			.labels {
-				display: flex;
-				flex-flow: row;
-				justify-content: space-between;
-
-				.progress-value {
-					padding-right: 0;
-					margin: 0;
-				}
-			}
-
-			.progress-container {
-				display: flex;
-				border-radius: 2.5rem;
-				margin-left: 1.4rem;
 			}
 		}
 	}
