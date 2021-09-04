@@ -1,87 +1,97 @@
-<div class="modal-container" *ngIf="modalBackground" (click)="close()"></div>
-<form [formGroup]="editTask" class="modal" @flyInOut *ngIf="loaded" (ngSubmit)="save()">
+<div class="modal-container"
+	 *ngIf="modalBackground"
+	 (click)="close()"></div>
+<form [formGroup]="editTask"
+	  class="modal"
+	  @flyInOut
+	  *ngIf="loaded"
+	  (ngSubmit)="save()">
 	<div class="modal-header">
-		<input tabindex="1" type="text" class="h3 edit task-title" placeholder="Title" formControlName="name" />
+		<input tabindex="1"
+			   type="text"
+			   class="h3 edit task-title"
+			   placeholder="Title"
+			   formControlName="name" />
 		<div class="modal-controls">
 			<div class="dangerous-controls">
-				<button class="tiny-button no-background" [disabled]="!editTask.dirty || isNew" (click)="undo()">
-					<svg-icon class="img" src="/assets/icons/icon-undo.svg" alt="Undo"></svg-icon>
+				<button class="tiny-button no-background"
+						[disabled]="!editTask.dirty || isNew"
+						(click)="undo()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-undo.svg"
+							  alt="Undo"></svg-icon>
 				</button>
-				<button class="tiny-button with-border" [disabled]="!task" (click)="delete()">
-					<svg-icon class="img" src="/assets/icons/icon-trash.svg" alt="Delete"></svg-icon>
+				<button class="tiny-button with-border"
+						[disabled]="!task"
+						(click)="delete()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-trash.svg"
+							  alt="Delete"></svg-icon>
 				</button>
 			</div>
-			<button class="tiny-button no-background" (click)="close()">
-				<svg-icon class="img" src="/assets/icons/icon-exit.svg" alt="Exit"></svg-icon>
+			<button class="tiny-button no-background"
+					(click)="close()">
+				<svg-icon class="img"
+						  src="/assets/icons/icon-exit.svg"
+						  alt="Exit"></svg-icon>
 			</button>
 		</div>
 	</div>
 	<div class="modal-body scroller">
 		<div class="wrapper">
 			<label for="task-description">Description</label>
-			<textarea
-				tabindex="2"
-				type="textarea"
-				id="task-description"
-				class="task-description edit scroller"
-				rows="5"
-				placeholder="Describe your task here"
-				formControlName="description"
-			></textarea>
+			<textarea tabindex="2"
+					  type="textarea"
+					  id="task-description"
+					  class="task-description edit scroller"
+					  rows="5"
+					  placeholder="Describe your task here"
+					  formControlName="description"></textarea>
 			<div class="row">
 				<div class="due-date">
 					<label for="due-date">Due date</label>
-					<input id="due-date" type="datetime-local" class="edit" tabindex="3" formControlName="dueAt" />
+					<input id="due-date"
+						   type="datetime-local"
+						   class="edit"
+						   tabindex="3"
+						   formControlName="dueAt" />
 				</div>
 				<div class="workload">
 					<label for="workload-hour">Workload</label>
-					<app-circular-progress [progress]="80">
-						<ng-select class="edit" id="workload-hour" formControlName="workload" tabindex="4">
-							<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">
+					<app-circular-progress [progress]="+getProgress(task)"
+										   [radius]="90">
+						<ng-select class="edit"
+								   id="workload-hour"
+								   formControlName="workload"
+								   tabindex="4">
+							<ng-option *ngFor="let duration of durations"
+									   [value]="duration.milliseconds">
 								{{ duration.toString() }}
 							</ng-option>
 						</ng-select>
+						<span *ngIf="task" class="workload-left">{{getProgress(task)}} % done</span>
+						<span *ngIf="task" class="workload-left">{{getRemainingWorkload(task)}} left</span>
 					</app-circular-progress>
 				</div>
-				<div class="tags" [class.empty]="tags.length === 0">
+				<div class="tags"
+					 [class.empty]="tags.length === 0">
 					<label for="tags">Tags</label>
 					<ul class="tags-container">
-						<app-tag
-							*ngFor="let tag of tags; let i = index"
-							[tag]="tag"
-							[isFirst]="i === 0"
-							(valueChange)="changeTag(tag, $event)"
-							(onDelete)="deleteTag(tag.id, tag.value)"
-							[existingTags]="tags"
-							(promoteTag)="promoteToFirst(tag)"
-						></app-tag>
-						<app-tag
-							class="new"
-							[class.first]="tags.length === 0"
-							[new]="true"
-							[isFirst]="tags.length === 0"
-							[tag]="emptyTag"
-							(valueChange)="changeTag(emptyTag, $event)"
-							[existingTags]="tags"
-						></app-tag>
+						<app-tag *ngFor="let tag of tags; let i = index"
+								 [tag]="tag"
+								 [isFirst]="i === 0"
+								 (valueChange)="changeTag(tag, $event)"
+								 (onDelete)="deleteTag(tag.id, tag.value)"
+								 [existingTags]="tags"
+								 (promoteTag)="promoteToFirst(tag)"></app-tag>
+						<app-tag class="new"
+								 [class.first]="tags.length === 0"
+								 [new]="true"
+								 [isFirst]="tags.length === 0"
+								 [tag]="emptyTag"
+								 (valueChange)="changeTag(emptyTag, $event)"
+								 [existingTags]="tags"></app-tag>
 					</ul>
-				</div>
-			</div>
-			<div class="row" *ngIf="task">
-				<div class="progress">
-					<div class="labels">
-						<label for="modal-progress">Progress</label>
-						<label class="progress-value">{{ getProgress(task) }}%</label>
-					</div>
-					<div class="progress-container" [ngClass]="getColorClass(tags[0] ? tags[0].color : '', 'color')">
-						<progress
-							id="modal-progress"
-							class="large"
-							max="100"
-							value="0"
-							[value]="getProgress(task)"
-						></progress>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -89,22 +99,35 @@
 			<label *ngIf="task">Workunits</label>
 			<ng-container *ngIf="loading">
 				<ul class="workunits-list">
-					<li><app-work-unit-card [loading]="true" [small]="true"></app-work-unit-card></li>
-					<li><app-work-unit-card [loading]="true" [small]="true"></app-work-unit-card></li>
+					<li>
+						<app-work-unit-card [loading]="true"
+											[small]="true"></app-work-unit-card>
+					</li>
+					<li>
+						<app-work-unit-card [loading]="true"
+											[small]="true"></app-work-unit-card>
+					</li>
 				</ul>
 			</ng-container>
-			<app-slider [listArray]="task.workUnits" [startsAtIndex]="getStartsAtWorkUnit()" *ngIf="task && !loading">
+			<app-slider [listArray]="task.workUnits"
+						[startsAtIndex]="getStartsAtWorkUnit()"
+						*ngIf="task && !loading">
 				<ul class="workunits-list">
 					<li *ngFor="let workUnit of task.workUnits; let i = index">
-						<app-work-unit-card [task]="task" [workUnitIndex]="i" [small]="true"></app-work-unit-card>
+						<app-work-unit-card [task]="task"
+											[workUnitIndex]="i"
+											[small]="true"></app-work-unit-card>
 					</li>
 				</ul>
 			</app-slider>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="submit" class="btn large save" [disabled]="!editTask.valid || !editTask.dirty || loading">
-			<svg-icon class="img" src="/assets/icons/icon-save.svg"></svg-icon>
+		<button type="submit"
+				class="btn large save"
+				[disabled]="!editTask.valid || !editTask.dirty || loading">
+			<svg-icon class="img"
+					  src="/assets/icons/icon-save.svg"></svg-icon>
 			<span>Save</span>
 		</button>
 	</div>
