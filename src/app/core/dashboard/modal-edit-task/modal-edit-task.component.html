@@ -35,11 +35,13 @@
 				</div>
 				<div class="workload">
 					<label for="workload-hour">Workload</label>
-					<ng-select class="edit" id="workload-hour" formControlName="workload" tabindex="4">
-						<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">
-							{{ duration.toString() }}
-						</ng-option>
-					</ng-select>
+					<app-circular-progress [progress]="80">
+						<ng-select class="edit" id="workload-hour" formControlName="workload" tabindex="4">
+							<ng-option *ngFor="let duration of durations" [value]="duration.milliseconds">
+								{{ duration.toString() }}
+							</ng-option>
+						</ng-select>
+					</app-circular-progress>
 				</div>
 				<div class="tags" [class.empty]="tags.length === 0">
 					<label for="tags">Tags</label>
