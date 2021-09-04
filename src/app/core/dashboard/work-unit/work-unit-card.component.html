@@ -1,58 +1,51 @@
-<div
-	*ngIf="!loading"
-	class="work-unit"
-	[class.no-description]="task.description === ''"
-	[class.done]="task.workUnits[workUnitIndex].isDone"
-	[class.small]="small"
-	[ngClass]="getColorClass(tag ? tag.color: '', 'background')"
->
-	<div class="card-header" [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
-		<a class="header-link" *ngIf="!small" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+<div *ngIf="!loading"
+	 class="work-unit"
+	 [class.no-description]="task.description === '' && task.name.length <= 11"
+	 [class.done]="task.workUnits[workUnitIndex].isDone"
+	 [class.small]="small"
+	 [ngClass]="getColorClass(tag ? tag.color: '', 'background')">
+	<div class="card-header"
+		 [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
+		<a class="header-link"
+		   *ngIf="!small"
+		   [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 			<h3 class="truncate-text">{{ task.name }}</h3>
 		</a>
-		<h3 *ngIf="small" class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>
-		<a
-			*ngIf="!small"
-			class="btn tiny-button with-border"
-			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
-			[ngClass]="getColorClass(tag ? tag.color: '', 'color')"
-		>
-			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
+		<h3 *ngIf="small"
+			class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>
+		<a *ngIf="!small"
+		   class="btn tiny-button with-border"
+		   [routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+		   [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
+			<svg-icon class="img"
+					  src="/assets/icons/icon-edit.svg"></svg-icon>
 		</a>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">
 			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
 			<span *ngIf="small"></span>
-			<div
-				class="info-segment"
-				[class.red]="
+			<div class="info-segment"
+				 [class.red]="
 					task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
 					!task.workUnits[workUnitIndex].isDone
-				"
-			>
-				<div
-					*ngIf="
+				">
+				<div *ngIf="
 						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getDate() === today.getDate();
 						then todayThen;
 						else todayElse
-					"
-				></div>
+					"></div>
 				<ng-template #todayThen>
-					<span
-						*ngIf="
+					<span *ngIf="
 							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate() < today &&
 							task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() > today
-						"
-					>
+						">
 						Now
 					</span>
-					<span
-						*ngIf="
+					<span *ngIf="
 							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate() > today ||
 							task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() < today
-						"
-					>
+						">
 						Today
 					</span>
 				</ng-template>
@@ -63,17 +56,17 @@
 				</ng-template>
 				<span>
 					{{
-						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
-							hour: '2-digit',
-							minute: '2-digit'
-						})
+					task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit'
+					})
 					}}
 					-
 					{{
-						task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().toLocaleTimeString([], {
-							hour: '2-digit',
-							minute: '2-digit'
-						})
+					task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit'
+					})
 					}}
 					• {{ task.workUnits[workUnitIndex].workload.toDuration(1).toString() }}
 				</span>
@@ -83,43 +76,49 @@
 					<span>Unit progress</span>
 					<span>{{ progress.toFixed() }}%</span>
 				</div>
-				<div class="progress-container" [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
-					<progress max="100" value="{{ progress }}"></progress>
+				<div class="progress-container"
+					 [ngClass]="getColorClass(tag ? tag.color: '', 'color')">
+					<progress max="100"
+							  value="{{ progress }}"></progress>
 				</div>
 			</div>
 		</div>
-		<div *ngIf="task.description && !small" class="card-section description scroller inverse">
+		<div *ngIf="!small"
+			 class="card-section scroller inverse"
+			 [class.card-section]="task.description !== '' || task.name.length > 11"
+			 [class.card-section]="task.description !== '' || task.name.length > 11">
 			{{ task.description }}
 		</div>
 	</div>
 	<div class="card-footer">
-		<button
-			class="btn with-border"
-			*ngIf="!task.workUnits[workUnitIndex].isDone"
-			[ngClass]="getColorClass(tag ? tag.color: '', 'color')"
-			(click)="rescheduleWorkUnit(task)"
-		>
-			<svg-icon class="img" src="/assets/icons/icon-time.svg"></svg-icon>
+		<button class="btn with-border"
+				*ngIf="!task.workUnits[workUnitIndex].isDone"
+				[ngClass]="getColorClass(tag ? tag.color: '', 'color')"
+				(click)="rescheduleWorkUnit(task)">
+			<svg-icon class="img"
+					  src="/assets/icons/icon-time.svg"></svg-icon>
 			<span>Reschedule</span>
 		</button>
-		<button
-			class="btn with-border no-background"
-			[class.icon-only]="task.workUnits[workUnitIndex].isDone"
-			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as un-done' : 'Mark as done' }}"
-			[ngClass]="getColorClass(tag ? tag.color: '', 'color')"
-			(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)"
-		>
-			<svg-icon class="img" src="/assets/icons/icon-check.svg"></svg-icon>
+		<button class="btn with-border no-background"
+				[class.icon-only]="task.workUnits[workUnitIndex].isDone"
+				title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as un-done' : 'Mark as done' }}"
+				[ngClass]="getColorClass(tag ? tag.color: '', 'color')"
+				(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)">
+			<svg-icon class="img"
+					  src="/assets/icons/icon-check.svg"></svg-icon>
 			<span *ngIf="!task.workUnits[workUnitIndex].isDone">Done</span>
 		</button>
 	</div>
 </div>
-<div *ngIf="loading" class="work-unit no-description loading" [class.small]="small">
+<div *ngIf="loading"
+	 class="work-unit no-description loading"
+	 [class.small]="small">
 	<div class="card-header loading-component">
 		<div *ngIf="!small">
 			<h3 class="truncate-text"></h3>
 		</div>
-		<h3 *ngIf="small" class="truncate-text loading-component">&nbsp;</h3>
+		<h3 *ngIf="small"
+			class="truncate-text loading-component">&nbsp;</h3>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">
