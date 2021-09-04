@@ -124,7 +124,7 @@
 					justify-content: center;
 
 					.ng-select-container {
-						margin: 0 2rem;
+						margin: 0 2.5rem;
 
 						&:hover {
 							cursor: text;
@@ -148,6 +148,7 @@
 					input {
 						font-size: 2.2rem;
 						text-align: center;
+						cursor: text;
 					}
 				}
 			}	
