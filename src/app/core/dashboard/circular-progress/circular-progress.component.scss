@@ -3,22 +3,9 @@
 .circular {
 	position: relative;
 
-	&.loading {
-		background: transparent !important;
-
-		.inner {
-			background: $color-light-grey;
-			border-radius: 100%;
-		}
-		
-		.right {
-			transform: rotate(0);
-		}
-
-		.bar {
-			background: $color-grey;
-			border: none;
-			width: auto;
+	&.load {
+		svg circle {
+			stroke: $color-light-grey;
 		}
 	}
 
@@ -27,6 +14,7 @@
 		top: 0;
 		left: 0;
 		transform: rotate(270deg);
+		z-index: 10;
 
 		circle {
 			fill: none;
@@ -41,17 +29,18 @@
 		height: 100%;
 		border-radius: 100%;
 		background-color: $color-white;
-		border: 2.2rem solid $color-light-grey;
+		border: 1rem solid $color-light-grey;
 	}
 
 	.inner {
+		border-radius: 100%;
 		position: absolute;
 		z-index: 6;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		height: calc(100% - 4rem);
-		width: calc(100% - 4rem);
+		height: calc(100%);
+		width: calc(100%);
 		background: transparent;
 		border-radius: 100%;
 	}

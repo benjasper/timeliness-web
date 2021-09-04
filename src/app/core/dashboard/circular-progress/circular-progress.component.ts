@@ -15,21 +15,14 @@ import {
 	templateUrl: './circular-progress.component.html',
 	styleUrls: ['./circular-progress.component.scss'],
 })
-export class CircularProgressComponent implements OnInit, OnChanges, AfterViewInit {
-	constructor(private renderer: Renderer2) {}
+export class CircularProgressComponent implements OnInit {
+	constructor() {}
 
 	@ViewChild('left') left!: ElementRef
 	@ViewChild('right') right!: ElementRef
 
 	@Input() progress!: number
-	@Input() loading: boolean = false
-	@Input() radius: number = 80
+	@Input() loading: boolean = true
+	@Input() radius: number = 8
 	ngOnInit(): void {}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		console.log(this.progress)
-	}
-
-	ngAfterViewInit(): void {
-	}
 }

@@ -14,7 +14,7 @@
 			<div class="progress">
 				<app-circular-progress *ngIf="workUnitsToComplete > 0"
 									   [progress]="(this.workUnitsCompleted / this.workUnitsToComplete) * 100"
-									   [radius]="65">
+									   [radius]="6.5">
 				</app-circular-progress>
 			</div>
 		</ng-container>
@@ -24,7 +24,7 @@
 				<span class="title loading-text loading">&nbsp;</span>
 			</div>
 			<div class="progress">
-				<app-circular-progress [loading]="true" [radius]="65"></app-circular-progress>
+				<app-circular-progress [loading]="true" [radius]="6.5"></app-circular-progress>
 			</div>
 		</ng-container>
 	</app-stats>
