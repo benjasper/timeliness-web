@@ -22,7 +22,7 @@ export class CircularProgressComponent implements OnInit {
 	@ViewChild('right') right!: ElementRef
 
 	@Input() progress!: number
-	@Input() loading: boolean = true
+	@Input() loading: boolean = false
 	@Input() radius: number = 8
 	ngOnInit(): void {}
 }
