@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ModuleWithComponentFactories, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, ModuleWithComponentFactories, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { forwardRef, HostBinding, Input } from '@angular/core';
 
@@ -33,6 +33,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     times: Date[] = []
 
     @Input() disabled = false;
+    @ViewChild('calendar') calendar!: ElementRef; 
 
     @HostListener('document:click', ['$event'])
     clickout(event: Event) {
@@ -54,6 +55,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     }
 
     @HostListener('wheel', ['$event']) onMousewheel(event: WheelEvent): void {
+        let clickedInside = this.calendar.nativeElement.contains(event.target)
+        if (!clickedInside) {
+            return
+        }
+
 		if (event.deltaY < 0) {
 			this.previousMonth()
 		}
