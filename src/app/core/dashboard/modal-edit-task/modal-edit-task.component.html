@@ -11,7 +11,8 @@
 			   type="text"
 			   class="h3 edit task-title"
 			   placeholder="Title"
-			   formControlName="name" />
+			   formControlName="name"
+			   autocomplete="off" />
 		<div class="modal-controls">
 			<div class="dangerous-controls">
 				<button class="tiny-button no-background"
@@ -46,11 +47,15 @@
 					  class="task-description edit scroller"
 					  rows="5"
 					  placeholder="Describe your task here"
-					  formControlName="description"></textarea>
+					  formControlName="description"
+					  autocomplete="off"></textarea>
 			<div class="row">
 				<div class="due-date">
 					<label for="due-date">Due date</label>
-					<app-datetime-picker id="due-date" class="edit" tabindex="3" formControlName="dueAt"></app-datetime-picker>
+					<app-datetime-picker id="due-date"
+										 class="edit"
+										 tabindex="3"
+										 formControlName="dueAt"></app-datetime-picker>
 				</div>
 				<div class="workload">
 					<label for="workload-hour">Workload</label>
@@ -65,8 +70,10 @@
 								{{ duration.toString() }}
 							</ng-option>
 						</ng-select>
-						<span *ngIf="task" class="workload-left">{{getProgress(task)}} % done</span>
-						<span *ngIf="task" class="workload-left">{{getRemainingWorkload(task)}} left</span>
+						<span *ngIf="task"
+							  class="workload-left">{{getProgress(task)}} % done</span>
+						<span *ngIf="task"
+							  class="workload-left">{{getRemainingWorkload(task)}} left</span>
 					</app-circular-progress>
 				</div>
 				<div class="tags"
