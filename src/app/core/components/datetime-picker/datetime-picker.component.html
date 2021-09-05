@@ -5,7 +5,7 @@
 <div *ngIf="isFocused"
 	 class="dropdown">
 	<div class="top">
-		<button (click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
+		<button class="today" (click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
 		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
 			year: 'numeric'})}}</span>
 		<div class="navigation">
