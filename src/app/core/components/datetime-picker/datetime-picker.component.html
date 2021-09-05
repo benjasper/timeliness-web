@@ -5,17 +5,18 @@
 <div *ngIf="isFocused"
 	 class="dropdown">
 	<div class="top">
-		<button class="today" (click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
+		<button class="with-border today"
+				(click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
 		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
 			year: 'numeric'})}}</span>
 		<div class="navigation">
-			<button class="previous-month"
+			<button class="tiny-button with-border previous-month"
 					(click)="previousMonth()">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
 						  alt="Previous month"></svg-icon>
 			</button>
-			<button class="next-month"
+			<button class="tiny-button with-border next-month"
 					(click)="nextMonth()">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
@@ -24,14 +25,10 @@
 		</div>
 
 	</div>
-	<div class="calendar" #calendar>
-		<div class="date weekday">M</div>
-		<div class="date weekday">D</div>
-		<div class="date weekday">M</div>
-		<div class="date weekday">D</div>
-		<div class="date weekday">F</div>
-		<div class="date weekday">S</div>
-		<div class="date weekday">S</div>
+	<div class="calendar"
+		 #calendar>
+		<div class="date weekday"
+			 *ngFor="let weekday of weekdays">{{weekday.toLocaleDateString('default', {weekday: 'narrow'})}}</div>
 		<div *ngFor="let empty of emptyDays"
 			 class="date empty-day">
 		</div>

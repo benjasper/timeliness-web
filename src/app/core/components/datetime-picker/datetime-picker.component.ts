@@ -24,7 +24,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     public month!: number
     public year!: number
 
-    public weekStartsAtMonday = true
     isFocused = false
 
     emptyDays: number[] = []
@@ -32,14 +31,14 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
     times: Date[] = []
 
-    @Input() disabled = false;
-    @ViewChild('calendar') calendar!: ElementRef; 
+    weekdays: Date[] = []
+
+    @Input() weekStartsAtMonday = true
+    @Input() disabled = false
+    @ViewChild('calendar') calendar!: ElementRef;
 
     @HostListener('document:click', ['$event'])
     clickout(event: Event) {
-        event.stopPropagation()
-        event.preventDefault()
-
         let clickedInside = this.elementRef.nativeElement.contains(event.target)
         const target = event.target as HTMLElement
 
@@ -60,14 +59,14 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
             return
         }
 
-		if (event.deltaY < 0) {
-			this.previousMonth()
-		}
+        if (event.deltaY < 0) {
+            this.previousMonth()
+        }
 
-		if (event.deltaY > 0) {
-			this.nextMonth()
-		}
-	}
+        if (event.deltaY > 0) {
+            this.nextMonth()
+        }
+    }
 
     ngOnInit(): void {
         this.goToMonth(this.selected.getMonth(), this.selected.getFullYear())
@@ -80,6 +79,14 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
         this.selected = new Date(Math.ceil(date.getTime() / coeff) * coeff)
 
         this.generateTimeOptions()
+
+
+        // Generate weekday lookup
+        let start = this.weekStartsAtMonday ? 5 : 4;
+
+        for (let day = start; day < start + 7; day++) {
+            this.weekdays.push(new Date(Date.UTC(1970, 0, day)))
+        }
     }
 
     private generateTimeOptions() {
@@ -109,8 +116,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
         this.generateTimeOptions()
         this.updateCalendarView()
-
-        this.onChange(this.selected)
     }
 
     registerOnChange(fn: any): void {
