@@ -1,17 +1,28 @@
 <span class="input"
-	  (click)="toggleDropdown()">{{ selected.toLocaleDateString() }}</span>
+	  (click)="toggleDropdown()">{{ selected.toLocaleDateString() }} {{ selected.toLocaleTimeString('default',{hour:
+	'numeric', minute:'2-digit'}) }}</span>
 
 <div *ngIf="isFocused"
 	 class="dropdown">
 	<div class="top">
-		<button (click)="selectDate($event)">Today</button>
-		<span>{{month}}</span>
-		<span>{{year}}</span>
+		<button (click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
+		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
+			year: 'numeric'})}}</span>
 		<div class="navigation">
-			<button (click)="previousMonth()"> < </button>
-			<button (click)="nextMonth()"> > </button>
+			<button class="previous-month"
+					(click)="previousMonth()">
+				<svg-icon class="img"
+						  src="/assets/icons/icon-arrow-down.svg"
+						  alt="Previous month"></svg-icon>
+			</button>
+			<button class="next-month"
+					(click)="nextMonth()">
+				<svg-icon class="img"
+						  src="/assets/icons/icon-arrow-down.svg"
+						  alt="Next month"></svg-icon>
+			</button>
 		</div>
-		
+
 	</div>
 	<div class="calendar">
 		<div class="date weekday">M</div>
@@ -23,13 +34,23 @@
 		<div class="date weekday">S</div>
 		<div *ngFor="let empty of emptyDays"
 			 class="date empty-day">
-
 		</div>
 		<div class="date day"
 			 *ngFor="let date of monthDates"
 			 [class.active]="date.getDate() === selected.getDate() && date.getMonth() === selected.getMonth() && date.getFullYear() === selected.getFullYear()"
+			 [class.today]="date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()"
 			 (click)="selectDate($event, date)">
 			{{ date.getDate() }}
 		</div>
+	</div>
+
+	<div class="date">
+		<ng-select [ngModel]="selected.getTime()"
+				   (change)="onTimeChange($event)">
+			<ng-option *ngFor="let time of times"
+					   [value]="time.getTime()">{{ time.toLocaleTimeString('default', {hour: 'numeric',
+				minute:'2-digit'}) }}
+			</ng-option>
+		</ng-select>
 	</div>
 </div>

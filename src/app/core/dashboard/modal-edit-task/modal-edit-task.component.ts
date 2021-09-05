@@ -58,7 +58,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	editTask = new FormGroup({
 		name: new FormControl('', [Validators.required]),
 		description: new FormControl(''),
-		dueAt: new FormControl(new Date().toISOString().slice(0, -1)),
+		dueAt: new FormControl(new Date()),
 		workload: new FormControl(new Duration(3600000).milliseconds),
 		priority: new FormControl(1),
 	})
@@ -72,6 +72,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	@HostListener('document:keydown.escape', ['$event'])
 	handleEscape(event: KeyboardEvent): void {
+		event.stopImmediatePropagation()
+        event.preventDefault()
 		this.closeModal()
 	}
 
@@ -251,7 +253,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.editTask.setValue({
 			name: task.name,
 			description: task.description,
-			dueAt: task.dueAt.date.start.toDate().toISOString().slice(0, -1),
+			dueAt: task.dueAt.date.start.toDate(),
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 			priority: task.priority,
 		})
