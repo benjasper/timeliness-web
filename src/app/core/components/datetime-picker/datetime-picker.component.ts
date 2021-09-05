@@ -40,11 +40,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     @HostListener('document:click', ['$event'])
     clickout(event: Event) {
         let clickedInside = this.elementRef.nativeElement.contains(event.target)
-        const target = event.target as HTMLElement
-
-        if (target.classList.contains('ng-option-label') || target.classList.contains('ng-option')) {
-            clickedInside = true
-        }
 
         if (!clickedInside) {
             this.isFocused = false

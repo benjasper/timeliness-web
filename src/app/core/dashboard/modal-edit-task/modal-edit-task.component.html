@@ -40,16 +40,7 @@
 	</div>
 	<div class="modal-body scroller">
 		<div class="wrapper">
-			<label for="task-description">Description</label>
-			<textarea tabindex="2"
-					  type="textarea"
-					  id="task-description"
-					  class="task-description edit scroller"
-					  rows="5"
-					  placeholder="Describe your task here"
-					  formControlName="description"
-					  autocomplete="off"></textarea>
-			<div class="row">
+			<div class="left">
 				<div class="due-date">
 					<label for="due-date">Due date</label>
 					<app-datetime-picker id="due-date"
@@ -76,7 +67,21 @@
 							  class="workload-left">{{getRemainingWorkload(task)}} left</span>
 					</app-circular-progress>
 				</div>
-				<div class="tags"
+			</div>
+			<div class="right">
+				<label for="task-description">Description</label>
+				<textarea tabindex="2"
+						  type="textarea"
+						  id="task-description"
+						  class="task-description edit scroller"
+						  rows="5"
+						  placeholder="Describe your task here"
+						  formControlName="description"
+						  autocomplete="off"></textarea>
+			</div>
+		</div>
+		<div class="wrapper">
+			<div class="tags"
 					 [class.empty]="tags.length === 0">
 					<label for="tags">Tags</label>
 					<ul class="tags-container">
@@ -96,7 +101,6 @@
 								 [existingTags]="tags"></app-tag>
 					</ul>
 				</div>
-			</div>
 		</div>
 		<div class="workunits-section">
 			<label *ngIf="task">Workunits</label>

@@ -40,7 +40,7 @@
 		}
 	}
 
-	@media screen and (max-height: 846px) {
+	@media screen and (max-height: 837px) {
 		@include fullscreen();
 	}
 
@@ -55,6 +55,7 @@
 
 	textarea {
 		width: 100%;
+		height: 100%;
 	}
 
 	label {
@@ -64,6 +65,12 @@
 
 	.wrapper {
 		padding: 0 4.8rem 4rem 4rem;
+		display: flex;
+		flex-direction: row;
+
+		.left, .right {
+			width: 50%;
+		}
 	}
 
 	.task-description,
@@ -108,7 +115,7 @@
 		}
 	}
 
-	.row {
+	.row, .left {
 		margin-top: 2rem;
 		display: flex;
 		flex-flow: row;
@@ -116,16 +123,24 @@
 		flex-flow: wrap;
 		gap: 2rem;
 
+		.due-date {
+			flex: 1;
+		}
+
 		.workload {
+			flex: 1;
+
 			::ng-deep {
 				.inner {
 					display: flex;
 					flex-flow: column;
 					justify-content: center;
 
-					.ng-select-container {
+					.ng-select {
 						margin: 0 2.5rem;
+					}
 
+					.ng-select-container {
 						&:hover {
 							cursor: text;
 						}
@@ -157,16 +172,14 @@
 				flex-flow: row;
 			}
 		}
+	}
 
-		.tags {
-			width: 40rem;
-
-			.tags-container {
-				width: 100%;
-				display: flex;
-				flex-wrap: wrap;
-				min-height: 12rem;
-			}
+	.tags {
+		.tags-container {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			min-height: 12rem;
 		}
 	}
 
