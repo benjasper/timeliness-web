@@ -60,11 +60,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
         }
 
         if (event.deltaY < 0) {
-            this.previousMonth()
+            this.previousMonth(event)
         }
 
         if (event.deltaY > 0) {
-            this.nextMonth()
+            this.nextMonth(event)
         }
     }
 
@@ -156,7 +156,8 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
         return date
     }
 
-    nextMonth() {
+    nextMonth(event: Event) {
+        event.preventDefault()
         let newMonth = this.month
 
         if (newMonth === 11) {
@@ -171,7 +172,8 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
         this.updateCalendarView()
     }
 
-    previousMonth() {
+    previousMonth(event: Event) {
+        event.preventDefault()
         let newMonth = this.month
 
         if (newMonth === 0) {

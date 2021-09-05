@@ -5,19 +5,19 @@
 <div *ngIf="isFocused"
 	 class="dropdown">
 	<div class="top">
-		<button class="with-border today"
+		<button type="button" class="with-border today"
 				(click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
 		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
 			year: 'numeric'})}}</span>
 		<div class="navigation">
-			<button class="tiny-button with-border previous-month"
-					(click)="previousMonth()">
+			<button type="button" class="tiny-button with-border previous-month"
+					(click)="previousMonth($event)">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
 						  alt="Previous month"></svg-icon>
 			</button>
-			<button class="tiny-button with-border next-month"
-					(click)="nextMonth()">
+			<button type="button" class="tiny-button with-border next-month"
+					(click)="nextMonth($event)">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
 						  alt="Next month"></svg-icon>
