@@ -1,5 +1,9 @@
 @import '../../../../variables.scss';
 
+:host {
+	position: relative;
+}
+
 .dropdown {
 	position: absolute;
 	background-color: $color-white;
@@ -7,6 +11,8 @@
 	padding: 2rem;
 	z-index: 15;
 	border-radius: 1.5rem;
+	bottom: -30rem;
+    left: 20rem;
 
 	.top {
 		display: flex;
