@@ -38,7 +38,7 @@
 			<label *ngIf="task"
 				   class="ml-4 pb-2">Workunits</label>
 			<ng-container *ngIf="loading">
-				<ul class="workunits-list">
+				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl overflow-hidden">
 					<li>
 						<app-work-unit-card [loading]="true"
 											[small]="true"></app-work-unit-card>
@@ -52,7 +52,7 @@
 			<app-slider [listArray]="task.workUnits"
 						[startsAtIndex]="getStartsAtWorkUnit()"
 						*ngIf="task && !loading">
-				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl ">
+				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl">
 					<li *ngFor="let workUnit of task.workUnits; let i = index">
 						<app-work-unit-card [task]="task"
 											[workUnitIndex]="i"
