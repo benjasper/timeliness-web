@@ -365,7 +365,7 @@ input[type='submit'] {
 
 		.img,
 		&.no-background .img {
-			fill: $color-tertiary;
+			fill: $color-tertiary !important;
 		}
 	}
 }
