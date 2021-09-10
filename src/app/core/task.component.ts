@@ -17,6 +17,18 @@ export class TaskComponent {
 		return (task.workloadOverall - doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
 	}
 
+	public getFinishedWorkload(task: Task): string {
+		let doneWorkload = 0
+
+		task.workUnits
+			.filter((x) => !x.isDone)
+			.forEach((workunit) => {
+				doneWorkload += workunit.workload
+			})
+
+		return (task.workloadOverall - doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
+	}
+
 	public getProgress(task: Task): string {
 		let doneWorkload = 0
 

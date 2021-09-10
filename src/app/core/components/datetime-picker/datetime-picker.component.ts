@@ -68,10 +68,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
         this.updateCalendarView()
 
-        const coeff = 1000 * 60 * 15;
-        const date = this.selected
-        date.setMilliseconds(0)
-        this.selected = new Date(Math.ceil(date.getTime() / coeff) * coeff)
+        this.selected.setMilliseconds(0)
 
         this.generateTimeOptions()
 

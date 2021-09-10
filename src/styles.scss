@@ -1,3 +1,6 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 @import url('https://use.typekit.net/gsz0xik.css');
 @import './variables.scss';
 
@@ -54,6 +57,13 @@ p {
 	margin: 0;
 }
 
+label {
+	font-size: 1.2rem;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: $color-tertiary;
+}
+
 img {
 	display: block;
 }
@@ -102,14 +112,21 @@ input, .input {
 	outline: none;
 	border-radius: 0.5rem;
 	font-size: 1.8rem;
+}
 
-	&.edit {
-		transition: background-color 0.2s ease-in-out;
-		&:hover,
-		&:focus {
-			background-color: $color-light-grey;
-		}
+.edit {
+	transition: background-color 0.2s ease-in-out;
+	&:hover,
+	&:focus {
+		background-color: $color-light-grey;
 	}
+}
+
+.inset-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .ng-select {

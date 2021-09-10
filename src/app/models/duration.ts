@@ -8,6 +8,10 @@ export class Duration {
 	public toString(): string {
 		let duration = this.milliseconds
 
+		if (duration === 0) {
+			return '0h'
+		}
+
 		if (duration < 1000) {
 			return this.milliseconds + 'ms'
 		}

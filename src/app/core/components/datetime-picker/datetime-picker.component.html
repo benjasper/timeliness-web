@@ -1,22 +1,25 @@
 <span class="input"
-	  (click)="toggleDropdown()">{{ selected.toLocaleDateString() }} {{ selected.toLocaleTimeString('default',{hour:
+	  (click)="toggleDropdown()">{{ selected.toLocaleDateString('default',{day: '2-digit', month: 'short', year: 'numeric'}) }} | {{ selected.toLocaleTimeString('default',{hour:
 	'numeric', minute:'2-digit'}) }}</span>
 
 <div *ngIf="isFocused"
 	 class="dropdown">
 	<div class="top">
-		<button type="button" class="with-border today"
+		<button type="button"
+				class="with-border today"
 				(click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
 		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
 			year: 'numeric'})}}</span>
 		<div class="navigation">
-			<button type="button" class="tiny-button with-border previous-month"
+			<button type="button"
+					class="tiny-button with-border previous-month"
 					(click)="previousMonth($event)">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
 						  alt="Previous month"></svg-icon>
 			</button>
-			<button type="button" class="tiny-button with-border next-month"
+			<button type="button"
+					class="tiny-button with-border next-month"
 					(click)="nextMonth($event)">
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"
@@ -43,8 +46,10 @@
 
 	<div class="date">
 		<ng-select [ngModel]="selected.getTime()"
-				   (change)="onTimeChange($event)" (click)="$event.stopPropagation()">
-			<ng-option *ngFor="let time of times" class="time-item"
+				   (change)="onTimeChange($event)"
+				   (click)="$event.stopPropagation()">
+			<ng-option *ngFor="let time of times"
+					   class="time-item"
 					   [value]="time.getTime()">{{ time.toLocaleTimeString('default', {hour: 'numeric',
 				minute:'2-digit'}) }}
 			</ng-option>

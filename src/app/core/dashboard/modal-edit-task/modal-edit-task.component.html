@@ -2,89 +2,134 @@
 	 *ngIf="modalBackground"
 	 (click)="close()"></div>
 <form [formGroup]="editTask"
-	  class="modal"
+	  class="absolute inset-center z-20 grid grid-cols-modal"
 	  @flyInOut
 	  *ngIf="loaded"
 	  (ngSubmit)="save()">
-	<div class="modal-header">
-		<input tabindex="1"
-			   type="text"
-			   class="h3 edit task-title"
-			   placeholder="Title"
-			   formControlName="name"
-			   autocomplete="off" />
-		<div class="modal-controls">
-			<div class="dangerous-controls">
-				<button class="tiny-button no-background"
-						[disabled]="!editTask.dirty || isNew"
-						(click)="undo()">
-					<svg-icon class="img"
-							  src="/assets/icons/icon-undo.svg"
-							  alt="Undo"></svg-icon>
-				</button>
-				<button class="tiny-button with-border"
-						[disabled]="!task"
-						(click)="delete()">
-					<svg-icon class="img"
-							  src="/assets/icons/icon-trash.svg"
-							  alt="Delete"></svg-icon>
-				</button>
-			</div>
+	<div class="flex flex-col w-auto bg-white p-16 rounded-l-2xl gap-16">
+		<div>
+			<label *ngIf="task"
+				   for="title"
+				   class="ml-4 pb-10">Edit task</label>
+			<label *ngIf="!task"
+				   for="title"
+				   class="ml-4 pb-10">New task</label>
+			<input id="title"
+				   tabindex="1"
+				   type="text"
+				   class="!text-4xl edit font-bold w-full !leading-none"
+				   placeholder="Title"
+				   formControlName="name"
+				   autocomplete="off" />
+		</div>
+		<div>
+			<label for="task-description"
+				   class="ml-4 pb-2">Description</label>
+			<textarea tabindex="2"
+					  type="textarea"
+					  id="task-description"
+					  class="edit w-full rounded-2xl"
+					  rows="5"
+					  placeholder="Describe your task here"
+					  formControlName="description"
+					  autocomplete="off"></textarea>
+		</div>
+		<div>
+			<label *ngIf="task"
+				   class="ml-4 pb-2">Workunits</label>
+			<ng-container *ngIf="loading">
+				<ul class="workunits-list">
+					<li>
+						<app-work-unit-card [loading]="true"
+											[small]="true"></app-work-unit-card>
+					</li>
+					<li>
+						<app-work-unit-card [loading]="true"
+											[small]="true"></app-work-unit-card>
+					</li>
+				</ul>
+			</ng-container>
+			<app-slider [listArray]="task.workUnits"
+						[startsAtIndex]="getStartsAtWorkUnit()"
+						*ngIf="task && !loading">
+				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl ">
+					<li *ngFor="let workUnit of task.workUnits; let i = index">
+						<app-work-unit-card [task]="task"
+											[workUnitIndex]="i"
+											[small]="true"></app-work-unit-card>
+					</li>
+				</ul>
+			</app-slider>
+		</div>
+	</div>
+	<div class="flex flex-col p-16 bg-grey-very-light rounded-r-2xl min-w-max">
+		<div class="flex flex-row justify-end pb-6 gap-4">
+			<button class="tiny-button no-background"
+					[disabled]="!editTask.dirty || isNew"
+					(click)="undo()">
+				<svg-icon class="img"
+						  src="/assets/icons/icon-undo.svg"
+						  alt="Undo"></svg-icon>
+			</button>
 			<button class="tiny-button no-background"
 					(click)="close()">
-				<svg-icon class="img"
+				<svg-icon class="img !fill-current text-primary"
 						  src="/assets/icons/icon-exit.svg"
 						  alt="Exit"></svg-icon>
 			</button>
 		</div>
-	</div>
-	<div class="modal-body scroller">
-		<div class="wrapper">
-			<div class="left">
-				<div class="due-date">
-					<label for="due-date">Due date</label>
+		<div class="flex flex-col justify-between h-full max-w-lg">
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-row">
+					<label for="due-date"
+						   class="my-auto w-32">Due date</label>
 					<app-datetime-picker id="due-date"
 										 class="edit"
 										 tabindex="3"
 										 formControlName="dueAt"></app-datetime-picker>
 				</div>
-				<div class="workload">
-					<label for="workload-hour">Workload</label>
-					<app-circular-progress [progress]="+getProgress(task)"
-										   [radius]="8">
-						<ng-select class="edit"
-								   id="workload-hour"
-								   formControlName="workload"
-								   tabindex="4">
-							<ng-option *ngFor="let duration of durations"
-									   [value]="duration.milliseconds">
-								{{ duration.toString() }}
-							</ng-option>
-						</ng-select>
-						<span *ngIf="task"
-							  class="workload-left">{{getProgress(task)}} % done</span>
-						<span *ngIf="task"
-							  class="workload-left">{{getRemainingWorkload(task)}} left</span>
+				<div class="flex flex-row">
+					<label for="workload-hour"
+						   class="my-auto w-32">Workload</label>
+					<ng-select class="edit w-40 cursor-text"
+							   id="workload-hour"
+							   formControlName="workload"
+							   tabindex="4">
+						<ng-option *ngFor="let duration of durations"
+								   [value]="duration.milliseconds">
+							{{ duration.toString() }}
+						</ng-option>
+					</ng-select>
+				</div>
+				<div *ngIf="task"
+					 class="flex flex-col">
+					<label for="progress-bar"
+						   class="pb-2">Progress</label>
+					<app-circular-progress id="progress-bar"
+										   [progress]="+getProgress(task)"
+										   [radius]="10"
+										   class="mx-auto">
+						<div class="flex flex-col gap-6">
+							<span *ngIf="task"
+								  class="flex flex-row text-center justify-center">
+								<div class="w-2 h-2 bg-primary rounded-md my-auto mr-3"></div>
+								{{getFinishedWorkload(task)}}
+								done
+							</span>
+							<span *ngIf="task"
+								  class="m-auto text-4xl text-center">{{getProgress(task)}}%</span>
+							<span *ngIf="task"
+								  class="flex flex-row text-center justify-center">
+								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
+								{{getRemainingWorkload(task)}} left
+							</span>
+						</div>
 					</app-circular-progress>
 				</div>
-			</div>
-			<div class="right">
-				<label for="task-description">Description</label>
-				<textarea tabindex="2"
-						  type="textarea"
-						  id="task-description"
-						  class="task-description edit scroller"
-						  rows="5"
-						  placeholder="Describe your task here"
-						  formControlName="description"
-						  autocomplete="off"></textarea>
-			</div>
-		</div>
-		<div class="wrapper">
-			<div class="tags"
-					 [class.empty]="tags.length === 0">
-					<label for="tags">Tags</label>
-					<ul class="tags-container">
+				<div [class.empty]="tags.length === 0">
+					<label for="tags"
+						   class="pb-2">Tags</label>
+					<ul class="flex flex-row flex-wrap gap-4">
 						<app-tag *ngFor="let tag of tags; let i = index"
 								 [tag]="tag"
 								 [isFirst]="i === 0"
@@ -101,41 +146,24 @@
 								 [existingTags]="tags"></app-tag>
 					</ul>
 				</div>
+			</div>
+
+			<div class="flex flex-row justify-end">
+				<button class="tiny-button with-border"
+						[disabled]="!task"
+						(click)="delete()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-trash.svg"
+							  alt="Delete"></svg-icon>
+				</button>
+				<button type="submit"
+						class="btn large save"
+						[disabled]="!editTask.valid || !editTask.dirty || loading">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-save.svg"></svg-icon>
+					<span>Save</span>
+				</button>
+			</div>
 		</div>
-		<div class="workunits-section">
-			<label *ngIf="task">Workunits</label>
-			<ng-container *ngIf="loading">
-				<ul class="workunits-list">
-					<li>
-						<app-work-unit-card [loading]="true"
-											[small]="true"></app-work-unit-card>
-					</li>
-					<li>
-						<app-work-unit-card [loading]="true"
-											[small]="true"></app-work-unit-card>
-					</li>
-				</ul>
-			</ng-container>
-			<app-slider [listArray]="task.workUnits"
-						[startsAtIndex]="getStartsAtWorkUnit()"
-						*ngIf="task && !loading">
-				<ul class="workunits-list">
-					<li *ngFor="let workUnit of task.workUnits; let i = index">
-						<app-work-unit-card [task]="task"
-											[workUnitIndex]="i"
-											[small]="true"></app-work-unit-card>
-					</li>
-				</ul>
-			</app-slider>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button type="submit"
-				class="btn large save"
-				[disabled]="!editTask.valid || !editTask.dirty || loading">
-			<svg-icon class="img"
-					  src="/assets/icons/icon-save.svg"></svg-icon>
-			<span>Save</span>
-		</button>
 	</div>
 </form>
