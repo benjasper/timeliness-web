@@ -34,6 +34,9 @@ module.exports = {
 			},
 			white: {
 				DEFAULT: '#fff'
+			},
+			red: {
+				DEFAULT: '#ef233c'
 			}
 		},
 		backgroundColor: theme => ({

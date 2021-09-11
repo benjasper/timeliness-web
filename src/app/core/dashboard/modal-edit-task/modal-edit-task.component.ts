@@ -39,6 +39,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	isNew = false
 	loading = false
 
+	NANOSECONDS = DurationUnit.Nanoseconds
+
 	emptyTag: Tag = {
 		id: '',
 		value: '',

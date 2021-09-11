@@ -82,7 +82,7 @@
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="my-auto w-32">Due date</label>
+						   class="my-auto w-44">Due date</label>
 					<app-datetime-picker id="due-date"
 										 class="edit"
 										 tabindex="3"
@@ -90,7 +90,7 @@
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
-						   class="my-auto w-32">Workload</label>
+						   class="my-auto w-44">Workload</label>
 					<ng-select class="edit w-40 cursor-text"
 							   id="workload-hour"
 							   formControlName="workload"
@@ -100,6 +100,13 @@
 							{{ duration.toString() }}
 						</ng-option>
 					</ng-select>
+				</div>
+				<div *ngIf="task.notScheduled !== 0" class="flex flex-row">
+					<label for="not-scheduled"
+						   class="my-auto w-44">Not scheduled</label>
+					<span id="not-scheduled" class="text-red text-3xl px-6 py-4" title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
+						{{ task.notScheduled.toDuration(NANOSECONDS) }}
+					</span>
 				</div>
 				<div *ngIf="task"
 					 class="flex flex-col">
