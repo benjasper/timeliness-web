@@ -17,7 +17,7 @@
 			<input id="title"
 				   tabindex="1"
 				   type="text"
-				   class="!text-4xl edit font-bold w-full !leading-none"
+				   class="!text-2xl edit font-bold w-full !leading-none"
 				   placeholder="Title"
 				   formControlName="name"
 				   autocomplete="off" />
@@ -38,7 +38,7 @@
 			<label *ngIf="task"
 				   class="ml-4 pb-2">Workunits</label>
 			<ng-container *ngIf="loading">
-				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl overflow-hidden">
+				<ul class="flex flex-row gap-8 w-96 max-w-2xl lg:max-w-4xl overflow-hidden">
 					<li>
 						<app-work-unit-card [loading]="true"
 											[small]="true"></app-work-unit-card>
@@ -101,10 +101,10 @@
 						</ng-option>
 					</ng-select>
 				</div>
-				<div *ngIf="task.notScheduled !== 0" class="flex flex-row">
+				<div *ngIf="task && task.notScheduled !== 0" class="flex flex-row">
 					<label for="not-scheduled"
 						   class="my-auto w-44">Not scheduled</label>
-					<span id="not-scheduled" class="text-red text-3xl px-6 py-4" title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
+					<span id="not-scheduled" class="text-red text-base px-6 py-4" title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
 						{{ task.notScheduled.toDuration(NANOSECONDS) }}
 					</span>
 				</div>
@@ -118,15 +118,15 @@
 										   class="mx-auto">
 						<div class="flex flex-col gap-6">
 							<span *ngIf="task"
-								  class="flex flex-row text-center justify-center">
+								  class="flex flex-row text-center text-sm justify-center">
 								<div class="w-2 h-2 bg-primary rounded-md my-auto mr-3"></div>
 								{{getFinishedWorkload(task)}}
 								done
 							</span>
 							<span *ngIf="task"
-								  class="m-auto text-4xl text-center">{{getProgress(task)}}%</span>
+								  class="m-auto text-xl text-center">{{getProgress(task)}}%</span>
 							<span *ngIf="task"
-								  class="flex flex-row text-center justify-center">
+								  class="flex flex-row text-center text-sm justify-center">
 								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
 								{{getRemainingWorkload(task)}} left
 							</span>
