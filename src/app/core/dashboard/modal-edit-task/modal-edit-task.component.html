@@ -35,7 +35,7 @@
 					  autocomplete="off"></textarea>
 		</div>
 		<div>
-			<label *ngIf="task"
+			<label *ngIf="task && task.workUnits.length > 0"
 				   class="ml-4 pb-2">Workunits</label>
 			<ng-container *ngIf="loading">
 				<ul class="flex flex-row gap-8 w-96 max-w-2xl lg:max-w-4xl overflow-hidden">
@@ -51,7 +51,7 @@
 			</ng-container>
 			<app-slider [listArray]="task.workUnits"
 						[startsAtIndex]="getStartsAtWorkUnit()"
-						*ngIf="task && !loading">
+						*ngIf="task && task.workUnits.length > 0 && !loading">
 				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl">
 					<li *ngFor="let workUnit of task.workUnits; let i = index">
 						<app-work-unit-card [task]="task"
