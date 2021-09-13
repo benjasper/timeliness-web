@@ -5,10 +5,10 @@
 @import './variables.scss';
 
 html {
-	font-size: 10px;
+	font-size: 9px;
 
 	@media only screen and (max-width: 1920px) {
-		font-size: 9px;
+		font-size: 8px;
 	}
 }
 
