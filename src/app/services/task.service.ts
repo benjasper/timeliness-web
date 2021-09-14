@@ -47,7 +47,7 @@ export class TaskService {
 
 	public tasksObservable = this.tasksSubject.asObservable()
 	public now = this.nowSubject.asObservable()
-	public dateChangeObservable = this.nowSubject.asObservable()
+	public dateChangeObservable = this.dateChangeSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
 
 	public getTasksByDeadlines(sync?: Date, page = 0, pageSize = 10): Observable<TasksGetResponse> {

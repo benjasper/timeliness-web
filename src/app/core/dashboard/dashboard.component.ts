@@ -30,6 +30,11 @@ export class DashboardComponent implements OnInit {
 			this.today = date
 		})
 
+		this.taskService.dateChangeObservable.subscribe(() => {
+			this.groupTasks(this.tasks)
+			this.groupTasksUnwound(this.tasksUnwound)
+		})
+
 		this.taskService.getTasksByDeadlines().subscribe((response) => {
 			this.tasks = response.results
 			this.groupTasks(response.results)

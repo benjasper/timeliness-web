@@ -51,7 +51,14 @@ export class StatsSectionComponent implements OnInit {
 		})
 
 		this.taskService.dateChangeObservable.subscribe(() => {
-			this.computePlanToday()
+			this.taskService.getTasksByWorkunits().subscribe((result) => {
+				if (result.pagination.resultCount === 0) {
+					return
+				}
+	
+				this.lastWorkUnitsUpdate = result.results
+				this.computePlanToday()
+			})
 		})
 	}
 

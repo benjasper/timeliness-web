@@ -57,18 +57,22 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	private ngUnsubscribe = new Subject()
 
-	editTask = new FormGroup({
-		name: new FormControl('', [Validators.required]),
-		description: new FormControl(''),
-		dueAt: new FormControl(new Date()),
-		workload: new FormControl(new Duration(3600000).milliseconds),
-		priority: new FormControl(1),
-	})
+	editTask!: FormGroup
 
 	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService) {
 		super()
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
+		})
+
+		const interval = 60 * 60 * 1000
+		const initialDate = new Date(Math.ceil(new Date().addDays(1).getTime() / interval) * interval)
+
+		this.editTask = new FormGroup({
+			name: new FormControl('', [Validators.required]),
+			description: new FormControl(''),
+			dueAt: new FormControl(initialDate, [Validators.required]),
+			workload: new FormControl(new Duration(3600000).milliseconds, [Validators.required]),
 		})
 	}
 
@@ -251,7 +255,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			description: task.description,
 			dueAt: task.dueAt.date.start.toDate(),
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
-			priority: task.priority,
 		})
 		this.generateDurations(task)
 	}
@@ -347,8 +350,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.editTask.get('dueAt')?.dirty || this.isNew
 				? new EventModified(new Date(this.editTask.get('dueAt')?.value).toISOString())
 				: undefined
-		updatingTask.priority =
-			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
 
 		updatingTask.workloadOverall =
 			this.editTask.get('workload')?.dirty || this.isNew
