@@ -28,7 +28,7 @@ module.exports = {
 				sans: ['"noto-sans"', ...defaultTheme.fontFamily.sans]
 			},
 			gridTemplateColumns: {
-				'modal': '2fr 1fr',
+				'modal': '65rem 1fr',
 			}
 		},
 		colors: {
