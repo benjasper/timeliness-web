@@ -75,7 +75,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	@HostListener('document:keydown.escape', ['$event'])
 	handleEscape(event: KeyboardEvent): void {
 		event.stopImmediatePropagation()
-        event.preventDefault()
+		event.preventDefault()
 		this.closeModal()
 	}
 
@@ -122,18 +122,12 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.task = task
 			this.loaded = true
 
-			this.taskService.tasksObservalble.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tasks) => {
-				if (!tasks) {
-					return
+			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
+				if (task.id === this.task.id) {
+					this.patchForm(task)
+					this.task = task
+					this.loaded = true
 				}
-
-				tasks.forEach((x) => {
-					if (x.id === this.task.id) {
-						this.patchForm(x)
-						this.task = x
-						this.loaded = true
-					}
-				})
 			})
 		})
 
@@ -299,7 +293,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				newTag.value = newValue.value ?? ''
 				newTag.color = newValue.color ?? ''
 				this.tags[index] = newTag
-			}			
+			}
 		}
 
 		this.editTask.markAsDirty()
@@ -333,7 +327,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public delete(): void {
-		this.taskService.deleteTask(this.taskId).subscribe(() => {
+		this.taskService.deleteTask(this.task).subscribe(() => {
 			this.closeModal()
 		})
 	}

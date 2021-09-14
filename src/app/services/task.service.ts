@@ -32,7 +32,6 @@ export class TaskService {
 
 		setInterval(() => {
 			this.getTasksByDeadlines(this.lastTaskSync)
-			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
 		}, 60000)
 	}
 
@@ -41,30 +40,23 @@ export class TaskService {
 	public lastTagSync: Date = new Date(0)
 	private lastNow: Date = new Date()
 
-	private tasksSubject = new BehaviorSubject<Task[] | undefined>(undefined)
-	private tasksUnwoundSubject = new BehaviorSubject<TaskUnwound[] | undefined>(undefined)
+	private tasksSubject = new Subject<Task>()
 	private nowSubject = new Subject<Date>()
 	private dateChangeSubject = new Subject<Date>()
 	private tagsSubject = new BehaviorSubject<Tag[]>([])
 
-	public tasksObservalble = this.tasksSubject.asObservable()
-	public tasksUnwoundObservalble = this.tasksUnwoundSubject.asObservable()
+	public tasksObservable = this.tasksSubject.asObservable()
 	public now = this.nowSubject.asObservable()
 	public dateChangeObservable = this.nowSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
 
-	private publishTasks(tasks: Task[]): void {
-		this.tasksSubject.next(undefined)
-		this.tasksSubject.next(tasks)
-	}
-
-	private publishTasksUnwound(tasks: TaskUnwound[]): void {
-		this.tasksUnwoundSubject.next(undefined)
-		this.tasksUnwoundSubject.next(tasks)
-	}
-
-	private async getTasksByDeadlines(sync?: Date): Promise<void> {
-		const filters = [`dueAt.date.start=${new Date().toISOString()}`, `includeIsNotDone=${true}`]
+	public getTasksByDeadlines(sync?: Date, page = 0, pageSize = 10): Observable<TasksGetResponse> {
+		const filters = [
+			`dueAt.date.start=${new Date().toISOString()}`,
+			`includeIsNotDone=${true}`,
+			`page=${page}`,
+			`pageSize=${pageSize}`,
+		]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -73,33 +65,24 @@ export class TaskService {
 
 		this.lastTaskSync = new Date()
 
-		this.http
+		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
-			.subscribe((response) => {
-				if (sync) {
-					if (response.pagination.resultCount === 0) {
-						return
-					}
 
-					let tasks: Task[] = this.tasksSubject.getValue() ?? []
-
-					response.results.forEach((syncTask: Task) => {
-						tasks = tasks.filter((x) => x.id !== syncTask.id)
-					})
-
-					tasks.push(...response.results.filter((x) => x.deleted === false))
-
-					tasks.sort((a, b) => {
-						return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.end.toDate().getTime()
-					})
-
-					this.publishTasks(tasks)
+		observable.subscribe((response) => {
+			if (sync) {
+				if (response.pagination.resultCount === 0) {
 					return
 				}
 
-				this.publishTasks(response.results)
-			})
+				response.results.forEach((task) => {
+					this.tasksSubject.next(task)
+				})
+				return
+			}
+		})
+
+		return observable
 	}
 
 	public getTag(id: string): Tag | undefined {
@@ -145,11 +128,24 @@ export class TaskService {
 		return observable
 	}
 
+	public taskToUnwound(task: Task) {
+		let unwound: TaskUnwound
+		unwound = task as TaskUnwound
+
+		const tasks: TaskUnwound[] = []
+
+		task.workUnits.forEach((workunit, index) => {
+			unwound.workUnit = workunit
+			unwound.workUnitsIndex = index
+			unwound.workUnitsCount = task.workUnits.length
+
+			tasks.push(unwound)
+		})
+
+		return tasks
+	}
+
 	public deleteTagFromTask(id: string): void {
-		const tasksWithTag = this.tasksSubject.getValue()?.filter((x) => x.tags.includes(id))
-		if (tasksWithTag && tasksWithTag.length > 0) {
-			return
-		}
 		const newTags = this.tagsSubject.getValue().filter((x) => x.id !== id)
 		this.tagsSubject.next(newTags)
 	}
@@ -213,10 +209,15 @@ export class TaskService {
 			})
 	}
 
-	private async getTasksByWorkunits(sync?: Date): Promise<void> {
+	public getTasksByWorkunits(sync?: Date, page = 0, pageSize = 10): Observable<TasksByWorkunitsGetResponse> {
 		const today = new Date()
 		today.setHours(0, 0, 0, 0)
-		const filters = ['workUnit.isDone=false', `isDoneAndScheduledAt=${today.toISOString()}`]
+		const filters = [
+			'workUnit.isDone=false',
+			`isDoneAndScheduledAt=${today.toISOString()}`,
+			`page=${page}`,
+			`pageSize=${pageSize}`,
+		]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -225,47 +226,12 @@ export class TaskService {
 
 		this.lastTaskUnwoundSync = new Date()
 
-		this.http
+		return this.http
 			.get<TasksByWorkunitsGetResponse>(`${environment.apiBaseUrl}/v1/tasks/workunits?` + filters.join('&'))
 			.pipe(retry(3), catchError(this.handleError))
-			.subscribe((response) => {
-				if (sync) {
-					if (response.pagination.resultCount === 0) {
-						return
-					}
-
-					let tasks = this.tasksUnwoundSubject.getValue() ?? []
-
-					response.results.forEach((syncTask: TaskUnwound) => {
-						tasks = tasks.filter((x) => x.id !== syncTask.id)
-					})
-
-					tasks.push(...response.results.filter((x) => x.deleted === false))
-
-					tasks.sort((a, b) => {
-						return (
-							a.workUnits[a.workUnitsIndex].scheduledAt.date.start.toDate().getTime() -
-							b.workUnits[b.workUnitsIndex].scheduledAt.date.start.toDate().getTime()
-						)
-					})
-
-					this.publishTasksUnwound(tasks)
-					return
-				}
-
-				this.publishTasksUnwound(response.results)
-			})
 	}
 
 	public getTask(id: string): Observable<Task> {
-		const foundTask = this.tasksSubject.getValue()?.find((x) => x.id === id)
-		if (foundTask) {
-			return new Observable((sub) => {
-				sub.next(foundTask)
-				sub.complete()
-			})
-		}
-
 		return this.http
 			.get<Task>(`${environment.apiBaseUrl}/v1/tasks/` + id)
 			.pipe(retry(3), catchError(this.handleError))
@@ -297,22 +263,14 @@ export class TaskService {
 		return observable
 	}
 
-	public deleteTask(id: string): Observable<void> {
+	public deleteTask(task: Task): Observable<void> {
 		const observable = this.http
-			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${id}`)
+			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${task.id}`)
 			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe(() => {
-			const tasksUnwound = this.tasksUnwoundSubject.getValue()?.filter((newElement) => {
-				return newElement.id !== id
-			})
-
-			const tasks = this.tasksSubject.getValue()?.filter((newElement) => {
-				return newElement.id !== id
-			})
-
-			this.publishTasks(tasks ?? [])
-			this.publishTasksUnwound(tasksUnwound ?? [])
+			task.deleted = true
+			this.tasksSubject.next(task)
 		})
 		return observable
 	}
@@ -324,15 +282,7 @@ export class TaskService {
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
-			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(this.lastTaskSync)
-
-			if (done === true) {
-				const tasks = this.tasksUnwoundSubject.getValue()?.filter((x) => {
-					return !(x.id === newTask.id && x.workUnitsIndex === workUnitIndex)
-				})
-				this.publishTasksUnwound(tasks ?? [])
-			}
+			this.tasksSubject.next(newTask)
 		})
 		return observable
 	}
@@ -342,10 +292,9 @@ export class TaskService {
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
 			.pipe(share(), catchError(this.handleError))
 
-		observable.subscribe(() => {
+		observable.subscribe((newTask) => {
 			// TODO save in task cache
-			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(this.lastTaskSync)
+			this.tasksSubject.next(newTask)
 		})
 		return observable
 	}

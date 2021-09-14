@@ -14,23 +14,7 @@ export class AgendaComponent implements OnInit {
 	list: Array<TaskUnwound | Task> = []
 
 	ngOnInit(): void {
-		this.taskService.tasksObservalble.subscribe(tasks => {
-			if (!tasks) {
-				return
-			}
-				
-			this.list.push(...tasks)
-			this.generateList()
-		})
-
-		this.taskService.tasksUnwoundObservalble.subscribe(tasks => {
-			if (!tasks) {
-				return
-			}
-				
-			this.list.push(...tasks)
-			this.generateList()
-		})
+		
 	}
 
 	public generateList() {
