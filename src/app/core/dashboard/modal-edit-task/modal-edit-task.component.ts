@@ -34,7 +34,7 @@ import { smoothHeight } from 'src/app/animations'
 export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
 	taskId!: string
 	task!: Task
-	loaded = false
+	loaded = true
 	modalBackground = false
 	isNew = false
 	loading = false
@@ -112,21 +112,21 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.generateDurations()
 
 		if (this.taskId === 'new') {
-			this.loaded = true
 			this.isNew = true
 			return
 		}
 
+		this.loading = true
 		this.taskService.getTask(this.taskId).subscribe((task) => {
 			this.patchForm(task)
 			this.task = task
-			this.loaded = true
+			this.loading = false
 
 			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
 				if (task.id === this.task.id) {
 					this.patchForm(task)
 					this.task = task
-					this.loaded = true
+					this.loading = false
 				}
 			})
 		})

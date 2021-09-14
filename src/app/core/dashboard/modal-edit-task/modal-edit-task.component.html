@@ -35,10 +35,10 @@
 					  autocomplete="off"></textarea>
 		</div>
 		<div>
-			<label *ngIf="task && task.workUnits.length > 0"
+			<label *ngIf="(task && task.workUnits.length > 0) || loading"
 				   class="ml-4 pb-2">Workunits</label>
 			<ng-container *ngIf="loading">
-				<ul class="flex flex-row gap-8 w-96 max-w-2xl lg:max-w-4xl overflow-hidden">
+				<ul class="flex flex-row gap-8 w-full overflow-hidden">
 					<li>
 						<app-work-unit-card [loading]="true"
 											[small]="true"></app-work-unit-card>
@@ -52,7 +52,7 @@
 			<app-slider [listArray]="task.workUnits"
 						[startsAtIndex]="getStartsAtWorkUnit()"
 						*ngIf="task && task.workUnits.length > 0 && !loading">
-				<ul class="flex flex-row gap-8 max-w-2xl lg:max-w-4xl">
+				<ul class="flex flex-row gap-8 w-full">
 					<li *ngFor="let workUnit of task.workUnits; let i = index">
 						<app-work-unit-card [task]="task"
 											[workUnitIndex]="i"
