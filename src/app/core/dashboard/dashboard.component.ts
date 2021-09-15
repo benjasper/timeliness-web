@@ -178,10 +178,12 @@ export class DashboardComponent implements OnInit {
 		tasks.forEach((task) => {
 			const now = new Date(this.today)
 			if (
-				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) ||
-				task.workUnit.isDone
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0) ||
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) && !task.workUnit.isDone
 			) {
 				this.nextUp.push(task)
+				return
+			} else if (task.workUnit.isDone) {
 				return
 			}
 

@@ -129,12 +129,11 @@ export class TaskService {
 	}
 
 	public taskToUnwound(task: Task) {
-		let unwound: TaskUnwound
-		unwound = task as TaskUnwound
-
 		const tasks: TaskUnwound[] = []
 
 		task.workUnits.forEach((workunit, index) => {
+			const unwound = Object.assign({}, task) as TaskUnwound
+
 			unwound.workUnit = workunit
 			unwound.workUnitsIndex = index
 			unwound.workUnitsCount = task.workUnits.length
