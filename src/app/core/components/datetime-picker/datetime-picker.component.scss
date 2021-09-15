@@ -39,7 +39,7 @@
 					transform: rotate(90deg);
 				}
 			}
-	
+
 			.next-month {
 				.img {
 					transform: rotate(270deg);
@@ -96,20 +96,35 @@
 			margin: 0 auto;
 		}
 
+		.ng-dropdown-panel-items {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			border-top-left-radius: 1.5rem;
+		}
+		.ng-dropdown-panel {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			border-top-left-radius: 1.5rem;
+
+			&.ng-select-top {
+				bottom: 5rem;
+			}
+		}
+
 		.ng-select-container {
 			&:hover {
 				cursor: text;
 			}
 		}
-	
+
 		.ng-value {
 			margin: 0 auto;
-	
+
 			span {
 				font-size: 2.2rem !important;
 			}
 		}
-	
+
 		input {
 			font-size: 2.2rem !important;
 			cursor: text;

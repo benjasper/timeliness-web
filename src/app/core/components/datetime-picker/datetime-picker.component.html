@@ -47,7 +47,8 @@
 	<div class="date">
 		<ng-select [ngModel]="selected.getTime()"
 				   (change)="onTimeChange($event)"
-				   (click)="$event.stopPropagation()">
+				   (click)="$event.stopPropagation()"
+				   [dropdownPosition]="'top'">
 			<ng-option *ngFor="let time of times"
 					   class="time-item"
 					   [value]="time.getTime()">{{ time.toLocaleTimeString('default', {hour: 'numeric',
