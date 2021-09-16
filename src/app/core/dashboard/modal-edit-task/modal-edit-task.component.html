@@ -136,7 +136,7 @@
 				<div [class.empty]="tags.length === 0">
 					<label for="tags"
 						   class="pb-2">Tags</label>
-					<ul class="flex flex-row flex-wrap gap-4">
+					<ul class="flex flex-row flex-wrap gap-4 w-128">
 						<app-tag *ngFor="let tag of tags; let i = index"
 								 [tag]="tag"
 								 [isFirst]="i === 0"
