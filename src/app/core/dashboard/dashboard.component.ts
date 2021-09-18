@@ -56,11 +56,11 @@ export class DashboardComponent implements OnInit {
 
 	private recevieTaskUpdate(task: Task) {
 		if (task.deleted) {
-			this.tasks = this.tasks.filter(x => x.id === task.id)
+			this.tasks = this.tasks.filter(x => x.id !== task.id)
 			this.groupTasks(this.tasks)
 			return
 		}
-		
+
 		const found = this.tasks.find((x) => task.id === x.id)
 		
 		// If this task is already inside our view, overwrite it
