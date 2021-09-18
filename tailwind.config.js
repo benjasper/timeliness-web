@@ -50,7 +50,19 @@ module.exports = {
 			},
 			red: {
 				DEFAULT: '#ef233c'
-			}
+			},
+			green: {
+				DEFAULT: '#CDF0EA',
+				dark: '#00725f'
+			},
+			pink: {
+				DEFAULT: '#F6DFEB',
+				dark: '#c4307c'
+			},
+			'ice-blue': {
+				DEFAULT: '#DEECFF',
+				dark: '#1b519c'
+			},
 		},
 		backgroundColor: theme => ({
 			...theme('colors')

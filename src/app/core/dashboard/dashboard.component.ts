@@ -55,6 +55,12 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private recevieTaskUpdate(task: Task) {
+		if (task.deleted) {
+			this.tasks = this.tasks.filter(x => x.id === task.id)
+			this.groupTasks(this.tasks)
+			return
+		}
+		
 		const found = this.tasks.find((x) => task.id === x.id)
 		
 		// If this task is already inside our view, overwrite it
@@ -90,15 +96,17 @@ export class DashboardComponent implements OnInit {
 
 		this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id)
 
-		this.tasksUnwound.push(...unwoundTasks)
+		if (!task.deleted) {
+			this.tasksUnwound.push(...unwoundTasks)
 
-		this.tasksUnwound.sort((a,b) => {
-			return a.workUnit.scheduledAt.date.start.toDate().getTime() - b.workUnit.scheduledAt.date.start.toDate().getTime()
-		})
-
-		const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
-		if (offset > 0) {
-			this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound - 1, offset)
+			this.tasksUnwound.sort((a,b) => {
+				return a.workUnit.scheduledAt.date.start.toDate().getTime() - b.workUnit.scheduledAt.date.start.toDate().getTime()
+			})
+	
+			const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
+			if (offset > 0) {
+				this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound - 1, offset)
+			}
 		}
 
 		this.groupTasksUnwound(this.tasksUnwound)
