@@ -11,6 +11,7 @@ export type Task = {
 	tags: string[]
 	priority: number
 	workloadOverall: number
+	notScheduled: number
 	dueAt: Event
 	workUnits: WorkUnit[]
 	deleted: boolean

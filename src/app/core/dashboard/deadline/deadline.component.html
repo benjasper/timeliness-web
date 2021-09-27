@@ -23,6 +23,10 @@
 			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
 			<ng-template #thenBlock>completed</ng-template>
 			<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
+			<ng-container *ngIf="task.notScheduled !== 0">
+				&nbsp;•&nbsp;
+				<span class="text-red">2h not scheduled</span>
+			</ng-container>
 		</span>
 		<div class="tags">
 			<span class="tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">

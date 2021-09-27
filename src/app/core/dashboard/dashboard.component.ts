@@ -15,6 +15,12 @@ export class DashboardComponent implements OnInit {
 	public groupedUpcoming: TaskUnwoundDateGroup[] = []
 	public nextUp: TaskUnwound[] = []
 
+	private tasks: Task[] = []
+	private tasksUnwound: TaskUnwound[] = []
+
+	static pageSizeTasks = 10
+	static pageSizeTasksUnwound = 10
+
 	public loadingTasks = true
 	public loadingWorkUnits = true
 	public deadlinesCollapsed = false
@@ -24,26 +30,86 @@ export class DashboardComponent implements OnInit {
 			this.today = date
 		})
 
-		this.taskService.tasksObservalble.subscribe((tasks) => {
-			if (!tasks) {
-				this.groupedDeadlines = []
-				return
-			} else {
-				this.groupTasks(tasks)
-			}
+		this.taskService.dateChangeObservable.subscribe(() => {
+			this.groupTasks(this.tasks)
+			this.groupTasksUnwound(this.tasksUnwound)
+		})
+
+		this.taskService.getTasksByDeadlines().subscribe((response) => {
+			this.tasks = response.results
+			this.groupTasks(response.results)
 			this.loadingTasks = false
 		})
 
-		this.taskService.tasksUnwoundObservalble.subscribe((tasks) => {
-			if (!tasks) {
-				this.nextUp = []
-				this.groupedUpcoming = []
-				return
-			} else {
-				this.groupTasksUnwound(tasks)
-			}
+		this.taskService.getTasksByWorkunits().subscribe((response) => {
+			this.tasksUnwound = response.results
+			this.groupTasksUnwound(response.results)
 			this.loadingWorkUnits = false
 		})
+
+		// Register for task updates update tasks and unwound
+		this.taskService.tasksObservable.subscribe((task) => {
+			this.recevieTaskUpdate(task)
+			this.recevieTaskUnwoundUpdate(task)
+		})
+	}
+
+	private recevieTaskUpdate(task: Task) {
+		if (task.deleted) {
+			this.tasks = this.tasks.filter(x => x.id !== task.id)
+			this.groupTasks(this.tasks)
+			return
+		}
+
+		const found = this.tasks.find((x) => task.id === x.id)
+		
+		// If this task is already inside our view, overwrite it
+		if (found && found.dueAt.date !== task.dueAt.date) {
+			this.tasks = this.tasks.filter((x) => x.id !== task.id)
+			this.tasks.push(task)
+			this.tasks.sort((a, b) => {
+				return a.dueAt.date.start.toDate().getTime() - b.dueAt.date.start.toDate().getTime()
+			})
+			this.groupTasks(this.tasks)
+			return
+		} else if (found) {
+			const index = this.tasks.indexOf(found)
+			this.tasks[index] = task
+			this.groupTasks(this.tasks)
+			return
+		}
+
+		// TODO we can optimize this, eg by checking if the new task should be displayed
+		// If not refetch them
+		this.loadingTasks = true
+		this.taskService.getTasksByDeadlines().subscribe((newTasks) => {
+			this.tasks = newTasks.results
+			this.groupTasks(this.tasks)
+			this.loadingTasks = false
+		})
+	}
+
+	private recevieTaskUnwoundUpdate(task: Task) {
+		// TODO we can optimize this, eg by checking if the new task should be displayed
+		// If not refetch them
+		const unwoundTasks = this.taskService.taskToUnwound(task)
+
+		this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id)
+
+		if (!task.deleted) {
+			this.tasksUnwound.push(...unwoundTasks)
+
+			this.tasksUnwound.sort((a,b) => {
+				return a.workUnit.scheduledAt.date.start.toDate().getTime() - b.workUnit.scheduledAt.date.start.toDate().getTime()
+			})
+	
+			const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
+			if (offset > 0) {
+				this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound - 1, offset)
+			}
+		}
+
+		this.groupTasksUnwound(this.tasksUnwound)
 	}
 
 	public getNextUpMessage(): string {
@@ -92,6 +158,8 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private groupTasks(tasks: Task[]): void {
+		this.groupedDeadlines = [];
+
 		tasks.forEach((task) => {
 			if (
 				this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
@@ -110,15 +178,20 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
+		this.groupedUpcoming = [];
+		this.nextUp = [];
+
 		const nextWeek = this.today.addDays(7).getWeekNumber(true)
 
 		tasks.forEach((task) => {
 			const now = new Date(this.today)
 			if (
-				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) ||
-				task.workUnit.isDone
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0) ||
+				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) && !task.workUnit.isDone
 			) {
 				this.nextUp.push(task)
+				return
+			} else if (task.workUnit.isDone) {
 				return
 			}
 
@@ -149,7 +222,7 @@ export class DashboardComponent implements OnInit {
 	}
 
 	public toggleDeadlines() {
-		this.deadlinesCollapsed = !this.deadlinesCollapsed;
+		this.deadlinesCollapsed = !this.deadlinesCollapsed
 	}
 }
 

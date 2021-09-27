@@ -20,18 +20,45 @@ export class StatsSectionComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.loadingPlan = true
-		this.taskService.tasksUnwoundObservalble.subscribe((workUnits) => {
-			if (!workUnits) {
+
+		this.taskService.getTasksByWorkunits().subscribe((result) => {
+			if (result.pagination.resultCount === 0) {
 				return
 			}
 
-			this.lastWorkUnitsUpdate = workUnits
+			this.lastWorkUnitsUpdate = result.results
 			this.computePlanToday()
 			this.loadingPlan = false
 		})
 
-		this.taskService.dateChangeObservable.subscribe(() => {
+		this.taskService.tasksObservable.subscribe((task) => {
+			const today = new Date(this.now)
+
+			const unwounds = this.taskService
+				.taskToUnwound(task)
+				.filter(
+					(x) =>
+						x.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)
+				)
+
+			this.lastWorkUnitsUpdate = this.lastWorkUnitsUpdate.filter((x) => x.id !== task.id)
+
+			if (unwounds.length > 0) {
+				this.lastWorkUnitsUpdate.push(...unwounds)
+			}
+
 			this.computePlanToday()
+		})
+
+		this.taskService.dateChangeObservable.subscribe(() => {
+			this.taskService.getTasksByWorkunits().subscribe((result) => {
+				if (result.pagination.resultCount === 0) {
+					return
+				}
+	
+				this.lastWorkUnitsUpdate = result.results
+				this.computePlanToday()
+			})
 		})
 	}
 

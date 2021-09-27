@@ -34,10 +34,12 @@ import { smoothHeight } from 'src/app/animations'
 export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
 	taskId!: string
 	task!: Task
-	loaded = false
+	loaded = true
 	modalBackground = false
 	isNew = false
 	loading = false
+
+	NANOSECONDS = DurationUnit.Nanoseconds
 
 	emptyTag: Tag = {
 		id: '',
@@ -55,25 +57,29 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	private ngUnsubscribe = new Subject()
 
-	editTask = new FormGroup({
-		name: new FormControl('', [Validators.required]),
-		description: new FormControl(''),
-		dueAt: new FormControl(new Date()),
-		workload: new FormControl(new Duration(3600000).milliseconds),
-		priority: new FormControl(1),
-	})
+	editTask!: FormGroup
 
 	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService) {
 		super()
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
 		})
+
+		const interval = 60 * 60 * 1000
+		const initialDate = new Date(Math.ceil(new Date().addDays(1).getTime() / interval) * interval)
+
+		this.editTask = new FormGroup({
+			name: new FormControl('', [Validators.required]),
+			description: new FormControl(''),
+			dueAt: new FormControl(initialDate, [Validators.required]),
+			workload: new FormControl(new Duration(3600000).milliseconds, [Validators.required]),
+		})
 	}
 
 	@HostListener('document:keydown.escape', ['$event'])
 	handleEscape(event: KeyboardEvent): void {
 		event.stopImmediatePropagation()
-        event.preventDefault()
+		event.preventDefault()
 		this.closeModal()
 	}
 
@@ -110,28 +116,22 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.generateDurations()
 
 		if (this.taskId === 'new') {
-			this.loaded = true
 			this.isNew = true
 			return
 		}
 
+		this.loading = true
 		this.taskService.getTask(this.taskId).subscribe((task) => {
 			this.patchForm(task)
 			this.task = task
-			this.loaded = true
+			this.loading = false
 
-			this.taskService.tasksObservalble.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tasks) => {
-				if (!tasks) {
-					return
+			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
+				if (task.id === this.task.id) {
+					this.patchForm(task)
+					this.task = task
+					this.loading = false
 				}
-
-				tasks.forEach((x) => {
-					if (x.id === this.task.id) {
-						this.patchForm(x)
-						this.task = x
-						this.loaded = true
-					}
-				})
 			})
 		})
 
@@ -255,7 +255,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			description: task.description,
 			dueAt: task.dueAt.date.start.toDate(),
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
-			priority: task.priority,
 		})
 		this.generateDurations(task)
 	}
@@ -297,7 +296,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				newTag.value = newValue.value ?? ''
 				newTag.color = newValue.color ?? ''
 				this.tags[index] = newTag
-			}			
+			}
 		}
 
 		this.editTask.markAsDirty()
@@ -331,7 +330,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public delete(): void {
-		this.taskService.deleteTask(this.taskId).subscribe(() => {
+		this.taskService.deleteTask(this.task).subscribe(() => {
 			this.closeModal()
 		})
 	}
@@ -351,8 +350,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.editTask.get('dueAt')?.dirty || this.isNew
 				? new EventModified(new Date(this.editTask.get('dueAt')?.value).toISOString())
 				: undefined
-		updatingTask.priority =
-			this.editTask.get('priority')?.dirty || this.isNew ? this.editTask.get('priority')?.value : undefined
 
 		updatingTask.workloadOverall =
 			this.editTask.get('workload')?.dirty || this.isNew
