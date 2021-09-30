@@ -22,6 +22,8 @@
 			stroke: $color-primary;
 			stroke-width: 1rem;
 			stroke-dasharray: 100;
+			@apply transition-all;
+			transition-duration: 1s;
 		}
 	}
 
