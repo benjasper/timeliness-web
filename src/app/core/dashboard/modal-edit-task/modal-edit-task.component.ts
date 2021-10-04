@@ -133,8 +133,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.loading = false
 				}
 			})
+
+			this.registerForTags()
 		})
 
+		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
+			this.today = date
+		})
+	}
+
+	registerForTags() {
 		this.taskService.tagsObservable.subscribe((newTags) => {
 			if (!this.task) {
 				return
@@ -151,10 +159,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			})
 
 			this.tags = this.tags.filter((x) => !removalList.includes(x.id))
-		})
-
-		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
-			this.today = date
 		})
 	}
 
