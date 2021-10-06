@@ -144,17 +144,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	registerForTags() {
 		this.taskService.tagsObservable.subscribe((newTags) => {
-			if (!this.task) {
-				return
-			}
 
 			const removalList: string[] = []
-			this.tags.forEach((tag, index) => {
-				const foundTag = newTags.find((x) => x.id === tag.id)
+			this.task.tags.forEach((tag, index) => {
+				const foundTag = newTags.find((x) => x.id === tag)
 				if (foundTag) {
 					this.tags[index] = foundTag
 				} else {
-					removalList.push(tag.id)
+					removalList.push(tag)
 				}
 			})
 
