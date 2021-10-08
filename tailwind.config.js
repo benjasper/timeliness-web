@@ -1,5 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
+const primaryColor = '#22125a'
+
 module.exports = {
 	mode: 'jit',
 	purge: [
@@ -34,11 +36,15 @@ module.exports = {
 		},
 		colors: {
 			primary: {
-				DEFAULT: '#22125a',
+				DEFAULT: primaryColor,
 				light: '#2f2066'
 			},
 			secondary: {
 				DEFAULT: '#dbe2ff'
+			},
+			purple: {
+				DEFAULT: '#9d78f5',
+				dark: primaryColor
 			},
 			grey: {
 				DEFAULT: '#eee',

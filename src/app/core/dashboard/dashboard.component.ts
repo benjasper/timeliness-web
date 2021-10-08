@@ -8,7 +8,7 @@ import { TaskService } from 'src/app/services/task.service'
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-	constructor(private taskService: TaskService) {}
+	constructor(private taskService: TaskService) { }
 
 	public today = new Date()
 	public groupedDeadlines: TaskDateGroup[] = []
@@ -24,6 +24,10 @@ export class DashboardComponent implements OnInit {
 	public loadingTasks = true
 	public loadingWorkUnits = true
 	public deadlinesCollapsed = false
+
+	public nextUpTaskFocus?: TaskUnwound
+	public nextUpState: NextUpState = NextUpState.Default
+	public eNextUpState = NextUpState
 
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
@@ -62,7 +66,7 @@ export class DashboardComponent implements OnInit {
 		}
 
 		const found = this.tasks.find((x) => task.id === x.id)
-		
+
 		// If this task is already inside our view, overwrite it
 		if (found && found.dueAt.date !== task.dueAt.date) {
 			this.tasks = this.tasks.filter((x) => x.id !== task.id)
@@ -99,10 +103,10 @@ export class DashboardComponent implements OnInit {
 		if (!task.deleted) {
 			this.tasksUnwound.push(...unwoundTasks)
 
-			this.tasksUnwound.sort((a,b) => {
+			this.tasksUnwound.sort((a, b) => {
 				return a.workUnit.scheduledAt.date.start.toDate().getTime() - b.workUnit.scheduledAt.date.start.toDate().getTime()
 			})
-	
+
 			const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
 			if (offset > 0) {
 				this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound - 1, offset)
@@ -112,12 +116,14 @@ export class DashboardComponent implements OnInit {
 		this.groupTasksUnwound(this.tasksUnwound)
 	}
 
-	public getNextUpMessage(): string {
+	public checkNextUpMessage(): void {
 		if (this.nextUp.length > 0) {
 			const notDoneTasks = this.nextUp.filter((task) => task.workUnit.isDone === false)
 
 			if (notDoneTasks.length === 0) {
-				return 'All done for today!'
+				this.nextUpState = NextUpState.Done
+				this.nextUpTaskFocus = undefined
+				return
 			}
 
 			let found = -1
@@ -131,30 +137,37 @@ export class DashboardComponent implements OnInit {
 			})
 
 			if (found !== -1) {
-				return `Currently working on ${notDoneTasks[found].name}`
+				this.nextUpState = NextUpState.WorkingOn
+				this.nextUpTaskFocus = notDoneTasks[found]
+				return
 			}
 
 			if (notDoneTasks[0].workUnit.scheduledAt.date.start.toDate() > this.today) {
-				return `Next up: ${notDoneTasks[0].name} at ${notDoneTasks[0].workUnit.scheduledAt.date.start
-					.toDate()
-					.toLocaleTimeString([], {
-						hour: '2-digit',
-						minute: '2-digit',
-					})}`
+				this.nextUpState = NextUpState.NextTask
+				this.nextUpTaskFocus = notDoneTasks[0]
+				return
 			}
 
 			if (notDoneTasks[0].workUnitsIndex === notDoneTasks[0].workUnitsCount - 1) {
-				return `Did you finish ${notDoneTasks[0].name}?`
+				this.nextUpState = NextUpState.TaskFinish
+				this.nextUpTaskFocus = notDoneTasks[0]
+				return
 			}
 
-			return `Did you successfully work on ${notDoneTasks[0].name}?`
+			this.nextUpState = NextUpState.WorkUnitFinish
+			this.nextUpTaskFocus = notDoneTasks[0]
+			return
 		}
 
 		if (this.nextUp.length === 0) {
-			return 'No tasks for today!'
+			this.nextUpState = NextUpState.NoTasks
+			this.nextUpTaskFocus = undefined
+			return
 		}
 
-		return 'Next up'
+		this.nextUpState = NextUpState.Default
+		this.nextUpTaskFocus = undefined
+		return
 	}
 
 	private groupTasks(tasks: Task[]): void {
@@ -164,7 +177,7 @@ export class DashboardComponent implements OnInit {
 			if (
 				this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
 				this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
-					task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+				task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
 			) {
 				this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
 				return
@@ -214,6 +227,8 @@ export class DashboardComponent implements OnInit {
 			dateGroup.tasks.push(task)
 			this.groupedUpcoming.push(dateGroup)
 		})
+
+		this.checkNextUpMessage()
 	}
 
 	public getStartsAtWorkUnit() {
@@ -234,4 +249,14 @@ class TaskDateGroup {
 class TaskUnwoundDateGroup {
 	tasks: TaskUnwound[] = []
 	date!: Date
+}
+
+enum NextUpState {
+	Done,
+	WorkingOn,
+	TaskFinish,
+	WorkUnitFinish,
+	NoTasks,
+	NextTask,
+	Default
 }

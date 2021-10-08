@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import url('https://use.typekit.net/gsz0xik.css');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@700&display=swap');
 @import './variables.scss';
 
 html {
@@ -70,18 +71,28 @@ img {
 
 h1,
 .h1 {
+	@apply text-primary;
 	font-size: 3.2rem;
+	font-family: 'Karla', 'sans-serif';
+	font-weight: 700;
 }
 
 h2,
-.h2 {
+.h2, h2 > span {
+	@apply text-primary;
 	font-size: 2.8rem;
+	font-family: 'Karla', 'sans-serif';
+	font-weight: 700;
+	display: inline-flex
 }
 
 h3,
 .h3 {
+	@apply text-primary;
 	font-size: 2.4rem;
 	font-weight: 500;
+	font-family: 'Karla', 'sans-serif';
+	font-weight: 700;
 }
 
 a {
