@@ -172,7 +172,9 @@ export class TaskService {
 	}
 
 	private async getTags(sync?: Date): Promise<void> {
-		const filters = []
+		const filters = [
+			'pageSize=50'
+		]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
