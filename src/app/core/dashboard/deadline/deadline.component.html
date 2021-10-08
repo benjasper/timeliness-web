@@ -18,21 +18,22 @@
 		>
 			{{ task.name }}
 		</a>
-		<span class="subtitle">
-			{{ getProgress(task) }}% done •
-			<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
-			<ng-template #thenBlock>completed</ng-template>
-			<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
-			<ng-container *ngIf="task.notScheduled !== 0">
-				&nbsp;•&nbsp;
+		<span class="flex flex-row gap-2 flex-wrap">
+			<div class="px-4 py-1 rounded-full grey-background">
+				{{ getProgress(task) }}% done
+			</div>
+			<div class="px-4 py-1 rounded-full grey-background">
+				<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
+				<ng-template #thenBlock>completed</ng-template>
+				<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
+			</div>
+			<div *ngIf="task.notScheduled !== 0" class="px-4 py-1 rounded-full grey-background">
 				<span class="text-red">2h not scheduled</span>
-			</ng-container>
-		</span>
-		<div class="tags">
-			<span class="tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
+			</div>
+			<span class="sm-tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
 				#{{ tag.value }}
 			</span>
-		</div>
+		</span>
 	</div>
 	<div class="actions">
 		<a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">

@@ -1,5 +1,5 @@
 <div *ngIf="!loading" class="work-unit-upcoming" [ngClass]="getColorClass(tag ? tag.color: '', 'calendar')" routerLinkActive="active">
-	<a class="calendar-date" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+	<a class="calendar-date m-auto" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
 		<span class="weekday">
 			{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' }) }}
@@ -14,23 +14,32 @@
 			>
 				{{ task.name }}
 			</a>
-			<span class="subtitle">
-				{{
-					task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
-						hour: '2-digit',
-						minute: '2-digit'
-					})
-				}}
-				-
-				{{
-					task.workUnit.scheduledAt.date.end.toDate().toLocaleTimeString([], {
-						hour: '2-digit',
-						minute: '2-digit'
-					})
-				}}
-				• {{ task.workUnit.workload.toDuration(1).toString() }} • Unit {{ task.workUnitsIndex + 1 }}/{{
-					task.workUnitsCount
-				}}
+			<span class="flex flex-row flex-wrap subtitle gap-2">
+				<div class="sm-tag grey-background">
+					{{
+						task.workUnit.scheduledAt.date.start.toDate().toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit'
+						})
+					}}
+					-
+					{{
+						task.workUnit.scheduledAt.date.end.toDate().toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit'
+						})
+					}}
+				</div>
+
+				<div class="sm-tag grey-background">
+					{{ task.workUnit.workload.toDuration(1).toString() }}
+				</div>
+
+				<div class="sm-tag grey-background">
+					Unit {{ task.workUnitsIndex + 1 }}/{{task.workUnitsCount}}
+				</div>
+				<div class="sm-tag" *ngFor="let tag of tags" [ngClass]="getColorClass(tag ? tag.color: '', 'background')">#{{ tag.value }}</div>
+				
 			</span>
 		</div>
 		<div class="actions">

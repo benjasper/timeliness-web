@@ -5,6 +5,7 @@ $color-primary-light: #2f2066;
 $color-primary-pastelle: #dbe2ff;
 $color-primary-pastelle-light: #e6ebff;
 $color-tertiary: #8d99ae;
+$color-tertiary-dark: #59616e;
 $color-grey: #eee;
 $color-light-grey: #f4f4f4;
 
@@ -39,6 +40,10 @@ $color-green: #62c370;
 $box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 $colors: (
+	'grey': (
+		'light': $color-very-light-grey,
+		'dark': $color-tertiary-dark,
+	),
 	'blue': (
 		'light': $color-primary-pastelle,
 		'dark': $color-primary,

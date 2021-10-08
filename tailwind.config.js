@@ -6,6 +6,7 @@ module.exports = {
 		'./src/**/*.html',
 		'./src/**/*.vue',
 		'./src/**/*.jsx',
+		'./src/**/*.scss',
 	],
 	darkMode: false,
 	theme: {
