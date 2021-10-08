@@ -46,6 +46,7 @@ module.exports = {
 				'very-light': '#F5F7FB',
 				dark: '#8d99ae'
 			},
+			black: '#040f0f',
 			white: {
 				DEFAULT: '#fff'
 			},
