@@ -173,7 +173,7 @@ export class TaskService {
 
 	private async getTags(sync?: Date): Promise<void> {
 		const filters = [
-			'pageSize=50'
+			'pageSize=25'
 		]
 
 		if (sync) {
