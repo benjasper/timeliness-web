@@ -197,30 +197,32 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private groupTasks(tasks: Task[]): void {
-		this.groupedDeadlines = [];
+		const groupedDeadlines: TaskDateGroup[] = []
 
 		tasks.forEach((task) => {
 			if (
-				this.groupedDeadlines[this.groupedDeadlines.length - 1] &&
-				this.groupedDeadlines[this.groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
+				groupedDeadlines[groupedDeadlines.length - 1] &&
+				groupedDeadlines[groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
 				task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
 			) {
-				this.groupedDeadlines[this.groupedDeadlines.length - 1].tasks.push(task)
+				groupedDeadlines[groupedDeadlines.length - 1].tasks.push(task)
 				return
 			}
 
 			const dateGroup = new TaskDateGroup()
 			dateGroup.date = task.dueAt.date.start.toDate()
 			dateGroup.tasks.push(task)
-			this.groupedDeadlines.push(dateGroup)
+			groupedDeadlines.push(dateGroup)
 		})
 
-		this.deadlineYears = this.checkIfYearNeedsToBeShown(this.groupedDeadlines.map(group => group.date))
+		this.deadlineYears = this.checkIfYearNeedsToBeShown(groupedDeadlines.map(group => group.date))
+
+		this.groupedDeadlines = groupedDeadlines;
 	}
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
-		this.groupedUpcoming = [];
-		this.nextUp = [];
+		const nextUp: TaskUnwound[] = [];
+		const groupedUpcoming: TaskUnwoundDateGroup[] = [];
 
 		const nextWeek = this.today.addDays(7).getWeekNumber(true)
 
@@ -230,22 +232,22 @@ export class DashboardComponent implements OnInit {
 				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0) ||
 				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) && !task.workUnit.isDone
 			) {
-				this.nextUp.push(task)
+				nextUp.push(task)
 				return
 			} else if (task.workUnit.isDone) {
 				return
 			}
 
-			if (this.groupedUpcoming[this.groupedUpcoming.length - 1]) {
+			if (groupedUpcoming[groupedUpcoming.length - 1]) {
 				if (
-					(this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getWeekNumber(true) ===
+					(groupedUpcoming[groupedUpcoming.length - 1].date.getWeekNumber(true) ===
 						task.workUnit.scheduledAt.date.start.toDate().getWeekNumber(true) &&
 						task.workUnit.scheduledAt.date.start.toDate().getWeekNumber(true) <= nextWeek) ||
-					(this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getMonth() ===
+					(groupedUpcoming[groupedUpcoming.length - 1].date.getMonth() ===
 						task.workUnit.scheduledAt.date.start.toDate().getMonth() &&
-						this.groupedUpcoming[this.groupedUpcoming.length - 1].date.getWeekNumber(true) > nextWeek)
+						groupedUpcoming[groupedUpcoming.length - 1].date.getWeekNumber(true) > nextWeek)
 				) {
-					this.groupedUpcoming[this.groupedUpcoming.length - 1].tasks.push(task)
+					groupedUpcoming[groupedUpcoming.length - 1].tasks.push(task)
 					return
 				}
 			}
@@ -253,10 +255,14 @@ export class DashboardComponent implements OnInit {
 			const dateGroup = new TaskUnwoundDateGroup()
 			dateGroup.date = task.workUnit.scheduledAt.date.start.toDate()
 			dateGroup.tasks.push(task)
-			this.groupedUpcoming.push(dateGroup)
+			groupedUpcoming.push(dateGroup)
 		})
 
-		this.workUnitYears = this.checkIfYearNeedsToBeShown(this.groupedUpcoming.map(group => group.date))
+		this.workUnitYears = this.checkIfYearNeedsToBeShown(groupedUpcoming.map(group => group.date))
+
+		this.groupedUpcoming = groupedUpcoming;
+		this.nextUp = nextUp;
+
 		this.checkNextUpMessage()
 	}
 
