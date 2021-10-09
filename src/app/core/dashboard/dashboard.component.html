@@ -73,7 +73,7 @@
 								"
 								  class="date-spacer">
 								{{
-								upcomingGroup.date.toLocaleDateString('default', { year: 'numeric', month: 'long' })
+								upcomingGroup.date.toLocaleDateString('default', { month: 'long', year: (workUnitYears.get(upcomingGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' : undefined })
 								}}
 							</span>
 							<span *ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
@@ -127,14 +127,10 @@
 					<span class="date-spacer">
 						{{
 						deadlineGroup.date.toLocaleDateString('default', {
-						weekday: 'long'
-						})
-						}},
-						{{
-						deadlineGroup.date.toLocaleDateString('default', {
-						year: 'numeric',
+						year: (deadlineYears.get(deadlineGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' : undefined,
 						month: 'long',
-						day: 'numeric'
+						day: 'numeric',
+						weekday: 'long'
 						})
 						}}
 					</span>

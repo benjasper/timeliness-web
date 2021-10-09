@@ -29,6 +29,9 @@ export class DashboardComponent implements OnInit {
 	public nextUpState: NextUpState = NextUpState.Default
 	public eNextUpState = NextUpState
 
+	public deadlineYears = new Map<Number, Number[]>()
+	public workUnitYears = new Map<Number, Number[]>()
+
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
 			this.today = date
@@ -170,6 +173,29 @@ export class DashboardComponent implements OnInit {
 		return
 	}
 
+	checkIfYearNeedsToBeShown(dates: Date[]): Map<number, number[]> {
+		const map = new Map<number, number[]>()
+
+		dates.forEach(date => {
+			if (map.has(date.getMonth())) {
+				const years = map.get(date.getMonth()) ?? []
+				if (years?.includes(date.getFullYear())) {
+					return;
+				}
+				map.set(date.getMonth(), [...years, date.getFullYear()])
+				return
+			}
+
+			const val = [date.getFullYear()]
+			if (date.getFullYear() != this.today.getFullYear()) {
+				val.push(this.today.getFullYear())
+			}
+			map.set(date.getMonth(), val)
+		})
+
+		return map
+	}
+
 	private groupTasks(tasks: Task[]): void {
 		this.groupedDeadlines = [];
 
@@ -188,6 +214,8 @@ export class DashboardComponent implements OnInit {
 			dateGroup.tasks.push(task)
 			this.groupedDeadlines.push(dateGroup)
 		})
+
+		this.deadlineYears = this.checkIfYearNeedsToBeShown(this.groupedDeadlines.map(group => group.date))
 	}
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
@@ -228,6 +256,7 @@ export class DashboardComponent implements OnInit {
 			this.groupedUpcoming.push(dateGroup)
 		})
 
+		this.workUnitYears = this.checkIfYearNeedsToBeShown(this.groupedUpcoming.map(group => group.date))
 		this.checkNextUpMessage()
 	}
 
