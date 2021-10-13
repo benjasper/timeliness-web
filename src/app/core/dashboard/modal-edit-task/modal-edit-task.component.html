@@ -71,6 +71,22 @@
 						  src="/assets/icons/icon-undo.svg"
 						  alt="Undo"></svg-icon>
 			</button>
+			<app-dropdown>
+				<li
+					*ngIf="task"
+					(click)="delete()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-trash.svg"
+							  alt="Delete"></svg-icon>
+					Delete
+				</li>
+				<li >
+					<svg-icon class="img"
+							  src="/assets/icons/icon-check.svg"
+							  alt="Delete"></svg-icon>
+					Mark task as done
+				</li>
+			</app-dropdown>
 			<button class="tiny-button no-background"
 					(click)="close()">
 				<svg-icon class="img !fill-current text-primary"
@@ -79,7 +95,7 @@
 			</button>
 		</div>
 		<div class="flex flex-col justify-between h-full max-w-lg">
-			<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
 						   class="my-auto w-36">Due date</label>
@@ -101,10 +117,13 @@
 						</ng-option>
 					</ng-select>
 				</div>
-				<div *ngIf="task && task.notScheduled !== 0" class="flex flex-row">
+				<div *ngIf="task && task.notScheduled !== 0"
+					 class="flex flex-row">
 					<label for="not-scheduled"
 						   class="my-auto w-44">Not scheduled</label>
-					<span id="not-scheduled" class="text-red text-base px-6 py-4" title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
+					<span id="not-scheduled"
+						  class="text-red text-base px-6 py-4"
+						  title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
 						{{ task.notScheduled.toDuration(NANOSECONDS) }}
 					</span>
 				</div>
@@ -156,13 +175,6 @@
 			</div>
 
 			<div class="flex flex-row justify-end">
-				<button class="tiny-button with-border"
-						[disabled]="!task"
-						(click)="delete()">
-					<svg-icon class="img"
-							  src="/assets/icons/icon-trash.svg"
-							  alt="Delete"></svg-icon>
-				</button>
 				<button type="submit"
 						class="btn large save"
 						[disabled]="!editTask.valid || !editTask.dirty || loading">

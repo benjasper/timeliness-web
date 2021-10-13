@@ -1,0 +1,25 @@
+:host {
+	position: relative;
+
+	::ng-deep {
+		li {
+			@apply flex;
+			@apply flex-row;
+			@apply gap-4;
+			@apply cursor-pointer;
+			@apply px-10;
+			@apply py-4;
+			@apply hover:bg-grey-very-light;
+			@apply transition-all;
+			@apply whitespace-nowrap;
+			@apply text-left;
+
+			.img {
+				@apply my-auto;
+				@apply w-8;
+				@apply h-8;
+				@apply fill-current;
+			}
+		}
+	}
+}

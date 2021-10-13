@@ -1,0 +1,8 @@
+<button class="tiny-button no-background" (click)="!isFocused">
+	<svg-icon class="img !fill-current text-primary !w-full !h-full transform scale-150"
+	src="/assets/icons/icon-dots-vertical.svg"
+	alt="Options"></svg-icon>
+</button>
+<ul *ngIf="isFocused" class="absolute flex flex-col bg-white z-30 text-base rounded-lg drop-shadow-lg right-1/4 top-16">
+	<ng-content></ng-content>
+</ul>
