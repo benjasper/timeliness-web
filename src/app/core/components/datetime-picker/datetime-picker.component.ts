@@ -10,6 +10,7 @@ import {
 } from '@angular/core'
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { forwardRef, HostBinding, Input } from '@angular/core'
+import { trigger, transition, style, animate } from '@angular/animations'
 
 @Component({
 	selector: 'app-datetime-picker',
@@ -21,6 +22,12 @@ import { forwardRef, HostBinding, Input } from '@angular/core'
 			useExisting: forwardRef(() => DatetimePickerComponent),
 			multi: true,
 		},
+	],
+	animations: [
+		trigger('fade', [
+			transition(':enter', [style({ opacity: 0 }), animate(50)]),
+			transition(':leave', [animate(50, style({ opacity: 0 }))]),
+		]),
 	],
 })
 export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
