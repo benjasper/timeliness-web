@@ -15,17 +15,13 @@ export class AgendaComponent implements OnInit {
 	list: Array<TaskUnwound | Task> = []
 
 	tasksFuture: TaskAgenda[] = []
+	tasksPast: TaskAgenda[] = []
 
 	AGENDA_TYPE = AgendaEventType
 
 	ngOnInit(): void {
 		this.taskService.getAgenda(new Date(), 1).subscribe(tasks => {
-			console.log(tasks)
-			this.tasksFuture = tasks.results;
+			this.tasksFuture = tasks.results
 		})
-	}
-
-	public generateList() {
-		
 	}
 }

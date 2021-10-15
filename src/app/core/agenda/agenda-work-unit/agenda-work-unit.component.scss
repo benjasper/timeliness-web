@@ -1,0 +1,97 @@
+@import '../../../../variables.scss';
+
+.deadline {
+	display: flex;
+	flex-direction: row;
+	transition: all 0.2s ease-out;
+	cursor: default;
+
+	&.loading {
+		margin: 0 8rem;
+		border-radius: 1.5rem;
+		padding: 0 4rem;
+
+		.loading-component {
+			background-color: $color-light-grey;
+			border-radius: 1.5rem;
+		}
+
+		.time {
+			width: 6rem;
+			border-radius: 1rem;
+		}
+
+		.deadline-name {
+			width: 75%;
+			margin-bottom: -0.3rem;
+		}
+
+		.deadline-spacer {
+			background: transparent;
+		}
+	}
+
+	&.done {
+		opacity: 0.5;
+	}
+
+	&:hover,
+	&.active {
+		background-color: $color-white;
+
+		.actions {
+			opacity: 1;
+			margin-right: 1rem;
+		}
+	}
+
+	.deadline-spacer {
+		padding: 0 2px;
+		border-radius: 25px;
+		margin: 0 2rem;
+		background-color: $color-primary-pastelle;
+	}
+
+	.time {
+		margin: auto 0;
+		max-width: 6rem;
+		text-align: center;
+	}
+
+	.deadline-info {
+		display: block;
+		overflow: hidden;
+		flex: 1;
+
+		.deadline-name {
+			font-size: 2rem;
+			font-weight: 500;
+			margin-bottom: -0.1rem;
+		}
+
+		.subtitle {
+			margin-top: -0.1rem;
+		}
+
+		.tags {
+			display: flex;
+			flex-flow: row;
+			gap: 1rem;
+			margin-top: 0.8rem;
+			flex-wrap: wrap;
+
+			.tag {
+				border-radius: 1.5rem;
+				padding: 0.2rem 1rem;
+				font-size: 1.4rem;
+			}
+		}
+	}
+
+	.actions {
+		transition: all 0.2s ease-out;
+		opacity: 0;
+		margin: auto 0;
+		padding-left: 1rem;
+	}
+}

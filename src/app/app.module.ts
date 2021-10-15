@@ -25,7 +25,8 @@ import { CircularProgressComponent } from './core/dashboard/circular-progress/ci
 import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component';
 import { AgendaComponent } from './core/agenda/agenda.component';
 import { DatetimePickerComponent } from './core/components/datetime-picker/datetime-picker.component';
-import { DropdownComponent } from './core/components/dropdown/dropdown.component'
+import { DropdownComponent } from './core/components/dropdown/dropdown.component';
+import { AgendaWorkUnitComponent } from './core/agenda/agenda-work-unit/agenda-work-unit.component'
 
 @NgModule({
 	declarations: [
@@ -46,6 +47,7 @@ import { DropdownComponent } from './core/components/dropdown/dropdown.component
   AgendaComponent,
   DatetimePickerComponent,
   DropdownComponent,
+  AgendaWorkUnitComponent,
 	],
 	imports: [
 		BrowserModule,

@@ -2,7 +2,7 @@
 	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pt-24 pb-8">Agenda</h2>
 		<ul class="relative flex flex-col w-full scroller gap-16 overflow-y-auto pb-8">
-			<div class="absolute w-2 bg-grey-very-light left-7 transform"></div>
+			<div class="absolute h-full w-2 bg-grey-very-light left-7 transform"></div>
 			<li class="flex flex-row gap-8"
 				*ngFor="let task of tasksFuture">
 				<div class="inline-flex w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10">
@@ -13,8 +13,12 @@
 							  *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
 							  src="/assets/icons/icon-work-unit.svg"></svg-icon>
 				</div>
-				<app-deadline class="my-auto w-full"
+				<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt"
+							  class="my-auto w-full"
 							  [task]="task"></app-deadline>
+				<app-agenda-work-unit *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
+									  class="my-auto w-full"
+									  [task]="task"></app-agenda-work-unit>
 			</li>
 		</ul>
 	</div>

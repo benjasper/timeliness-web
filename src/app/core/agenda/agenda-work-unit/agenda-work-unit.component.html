@@ -1,0 +1,61 @@
+<div *ngIf="!loading" class="deadline" [class.done]="task.isDone" routerLinkActive="active">
+	<div class="time">
+		<span class="text-xl">
+			{{
+				task.date.date.start.toDate().toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit'
+				})
+			}}
+		</span>
+		<span class="text-sm">
+			{{
+				task.date.date.end.toDate().toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit'
+				})
+			}}
+		</span>
+	</div>
+	<div class="deadline-spacer" [ngClass]="getColorClass(tag ? tag.color: '', 'background')"></div>
+	<div class="deadline-info">
+		<a
+			class="deadline-name truncate-text text-underline"
+			title="{{ task.name }}"
+			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+		>
+			{{ task.name }}
+		</a>
+		<span class="flex flex-row gap-2 flex-wrap">
+			<div class="sm-tag grey-background">
+				{{ getProgress(task) }}% done
+			</div>
+			<div class="sm-tag grey-background">
+				<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
+				<ng-template #thenBlock>completed</ng-template>
+				<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
+			</div>
+			<div *ngIf="task.notScheduled !== 0" class="px-4 py-1 rounded-full grey-background">
+				<span class="text-red">2h not scheduled</span>
+			</div>
+			<span class="sm-tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
+				#{{ tag.value }}
+			</span>
+		</span>
+	</div>
+	<div class="actions">
+		<a class="btn tiny-button" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
+		</a>
+	</div>
+</div>
+<div *ngIf="loading" class="deadline loading">
+	<div class="time loading-component">
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	</div>
+	<div class="deadline-spacer loading-component"></div>
+	<div class="deadline-info">
+		<div class="deadline-name truncate-text loading-component">&nbsp;</div>
+		<span class="subtitle loading-component">&nbsp;</span>
+	</div>
+</div>
