@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
-import { Task, TaskModified, TaskUnwound } from '../models/task'
+import { Task, TaskAgenda, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
@@ -78,6 +78,21 @@ export class TaskService {
 				return
 			}
 		})
+
+		return observable
+	}
+
+	public getAgenda(date: Date, sort = 0, page = 0): Observable<TasksAgendaResponse> {
+		const filters = [
+			`date=${date.toISOString()}`,
+			`sort=${sort}`,
+			`pageSize=${25}`,
+			`page=${page}`,
+		]
+
+		const observable = this.http
+			.get<TasksAgendaResponse>(`${environment.apiBaseUrl}/v1/tasks/agenda?` + filters.join('&'))
+			.pipe(retry(3), catchError(this.handleError))
 
 		return observable
 	}
@@ -314,6 +329,11 @@ export class TaskService {
 interface TasksGetResponse {
 	pagination: Pagination
 	results: Task[]
+}
+
+interface TasksAgendaResponse {
+	pagination: Pagination
+	results: TaskAgenda[]
 }
 
 interface TasksByWorkunitsGetResponse {

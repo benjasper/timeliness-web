@@ -1,4 +1,4 @@
-import { Event } from './event'
+import { AgendaEvent, Event } from './event'
 import { WorkUnit } from './workunit'
 export type Task = {
 	id: string
@@ -21,6 +21,11 @@ export type TaskUnwound = Task & {
 	workUnit: WorkUnit
 	workUnitsIndex: number
 	workUnitsCount: number
+}
+
+export type TaskAgenda = Task & {
+	date: AgendaEvent
+	workUnitsIndex?: number
 }
 
 export class TaskModified {

@@ -326,7 +326,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.loaded = false
 		this.modalBackground = false
 		setTimeout(() => {
-			this.router.navigate(['dashboard', { outlets: { modal: null } }])
+			this.router.navigate(['.', { outlets: { modal: null } }], { relativeTo: this.route.parent })
 		}, 200)
 	}
 
@@ -426,7 +426,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				this.taskId = task.id
 				this.isNew = false
 				this.loading = false
-				this.router.navigate(['dashboard', { outlets: { modal: ['task', task.id] } }])
+				this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], { relativeTo: this.route.parent })
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {

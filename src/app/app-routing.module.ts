@@ -29,6 +29,13 @@ const routes: Routes = [
 			{
 				path: 'agenda',
 				component: AgendaComponent,
+				children: [
+					{
+						path: 'task/:id',
+						component: ModalEditTaskComponent,
+						outlet: 'modal',
+					},
+				],
 			},
 			{
 				path: 'settings',

@@ -3,15 +3,13 @@
 .deadline {
 	display: flex;
 	flex-direction: row;
-	margin-top: 1rem;
-	padding-top: 1rem;
 	transition: all 0.2s ease-out;
 	cursor: default;
 
 	&.loading {
-		margin: 2rem 8rem;
+		margin: 0 8rem;
 		border-radius: 1.5rem;
-		padding: 1rem 4rem;
+		padding: 0 4rem;
 
 		.loading-component {
 			background-color: $color-light-grey;
