@@ -6,16 +6,20 @@
 					[ngSwitch]="nextUpState">
 					<ng-container *ngSwitchCase="eNextUpState.Done">All done for today!</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.WorkingOn">Currently working on&nbsp;
-						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span></ng-container>
+						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>
+					</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.TaskFinish">Did you finish&nbsp;
-						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?</ng-container>
-					<ng-container *ngSwitchCase="eNextUpState.WorkUnitFinish">Did you successfully work on &nbsp;
-						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?</ng-container>
+						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?
+					</ng-container>
+					<ng-container *ngSwitchCase="eNextUpState.WorkUnitFinish">Did you successfully work on&nbsp;
+						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?
+					</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.NoTasks">No tasks for today!</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.NextTask">Next up:&nbsp;<span class="text-purple">
-						{{ nextUpTaskFocus?.name }}</span>&nbsp;at 
-						<span class="text-purple">&nbsp;{{ nextUpTaskFocus?.workUnit?.scheduledAt?.date?.start?.toDate()?.toLocaleTimeString([], {hour:
-						'2-digit',minute: '2-digit'}) }}</span>
+							{{ nextUpTaskFocus?.name }}</span>&nbsp;at
+						<span class="text-purple">&nbsp;{{
+							nextUpTaskFocus?.workUnit?.scheduledAt?.date?.start?.toDate()?.toLocaleTimeString([], {hour:
+							'2-digit',minute: '2-digit'}) }}</span>
 					</ng-container>
 					<ng-container *ngSwitchDefault>Next up</ng-container>
 				</h2>
@@ -52,7 +56,11 @@
 		<section class="lower-dashboard wrapper !pr-12">
 			<div class="upcoming-workunits">
 				<div class="upcoming-work-units-header">
-					<h2 class="upcoming-work-units-title">Upcoming work units</h2>
+					<h2 class="upcoming-work-units-title">
+						<svg-icon class="img my-auto pr-4"
+								  src="/assets/icons/icon-work-unit.svg"></svg-icon>
+						Upcoming work units
+					</h2>
 				</div>
 				<img *ngIf="groupedUpcoming.length === 0 && !loadingWorkUnits"
 					 class="next-up-finished"
@@ -73,7 +81,9 @@
 								"
 								  class="date-spacer">
 								{{
-								upcomingGroup.date.toLocaleDateString('default', { month: 'long', year: (workUnitYears.get(upcomingGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' : undefined })
+								upcomingGroup.date.toLocaleDateString('default', { month: 'long', year:
+								(workUnitYears.get(upcomingGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' :
+								undefined })
 								}}
 							</span>
 							<span *ngIf="today.getWeekNumber(true) === upcomingGroup.date.getWeekNumber(true)"
@@ -108,7 +118,11 @@
 				<svg-icon class="img"
 						  src="/assets/icons/icon-arrow-down.svg"></svg-icon>
 			</div>
-			<h2 class="hide-collapsed wrapper">Upcoming deadlines</h2>
+			<h2 class="hide-collapsed wrapper">
+				<svg-icon class="img my-auto pr-4"
+								  src="/assets/icons/icon-clock.svg"></svg-icon>
+				Upcoming deadlines
+			</h2>
 		</div>
 		<ul class="deadline-list scroller">
 			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks"
@@ -127,7 +141,8 @@
 					<span class="date-spacer">
 						{{
 						deadlineGroup.date.toLocaleDateString('default', {
-						year: (deadlineYears.get(deadlineGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' : undefined,
+						year: (deadlineYears.get(deadlineGroup.date.getMonth())?.length ?? 1) > 1 ? 'numeric' :
+						undefined,
 						month: 'long',
 						day: 'numeric',
 						weekday: 'long'
