@@ -11,23 +11,23 @@ import { UtilityService } from 'src/app/services/utility.service';
 })
 export class AgendaComponent implements OnInit {
 
-	constructor(private taskService: TaskService) { }
+	constructor(private taskService: TaskService) {
+		this.today.setHours(0,0,0,0)
+	 }
 
 	list: Array<TaskUnwound | Task> = []
 
-	tasksFuture: TaskAgenda[] = []
-	tasksPast: TaskAgenda[] = []
-
 	groupedTasksFuture: TaskAgendaDateGroup[] = []
+	groupedTasksPast: TaskAgendaDateGroup[] = []
 
 	AGENDA_TYPE = AgendaEventType
 
 	today = new Date()
 	dateYears = new Map<Number, Number[]>()
+	tasksPastClicked = false
 
 	ngOnInit(): void {
-		this.taskService.getAgenda(new Date(), 1).subscribe(tasks => {
-			this.tasksFuture = tasks.results
+		this.taskService.getAgenda(this.today, 1).subscribe(tasks => {
 			this.groupedTasksFuture = this.groupTasks(tasks.results)
 		})
 	}
@@ -54,6 +54,14 @@ export class AgendaComponent implements OnInit {
 		this.dateYears = UtilityService.checkIfYearNeedsToBeShown(groupedTasks.map(group => group.date), this.today)
 
 		return groupedTasks;
+	}
+
+	public showPastTasks() {
+		this.tasksPastClicked = true
+		this.taskService.getAgenda(this.today, -1).subscribe(tasks => {
+			console.log(tasks)
+			this.groupedTasksPast = this.groupTasks(tasks.results.reverse())
+		})
 	}
 }
 

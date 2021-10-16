@@ -9,5 +9,6 @@ declare global {
 	interface Date {
 		getWeekNumber: (includeYear?: boolean) => number
 		addDays: (days: number) => Date
+		isSameDay:(date: Date) => boolean
 	}
 }

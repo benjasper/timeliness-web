@@ -41,6 +41,13 @@ Date.prototype.addDays = function (days: number): Date {
 	return date
 }
 
+Date.prototype.isSameDay = function (date: Date): boolean {
+	const hash1 = this.getFullYear().toString() + this.getMonth().toString() + this.getDate().toString()
+	const hash2 = date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString()
+
+	return hash1 === hash2
+}
+
 // tslint:disable-next-line: only-arrow-functions
 String.prototype.toDate = function (): Date {
 	return new Date(this.valueOf())
