@@ -73,7 +73,7 @@
 						  alt="Undo"></svg-icon>
 			</button>
 			<app-dropdown>
-				<li *ngIf="task"
+				<li class="flex flex-row" *ngIf="task"
 					(click)="delete()">
 					<svg-icon class="img"
 							  src="/assets/icons/icon-trash.svg"
@@ -83,7 +83,7 @@
 				<li>
 					<svg-icon class="img"
 							  src="/assets/icons/icon-check.svg"
-							  alt="Delete"></svg-icon>
+							  alt="Mark task as done"></svg-icon>
 					Mark task as done
 				</li>
 			</app-dropdown>
