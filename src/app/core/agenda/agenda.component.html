@@ -2,18 +2,19 @@
 	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pt-24 pb-8">Agenda</h2>
 		<ul class="flex flex-col scroller overflow-y-auto pb-8">
-			<div class="absolute h-full w-2 bg-grey-very-light left-[17.2rem] xl:left-[17.7rem] transform"></div>
 			<li *ngFor="let group of groupedTasksFuture"
 				class="flex flex-row">
 				<ul class="relative flex flex-col w-full">
 					<li class="flex flex-row gap-12 py-8"
 						*ngFor="let task of group.tasks; index as i">
-						<div class="flex w-32">
+						<div class="flex w-32 flex-shrink-0">
 							<span *ngIf="i === 0"
 								  class="text-lg text-grey-dark my-auto whitespace-nowrap">{{group.date.toLocaleDateString([],{
 								day: '2-digit',month: 'short', year: (dateYears.get(group.date.getMonth())?.length ?? 1)
 								> 1 ? 'numeric'
 								: undefined })}}</span>
+						</div>
+						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[12.5rem] transform">
 						</div>
 						<div class="inline-flex w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10">
 							<svg-icon class="img m-auto text-lg text-grey-dark"
@@ -35,5 +36,4 @@
 		</ul>
 	</div>
 </div>
-<router-outlet class="absolute"
-			   name="modal"></router-outlet>
+<router-outlet name="modal"></router-outlet>
