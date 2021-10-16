@@ -17,7 +17,7 @@
 		}
 
 		.time {
-			width: 6rem;
+			width: max-content;
 			border-radius: 1rem;
 		}
 
@@ -54,7 +54,7 @@
 
 	.time {
 		margin: auto 0;
-		max-width: 6rem;
+		width: max-content;
 		text-align: center;
 
 		span {

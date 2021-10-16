@@ -25,7 +25,7 @@ export type TaskUnwound = Task & {
 
 export type TaskAgenda = Task & {
 	date: AgendaEvent
-	workUnitsIndex?: number
+	workUnitIndex: number
 }
 
 export class TaskModified {

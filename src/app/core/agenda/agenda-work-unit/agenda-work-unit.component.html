@@ -28,16 +28,29 @@
 		</a>
 		<span class="flex flex-row gap-2 flex-wrap">
 			<div class="sm-tag grey-background">
-				{{ getProgress(task) }}% done
+				{{
+					task.date.date.start.toDate().toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit'
+					})
+				}}
+				-
+				{{
+					task.date.date.end.toDate().toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit'
+					})
+				}}
 			</div>
+
 			<div class="sm-tag grey-background">
-				<div *ngIf="task.isDone; then thenBlock; else elseBlock"></div>
-				<ng-template #thenBlock>completed</ng-template>
-				<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
+				{{ task.workUnits[task.workUnitIndex].workload.toDuration(1).toString() }}
 			</div>
-			<div *ngIf="task.notScheduled !== 0" class="px-4 py-1 rounded-full grey-background">
-				<span class="text-red">2h not scheduled</span>
+
+			<div class="sm-tag grey-background">
+				Unit {{ task.workUnitIndex + 1 }}/{{task.workUnits.length}}
 			</div>
+
 			<span class="sm-tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
 				#{{ tag.value }}
 			</span>

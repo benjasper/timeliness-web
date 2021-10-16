@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Task, TaskUnwound } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
+import { UtilityService } from 'src/app/services/utility.service'
 
 @Component({
 	selector: 'app-dashboard',
@@ -173,29 +174,6 @@ export class DashboardComponent implements OnInit {
 		return
 	}
 
-	checkIfYearNeedsToBeShown(dates: Date[]): Map<number, number[]> {
-		const map = new Map<number, number[]>()
-
-		dates.forEach(date => {
-			if (map.has(date.getMonth())) {
-				const years = map.get(date.getMonth()) ?? []
-				if (years?.includes(date.getFullYear())) {
-					return;
-				}
-				map.set(date.getMonth(), [...years, date.getFullYear()])
-				return
-			}
-
-			const val = [date.getFullYear()]
-			if (date.getFullYear() != this.today.getFullYear()) {
-				val.push(this.today.getFullYear())
-			}
-			map.set(date.getMonth(), val)
-		})
-
-		return map
-	}
-
 	private groupTasks(tasks: Task[]): void {
 		const groupedDeadlines: TaskDateGroup[] = []
 
@@ -215,7 +193,7 @@ export class DashboardComponent implements OnInit {
 			groupedDeadlines.push(dateGroup)
 		})
 
-		this.deadlineYears = this.checkIfYearNeedsToBeShown(groupedDeadlines.map(group => group.date))
+		this.deadlineYears = UtilityService.checkIfYearNeedsToBeShown(groupedDeadlines.map(group => group.date), this.today)
 
 		this.groupedDeadlines = groupedDeadlines;
 	}
@@ -258,7 +236,7 @@ export class DashboardComponent implements OnInit {
 			groupedUpcoming.push(dateGroup)
 		})
 
-		this.workUnitYears = this.checkIfYearNeedsToBeShown(groupedUpcoming.map(group => group.date))
+		this.workUnitYears = UtilityService.checkIfYearNeedsToBeShown(groupedUpcoming.map(group => group.date), this.today)
 
 		this.groupedUpcoming = groupedUpcoming;
 		this.nextUp = nextUp;
