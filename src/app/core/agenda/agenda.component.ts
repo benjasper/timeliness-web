@@ -12,8 +12,8 @@ import { UtilityService } from 'src/app/services/utility.service';
 export class AgendaComponent implements OnInit {
 
 	constructor(private taskService: TaskService) {
-		this.today.setHours(0,0,0,0)
-	 }
+		this.today.setHours(0, 0, 0, 0)
+	}
 
 	list: Array<TaskUnwound | Task> = []
 
@@ -25,10 +25,35 @@ export class AgendaComponent implements OnInit {
 	today = new Date()
 	dateYears = new Map<Number, Number[]>()
 	tasksPastClicked = false
+	hasTasksToday = false
+
+	pageFuture = 0
+	pagePast = 0
 
 	ngOnInit(): void {
-		this.taskService.getAgenda(this.today, 1).subscribe(tasks => {
+		this.fetchAgenda()
+
+		this.taskService.dateChangeObservable.subscribe(() => {
+			this.fetchAgenda()
+		})
+
+		this.taskService.tasksObservable.subscribe(() => {
+			this.fetchAgenda()
+		})
+	}
+
+	private fetchAgenda() {
+		this.hasTasksToday = false
+		this.taskService.getAgenda(this.today, 1, this.pageFuture).subscribe(tasks => {
 			this.groupedTasksFuture = this.groupTasks(tasks.results)
+		})
+
+		if (!this.tasksPastClicked) {
+			return
+		}
+
+		this.taskService.getAgenda(this.today, -1, this.pagePast).subscribe(tasks => {
+			this.groupedTasksPast = this.groupTasks(tasks.results.reverse())
 		})
 	}
 
@@ -36,6 +61,10 @@ export class AgendaComponent implements OnInit {
 		const groupedTasks: TaskAgendaDateGroup[] = []
 
 		tasks.forEach((task) => {
+			if (!this.hasTasksToday && task.date.date.start.toDate().isSameDay(this.today)) {
+				this.hasTasksToday = true
+			}
+
 			if (
 				groupedTasks[groupedTasks.length - 1] &&
 				groupedTasks[groupedTasks.length - 1].date.setHours(0, 0, 0, 0) ===
@@ -58,10 +87,7 @@ export class AgendaComponent implements OnInit {
 
 	public showPastTasks() {
 		this.tasksPastClicked = true
-		this.taskService.getAgenda(this.today, -1).subscribe(tasks => {
-			console.log(tasks)
-			this.groupedTasksPast = this.groupTasks(tasks.results.reverse())
-		})
+		this.fetchAgenda()
 	}
 }
 
