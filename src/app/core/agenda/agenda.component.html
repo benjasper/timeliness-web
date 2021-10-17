@@ -5,7 +5,7 @@
 			<ng-container *ngIf="tasksPastClicked">
 				<li *ngFor="let group of groupedTasksPast"
 					class="flex flex-row">
-					<app-agenda-date-group-item [group]="group"
+					<app-agenda-date-group-item class="w-full" [group]="group"
 												[today]="today"
 												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
@@ -39,7 +39,7 @@
 			</li>
 			<li *ngFor="let group of groupedTasksFuture"
 				class="flex flex-row">
-				<app-agenda-date-group-item [group]="group"
+				<app-agenda-date-group-item class="w-full" [group]="group"
 											[today]="today"
 											[dateYears]="dateYears"></app-agenda-date-group-item>
 			</li>

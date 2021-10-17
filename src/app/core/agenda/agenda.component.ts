@@ -86,7 +86,9 @@ export class AgendaComponent implements OnInit {
 
 	public showPastTasks() {
 		this.tasksPastClicked = true
-		this.todayElement.nativeElement.scrollIntoView({ behavior: 'auto', inline: 'start', block: 'start' })
+		setTimeout(() => {
+			this.todayElement.nativeElement.scrollIntoView({ behavior: 'auto', inline: 'start', block: 'start' })
+		}, 10)
 	}
 }
 
