@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Task, TaskAgenda, TaskUnwound } from 'src/app/models/task';
 import { AgendaEventType } from 'src/app/models/event';
 import { TaskService } from 'src/app/services/task.service';
@@ -30,6 +30,8 @@ export class AgendaComponent implements OnInit {
 	pageFuture = 0
 	pagePast = 0
 
+	@ViewChild('todayElement') todayElement!: ElementRef
+
 	ngOnInit(): void {
 		this.fetchAgenda()
 
@@ -48,10 +50,6 @@ export class AgendaComponent implements OnInit {
 		this.taskService.getAgenda(this.today, 1, this.pageFuture).subscribe(tasks => {
 			this.groupedTasksFuture = this.groupTasks(tasks.results)
 		})
-
-		if (!this.tasksPastClicked) {
-			return
-		}
 
 		this.taskService.getAgenda(this.today, -1, this.pagePast).subscribe(tasks => {
 			this.groupedTasksPast = this.groupTasks(tasks.results.reverse())
@@ -88,11 +86,11 @@ export class AgendaComponent implements OnInit {
 
 	public showPastTasks() {
 		this.tasksPastClicked = true
-		this.fetchAgenda()
+		this.todayElement.nativeElement.scrollIntoView({ behavior: 'auto', inline: 'start', block: 'start' })
 	}
 }
 
-class TaskAgendaDateGroup {
+export class TaskAgendaDateGroup {
 	tasks: TaskAgenda[] = []
 	date!: Date
 }

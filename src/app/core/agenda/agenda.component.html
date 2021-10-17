@@ -2,20 +2,30 @@
 	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pt-24 pb-8">Agenda</h2>
 		<ul class="flex flex-col scroller overflow-y-auto pb-8">
+			<ng-container *ngIf="tasksPastClicked">
+				<li *ngFor="let group of groupedTasksPast"
+					class="flex flex-row">
+					<app-agenda-date-group-item [group]="group"
+												[today]="today"
+												[dateYears]="dateYears"></app-agenda-date-group-item>
+				</li>
+			</ng-container>
 			<button *ngIf="!tasksPastClicked"
 					type="button"
 					class="mx-auto text-lg"
 					(click)="showPastTasks()">View past</button>
-			<li class="flex flex-row">
+			<li class="flex flex-row" #todayElement>
 				<ul class="relative flex flex-col w-full">
 					<li class="flex flex-row gap-12 py-8">
 						<div class="flex w-48 flex-shrink-0">
 							<span class="text-lg text-primary my-auto whitespace-nowrap">{{today.toLocaleDateString([],{
-								day: '2-digit', weekday: 'short', month: 'short', year: (dateYears.get(today.getMonth())?.length ?? 1)
+								day: '2-digit', weekday: 'short', month: 'short', year:
+								(dateYears.get(today.getMonth())?.length ?? 1)
 								> 1 ? '2-digit'
-								: undefined })}}</span>											
+								: undefined })}}</span>
 						</div>
-						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform" [class.bg-primary]="hasTasksToday"></div>
+						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform"
+							 [class.bg-primary]="hasTasksToday"></div>
 						<div class="flex flex-shrink-0 my-auto w-16 h-16 z-10">
 							<div class="flex flex-shrink-0 w-8 h-8 bg-primary rounded-full m-auto z-10"></div>
 						</div>
@@ -29,38 +39,9 @@
 			</li>
 			<li *ngFor="let group of groupedTasksFuture"
 				class="flex flex-row">
-				<ul class="relative flex flex-col w-full">
-					<li class="flex flex-row gap-12 py-8"
-						*ngFor="let task of group.tasks; index as i">
-						<div class="flex w-48 flex-shrink-0">
-							<span *ngIf="i === 0 && !group.date.isSameDay(today)"
-								  class="text-lg text-grey-dark my-auto whitespace-nowrap">{{group.date.toLocaleDateString([],{
-								day: '2-digit', weekday: 'short', month: 'short', year: (dateYears.get(group.date.getMonth())?.length ?? 1)
-								> 1 ? '2-digit'
-								: undefined })}}</span>
-						</div>
-						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform"
-							 [class.bg-primary]="group.date.isSameDay(today)">
-						</div>
-						<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10"
-							 [class.bg-primary]="group.date.isSameDay(today)">
-							<svg-icon class="img m-auto text-lg text-primary"
-									  *ngIf="task.date.type === AGENDA_TYPE.DueAt"
-									  [class.text-white]="group.date.isSameDay(today)"
-									  src="/assets/icons/icon-deadline.svg"></svg-icon>
-							<svg-icon class="img m-auto text-lg text-primary"
-									  *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
-									  [class.text-white]="group.date.isSameDay(today)"
-									  src="/assets/icons/icon-work-unit.svg"></svg-icon>
-						</div>
-						<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt"
-									  class="my-auto w-full"
-									  [task]="task"></app-deadline>
-						<app-agenda-work-unit *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
-											  class="my-auto w-full"
-											  [task]="task"></app-agenda-work-unit>
-					</li>
-				</ul>
+				<app-agenda-date-group-item [group]="group"
+											[today]="today"
+											[dateYears]="dateYears"></app-agenda-date-group-item>
 			</li>
 		</ul>
 	</div>

@@ -1,0 +1,32 @@
+<ul class="relative flex flex-col w-full">
+	<li class="flex flex-row gap-12 py-8"
+		*ngFor="let task of group.tasks; index as i">
+		<div class="flex w-48 flex-shrink-0">
+			<span *ngIf="i === 0 && !group.date.isSameDay(today)"
+				  class="text-lg text-grey-dark my-auto whitespace-nowrap">{{group.date.toLocaleDateString([],{
+				day: '2-digit', weekday: 'short', month: 'short', year: (dateYears.get(group.date.getMonth())?.length ?? 1)
+				> 1 ? '2-digit'
+				: undefined })}}</span>
+		</div>
+		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform"
+			 [class.bg-primary]="group.date.isSameDay(today)">
+		</div>
+		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10"
+			 [class.bg-primary]="group.date.isSameDay(today)">
+			<svg-icon class="img m-auto text-lg text-primary"
+					  *ngIf="task.date.type === AGENDA_TYPE.DueAt"
+					  [class.text-white]="group.date.isSameDay(today)"
+					  src="/assets/icons/icon-deadline.svg"></svg-icon>
+			<svg-icon class="img m-auto text-lg text-primary"
+					  *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
+					  [class.text-white]="group.date.isSameDay(today)"
+					  src="/assets/icons/icon-work-unit.svg"></svg-icon>
+		</div>
+		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt"
+					  class="my-auto w-full"
+					  [task]="task"></app-deadline>
+		<app-agenda-work-unit *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
+							  class="my-auto w-full"
+							  [task]="task"></app-agenda-work-unit>
+	</li>
+</ul>
