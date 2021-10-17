@@ -75,16 +75,16 @@
 			<app-dropdown>
 				<li class="flex flex-row" *ngIf="task"
 					(click)="delete()">
-					<svg-icon class="img"
+					<svg-icon class="w-8"
 							  src="/assets/icons/icon-trash.svg"
 							  alt="Delete"></svg-icon>
-					Delete
+					<span class="text-base">Delete</span>
 				</li>
 				<li>
-					<svg-icon class="img"
+					<svg-icon class="w-6"
 							  src="/assets/icons/icon-check.svg"
 							  alt="Mark task as done"></svg-icon>
-					Mark task as done
+					<span class="text-base">Mark task as done</span>
 				</li>
 			</app-dropdown>
 			<button class="tiny-button no-background"
