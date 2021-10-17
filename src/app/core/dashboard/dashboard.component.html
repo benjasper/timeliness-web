@@ -30,28 +30,30 @@
 					<span>New task</span>
 				</a>
 			</div>
-			<img *ngIf="nextUp.length === 0 && !loadingWorkUnits"
-				 class="next-up-finished"
-				 src="/assets/icons/icon-done.svg"
-				 alt="All done" />
-			<app-slider class="next-up-slider"
-						[listArray]="nextUp"
-						[showButtons]="nextUp.length > 1"
-						[startsAtIndex]="getStartsAtWorkUnit()">
-				<ul class="next-up scroller">
-					<ng-container *ngIf="loadingWorkUnits">
-						<li *ngFor="let index of [1, 2]">
-							<app-work-unit-card [loading]="true"></app-work-unit-card>
-						</li>
-					</ng-container>
-					<ng-container *ngIf="nextUp.length > 0 && !loadingWorkUnits">
-						<li *ngFor="let task of nextUp">
-							<app-work-unit-card [task]="task"
-												[workUnitIndex]="task.workUnitsIndex"></app-work-unit-card>
-						</li>
-					</ng-container>
-				</ul>
-			</app-slider>
+			<div class="flex flex-row">
+				<img *ngIf="nextUp.length === 0 && !loadingWorkUnits"
+					 class="next-up-finished"
+					 src="/assets/icons/icon-done.svg"
+					 alt="All done" />
+				<app-slider class="next-up-slider"
+							[listArray]="nextUp"
+							[showButtons]="nextUp.length > 1"
+							[startsAtIndex]="getStartsAtWorkUnit()">
+					<ul class="next-up scroller">
+						<ng-container *ngIf="loadingWorkUnits">
+							<li *ngFor="let index of [1, 2]">
+								<app-work-unit-card [loading]="true"></app-work-unit-card>
+							</li>
+						</ng-container>
+						<ng-container *ngIf="nextUp.length > 0 && !loadingWorkUnits">
+							<li *ngFor="let task of nextUp">
+								<app-work-unit-card [task]="task"
+													[workUnitIndex]="task.workUnitsIndex"></app-work-unit-card>
+							</li>
+						</ng-container>
+					</ul>
+				</app-slider>
+			</div>
 		</section>
 		<section class="lower-dashboard wrapper !pr-12">
 			<div class="upcoming-workunits">
@@ -107,7 +109,7 @@
 			<div class="section-stats flex flex-col pb-8">
 				<h2 class="stats-title">
 					<svg-icon class="img my-auto pr-4"
-								  src="/assets/icons/icon-statistics.svg"></svg-icon>
+							  src="/assets/icons/icon-statistics.svg"></svg-icon>
 					Stats
 				</h2>
 				<app-stats-section class="scroller w-full h-auto"></app-stats-section>
@@ -124,7 +126,7 @@
 			</div>
 			<h2 class="hide-collapsed wrapper">
 				<svg-icon class="img my-auto pr-4"
-								  src="/assets/icons/icon-deadline.svg"></svg-icon>
+						  src="/assets/icons/icon-deadline.svg"></svg-icon>
 				Upcoming deadlines
 			</h2>
 		</div>
