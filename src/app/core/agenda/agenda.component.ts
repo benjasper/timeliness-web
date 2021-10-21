@@ -3,6 +3,7 @@ import { Task, TaskAgenda, TaskUnwound } from 'src/app/models/task';
 import { AgendaEventType } from 'src/app/models/event';
 import { TaskService } from 'src/app/services/task.service';
 import { UtilityService } from 'src/app/services/utility.service';
+import { forkJoin, pipe } from 'rxjs';
 
 @Component({
 	selector: 'app-agenda',
@@ -45,14 +46,16 @@ export class AgendaComponent implements OnInit {
 		})
 	}
 
-	private fetchAgenda() {
-		this.hasTasksToday = false
-		this.taskService.getAgenda(this.today, 1, this.pageFuture).subscribe(tasks => {
-			this.groupedTasksFuture = this.groupTasks(tasks.results)
-		})
+	private async fetchAgenda() {
+		forkJoin([this.taskService.getAgenda(this.today, 1, this.pageFuture), this.taskService.getAgenda(this.today, -1, this.pagePast)]).subscribe(([tasksFuture, tasksPast]) => {
+			this.groupedTasksFuture = this.groupTasks(tasksFuture.results)
+			this.groupedTasksPast = this.groupTasks(tasksPast.results.reverse())
+			this.dateYears = UtilityService.checkIfYearNeedsToBeShown(this.groupedTasksFuture.map(group => group.date), this.today)
 
-		this.taskService.getAgenda(this.today, -1, this.pagePast).subscribe(tasks => {
-			this.groupedTasksPast = this.groupTasks(tasks.results.reverse())
+			const todaysGroups = this.groupedTasksFuture.filter(x => x.date.isSameDay(this.today))
+			todaysGroups.push(...this.groupedTasksPast.filter(x => x.date.isSameDay(this.today)))
+
+			this.hasTasksToday = todaysGroups.length > 0
 		})
 	}
 
@@ -60,10 +63,6 @@ export class AgendaComponent implements OnInit {
 		const groupedTasks: TaskAgendaDateGroup[] = []
 
 		tasks.forEach((task) => {
-			if (!this.hasTasksToday && task.date.date.start.toDate().isSameDay(this.today)) {
-				this.hasTasksToday = true
-			}
-
 			if (
 				groupedTasks[groupedTasks.length - 1] &&
 				groupedTasks[groupedTasks.length - 1].date.setHours(0, 0, 0, 0) ===
@@ -78,8 +77,6 @@ export class AgendaComponent implements OnInit {
 			dateGroup.tasks.push(task)
 			groupedTasks.push(dateGroup)
 		})
-
-		this.dateYears = UtilityService.checkIfYearNeedsToBeShown(groupedTasks.map(group => group.date), this.today)
 
 		return groupedTasks;
 	}

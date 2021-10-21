@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
-import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
+import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
 import { DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
 import { Task, TaskAgenda, TaskModified, TaskUnwound } from '../models/task'
@@ -64,7 +64,7 @@ export class TaskService {
 
 		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
-			.pipe(retry(3), catchError(this.handleError))
+			.pipe(shareReplay(), retry(3), catchError(this.handleError))
 
 		observable.subscribe((response) => {
 			if (sync) {

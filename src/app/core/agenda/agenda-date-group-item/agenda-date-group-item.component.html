@@ -8,18 +8,19 @@
 				> 1 ? '2-digit'
 				: undefined })}}</span>
 		</div>
-		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform"
+		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform transition-all"
 			 [class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()">
 		</div>
-		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10"
+		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10 transition-all"
 			 [class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()">
-			<svg-icon class="img m-auto text-lg text-primary"
+			<svg-icon class="img m-auto text-lg text-primary transition-all"
 					  *ngIf="task.date.type === AGENDA_TYPE.DueAt"
 					  [class.text-white]="task.date.date.end.toDate().getTime() < now.getTime()"
 					  src="/assets/icons/icon-deadline.svg"></svg-icon>
-			<svg-icon class="img m-auto text-lg text-primary"
+			<svg-icon class="img m-auto text-lg text-primary transition-all"
 					  *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
 					  [class.text-white]="task.date.date.end.toDate().getTime() < now.getTime()"
+					  [class.animate-pulse]="task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime()"
 					  src="/assets/icons/icon-work-unit.svg"></svg-icon>
 		</div>
 		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt"
