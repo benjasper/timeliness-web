@@ -35,13 +35,14 @@
 		<div *ngFor="let empty of emptyDays"
 			 class="date empty-day">
 		</div>
-		<div class="date day"
+		<button class="date day disabled:!text-grey-dark disabled:!cursor-default"
 			 *ngFor="let date of monthDates"
+			 [disabled]="date.getTime() < this.today.getTime()"
 			 [class.active]="date.getDate() === selected.getDate() && date.getMonth() === selected.getMonth() && date.getFullYear() === selected.getFullYear()"
 			 [class.today]="date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()"
 			 (click)="selectDate($event, date)">
 			{{ date.getDate() }}
-		</div>
+		</button>
 	</div>
 
 	<div class="date">
