@@ -47,10 +47,10 @@ export class TaskService {
 	public dateChangeObservable = this.dateChangeSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
 
-	public getTasksByDeadlines(sync?: Date, page = 0, pageSize = 10): Observable<TasksGetResponse> {
+	public getTasksByDeadlines(sync?: Date, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
+		date.setHours(0,0,0,0)
 		const filters = [
-			`dueAt.date.start=${new Date().toISOString()}`,
-			`includeIsNotDone=${true}`,
+			`isDoneAndDueAt=${date.toISOString()}`,
 			`page=${page}`,
 			`pageSize=${pageSize}`,
 		]

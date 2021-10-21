@@ -13,7 +13,7 @@ export class Duration {
 		}
 
 		if (duration < 1000) {
-			return this.milliseconds + 'ms'
+			return ''
 		}
 
 		duration /= 1000

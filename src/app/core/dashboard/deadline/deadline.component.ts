@@ -20,10 +20,16 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 	@Input() task!: Task
 	@Input() loading = false
 
+	now = new Date()
+
 	ngOnInit(): void {
 		if (this.loading) {
 			return
 		}
+
+		this.taskService.now.subscribe(now => {
+			this.now = now
+		})
 
 		if (this.task.tags[0]) {
 			this.taskService.tagsObservable.subscribe(newTags => {

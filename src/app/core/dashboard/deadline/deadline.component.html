@@ -19,6 +19,13 @@
 			{{ task.name }}
 		</a>
 		<span class="flex flex-row gap-2 flex-wrap">
+			<div *ngIf="task.dueAt.date.start.toDate().getTime() < now.getTime() && !task.isDone" class="sm-tag bg-pink flex flex-row relative">
+				<span class="text-red">{{ (now.getTime() - task.dueAt.date.start.toDate().getTime()).toDuration()}} overdue</span>
+				<span class="absolute flex flex-shrink-0 h-3 w-3 -right-1">
+					<span class="animate-ping absolute inline-flex flex-shrink-0 h-full w-full rounded-full bg-red opacity-75"></span>
+					<span class="relative inline-flex rounded-full flex-shrink-0 h-3 w-3 bg-red"></span>
+				</span>
+			</div>
 			<div class="sm-tag grey-background">
 				{{ getProgress(task) }}% done
 			</div>
@@ -27,8 +34,12 @@
 				<ng-template #thenBlock>completed</ng-template>
 				<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
 			</div>
-			<div *ngIf="task.notScheduled !== 0" class="px-4 py-1 rounded-full grey-background">
-				<span class="text-red">2h not scheduled</span>
+			<div *ngIf="task.notScheduled !== 0" class="sm-tag bg-pink flex flex-row relative">
+				<span class="text-red">{{task.notScheduled.toDuration()}} not scheduled</span>
+				<span class="absolute flex flex-shrink-0 h-3 w-3 -right-1">
+					<span class="animate-ping absolute inline-flex flex-shrink-0 h-full w-full rounded-full bg-red opacity-75"></span>
+					<span class="relative inline-flex rounded-full flex-shrink-0 h-3 w-3 bg-red"></span>
+				</span>
 			</div>
 			<span class="sm-tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
 				#{{ tag.value }}
