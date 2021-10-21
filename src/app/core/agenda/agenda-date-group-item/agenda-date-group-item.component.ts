@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AgendaEventType } from 'src/app/models/event';
+import { TaskService } from 'src/app/services/task.service';
 import { TaskAgendaDateGroup } from '../agenda.component';
 
 @Component({
@@ -9,14 +10,19 @@ import { TaskAgendaDateGroup } from '../agenda.component';
 })
 export class AgendaDateGroupItemComponent implements OnInit {
 
-  constructor() { }
+  constructor(private taskService: TaskService) { }
 
   @Input() group!: TaskAgendaDateGroup
   @Input() today!: Date
   @Input() dateYears = new Map<Number, Number[]>()
   @Input() AGENDA_TYPE = AgendaEventType
 
+  now = new Date()
+
   ngOnInit(): void {
+    this.taskService.now.subscribe(now => {
+      this.now = now
+    })
   }
 
 }
