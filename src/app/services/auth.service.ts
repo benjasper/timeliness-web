@@ -17,6 +17,9 @@ export class AuthService {
 	private refreshToken = ''
 	private decodedAccessToken?: JwtPayload = undefined
 
+	private userSubject = new BehaviorSubject<User|undefined>(undefined)
+	private userObservable = this.userSubject.asObservable()
+
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
@@ -25,9 +28,18 @@ export class AuthService {
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
 			this.setRefreshToken(response.refreshToken)
+			this.userSubject.next(response.result)
 		})
 
 		return observable
+	}
+
+	get userUser(): Observable<User|undefined> {
+		if (!this.userSubject.getValue()) {
+			this.fetchUser()
+		}
+
+		return this.userObservable
 	}
 
 	public logout(): void {
@@ -59,6 +71,23 @@ export class AuthService {
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
+		})
+
+		return observable
+	}
+
+	private fetchUser() {
+		const observable = this.http
+			.get<User>(
+				`${environment.apiBaseUrl}/v1/user`
+			)
+			.pipe(
+				share(),
+				catchError(this.handleError)
+			)
+
+		observable.subscribe((response) => {
+			this.userSubject.next(response)
 		})
 
 		return observable

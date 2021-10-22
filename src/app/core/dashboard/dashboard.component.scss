@@ -137,6 +137,7 @@
 				display: block;
 				width: 2.5rem;
     			margin-top: 1rem;
+				fill: $color-primary;
 			}
 		}
 
@@ -181,7 +182,8 @@
 
 				.toggle {
 					display: inline-block;
-					margin-left: 6rem;
+					position: absolute;
+					left: 2rem;
 				}
 			}
 		}

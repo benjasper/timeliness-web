@@ -10,13 +10,22 @@
 			<h1 *ngIf="collapsed" class="logo logo-small" (click)="switchSidebarCollapsed()">T</h1>
 			-->
 		</div>
-		<div class="child user">
+		<div *ngIf="user" class="child user">
 			<div class="profile-picture">
-				<span>JD</span>
+				<span>{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
 			</div>
 			<div class="user-info">
-				<span class="name">John Doe</span>
-				<span class="info-text">Joined yesterday</span>
+				<span class="name">{{ user.firstname }} {{ user.lastname }}</span>
+				<span class="info-text">Joined {{ user.createdAt.toDate().toLocaleDateString() }}</span>
+			</div>
+		</div>
+		<div *ngIf="!user" class="child user">
+			<div class="profile-picture loading">
+				<span>&nbsp;&nbsp;</span>
+			</div>
+			<div class="user-info w-full">
+				<span class="name w-1/2 rounded-full loading">&nbsp;</span>
+				<span class="info-text w-full rounded-full loading">&nbsp;</span>
 			</div>
 		</div>
 		<div class="middle child">

@@ -38,7 +38,6 @@
 	.inner {
 		border-radius: 100%;
 		position: absolute;
-		z-index: 6;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -51,7 +50,6 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		z-index: 10;
 		span {
 			font-size: 1.8rem;
 			font-weight: 500;
