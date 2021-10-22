@@ -35,11 +35,11 @@
 					 class="next-up-finished"
 					 src="/assets/icons/icon-done.svg"
 					 alt="All done" />
-				<app-slider class="next-up-slider"
+				<app-slider class="next-up-slider w-full"
 							[listArray]="nextUp"
 							[showButtons]="nextUp.length > 1"
 							[startsAtIndex]="getStartsAtWorkUnit()">
-					<ul class="next-up scroller">
+					<ul class="next-up scroller w-full overflow-hidden">
 						<ng-container *ngIf="loadingWorkUnits">
 							<li *ngFor="let index of [1, 2]">
 								<app-work-unit-card [loading]="true"></app-work-unit-card>
