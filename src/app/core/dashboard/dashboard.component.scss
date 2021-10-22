@@ -179,6 +179,7 @@
 				width: 75vw;
 				max-width: 65rem;
 				min-width: 0;
+				@apply drop-shadow-lg;
 
 				.toggle {
 					display: inline-block;
