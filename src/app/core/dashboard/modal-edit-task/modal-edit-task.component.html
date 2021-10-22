@@ -73,7 +73,8 @@
 						  alt="Undo"></svg-icon>
 			</button>
 			<app-dropdown>
-				<li class="flex flex-row" *ngIf="task"
+				<li class="flex flex-row"
+					*ngIf="task"
 					(click)="delete()">
 					<svg-icon class="w-8"
 							  src="/assets/icons/icon-trash.svg"
@@ -99,7 +100,7 @@
 			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="my-auto w-36">Due date</label>
+						   class="my-auto w-48 flex-shrink-0">Due date</label>
 					<app-datetime-picker id="due-date"
 										 class="edit"
 										 tabindex="3"
@@ -107,7 +108,7 @@
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
-						   class="my-auto w-36">Workload</label>
+						   class="my-auto w-48 flex-shrink-0">Workload</label>
 					<ng-select class="edit w-40 cursor-text"
 							   id="workload-hour"
 							   formControlName="workload"
@@ -121,12 +122,16 @@
 				<div *ngIf="task && task.notScheduled !== 0"
 					 class="flex flex-row">
 					<label for="not-scheduled"
-						   class="my-auto w-44">Not scheduled</label>
-					<span id="not-scheduled"
-						  class="text-red text-base px-6 py-4"
-						  title="This part of the workload could not be scheduled, because appareantly you are busy with other events.">
-						{{ task.notScheduled.toDuration(NANOSECONDS) }}
-					</span>
+						   class="my-auto w-48 flex-shrink-0">Not scheduled</label>
+					<div *ngIf="task.notScheduled !== 0"
+						 class="sm-tag bg-pink flex flex-row relative ml-4">
+						<span class="text-red text-base">{{ task.notScheduled.toDuration(NANOSECONDS) }} not scheduled</span>
+						<span class="absolute flex flex-shrink-0 h-3 w-3 -right-1">
+							<span
+								  class="animate-ping absolute inline-flex flex-shrink-0 h-full w-full rounded-full bg-red opacity-75"></span>
+							<span class="relative inline-flex rounded-full flex-shrink-0 h-3 w-3 bg-red"></span>
+						</span>
+					</div>
 				</div>
 				<div *ngIf="task"
 					 class="flex flex-col">

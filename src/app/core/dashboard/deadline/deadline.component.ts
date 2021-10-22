@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
+import { Duration, DurationUnit } from 'src/app/models/duration'
 import { Tag } from 'src/app/models/tag'
 import { Task } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
@@ -21,6 +22,8 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 	@Input() loading = false
 
 	now = new Date()
+
+	DURATION = DurationUnit
 
 	ngOnInit(): void {
 		if (this.loading) {
