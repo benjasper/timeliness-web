@@ -145,10 +145,15 @@
 							</span>
 							<span *ngIf="task"
 								  class="m-auto text-xl text-center">{{getProgress(task)}}%</span>
-							<span *ngIf="task"
+							<span *ngIf="task && +getProgress(task) !== 100"
 								  class="flex flex-row text-center text-sm justify-center">
 								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
 								{{getRemainingWorkload(task)}} left
+							</span>
+							<span *ngIf="task && +getProgress(task) === 100"
+								  class="flex flex-row text-center text-sm justify-center">
+								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
+								completed
 							</span>
 						</div>
 					</app-circular-progress>
