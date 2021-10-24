@@ -32,13 +32,14 @@
 			</div>
 			<div class="flex flex-row">
 				<img *ngIf="nextUp.length === 0 && !loadingWorkUnits"
-					 class="next-up-finished"
+					 class="next-up-finished w-full mx-auto"
 					 src="/assets/icons/icon-done.svg"
 					 alt="All done" />
 				<app-slider class="next-up-slider w-full"
 							[listArray]="nextUp"
 							[showButtons]="nextUp.length > 1"
-							[startsAtIndex]="getStartsAtWorkUnit()">
+							[startsAtIndex]="getStartsAtWorkUnit()"
+							*ngIf="nextUp.length > 0 || loadingWorkUnits">
 					<ul class="next-up scroller w-full overflow-hidden">
 						<ng-container *ngIf="loadingWorkUnits">
 							<li *ngFor="let index of [1, 2]">
