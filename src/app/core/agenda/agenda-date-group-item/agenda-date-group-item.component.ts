@@ -17,9 +17,15 @@ export class AgendaDateGroupItemComponent implements OnInit {
   @Input() dateYears = new Map<Number, Number[]>()
   @Input() AGENDA_TYPE = AgendaEventType
 
+  @Input() loading = false
+
   now = new Date()
 
   ngOnInit(): void {
+    if (this.loading) {
+      return
+    }
+    
     this.taskService.now.subscribe(now => {
       this.now = now
     })

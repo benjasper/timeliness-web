@@ -1,20 +1,23 @@
 <div class="flex flex-row w-full h-screen">
 	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pt-24 pb-8">Agenda</h2>
-		<ul class="flex flex-col scroller overflow-y-auto pb-8">
+		<ul class="flex flex-col scroller h-full overflow-y-auto pb-8">
 			<ng-container *ngIf="tasksPastClicked">
 				<li *ngFor="let group of groupedTasksPast"
 					class="flex flex-row">
-					<app-agenda-date-group-item class="w-full" [group]="group"
+					<app-agenda-date-group-item class="w-full"
+												[group]="group"
 												[today]="today"
 												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
 			</ng-container>
-			<button *ngIf="!tasksPastClicked"
+			<button *ngIf="!tasksPastClicked && !loading"
 					type="button"
 					class="mx-auto text-lg"
 					(click)="showPastTasks()">View past</button>
-			<li class="flex flex-row" #todayElement>
+			<li *ngIf="!loading"
+				class="flex flex-row"
+				#todayElement>
 				<ul class="relative flex flex-col w-full">
 					<li class="flex flex-row gap-12 py-8">
 						<div class="flex w-48 flex-shrink-0">
@@ -37,12 +40,26 @@
 					</li>
 				</ul>
 			</li>
-			<li *ngFor="let group of groupedTasksFuture"
-				class="flex flex-row">
-				<app-agenda-date-group-item class="w-full" [group]="group"
-											[today]="today"
-											[dateYears]="dateYears"></app-agenda-date-group-item>
-			</li>
+			<ng-container *ngIf="!loading">
+				<li *ngFor="let group of groupedTasksFuture"
+					class="flex flex-row">
+					<app-agenda-date-group-item class="w-full"
+												[group]="group"
+												[today]="today"
+												[dateYears]="dateYears"></app-agenda-date-group-item>
+				</li>
+			</ng-container>
+
+			<ng-container *ngIf="loading">
+				<li class="flex flex-row">
+					<app-agenda-date-group-item class="w-full"
+												[loading]="true"></app-agenda-date-group-item>
+				</li>
+				<li class="flex flex-row">
+					<app-agenda-date-group-item class="w-full"
+												[loading]="true"></app-agenda-date-group-item>
+				</li>
+			</ng-container>
 		</ul>
 	</div>
 </div>

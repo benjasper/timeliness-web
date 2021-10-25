@@ -52,13 +52,19 @@
 		</a>
 	</div>
 </div>
-<div *ngIf="loading" class="deadline loading">
-	<div class="time loading-component">
-		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<div *ngIf="loading" class="deadline">
+	<div class="time !w-20 rounded-full">
+		<span>
+			&nbsp;
+		</span>
 	</div>
-	<div class="deadline-spacer loading-component"></div>
+	<div class="deadline-spacer loading"></div>
 	<div class="deadline-info">
-		<div class="deadline-name truncate-text loading-component">&nbsp;</div>
-		<span class="subtitle loading-component">&nbsp;</span>
+		<a class="deadline-name truncate-text text-underline loading rounded-full w-3/4">&nbsp;</a>
+		<span class="flex flex-row gap-2 flex-wrap">
+			<div class="sm-tag w-32 grey-background">&nbsp;</div>
+			<div class="sm-tag w-32 grey-background">&nbsp;</div>
+			<div class="sm-tag w-32 grey-background">&nbsp;</div>
+		</span>
 	</div>
 </div>

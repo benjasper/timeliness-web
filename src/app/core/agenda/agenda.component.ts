@@ -4,6 +4,7 @@ import { AgendaEventType } from 'src/app/models/event';
 import { TaskService } from 'src/app/services/task.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { forkJoin, pipe } from 'rxjs';
+import { share } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-agenda',
@@ -27,6 +28,7 @@ export class AgendaComponent implements OnInit {
 	dateYears = new Map<Number, Number[]>()
 	tasksPastClicked = false
 	hasTasksToday = false
+	loading = true
 
 	pageFuture = 0
 	pagePast = 0
@@ -34,7 +36,9 @@ export class AgendaComponent implements OnInit {
 	@ViewChild('todayElement') todayElement!: ElementRef
 
 	ngOnInit(): void {
-		this.fetchAgenda()
+		this.fetchAgenda().subscribe(() => {
+			this.loading = false
+		})
 
 		this.taskService.dateChangeObservable.subscribe((newDate) => {
 			this.today = newDate
@@ -46,8 +50,10 @@ export class AgendaComponent implements OnInit {
 		})
 	}
 
-	private async fetchAgenda() {
-		forkJoin([this.taskService.getAgenda(this.today, 1, this.pageFuture), this.taskService.getAgenda(this.today, -1, this.pagePast)]).subscribe(([tasksFuture, tasksPast]) => {
+	private fetchAgenda() {
+		const observable = forkJoin([this.taskService.getAgenda(this.today, 1, this.pageFuture), this.taskService.getAgenda(this.today, -1, this.pagePast)]).pipe(share())
+
+		observable.subscribe(([tasksFuture, tasksPast]) => {
 			this.groupedTasksFuture = this.groupTasks(tasksFuture.results)
 			this.groupedTasksPast = this.groupTasks(tasksPast.results.reverse())
 			this.dateYears = UtilityService.checkIfYearNeedsToBeShown(this.groupedTasksFuture.map(group => group.date), this.today)
@@ -57,6 +63,8 @@ export class AgendaComponent implements OnInit {
 
 			this.hasTasksToday = todaysGroups.length > 0
 		})
+
+		return observable
 	}
 
 	private groupTasks(tasks: TaskAgenda[]): TaskAgendaDateGroup[] {

@@ -138,8 +138,13 @@
 				<span>That's awesome! But in case you have something to do tap "New task" to create a task.</span>
 			</li>
 			<ng-container *ngIf="loadingTasks">
-				<li *ngFor="let index of [1, 2, 3]">
-					<app-deadline [loading]="true"></app-deadline>
+				<li *ngFor="let index of [1, 2, 3]" class="date-group">
+					<span class="date-spacer w-64 rounded-full bg-grey-very-light">&nbsp;</span>
+					<ul class="dategroup-list">
+						<li>
+							<app-deadline [loading]="true"></app-deadline>
+						</li>
+					</ul>
 				</li>
 			</ng-container>
 			<ng-container *ngIf="!loadingTasks">

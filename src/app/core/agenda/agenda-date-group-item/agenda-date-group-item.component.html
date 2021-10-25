@@ -1,4 +1,4 @@
-<ul class="relative flex flex-col w-full">
+<ul class="relative flex flex-col w-full" *ngIf="!loading">
 	<li class="flex flex-row gap-12 py-8"
 		*ngFor="let task of group.tasks; index as i">
 		<div class="flex w-48 flex-shrink-0">
@@ -29,5 +29,19 @@
 		<app-agenda-work-unit *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
 							  class="my-auto w-full"
 							  [task]="task"></app-agenda-work-unit>
+	</li>
+</ul>
+<ul class="relative flex flex-col w-full" *ngIf="loading">
+	<li class="flex flex-row gap-12 py-8"
+		*ngFor="let i of [1,2]">
+		<div class="flex w-48 flex-shrink-0">
+			<span
+				  class="text-lg text-grey-dark my-auto whitespace-nowrap">&nbsp;</span>
+		</div>
+		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform transition-all loading">
+		</div>
+		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10 transition-all loading">
+		</div>
+		<app-deadline class="my-auto w-full" [loading]="true"></app-deadline>
 	</li>
 </ul>
