@@ -93,10 +93,14 @@
 				border-left: 0.5rem solid transparent;
 				border-right: 0.5rem solid transparent;
 
+				svg {
+					transform: scale(1.2);
+				}
+
 				&:hover {
 					cursor: default;
 					text-decoration: none;
-					background-color: $color-primary-pastelle;
+					background-color: $color-grey;
 					cursor: pointer;
 				}
 
@@ -106,7 +110,7 @@
 					cursor: default;
 
 					svg {
-						fill: $color-primary;
+						color: $color-primary;
 					}
 				}
 			}
