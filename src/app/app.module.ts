@@ -27,7 +27,11 @@ import { AgendaComponent } from './core/agenda/agenda.component';
 import { DatetimePickerComponent } from './core/components/datetime-picker/datetime-picker.component';
 import { DropdownComponent } from './core/components/dropdown/dropdown.component';
 import { AgendaWorkUnitComponent } from './core/agenda/agenda-work-unit/agenda-work-unit.component';
-import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-item/agenda-date-group-item.component'
+import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-item/agenda-date-group-item.component';
+import { GeneralComponent } from './core/settings/general/general.component';
+import { CalendarsComponent } from './core/settings/calendars/calendars.component';
+import { SectionComponent } from './core/settings/section/section.component';
+import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component'
 
 @NgModule({
 	declarations: [
@@ -50,6 +54,10 @@ import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-it
   DropdownComponent,
   AgendaWorkUnitComponent,
   AgendaDateGroupItemComponent,
+  GeneralComponent,
+  CalendarsComponent,
+  SectionComponent,
+  GoogleCalendarSettingsComponent,
 	],
 	imports: [
 		BrowserModule,

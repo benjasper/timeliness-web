@@ -8,6 +8,8 @@ import { SigninComponent } from './signin/signin.component'
 import { AuthGuard } from './guards/auth.guard'
 import { NoAuthGuard } from './guards/no-auth.guard'
 import { AgendaComponent } from './core/agenda/agenda.component'
+import { GeneralComponent } from './core/settings/general/general.component'
+import { CalendarsComponent } from './core/settings/calendars/calendars.component'
 
 const routes: Routes = [
 	{
@@ -40,6 +42,11 @@ const routes: Routes = [
 			{
 				path: 'settings',
 				component: SettingsComponent,
+				children: [
+					{ path: '', redirectTo: '/settings/general', pathMatch: 'full' },
+					{ path: 'general', component: GeneralComponent, pathMatch: 'full' },
+					{ path: 'calendars', component: CalendarsComponent, pathMatch: 'full' },
+				]
 			},
 			{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 		],

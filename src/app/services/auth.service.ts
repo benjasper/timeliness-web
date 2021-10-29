@@ -34,12 +34,16 @@ export class AuthService {
 		return observable
 	}
 
-	get userUser(): Observable<User|undefined> {
+	get user(): Observable<User|undefined> {
 		if (!this.userSubject.getValue()) {
 			this.fetchUser()
 		}
 
 		return this.userObservable
+	}
+
+	public forceUserUpdate() {
+		this.fetchUser()
 	}
 
 	public logout(): void {
@@ -89,6 +93,19 @@ export class AuthService {
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
 		})
+
+		return observable
+	}
+	
+	public connectGoogleCalendar() {
+		const observable = this.http
+			.post<{url: string}>(
+				`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined
+			)
+			.pipe(
+				share(),
+				catchError(this.handleError)
+			)
 
 		return observable
 	}

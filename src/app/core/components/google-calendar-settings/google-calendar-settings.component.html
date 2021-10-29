@@ -1,0 +1,7 @@
+<div class="w-full flex flex-row">
+	<button role="button" (click)="connect()" *ngIf="user">
+		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Inactive">Connect to Google Calendar</ng-container>
+		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Active">Force reconnect</ng-container>
+		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Expired">Reconnect</ng-container>
+	</button>
+</div>

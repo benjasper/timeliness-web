@@ -18,7 +18,7 @@ export class CoreComponent implements OnInit {
 			this.collapsed = true
 		}
 
-		this.authService.userUser.subscribe(user => {
+		this.authService.user.subscribe(user => {
 			if (user) {
 				this.user = user
 			}

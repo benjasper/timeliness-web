@@ -5,4 +5,11 @@ export interface User {
 	email: string
 	createdAt: string
 	lastModifiedAt: string
+	googleCalendarConnection: {
+		status: CalendarConnectionStatus
+	}
+}
+
+export enum CalendarConnectionStatus {
+	Inactive = '', Active = 'active', Expired = 'expired'
 }
