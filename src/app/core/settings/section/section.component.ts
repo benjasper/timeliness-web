@@ -8,7 +8,7 @@ export class SectionComponent implements OnInit {
 
   constructor() { }
 
-  @Input() title!: string
+  @Input() name!: string
   @Input() description?: string
 
   ngOnInit(): void {

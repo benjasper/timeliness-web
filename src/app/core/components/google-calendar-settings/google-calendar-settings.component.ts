@@ -12,8 +12,12 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	constructor(private authService: AuthService) { }
 
 	user?: User
+	isCalendarsChanged = false
+	lastCalendarsHash = "start"
 
 	CONNECTION_STATUS = CalendarConnectionStatus
+
+	googleCalendars: {calendarId: string, name: string, isActive: boolean}[] = []
 
 	ngOnInit(): void {
 		this.authService.user.subscribe(user => {
@@ -22,6 +26,16 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 			}
 
 			this.user = user
+
+			if (user.googleCalendarConnection.status === CalendarConnectionStatus.Active) {
+				this.authService.fetchCalendars().subscribe(response => {
+					this.googleCalendars = response.googleCalendar.sort((a,b) => {
+						return a.name.localeCompare(b.name)
+					})
+					this.lastCalendarsHash = this.calculateHash()
+					this.calendarsChanged()
+				})
+			}
 		})
 	}
 
@@ -40,7 +54,29 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 			this.authService.forceUserUpdate()
 			document.removeEventListener('visibilitychange', this.handleVisibilityChange)
 		}
-
 	}
 
+	calendarsChanged() {
+		this.isCalendarsChanged = !(this.calculateHash() === this.lastCalendarsHash)
+	}
+
+	saveChanges() {
+		this.authService.postCalendars({googleCalendar: this.googleCalendars}).subscribe(response => {
+			this.googleCalendars = response.googleCalendar.sort((a,b) => {
+				return a.name.localeCompare(b.name)
+			})
+			this.lastCalendarsHash = this.calculateHash()
+			this.calendarsChanged()
+		})
+	}
+
+	calculateHash(): string {
+		const actives = this.googleCalendars.filter(x => x.isActive)
+		let hash = ""
+		actives.forEach(x => {
+			hash += x.calendarId
+		})
+
+		return hash
+	}
 }

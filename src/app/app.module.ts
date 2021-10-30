@@ -31,7 +31,7 @@ import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-it
 import { GeneralComponent } from './core/settings/general/general.component';
 import { CalendarsComponent } from './core/settings/calendars/calendars.component';
 import { SectionComponent } from './core/settings/section/section.component';
-import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component'
+import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component';
 
 @NgModule({
 	declarations: [
@@ -48,16 +48,16 @@ import { GoogleCalendarSettingsComponent } from './core/components/google-calend
 		StatsComponent,
 		TagComponent,
 		CircularProgressComponent,
-  StatsSectionComponent,
-  AgendaComponent,
-  DatetimePickerComponent,
-  DropdownComponent,
-  AgendaWorkUnitComponent,
-  AgendaDateGroupItemComponent,
-  GeneralComponent,
-  CalendarsComponent,
-  SectionComponent,
-  GoogleCalendarSettingsComponent,
+		StatsSectionComponent,
+		AgendaComponent,
+		DatetimePickerComponent,
+		DropdownComponent,
+		AgendaWorkUnitComponent,
+		AgendaDateGroupItemComponent,
+		GeneralComponent,
+		CalendarsComponent,
+		SectionComponent,
+		GoogleCalendarSettingsComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -75,4 +75,4 @@ import { GoogleCalendarSettingsComponent } from './core/components/google-calend
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,5 +1,14 @@
-<div class="w-full flex flex-row">
-	<button role="button" (click)="connect()" *ngIf="user">
+<div class="w-full flex flex-col" *ngIf="user">
+	<div class="mb-8" *ngIf="googleCalendars">
+		<span class="text-lg text-grey-dark">Your calendars</span>
+		<div *ngFor="let calendar of googleCalendars" class="flex flex-row">
+			<input [id]="calendar.calendarId" class="mr-4 my-auto" type="checkbox" [checked]="calendar.isActive" 
+			(change)="calendar.isActive = !calendar.isActive; calendarsChanged()" />
+			<label [for]="calendar.calendarId" class="text-base">{{ calendar.name }}</label>
+		</div>
+		<button class="mt-4" *ngIf="isCalendarsChanged" (click)="saveChanges()">Save changes</button>
+	</div>
+	<button class="mr-auto" role="button" (click)="connect()">
 		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Inactive">Connect to Google Calendar</ng-container>
 		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Active">Force reconnect</ng-container>
 		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Expired">Reconnect</ng-container>

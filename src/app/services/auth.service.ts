@@ -11,13 +11,13 @@ import { User } from '../models/user'
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient, private router: Router) {}
+	constructor(private http: HttpClient, private router: Router) { }
 
 	private accessToken = ''
 	private refreshToken = ''
 	private decodedAccessToken?: JwtPayload = undefined
 
-	private userSubject = new BehaviorSubject<User|undefined>(undefined)
+	private userSubject = new BehaviorSubject<User | undefined>(undefined)
 	private userObservable = this.userSubject.asObservable()
 
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
@@ -34,7 +34,7 @@ export class AuthService {
 		return observable
 	}
 
-	get user(): Observable<User|undefined> {
+	get user(): Observable<User | undefined> {
 		if (!this.userSubject.getValue()) {
 			this.fetchUser()
 		}
@@ -96,10 +96,37 @@ export class AuthService {
 
 		return observable
 	}
-	
+
+	public fetchCalendars() {
+		const observable = this.http
+			.get<Calendar>(
+				`${environment.apiBaseUrl}/v1/calendars`
+			)
+			.pipe(
+				share(),
+				catchError(this.handleError)
+			)
+
+		return observable
+	}
+
+	public postCalendars(calendar: Calendar) {
+		const observable = this.http
+			.post<Calendar>(
+				`${environment.apiBaseUrl}/v1/calendars`,
+				JSON.stringify(calendar)
+			)
+			.pipe(
+				share(),
+				catchError(this.handleError)
+			)
+
+		return observable
+	}
+
 	public connectGoogleCalendar() {
 		const observable = this.http
-			.post<{url: string}>(
+			.post<{ url: string }>(
 				`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined
 			)
 			.pipe(
@@ -174,3 +201,5 @@ interface AuthResponse {
 	refreshToken: string
 	result: User
 }
+
+interface Calendar { googleCalendar: { calendarId: string, name: string, isActive: boolean }[] }
