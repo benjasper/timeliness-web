@@ -161,7 +161,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 	public getDateByMonthAndYear(month: number, year: number) {
 		const date = new Date()
 
-		date.setMonth(month)
+		date.setMonth(month, 1)
 		date.setFullYear(year)
 		return date
 	}
@@ -227,9 +227,9 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
 	setDatesByMonth() {
 		let date = new Date()
+		date.setDate(1)
 		date.setFullYear(this.year)
 		date.setMonth(this.month)
-		date.setDate(1)
 
 		const dates: Date[] = []
 
@@ -243,9 +243,9 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
 	setWeekDaysBefore() {
 		const date = new Date()
+		date.setDate(1)
 		date.setFullYear(this.year)
 		date.setMonth(this.month)
-		date.setDate(1)
 
 		let weekdays = date.getDay()
 
