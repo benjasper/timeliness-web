@@ -1,5 +1,6 @@
 module.exports = {
-	extends: 'standard-with-typescript',
+	extends: ['prettier', 'standard-with-typescript'],
+	plugins: ['prettier'],
 	parserOptions: {
 		project: './tsconfig.json',
 	},

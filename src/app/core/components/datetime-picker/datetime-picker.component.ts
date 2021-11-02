@@ -118,9 +118,9 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 	onTouched = () => {}
 
 	writeValue(obj: any): void {
-        if (!obj) {
-            return
-        }
+		if (!obj) {
+			return
+		}
 
 		this.selected = obj
 
