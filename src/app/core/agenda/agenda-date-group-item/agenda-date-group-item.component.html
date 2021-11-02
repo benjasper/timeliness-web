@@ -22,7 +22,7 @@
 		<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10 rounded-full"
 			[class.bg-grey-very-light]="task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime()">
 			<div
-				class="flex flex-shrink-0 w-12 h-12 bg-grey-very-light rounded-full m-auto z-10"
+				class="flex flex-shrink-0 w-8 h-8 bg-grey-very-light rounded-full m-auto z-10"
 				[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
 				[ngClass]="{
 					'!w-8 !h-8': task.date.date.end.toDate().getTime() < now.getTime(),
