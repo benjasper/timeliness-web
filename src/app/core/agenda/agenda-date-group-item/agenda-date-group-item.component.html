@@ -1,47 +1,65 @@
 <ul class="relative flex flex-col w-full" *ngIf="!loading">
-	<li class="flex flex-row gap-12 py-8"
-		*ngFor="let task of group.tasks; index as i">
+	<li class="flex flex-row gap-12 py-8" *ngFor="let task of group.tasks; index as i">
 		<div class="flex w-48 flex-shrink-0">
-			<span *ngIf="i === 0 && !group.date.isSameDay(today)"
-				  class="text-lg text-grey-dark my-auto whitespace-nowrap">{{group.date.toLocaleDateString([],{
-				day: '2-digit', weekday: 'short', month: 'short', year: (dateYears.get(group.date.getMonth())?.length ?? 1)
-				> 1 ? '2-digit'
-				: undefined })}}</span>
+			<span
+				*ngIf="i === 0 && !group.date.isSameDay(today)"
+				class="text-lg text-grey-dark my-auto whitespace-nowrap"
+			>
+				{{
+					group.date.toLocaleDateString([], {
+						day: '2-digit',
+						weekday: 'short',
+						month: 'short',
+						year: (dateYears.get(group.date.getMonth())?.length ?? 1) > 1 ? '2-digit' : undefined
+					})
+				}}
+			</span>
 		</div>
-		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform transition-all"
-			 [class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()">
+		<div
+			class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.25rem] transform transition-all"
+			[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
+		></div>
+		<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10">
+			<div
+				class="flex flex-shrink-0 w-12 h-12 bg-grey-very-light rounded-full m-auto z-10"
+				[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
+				[ngClass]="{
+					'!w-8': task.date.date.end.toDate().getTime() < now.getTime(),
+					'!h-8': task.date.date.end.toDate().getTime() < now.getTime()
+				}"
+			>
+			</div>
 		</div>
-		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10 transition-all"
-			 [class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()">
-			<svg-icon class="img m-auto text-lg text-primary transition-all"
-					  *ngIf="task.date.type === AGENDA_TYPE.DueAt"
-					  [class.text-white]="task.date.date.end.toDate().getTime() < now.getTime()"
-					  src="/assets/icons/icon-deadline.svg"></svg-icon>
-			<svg-icon class="img m-auto text-lg text-primary transition-all"
-					  *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
-					  [class.text-white]="task.date.date.end.toDate().getTime() < now.getTime()"
-					  [class.animate-pulse]="task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime()"
-					  src="/assets/icons/icon-work-unit.svg"></svg-icon>
-		</div>
-		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt"
-					  class="my-auto w-full"
-					  [task]="task"></app-deadline>
-		<app-agenda-work-unit *ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
-							  class="my-auto w-full"
-							  [task]="task"></app-agenda-work-unit>
+		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt" class="my-auto w-full" [task]="task"></app-deadline>
+		<app-agenda-work-unit
+			*ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
+			class="my-auto w-full"
+			[task]="task"
+		></app-agenda-work-unit>
 	</li>
 </ul>
 <ul class="relative flex flex-col w-full" *ngIf="loading">
-	<li class="flex flex-row gap-12 py-8"
-		*ngFor="let i of [1,2]">
+	<li class="flex flex-row gap-12 py-8" *ngFor="let i of [1, 2]">
 		<div class="flex w-48 flex-shrink-0">
-			<span
-				  class="text-lg text-grey-dark my-auto whitespace-nowrap">&nbsp;</span>
+			<span class="text-lg text-grey-dark my-auto whitespace-nowrap">&nbsp;</span>
 		</div>
-		<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform transition-all loading">
-		</div>
-		<div class="inline-flex flex-shrink-0 w-16 h-16 bg-grey-very-light rounded-lg my-auto z-10 transition-all loading">
-		</div>
+		<div
+			class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.8rem] transform transition-all loading"
+		></div>
+		<div
+			class="
+				inline-flex
+				flex-shrink-0
+				w-16
+				h-16
+				bg-grey-very-light
+				rounded-lg
+				my-auto
+				z-10
+				transition-all
+				loading
+			"
+		></div>
 		<app-deadline class="my-auto w-full" [loading]="true"></app-deadline>
 	</li>
 </ul>
