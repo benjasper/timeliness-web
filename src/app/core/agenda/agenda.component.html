@@ -2,50 +2,33 @@
 	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pt-24 pb-8">Agenda</h2>
 		<ul class="flex flex-col scroller h-full overflow-y-auto pb-8">
-			<li *ngFor="let group of groupedTasksPast" class="flex flex-row">
-				<app-agenda-date-group-item
-					class="w-full"
-					[group]="group"
-					[today]="today"
-					[dateYears]="dateYears"
-				></app-agenda-date-group-item>
-			</li>
-			<button
-				*ngIf="!tasksPastClicked && !loading"
-				type="button"
-				class="mx-auto my-0 text-lg"
-				(click)="showPastTasks()"
-			>
-				View past
-			</button>
-			<li *ngIf="!loading" class="flex flex-row" #todayElement>
+			<ng-container *ngIf="tasksPastClicked">
+				<li *ngFor="let group of groupedTasksPast"
+					class="flex flex-row">
+					<app-agenda-date-group-item class="w-full"
+												[group]="group"
+												[today]="today"
+												[dateYears]="dateYears"></app-agenda-date-group-item>
+				</li>
+			</ng-container>
+			<button *ngIf="!tasksPastClicked && !loading"
+					type="button"
+					class="mx-auto my-0 text-lg"
+					(click)="showPastTasks()">View past</button>
+			<li *ngIf="!loading"
+				class="flex flex-row"
+				#todayElement>
 				<ul class="relative flex flex-col w-full">
 					<li class="flex flex-row gap-12 py-8">
 						<div class="flex w-48 flex-shrink-0">
-							<span class="text-lg text-primary my-auto whitespace-nowrap">
-								{{
-									today.toLocaleDateString([], {
-										day: '2-digit',
-										weekday: 'short',
-										month: 'short',
-										year: (dateYears.get(today.getMonth())?.length ?? 1) > 1 ? '2-digit' : undefined
-									})
-								}}
-							</span>
+							<span class="text-lg text-primary my-auto whitespace-nowrap">{{today.toLocaleDateString([],{
+								day: '2-digit', weekday: 'short', month: 'short', year:
+								(dateYears.get(today.getMonth())?.length ?? 1)
+								> 1 ? '2-digit'
+								: undefined })}}</span>
 						</div>
-						<div
-							class="
-								absolute
-								h-full
-								w-2
-								flex-shrink-0
-								bg-grey-very-light
-								left-[16.25rem]
-								transform
-								transition-all
-							"
-							[class.bg-primary]="hasTasksToday"
-						></div>
+						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.25rem] transform transition-all"
+							 [class.bg-primary]="hasTasksToday"></div>
 						<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10">
 							<div class="flex flex-shrink-0 w-12 h-12 bg-primary rounded-full m-auto z-10"></div>
 						</div>
@@ -58,22 +41,23 @@
 				</ul>
 			</li>
 			<ng-container *ngIf="!loading">
-				<li *ngFor="let group of groupedTasksFuture" class="flex flex-row">
-					<app-agenda-date-group-item
-						class="w-full"
-						[group]="group"
-						[today]="today"
-						[dateYears]="dateYears"
-					></app-agenda-date-group-item>
+				<li *ngFor="let group of groupedTasksFuture"
+					class="flex flex-row">
+					<app-agenda-date-group-item class="w-full"
+												[group]="group"
+												[today]="today"
+												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
 			</ng-container>
 
 			<ng-container *ngIf="loading">
 				<li class="flex flex-row">
-					<app-agenda-date-group-item class="w-full" [loading]="true"></app-agenda-date-group-item>
+					<app-agenda-date-group-item class="w-full"
+												[loading]="true"></app-agenda-date-group-item>
 				</li>
 				<li class="flex flex-row">
-					<app-agenda-date-group-item class="w-full" [loading]="true"></app-agenda-date-group-item>
+					<app-agenda-date-group-item class="w-full"
+												[loading]="true"></app-agenda-date-group-item>
 				</li>
 			</ng-container>
 		</ul>
