@@ -9,7 +9,6 @@ export type Task = {
 	description: string
 	isDone: boolean
 	tags: string[]
-	priority: number
 	workloadOverall: number
 	notScheduled: number
 	dueAt: Event

@@ -21,12 +21,12 @@ export class TaskComponent {
 		let doneWorkload = 0
 
 		task.workUnits
-			.filter((x) => !x.isDone)
+			.filter((x) => x.isDone)
 			.forEach((workunit) => {
 				doneWorkload += workunit.workload
 			})
 
-		return (task.workloadOverall - doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
+		return (doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
 	}
 
 	public getProgress(task: Task): string {
