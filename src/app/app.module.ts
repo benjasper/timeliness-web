@@ -32,6 +32,8 @@ import { GeneralComponent } from './core/settings/general/general.component';
 import { CalendarsComponent } from './core/settings/calendars/calendars.component';
 import { SectionComponent } from './core/settings/section/section.component';
 import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component';
+import { ToastService } from './services/toast.service'
+import { TaskService } from './services/task.service'
 
 @NgModule({
 	declarations: [
@@ -72,7 +74,7 @@ import { GoogleCalendarSettingsComponent } from './core/components/google-calend
 		}),
 		NgSelectModule,
 	],
-	providers: [httpInterceptorProviders],
+	providers: [httpInterceptorProviders, ToastService],
 	bootstrap: [AppComponent],
 })
 export class AppModule { }

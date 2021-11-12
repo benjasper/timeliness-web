@@ -9,12 +9,15 @@ import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
 import { Tag, TagModified } from '../models/tag'
+import { ApiError } from '../models/error'
+import { ToastService } from './toast.service'
+import { ToastType } from '../models/toast'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private toastService: ToastService) {
 		this.getTags()
 
 		setInterval(() => {
@@ -64,7 +67,7 @@ export class TaskService {
 
 		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
-			.pipe(shareReplay(), retry(3), catchError(this.handleError))
+			.pipe(shareReplay(), retry(3), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((response) => {
 			if (sync) {
@@ -92,7 +95,7 @@ export class TaskService {
 
 		const observable = this.http
 			.get<TasksAgendaResponse>(`${environment.apiBaseUrl}/v1/tasks/agenda?` + filters.join('&'))
-			.pipe(retry(3), catchError(this.handleError))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
 
 		return observable
 	}
@@ -129,7 +132,7 @@ export class TaskService {
 
 		const observable = this.http
 			.post<Tag>(`${environment.apiBaseUrl}/v1/tags`, JSON.stringify(tag))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((tag) => {
 			const tags = this.tagsSubject.getValue()
@@ -164,7 +167,7 @@ export class TaskService {
 	public changeTag(id: string, tag: TagModified): Observable<Tag> {
 		const observable = this.http
 			.patch<Tag>(`${environment.apiBaseUrl}/v1/tags/${id}`, JSON.stringify(tag))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		if (tag.value) {
 			const foundTag = this.getTagByValue(tag.value)
@@ -199,7 +202,7 @@ export class TaskService {
 
 		this.http
 			.get<TagsGetResponse>(`${environment.apiBaseUrl}/v1/tags?` + filters.join('&'))
-			.pipe(retry(3), catchError(this.handleError))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
 			.subscribe((response) => {
 				if (sync) {
 					if (response.pagination.resultCount === 0) {
@@ -241,19 +244,19 @@ export class TaskService {
 
 		return this.http
 			.get<TasksByWorkunitsGetResponse>(`${environment.apiBaseUrl}/v1/tasks/workunits?` + filters.join('&'))
-			.pipe(retry(3), catchError(this.handleError))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
 	}
 
 	public getTask(id: string): Observable<Task> {
 		return this.http
 			.get<Task>(`${environment.apiBaseUrl}/v1/tasks/` + id)
-			.pipe(retry(3), catchError(this.handleError))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
 	}
 
 	public patchTask(id: string, task: TaskModified): Observable<Task> {
 		const observable = this.http
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe(() => {
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
@@ -266,7 +269,7 @@ export class TaskService {
 	public newTask(task: TaskModified): Observable<Task> {
 		const observable = this.http
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe(() => {
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
@@ -279,7 +282,7 @@ export class TaskService {
 	public deleteTask(task: Task): Observable<void> {
 		const observable = this.http
 			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${task.id}`)
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe(() => {
 			task.deleted = true
@@ -291,7 +294,7 @@ export class TaskService {
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): Observable<Task> {
 		const observable = this.http
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
@@ -303,7 +306,7 @@ export class TaskService {
 	public rescheduleWorkUnit(task: Task, index: number): Observable<Task> {
 		const observable = this.http
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
@@ -313,16 +316,15 @@ export class TaskService {
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
-		if (error.error instanceof ErrorEvent) {
-			// A client-side or network error occurred. Handle it accordingly.
-			console.error('An error occurred:', error.error.message)
-		} else {
-			// The backend returned an unsuccessful response code.
-			// The response body may contain clues as to what went wrong.
-			console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`)
-		}
+		const apiError = error.error as ApiError
+		
+		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
+		
+		let userMessage = "We\'ve encoutered an error, we are on it!"
+
+		this.toastService.newToast(ToastType.Error, userMessage)
 		// Return an observable with a user-facing error message.
-		return throwError('Something bad happened; please try again later.')
+		return throwError(userMessage)
 	}
 }
 

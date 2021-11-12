@@ -1,1 +1,12 @@
 <router-outlet></router-outlet>
+
+<div @flyInOut *ngIf="toast" class="fixed text-base flex flex-row center-x bottom-8 bg-pink text-red p-8 py-4 rounded-xl drop-shadow-lg z-50" [class.green-background]="TOAST_TYPE.Success === toast.type">
+	<div>
+		<h4 class="text-lg font-bold" [ngSwitch]="toast.type">
+			<ng-container *ngSwitchCase="TOAST_TYPE.Error">Error</ng-container>
+			<ng-container *ngSwitchCase="TOAST_TYPE.Warning">Warning</ng-container>
+			<ng-container *ngSwitchCase="TOAST_TYPE.Success">Success</ng-container>
+		</h4>
+		<span class="text-base">{{ toast.message }}</span>
+	</div>
+</div>
