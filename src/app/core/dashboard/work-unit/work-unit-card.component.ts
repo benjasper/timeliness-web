@@ -5,6 +5,10 @@ import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Tag } from 'src/app/models/tag'
+import { HttpErrorResponse } from '@angular/common/http'
+import { ApiError } from 'src/app/models/error'
+import { ToastService } from 'src/app/services/toast.service'
+import { ToastType } from 'src/app/models/toast'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -18,7 +22,7 @@ import { Tag } from 'src/app/models/tag'
 	],
 })
 export class WorkUnitCardComponent extends TaskComponent implements OnInit {
-	constructor(private taskService: TaskService) {
+	constructor(private taskService: TaskService, private toastService: ToastService) {
 		super()
 	}
 
@@ -87,6 +91,13 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.loading = true
 		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(() => {
+			let message = "Workunit marked as done"
+			if (done === false) {
+				message = "Workunit marked as un-done"
+			}
+
+			this.toastService.newToast(ToastType.Success, message)
+		}, undefined, () => {
 			this.loading = false
 		})
 	}
@@ -94,6 +105,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	public rescheduleWorkUnit(task: Task): void {
 		this.loading = true
 		this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(() => {
+			this.toastService.newToast(ToastType.Success, "Workunit rescheduled")
+		}, undefined,
+		() => {
 			this.loading = false
 		})
 	}

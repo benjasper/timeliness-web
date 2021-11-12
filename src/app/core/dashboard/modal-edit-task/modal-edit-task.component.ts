@@ -10,6 +10,8 @@ import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { smoothHeight } from 'src/app/animations'
+import { ToastService } from 'src/app/services/toast.service'
+import { ToastType } from 'src/app/models/toast'
 
 @Component({
 	selector: 'app-modal-edit-task',
@@ -59,7 +61,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	editTask!: FormGroup
 
-	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService) {
+	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService, private toastService: ToastService) {
 		super()
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
@@ -425,12 +427,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				this.task = task
 				this.taskId = task.id
 				this.isNew = false
-				this.loading = false
+				this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
 				this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], { relativeTo: this.route.parent })
+			}, undefined, () => {
+				this.loading = false
 			})
 		} else {
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
 				this.editTask.markAsPristine()
+				this.toastService.newToast(ToastType.Success, "Task updated")
+			}, undefined, () => {
 				this.loading = false
 			})
 		}
