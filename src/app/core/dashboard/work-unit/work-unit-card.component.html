@@ -84,9 +84,7 @@
 			</div>
 		</div>
 		<div *ngIf="!small"
-			 class="card-section scroller inverse"
-			 [class.card-section]="task.description !== '' || task.name.length > 11"
-			 [class.card-section]="task.description !== '' || task.name.length > 11">
+			 class="card-section description scroller inverse">
 			{{ task.description }}
 		</div>
 	</div>
