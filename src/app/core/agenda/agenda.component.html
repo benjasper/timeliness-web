@@ -1,7 +1,7 @@
-<div class="flex flex-row w-full h-screen">
+<div class="flex flex-row w-full h-full md:h-screen">
 	<div class="wrapper relative flex flex-col container mx-auto px-24 min-h-full h-full">
 		<h2 class="pb-8">Agenda</h2>
-		<ul class="flex flex-col scroller h-full md:overflow-y-auto pb-8">
+		<ul class="flex flex-col scroller h-full overflow-y-auto pb-8">
 			<ng-container *ngIf="tasksPastClicked">
 				<li *ngFor="let group of groupedTasksPast"
 					class="flex flex-row">
