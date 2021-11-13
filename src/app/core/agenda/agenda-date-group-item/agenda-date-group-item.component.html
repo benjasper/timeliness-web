@@ -1,5 +1,5 @@
-<ul class="relative flex flex-col w-full" *ngIf="!loading">
-	<li class="flex flex-row gap-12 py-8" *ngFor="let task of group.tasks; index as i">
+<ul class="relative flex flex-col w-full py-12 md:py-8 gap-8" *ngIf="!loading">
+	<li class="flex flex-row gap-12" *ngFor="let task of group.tasks; index as i">
 		<div class="absolute md:relative left-16 -top-4 md:left-0 md:top-0 flex w-48 flex-shrink-0">
 			<span
 				*ngIf="i === 0 && !group.date.isSameDay(today)"

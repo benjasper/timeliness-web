@@ -18,8 +18,8 @@
 			<li *ngIf="!loading"
 				class="flex flex-row"
 				#todayElement>
-				<ul class="relative flex flex-col w-full">
-					<li class="flex flex-row gap-12 py-8">
+				<ul class="relative flex flex-col w-full py-12 md:py-8 gap-8">
+					<li class="flex flex-row gap-12">
 						<div class="hidden md:flex w-48 flex-shrink-0">
 							<span class="text-lg text-primary my-auto whitespace-nowrap">{{today.toLocaleDateString([],{
 								day: '2-digit', weekday: 'short', month: 'short', year:

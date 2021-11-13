@@ -5,8 +5,7 @@ import { TaskAgendaDateGroup } from '../agenda.component';
 
 @Component({
   selector: 'app-agenda-date-group-item',
-  templateUrl: './agenda-date-group-item.component.html',
-  styleUrls: ['./agenda-date-group-item.component.scss']
+  templateUrl: './agenda-date-group-item.component.html'
 })
 export class AgendaDateGroupItemComponent implements OnInit {
 
