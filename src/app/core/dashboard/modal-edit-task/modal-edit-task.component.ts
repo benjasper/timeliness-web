@@ -41,6 +41,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	isNew = false
 	loading = false
 
+	startIndex = 0
+
 	NANOSECONDS = DurationUnit.Nanoseconds
 
 	emptyTag: Tag = {
@@ -128,11 +130,19 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.task = task
 			this.loading = false
 
+			setTimeout(() => {
+				this.setStartsAtWorkUnit()
+			}, 50)
+
 			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
 				if (task.id === this.task.id) {
 					this.patchForm(task)
 					this.task = task
 					this.loading = false
+
+					setTimeout(() => {
+						this.setStartsAtWorkUnit()
+					}, 50)
 				}
 			})
 
@@ -179,14 +189,14 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		arr.splice(toIndex, 0, element)
 	}
 
-	public getStartsAtWorkUnit(): number {
+	public setStartsAtWorkUnit() {
 		if (!this.task) {
-			return 0
+			return
 		}
 
 		const index = this.task.workUnits.findIndex((x) => !x.isDone)
 
-		return index === -1 ? 0 : index
+		this.startIndex = index === -1 ? 0 : index
 	}
 
 	public generateDurations(task?: Task): void {

@@ -80,12 +80,13 @@ h1,
 }
 
 h2,
-.h2, h2 > span {
+.h2,
+h2 > span {
 	@apply text-primary;
 	font-size: 2.8rem;
 	font-family: 'Karla', 'sans-serif';
 	font-weight: 700;
-	display: inline-flex
+	display: inline-flex;
 }
 
 h3,
@@ -119,7 +120,8 @@ input[type='text'],
 input[type='datetime-local'],
 input[type='time'],
 textarea,
-input, .input {
+input,
+.input {
 	padding: 0.7rem 1rem;
 	border: none;
 	outline: none;
@@ -238,6 +240,50 @@ input, .input {
 					font-weight: inherit;
 				}
 			}
+		}
+	}
+}
+
+ul.splide__pagination {
+	position: relative;
+	margin-top: 2rem;
+	display: flex;
+	flex-flow: row;
+
+	li {
+		button.splide__pagination__page {
+			opacity: 1;
+
+			&.is-active {
+				background-color: $color-primary;
+			}
+		}
+	}
+}
+
+.splide__arrow {
+	background-color: transparent;
+
+	svg {
+		fill: $color-primary;
+	}
+
+	&--prev {
+		left: -4rem;
+	}
+
+	&--next {
+		right: -4rem;
+	}
+
+	&:hover {
+		background-color: transparent;
+	}
+
+	&:disabled {
+		background-color: transparent;
+		svg {
+			fill: $color-light-grey;
 		}
 	}
 }
@@ -535,7 +581,7 @@ progress {
 }
 
 .sm-tag {
-	@apply px-4; 
+	@apply px-4;
 	@apply py-1;
 	@apply rounded-full;
 }

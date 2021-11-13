@@ -34,8 +34,13 @@
 								"output": "/"
 							}
 						],
-						"styles": ["src/styles.scss"],
-						"scripts": [],
+						"styles": [
+							"node_modules/@splidejs/splide/dist/css/splide.min.css",
+							"src/styles.scss"
+						],
+						"scripts": [
+							"node_modules/@splidejs/splide/dist/js/splide.js"
+						],
 						"vendorChunk": true,
 						"extractLicenses": false,
 						"buildOptimizer": false,

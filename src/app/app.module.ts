@@ -34,6 +34,7 @@ import { SectionComponent } from './core/settings/section/section.component';
 import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component';
 import { ToastService } from './services/toast.service'
 import { TaskService } from './services/task.service'
+import { NgxSplideModule } from 'ngx-splide'
 
 @NgModule({
 	declarations: [
@@ -73,6 +74,7 @@ import { TaskService } from './services/task.service'
 			configUrl: './assets/config/svg-preload.json',
 		}),
 		NgSelectModule,
+		NgxSplideModule
 	],
 	providers: [httpInterceptorProviders, ToastService],
 	bootstrap: [AppComponent],

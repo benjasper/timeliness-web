@@ -1,9 +1,1 @@
 <ng-content></ng-content>
-<button
-	*ngIf="showButtons"
-	type="button"
-	class="prev"
-	[class.active]="previousActive"
-	(click)="show($event, -1)"
-></button>
-<button *ngIf="showButtons" type="button" class="next" [class.active]="nextActive" (click)="show($event, +1)"></button>

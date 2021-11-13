@@ -5,25 +5,25 @@
 				<h2 class="next-up-title inline-block pr-8"
 					[ngSwitch]="nextUpState">
 					<ng-container *ngSwitchCase="eNextUpState.Done">All done for today!</ng-container>
-					<ng-container *ngSwitchCase="eNextUpState.WorkingOn">Currently working on&nbsp;
+					<ng-container *ngSwitchCase="eNextUpState.WorkingOn">Currently working on
 						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>
 					</ng-container>
-					<ng-container *ngSwitchCase="eNextUpState.TaskFinish">Did you finish&nbsp;
+					<ng-container *ngSwitchCase="eNextUpState.TaskFinish">Did you finish
 						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?
 					</ng-container>
-					<ng-container *ngSwitchCase="eNextUpState.WorkUnitFinish">Did you successfully work on&nbsp;
+					<ng-container *ngSwitchCase="eNextUpState.WorkUnitFinish">Did you successfully work on
 						<span class="text-purple">{{ nextUpTaskFocus?.name }}</span>?
 					</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.NoTasks">No tasks for today!</ng-container>
 					<ng-container *ngSwitchCase="eNextUpState.NextTask">Next up:&nbsp;<span class="text-purple">
 							{{ nextUpTaskFocus?.name }}</span>&nbsp;at
-						<span class="text-purple">&nbsp;{{
+						<span class="text-purple">{{
 							nextUpTaskFocus?.workUnit?.scheduledAt?.date?.start?.toDate()?.toLocaleTimeString([], {hour:
 							'2-digit',minute: '2-digit'}) }}</span>
 					</ng-container>
 					<ng-container *ngSwitchDefault>Next up</ng-container>
 				</h2>
-				<a class="btn large !mr-16 !py-4 !px-6"
+				<a class="btn large !mr-16 !py-4 !px-6 !mt-3"
 				   [routerLink]="[{ outlets: { modal: ['task', 'new'] } }]">
 					<svg-icon class="img !m-0 md:!m-auto md:!mr-2"
 							  src="/assets/icons/icon-plus.svg"></svg-icon>
@@ -36,23 +36,20 @@
 					 src="/assets/icons/icon-done.svg"
 					 alt="All done" />
 				<app-slider class="next-up-slider w-full"
-							[listArray]="nextUp"
-							[showButtons]="nextUp.length > 1"
-							[startsAtIndex]="getStartsAtWorkUnit()"
 							*ngIf="nextUp.length > 0 || loadingWorkUnits">
-					<ul class="next-up scroller w-full overflow-hidden">
+					<splide class="w-full" [selectedSlideIndex]="startIndex" [options]="{ type: 'slide', gap: '4rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
 						<ng-container *ngIf="loadingWorkUnits">
-							<li *ngFor="let index of [1, 2]">
+							<splide-slide *ngFor="let index of [1, 2]">
 								<app-work-unit-card [loading]="true"></app-work-unit-card>
-							</li>
+							</splide-slide>
 						</ng-container>
 						<ng-container *ngIf="nextUp.length > 0 && !loadingWorkUnits">
-							<li *ngFor="let task of nextUp">
+							<splide-slide *ngFor="let task of nextUp">
 								<app-work-unit-card [task]="task"
 													[workUnitIndex]="task.workUnitsIndex"></app-work-unit-card>
-							</li>
+							</splide-slide>
 						</ng-container>
-					</ul>
+					</splide>
 				</app-slider>
 			</div>
 		</section>

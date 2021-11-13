@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
 
 	private tasks: Task[] = []
 	private tasksUnwound: TaskUnwound[] = []
+	
+	public startIndex = 0
 
 	static pageSizeTasks = 10
 	static pageSizeTasksUnwound = 10
@@ -241,12 +243,17 @@ export class DashboardComponent implements OnInit {
 		this.groupedUpcoming = groupedUpcoming;
 		this.nextUp = nextUp;
 
+		setTimeout(() => {
+			this.setStartsAtWorkUnit()
+		}, 50)
+		
 		this.checkNextUpMessage()
 	}
 
-	public getStartsAtWorkUnit() {
+	public setStartsAtWorkUnit() {
 		const startIndex = this.nextUp.findIndex((x) => x.workUnit.isDone === false)
-		return startIndex === -1 ? 0 : startIndex
+		console.log(startIndex)
+		this.startIndex = startIndex === -1 ? 0 : startIndex
 	}
 
 	public toggleDeadlines() {
