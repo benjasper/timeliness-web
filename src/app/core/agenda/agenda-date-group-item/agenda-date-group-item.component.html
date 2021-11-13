@@ -1,6 +1,6 @@
 <ul class="relative flex flex-col w-full" *ngIf="!loading">
 	<li class="flex flex-row gap-12 py-8" *ngFor="let task of group.tasks; index as i">
-		<div class="flex w-48 flex-shrink-0">
+		<div class="absolute md:relative left-16 -top-4 md:left-0 md:top-0 flex w-48 flex-shrink-0">
 			<span
 				*ngIf="i === 0 && !group.date.isSameDay(today)"
 				class="text-lg text-grey-dark my-auto whitespace-nowrap"
@@ -16,7 +16,7 @@
 			</span>
 		</div>
 		<div
-			class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.25rem] transform transition-all"
+			class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[1.25rem] md:left-[16.25rem] transform transition-all"
 			[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
 		></div>
 		<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10 rounded-full"

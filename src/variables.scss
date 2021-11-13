@@ -39,6 +39,14 @@ $color-green: #62c370;
 
 $box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
+@mixin for-phone-only {
+	@media (max-width: 599px) { @content; }
+}
+
+@mixin for-tablet-only {
+	@media (max-width: 780px) { @content; }
+}
+
 $colors: (
 	'grey': (
 		'light': $color-very-light-grey,

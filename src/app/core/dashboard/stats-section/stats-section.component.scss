@@ -5,6 +5,10 @@
 	overflow-y: auto;
 	display: inline-block;
 	padding-right: 3rem;
+
+	@include for-phone-only {
+		padding: 0;
+	}
 }
 
 .grid {

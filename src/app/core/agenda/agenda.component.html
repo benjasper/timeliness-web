@@ -1,7 +1,7 @@
 <div class="flex flex-row w-full h-screen">
-	<div class="relative flex flex-col container mx-auto px-24 min-h-full h-full">
-		<h2 class="pt-24 pb-8">Agenda</h2>
-		<ul class="flex flex-col scroller h-full overflow-y-auto pb-8">
+	<div class="wrapper relative flex flex-col container mx-auto px-24 min-h-full h-full">
+		<h2 class="pb-8">Agenda</h2>
+		<ul class="flex flex-col scroller h-full md:overflow-y-auto pb-8">
 			<ng-container *ngIf="tasksPastClicked">
 				<li *ngFor="let group of groupedTasksPast"
 					class="flex flex-row">
@@ -20,14 +20,14 @@
 				#todayElement>
 				<ul class="relative flex flex-col w-full">
 					<li class="flex flex-row gap-12 py-8">
-						<div class="flex w-48 flex-shrink-0">
+						<div class="hidden md:flex w-48 flex-shrink-0">
 							<span class="text-lg text-primary my-auto whitespace-nowrap">{{today.toLocaleDateString([],{
 								day: '2-digit', weekday: 'short', month: 'short', year:
 								(dateYears.get(today.getMonth())?.length ?? 1)
 								> 1 ? '2-digit'
 								: undefined })}}</span>
 						</div>
-						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[16.25rem] transform transition-all"
+						<div class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light left-[1.25rem] md:left-[16.25rem] transform transition-all"
 							 [class.bg-primary]="hasTasksToday"></div>
 						<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10">
 							<div class="flex flex-shrink-0 w-12 h-12 bg-primary rounded-full m-auto z-10"></div>

@@ -14,16 +14,6 @@
 		}
 	}
 
-	.dashboard-header {
-		display: flex;
-		flex-flow: row;
-		justify-content: space-between;
-		margin-bottom: 2rem;
-
-		.next-up-title {
-			padding-right: 2rem;
-		}
-	}
 
 	.main {
 		min-width: 0;
@@ -69,6 +59,10 @@
 		.upcoming-work-units-list {
 			overflow-y: auto;
 
+			@include for-phone-only {
+				overflow-y: visible;
+			}
+
 			.date-group {
 				background-color: $color-white;
 				border-radius: 1.5rem;
@@ -86,8 +80,11 @@
 		position: relative;
 		overflow: hidden;
 
-		@media (max-width: 780px) {
-			flex-flow: column;
+		@include for-phone-only {
+			flex-flow: column-reverse;
+			height: auto;
+			flex: auto;
+			overflow: visible;
 		}
 
 		.upcoming-workunits {
@@ -97,7 +94,7 @@
 			height: 100%;
 
 			@media (max-width: 780px) {
-				height: 50%;
+				margin-top: 4rem;
 				width: 100%;
 			}
 		}
@@ -108,7 +105,7 @@
 			height: 100%;
 
 			@media (max-width: 780px) {
-				height: 50%;
+				margin-top: 4rem;
 				width: 100%;
 				padding: 0;
 			}
@@ -125,6 +122,10 @@
 		width: 30vw;
 		transition: all 0.2s;
 		overflow: hidden;
+
+		@include for-phone-only {
+			height: calc(100vh - 9.5rem);
+		}
 
 		.toggle {
 			display: none;
@@ -162,6 +163,12 @@
 					transform: rotateZ(90deg);
 				}
 			}
+
+			@include for-phone-only {
+				position: absolute;
+				right: 0;
+				background-color: transparent;
+			}
 		}
 
 		@media (max-width: 1399.98px) {
@@ -180,6 +187,10 @@
 				max-width: 65rem;
 				min-width: 0;
 				@apply drop-shadow-lg;
+
+				@include for-phone-only {
+					width: 100vw;
+				}
 
 				.toggle {
 					display: inline-block;
@@ -202,6 +213,10 @@
 			box-shadow: $box-shadow;
 			border-radius: 1.5rem;
 			margin-bottom: 3rem;
+
+			@include for-phone-only {
+				margin: 0 1.5rem 1.5rem 3rem;
+			}
 
 			.date-spacer {
 				margin-bottom: 2rem;

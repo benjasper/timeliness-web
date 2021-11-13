@@ -4,12 +4,9 @@
 	display: grid;
 	grid-template-columns: min-content 1fr;
 
-	.sidebar {
-		width: 35rem;
-
-		.labels {
-			white-space: nowrap;
-		}
+	@include for-phone-only {
+		display: flex;
+		flex-flow: row;
 	}
 
 	&.collapsed {
@@ -40,7 +37,39 @@
 		}
 	}
 
+	.content {
+		@include for-phone-only {
+			min-height: 0;
+			height: calc(100vh - 9.5rem);
+			overflow-y: auto;
+		}
+	}
+
 	nav.sidebar {
+		width: 35rem;
+
+		@include for-phone-only {
+			position: fixed;
+			bottom: 0;
+			display: flex;
+			flex-flow: row;
+			width: 100% !important;
+			height: auto !important;
+			z-index: 20;
+
+			h1 {
+				display: none;
+			}
+
+			.user {
+				display: none !important;
+			}
+		}
+
+		.labels {
+			white-space: nowrap;
+		}
+
 		height: 100vh;
 		text-align: center;
 		background-color: $color-very-light-grey;
@@ -125,6 +154,13 @@
 			display: flex;
 			flex-flow: column;
 			flex-grow: 2;
+
+			@include for-phone-only {
+				ul {
+					display: flex;
+					flex-flow: row;
+				}
+			}
 		}
 
 		.user {

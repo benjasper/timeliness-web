@@ -514,6 +514,10 @@ progress {
 
 .wrapper {
 	padding: 6rem 6rem 0 6rem;
+
+	@include for-phone-only {
+		padding: 3rem 3rem 0 3rem;
+	}
 }
 
 @keyframes shine {
