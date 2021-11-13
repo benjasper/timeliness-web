@@ -38,11 +38,6 @@
 	&:hover,
 	&.active {
 		background-color: $color-white;
-
-		.actions {
-			opacity: 1;
-			margin-right: 1rem;
-		}
 	}
 
 	.deadline-spacer {
@@ -90,12 +85,5 @@
 				font-size: 1.4rem;
 			}
 		}
-	}
-
-	.actions {
-		transition: all 0.2s ease-out;
-		opacity: 0;
-		margin: auto 0;
-		padding-left: 1rem;
 	}
 }

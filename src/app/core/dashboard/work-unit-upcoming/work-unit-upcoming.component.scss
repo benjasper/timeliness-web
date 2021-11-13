@@ -14,10 +14,6 @@
 	&.active {
 		margin-right: 1rem;
 
-		.contents .actions {
-			opacity: 1;
-		}
-
 		.calendar-date {
 			border-color: $color-primary;
 		}
@@ -71,18 +67,6 @@
 
 			.subtitle {
 				margin-top: -0.1rem;
-			}
-		}
-
-		.actions {
-			display: flex;
-			flex-direction: row;
-			opacity: 0;
-			transition: all 0.2s ease-in;
-			margin: auto 0;
-
-			.tiny-button {
-				margin-left: 1rem;
 			}
 		}
 	}
