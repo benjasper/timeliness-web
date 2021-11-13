@@ -129,7 +129,7 @@
 
 		.toggle {
 			display: none;
-			margin-top: 6rem;
+			margin-top: 3rem;
 			cursor: pointer;
 			
 			.img {
@@ -190,12 +190,24 @@
 
 				@include for-phone-only {
 					width: 100vw;
+
+					.deadline-list {
+						margin-right: 0;
+	
+						.date-group {
+							margin-right: 3rem;
+						}
+					}
 				}
 
 				.toggle {
 					display: inline-block;
 					position: absolute;
-					left: 2rem;
+					left: 3rem;
+				}
+
+				h2 {
+					margin-left: 4rem;
 				}
 			}
 		}

@@ -4,12 +4,7 @@ const primaryColor = '#22125a'
 
 module.exports = {
 	mode: 'jit',
-	purge: [
-		'./src/**/*.html',
-		'./src/**/*.vue',
-		'./src/**/*.jsx',
-		'./src/**/*.scss'
-	],
+	purge: ["./src/app/**/*.{js,ts,html,scss}"],
 	darkMode: false,
 	theme: {
 		fontSize: {
