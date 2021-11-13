@@ -1,73 +1,47 @@
-<div class="core-container" [class.collapsed]="collapsed">
+<div class="core-container">
 	<nav class="sidebar">
 		<div class="child logo-container">
-			<h1 (click)="switchSidebarCollapsed()">
-				<img class="img logo" src="/assets/images/timeliness_logo.svg" loading="eager">
+			<h1>
 				<img class="img logo-small" src="/assets/images/timeliness_logo_small.svg" loading="eager">
 			</h1>
-			<!---
-			<h1 *ngIf="!collapsed" class="logo" (click)="switchSidebarCollapsed()">Timeliness</h1>
-			<h1 *ngIf="collapsed" class="logo logo-small" (click)="switchSidebarCollapsed()">T</h1>
-			-->
 		</div>
 		<div *ngIf="user" class="child user">
 			<div class="profile-picture">
 				<span>{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
-			</div>
-			<div class="user-info">
-				<span class="name">{{ user.firstname }} {{ user.lastname }}</span>
-				<span class="info-text">Joined {{ user.createdAt.toDate().toLocaleDateString() }}</span>
 			</div>
 		</div>
 		<div *ngIf="!user" class="child user">
 			<div class="profile-picture loading">
 				<span>&nbsp;&nbsp;</span>
 			</div>
-			<div class="user-info w-full">
-				<span class="name w-1/2 rounded-full loading">&nbsp;</span>
-				<span class="info-text w-full rounded-full loading">&nbsp;</span>
-			</div>
 		</div>
 		<div class="middle child">
 			<ul>
 				<li>
-					<a class="text-underline" routerLink="/dashboard" routerLinkActive="active">
+					<a class="text-underline" routerLink="/dashboard" routerLinkActive="active" title="Dashboard">
 						<svg-icon class="img" src="/assets/icons/icon-dashboard.svg"></svg-icon>
-						<span class="labels">
-							Dashboard
-						</span>
 					</a>
 				</li>
 				<li>
-					<a class="text-underline" routerLink="/agenda" routerLinkActive="active">
+					<a class="text-underline" routerLink="/agenda" routerLinkActive="active" title="Agenda">
 						<svg-icon class="img" src="/assets/icons/icon-agenda.svg"></svg-icon>
-						<span class="labels">
-							Agenda
-						</span>
 					</a>
 				</li>
 				<li>
-					<a class="text-underline" routerLink="/contacts" routerLinkActive="active">
+					<a class="text-underline" routerLink="/contacts" routerLinkActive="active" title="Contacts">
 						<svg-icon class="img" src="/assets/icons/icon-users.svg"></svg-icon>
-						<span class="labels">
-							Contacts
-						</span>
 					</a>
 				</li>
 				<li>
-					<a class="text-underline" routerLink="/settings" routerLinkActive="active">
+					<a class="text-underline" routerLink="/settings" routerLinkActive="active" title="Settings">
 						<svg-icon class="img" src="/assets/icons/icon-settings.svg"></svg-icon>
-						<span class="labels">
-							Settings
-						</span>
 					</a>
 				</li>
 			</ul>
 		</div>
 		<div class="child bottom hidden md:block">
 			<a class="text-underline" (click)="logout()">
-				<svg-icon class="img" src="/assets/icons/icon-logout.svg"></svg-icon>
-				<span class="labels">Log out</span>
+				<svg-icon class="img" src="/assets/icons/icon-logout.svg" title="Log out"></svg-icon>
 			</a>
 		</div>
 	</nav>
