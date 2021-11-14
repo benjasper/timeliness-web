@@ -242,40 +242,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		}
 	}
 
-	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(
-			(result) => {
-				this.patchForm(result)
-				this.task = result
-
-				setTimeout(() => {
-					this.setStartsAtWorkUnit()
-				}, 50)
-			},
-			undefined,
-			() => {
-				this.loaded = true
-			}
-		)
-	}
-
-	public rescheduleWorkUnit(task: Task, workUnitIndex: number): void {
-		this.taskService.rescheduleWorkUnit(task, workUnitIndex).subscribe(
-			(newTask) => {
-				this.patchForm(newTask)
-				this.task = newTask
-
-				setTimeout(() => {
-					this.setStartsAtWorkUnit()
-				}, 50)
-			},
-			undefined,
-			() => {
-				this.loaded = true
-			}
-		)
-	}
-
 	private patchForm(task: Task): void {
 		this.tags = []
 		task.tags.forEach((id) => {
