@@ -53,13 +53,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 	@ViewChild('calendar') calendar!: ElementRef
 
 	@HostListener('document:click', ['$event'])
-	clickout(event: Event) {
-		let clickedInside = this.elementRef.nativeElement.contains(event.target)
+	clickout(event?: Event) {
+		let clickedInside = event ? this.elementRef.nativeElement.contains(event?.target) : false
 
 		if (!clickedInside) {
 			this.isFocused = false
-		} else {
-			this.isFocused = true
 		}
 	}
 

@@ -2,7 +2,7 @@
 	 *ngIf="modalBackground"
 	 (click)="close()"></div>
 <form [formGroup]="editTask"
-	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto bg-white md:rounded-2xl"
+	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-2xl"
 	  @flyInOut
 	  *ngIf="loaded"
 	  (ngSubmit)="save()">
@@ -157,7 +157,7 @@
 						</div>
 					</app-circular-progress>
 				</div>
-				<div [class.empty]="tags.length === 0">
+				<div class="min-h-[20rem]" [class.empty]="tags.length === 0">
 					<label for="tags"
 						   class="label pb-2">Tags</label>
 					<ul class="flex flex-row flex-wrap gap-4 w-full md:w-128">
