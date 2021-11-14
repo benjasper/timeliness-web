@@ -1,5 +1,5 @@
 <div *ngIf="!loading" class="deadline" [class.done]="task.isDone" routerLinkActive="active">
-	<div class="time">
+	<div class="time dark:text-white">
 		<span>
 			{{
 				task.dueAt.date.start.toDate().toLocaleTimeString([], {

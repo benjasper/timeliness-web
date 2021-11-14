@@ -74,6 +74,7 @@ img {
 h1,
 .h1 {
 	@apply text-primary;
+	@apply dark:text-white;
 	font-size: 3.2rem;
 	font-family: 'Karla', 'sans-serif';
 	font-weight: 700;
@@ -83,6 +84,7 @@ h2,
 .h2,
 h2 > span {
 	@apply text-primary;
+	@apply dark:text-white;
 	font-size: 2.8rem;
 	font-family: 'Karla', 'sans-serif';
 	font-weight: 700;
@@ -92,6 +94,7 @@ h2 > span {
 h3,
 .h3 {
 	@apply text-primary;
+	@apply dark:text-white;
 	font-size: 2.4rem;
 	font-weight: 500;
 	font-family: 'Karla', 'sans-serif';
@@ -104,6 +107,7 @@ a {
 	color: $color-black;
 	cursor: pointer;
 	transition: all 0.1s;
+	@apply dark:text-white;
 
 	&:hover {
 		text-decoration: underline;
@@ -127,6 +131,8 @@ input,
 	outline: none;
 	border-radius: 0.5rem;
 	font-size: 1.8rem;
+	@apply dark:bg-black;
+	@apply dark:text-white;
 }
 
 .edit {
@@ -134,6 +140,7 @@ input,
 	&:hover,
 	&:focus {
 		background-color: $color-light-grey;
+		@apply dark:bg-grey-very-dark;
 	}
 }
 

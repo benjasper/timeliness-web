@@ -35,11 +35,6 @@
 		opacity: 0.5;
 	}
 
-	&:hover,
-	&.active {
-		background-color: $color-white;
-	}
-
 	.time {
 		margin: auto 0;
 		width: max-content;

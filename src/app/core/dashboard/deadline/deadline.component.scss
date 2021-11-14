@@ -35,11 +35,6 @@
 		opacity: 0.5;
 	}
 
-	&:hover,
-	&.active {
-		background-color: $color-white;
-	}
-
 	.deadline-spacer {
 		padding: 0 2px;
 		border-radius: 25px;

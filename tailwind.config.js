@@ -5,7 +5,7 @@ const primaryColor = '#22125a'
 module.exports = {
 	mode: 'jit',
 	purge: ["./src/app/**/*.{js,ts,html,scss}"],
-	darkMode: false,
+	darkMode: 'class',
 	theme: {
 		fontSize: {
 			'xs': '1.2rem',
@@ -45,7 +45,8 @@ module.exports = {
 				DEFAULT: '#eee',
 				light: '#f4f4f4',
 				'very-light': '#F5F7FB',
-				dark: '#8d99ae'
+				dark: '#8d99ae',
+				'very-dark': '#15181C'
 			},
 			black: '#040f0f',
 			white: {

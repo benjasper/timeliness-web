@@ -1,5 +1,5 @@
 <div class="grid widgets-large">
-	<app-stats class="large-widget"
+	<app-stats class="large-widget dark:!bg-primary dark:!text-white"
 			   [class.loading]="loadingPlan">
 		<ng-container *ngIf="!loadingPlan">
 			<div class="left">
@@ -30,18 +30,18 @@
 	</app-stats>
 </div>
 <div class="grid widgets-small">
-	<app-stats class="simple-widget">
+	<app-stats class="simple-widget dark:!bg-primary dark:!text-white">
 		<span class="info">3</span>
 		<span class="title">
-			<svg-icon class="img"
+			<svg-icon class="img fill-current"
 					  src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
 			Tasks completed this week
 		</span>
 	</app-stats>
-	<app-stats class="simple-widget">
+	<app-stats class="simple-widget dark:!bg-primary dark:!text-white">
 		<span class="info">5</span>
 		<span class="title">
-			<svg-icon class="img"
+			<svg-icon class="img fill-current"
 					  src="/assets/icons/icon-check-multiple.svg"></svg-icon>
 			Work units completed this week
 		</span>

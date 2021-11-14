@@ -2,11 +2,11 @@
 	 *ngIf="modalBackground"
 	 (click)="close()"></div>
 <form [formGroup]="editTask"
-	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-2xl"
+	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-2xl dark:bg-black"
 	  @flyInOut
 	  *ngIf="loaded"
 	  (ngSubmit)="save()">
-	<div class="flex flex-col w-auto bg-white p-16 md:rounded-l-2xl gap-16">
+	<div class="flex flex-col w-auto bg-white dark:bg-black dark:text-white p-16 md:rounded-l-2xl gap-16">
 		<div>
 			<label *ngIf="task"
 				   class="label ml-4 pb-10">Edit task</label>
