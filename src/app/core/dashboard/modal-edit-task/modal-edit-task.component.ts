@@ -63,7 +63,12 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	editTask!: FormGroup
 
-	constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService, private toastService: ToastService) {
+	constructor(
+		private router: Router,
+		private route: ActivatedRoute,
+		private taskService: TaskService,
+		private toastService: ToastService
+	) {
 		super()
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
@@ -156,7 +161,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	registerForTags() {
 		this.taskService.tagsObservable.subscribe((newTags) => {
-
 			const removalList: string[] = []
 			this.task.tags.forEach((tag, index) => {
 				const foundTag = newTags.find((x) => x.id === tag)
@@ -239,19 +243,37 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe((result) => {
-			this.patchForm(result)
-			this.task = result
-			this.loaded = true
-		})
+		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(
+			(result) => {
+				this.patchForm(result)
+				this.task = result
+
+				setTimeout(() => {
+					this.setStartsAtWorkUnit()
+				}, 50)
+			},
+			undefined,
+			() => {
+				this.loaded = true
+			}
+		)
 	}
 
 	public rescheduleWorkUnit(task: Task, workUnitIndex: number): void {
-		this.taskService.rescheduleWorkUnit(task, workUnitIndex).subscribe((newTask) => {
-			this.patchForm(newTask)
-			this.task = newTask
-			this.loaded = true
-		})
+		this.taskService.rescheduleWorkUnit(task, workUnitIndex).subscribe(
+			(newTask) => {
+				this.patchForm(newTask)
+				this.task = newTask
+
+				setTimeout(() => {
+					this.setStartsAtWorkUnit()
+				}, 50)
+			},
+			undefined,
+			() => {
+				this.loaded = true
+			}
+		)
 	}
 
 	private patchForm(task: Task): void {
@@ -432,23 +454,33 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.loading = true
 
 		if (this.isNew) {
-			this.taskService.newTask(updatingTask).subscribe((task) => {
-				this.editTask.markAsPristine()
-				this.task = task
-				this.taskId = task.id
-				this.isNew = false
-				this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
-				this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], { relativeTo: this.route.parent })
-			}, undefined, () => {
-				this.loading = false
-			})
+			this.taskService.newTask(updatingTask).subscribe(
+				(task) => {
+					this.editTask.markAsPristine()
+					this.task = task
+					this.taskId = task.id
+					this.isNew = false
+					this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
+					this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], {
+						relativeTo: this.route.parent,
+					})
+				},
+				undefined,
+				() => {
+					this.loading = false
+				}
+			)
 		} else {
-			this.taskService.patchTask(this.taskId, updatingTask).subscribe((task) => {
-				this.editTask.markAsPristine()
-				this.toastService.newToast(ToastType.Success, "Task updated")
-			}, undefined, () => {
-				this.loading = false
-			})
+			this.taskService.patchTask(this.taskId, updatingTask).subscribe(
+				(task) => {
+					this.editTask.markAsPristine()
+					this.toastService.newToast(ToastType.Success, 'Task updated')
+				},
+				undefined,
+				() => {
+					this.loading = false
+				}
+			)
 		}
 
 		return false

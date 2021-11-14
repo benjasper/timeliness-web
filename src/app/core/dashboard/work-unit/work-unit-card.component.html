@@ -51,7 +51,7 @@
 				</ng-template>
 				<ng-template #todayElse>
 					<span>
-						{{ task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString() }}
+						{{ task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString('default', {day: '2-digit', month: 'short', year: 'numeric'}) }}
 					</span>
 				</ng-template>
 				<span>

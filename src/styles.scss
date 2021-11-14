@@ -255,8 +255,13 @@ ul.splide__pagination {
 			opacity: 1;
 
 			&.is-active {
+				transform: scale(1.2);
 				background-color: $color-primary;
 			}
+		}
+
+		&:last-child:first-child {
+			display: none;
 		}
 	}
 }
@@ -269,11 +274,11 @@ ul.splide__pagination {
 	}
 
 	&--prev {
-		left: -4rem;
+		left: -3rem;
 	}
 
 	&--next {
-		right: -4rem;
+		right: -3rem;
 	}
 
 	&:hover {

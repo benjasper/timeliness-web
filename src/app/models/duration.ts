@@ -2,10 +2,18 @@ export class Duration {
 	milliseconds = 0
 
 	constructor(milliseconds: number) {
-		this.milliseconds = milliseconds
+		this.milliseconds = Math.abs(milliseconds)
 	}
 
 	public toString(): string {
+		return this.buildDurationString(false)
+	}
+
+	public toStringWithoutSeconds(): string {
+		return this.buildDurationString(true)
+	}
+
+	private buildDurationString(noSeconds = false): string {
 		let duration = this.milliseconds
 
 		if (duration === 0) {
@@ -19,6 +27,10 @@ export class Duration {
 		duration /= 1000
 
 		if (duration < 60) {
+			if (noSeconds) {
+				return ''
+			}
+
 			return Math.floor(duration) + 's'
 		}
 
@@ -26,7 +38,12 @@ export class Duration {
 
 		if (duration < 60) {
 			if (duration % 1 !== 0) {
-				return Math.floor(duration) + 'm' + ' ' + new Duration((duration % 1) * 60000).toString()
+				return (
+					Math.floor(duration) +
+					'm' +
+					' ' +
+					new Duration((duration % 1) * 60000).buildDurationString(noSeconds)
+				)
 			}
 
 			return duration + 'm'
@@ -34,11 +51,43 @@ export class Duration {
 
 		duration /= 60
 
-		if (duration % 1 !== 0) {
-			return Math.floor(duration) + 'h' + ' ' + new Duration((duration % 1) * 3.6e6).toString()
+		if (duration < 24) {
+			if (duration % 1 !== 0) {
+				return (
+					Math.floor(duration) +
+					'h' +
+					' ' +
+					new Duration((duration % 1) * 3.6e6).buildDurationString(noSeconds)
+				)
+			}
+
+			return duration + 'h'
 		}
 
-		return duration + 'h'
+		duration /= 24
+
+		if (duration < 7) {
+			if (duration % 1 !== 0) {
+				return (
+					Math.floor(duration) +
+					'd' +
+					' ' +
+					new Duration((duration % 1) * 8.64e7).buildDurationString(noSeconds)
+				)
+			}
+
+			return duration + 'd'
+		}
+
+		duration /= 7
+
+		if (duration % 1 !== 0) {
+			return (
+				Math.floor(duration) + 'w' + ' ' + new Duration((duration % 1) * 6.048e8).buildDurationString(noSeconds)
+			)
+		}
+
+		return duration + 'w'
 	}
 
 	public toNanoseconds(): number {

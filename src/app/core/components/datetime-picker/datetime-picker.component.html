@@ -1,4 +1,4 @@
-<span class="input min-w-max"
+<span class="input min-w-max" title="{{(selected.getTime() - today.getTime()).toDuration().toStringWithoutSeconds()}}{{ selected.getTime() - today.getTime() < 0 ? 'ago' : '' }}"
 	  (click)="toggleDropdown()">{{ selected.toLocaleDateString('default',{day: '2-digit', month: 'short', year: 'numeric'}) }} | {{ selected.toLocaleTimeString('default',{hour:
 	'numeric', minute:'2-digit'}) }}</span>
 
