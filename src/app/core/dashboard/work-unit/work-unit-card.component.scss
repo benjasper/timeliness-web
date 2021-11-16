@@ -101,6 +101,10 @@
 
 	&.no-description {
 		width: 28rem;
+
+		.description {
+			display: none;
+		}
 	}
 
 	&.small {
