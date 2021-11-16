@@ -39,6 +39,7 @@
 		@include for-phone-only {
 			min-height: 0;
 			height: calc(100vh - 9.5rem);
+			width: 100%;
 		}
 	}
 
@@ -150,9 +151,17 @@
 			flex-grow: 2;
 
 			@include for-phone-only {
+				width: 100%;
 				ul {
 					display: flex;
 					flex-flow: row;
+					gap: 2rem;
+					margin: 0 auto;
+
+					a {
+						margin-left: 0;
+						margin-right: 0;
+					}
 				}
 			}
 		}
