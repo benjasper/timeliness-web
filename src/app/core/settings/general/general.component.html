@@ -1,1 +1,25 @@
-<p>general works!</p>
+<app-section name="User settings">
+	<div class="flex flex-row gap-8">
+		<div class="flex flex-shrink-0 w-24 h-24 rounded-full bg-secondary">
+			<span class="m-auto text-primary text-xl">BJ</span>
+		</div>
+		<div class="flex flex-col my-auto">
+			<span class="text-lg">Benjamin</span>
+			<span class="text-lg">Jasper</span>
+		</div>
+	</div>
+	<div class="flex flex-row pt-16">
+		<form class="flex flex-col gap-8" [formGroup]="userSettingsForm">
+			<div>
+				<label class="label inset" for="email">Email</label>
+				<input id="email" class="edit" type="text" placeholder="Change your email here" value="jasper.benni@gmail.com" />
+			</div>
+			<div>
+				<label class="label inset" for="timezone">Timezone</label>
+				<ng-select class="edit cursor-text" [virtualScroll]="true" formControlName="timezones">
+					<ng-option *ngFor="let timezone of timezones">{{ timezone }}</ng-option>
+				</ng-select>
+			</div>
+		</form>
+	</div>
+</app-section>

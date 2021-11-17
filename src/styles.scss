@@ -64,6 +64,10 @@ p {
 	text-transform: uppercase;
 	font-weight: bold;
 	color: $color-tertiary;
+
+	&.inset {
+		@apply ml-4 pb-2;
+	}
 }
 
 img {
