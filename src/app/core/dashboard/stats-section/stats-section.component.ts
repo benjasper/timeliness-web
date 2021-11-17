@@ -29,6 +29,8 @@ export class StatsSectionComponent implements OnInit {
 			this.lastWorkUnitsUpdate = result.results
 			this.computePlanToday()
 			this.loadingPlan = false
+		}, () => {
+			this.loadingPlan = false
 		})
 
 		this.taskService.tasksObservable.subscribe((task) => {

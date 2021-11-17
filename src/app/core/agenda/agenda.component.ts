@@ -38,7 +38,7 @@ export class AgendaComponent implements OnInit {
 	ngOnInit(): void {
 		this.fetchAgenda().subscribe(() => {
 			this.loading = false
-		})
+		}, () => {this.loading = false})
 
 		this.taskService.dateChangeObservable.subscribe((newDate) => {
 			this.today = newDate

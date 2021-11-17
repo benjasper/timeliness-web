@@ -97,7 +97,8 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			}
 
 			this.toastService.newToast(ToastType.Success, message)
-		}, undefined, () => {
+			this.loading = false
+		}, () => {
 			this.loading = false
 		})
 	}
@@ -106,8 +107,8 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		this.loading = true
 		this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(() => {
 			this.toastService.newToast(ToastType.Success, "Workunit rescheduled")
-		}, undefined,
-		() => {
+			this.loading = false
+		}, () => {
 			this.loading = false
 		})
 	}

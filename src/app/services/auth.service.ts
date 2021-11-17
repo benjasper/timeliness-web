@@ -5,13 +5,15 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
+import { ToastType } from '../models/toast'
 import { User } from '../models/user'
+import { ToastService } from './toast.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient, private router: Router) { }
+	constructor(private http: HttpClient, private router: Router, private toastService: ToastService) { }
 
 	private accessToken = ''
 	private refreshToken = ''
@@ -192,7 +194,8 @@ export class AuthService {
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
-		return throwError('Sign in was not successful.')
+		this.toastService.newToast(ToastType.Error, "An error occured.")
+		return throwError(error)
 	}
 }
 

@@ -152,6 +152,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			})
 
 			this.registerForTags()
+		}, () => {
+			this.router.navigate(['.', { outlets: { modal: null } }], { relativeTo: this.route.parent })
 		})
 
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
@@ -426,12 +428,12 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.task = task
 					this.taskId = task.id
 					this.isNew = false
+					this.loading = false
 					this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
 					this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], {
 						relativeTo: this.route.parent,
 					})
 				},
-				undefined,
 				() => {
 					this.loading = false
 				}
@@ -441,8 +443,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				(task) => {
 					this.editTask.markAsPristine()
 					this.toastService.newToast(ToastType.Success, 'Task updated')
+					this.loading = false
 				},
-				undefined,
 				() => {
 					this.loading = false
 				}

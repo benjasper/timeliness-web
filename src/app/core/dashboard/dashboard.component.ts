@@ -49,13 +49,13 @@ export class DashboardComponent implements OnInit {
 			this.tasks = response.results
 			this.groupTasks(response.results)
 			this.loadingTasks = false
-		})
+		}, () => {this.loadingTasks = false})
 
 		this.taskService.getTasksByWorkunits().subscribe((response) => {
 			this.tasksUnwound = response.results
 			this.groupTasksUnwound(response.results)
 			this.loadingWorkUnits = false
-		})
+		}, () => {this.loadingWorkUnits = false})
 
 		// Register for task updates update tasks and unwound
 		this.taskService.tasksObservable.subscribe((task) => {
@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
 			this.tasks = newTasks.results
 			this.groupTasks(this.tasks)
 			this.loadingTasks = false
-		})
+		}, () => {this.loadingTasks = false})
 	}
 
 	private recevieTaskUnwoundUpdate(task: Task) {
