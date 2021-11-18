@@ -6,14 +6,14 @@ import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { ToastType } from '../models/toast'
-import { User } from '../models/user'
+import { User, UserSettings } from '../models/user'
 import { ToastService } from './toast.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient, private router: Router, private toastService: ToastService) { }
+	constructor(private http: HttpClient, private router: Router, private toastService: ToastService) {}
 
 	private accessToken = ''
 	private refreshToken = ''
@@ -84,13 +84,8 @@ export class AuthService {
 
 	private fetchUser() {
 		const observable = this.http
-			.get<User>(
-				`${environment.apiBaseUrl}/v1/user`
-			)
-			.pipe(
-				share(),
-				catchError(this.handleError)
-			)
+			.get<User>(`${environment.apiBaseUrl}/v1/user`)
+			.pipe(share(), catchError(this.handleError))
 
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
@@ -101,40 +96,36 @@ export class AuthService {
 
 	public fetchCalendars() {
 		const observable = this.http
-			.get<Calendar>(
-				`${environment.apiBaseUrl}/v1/calendars`
-			)
-			.pipe(
-				share(),
-				catchError(this.handleError)
-			)
+			.get<Calendar>(`${environment.apiBaseUrl}/v1/calendars`)
+			.pipe(share(), catchError(this.handleError))
 
 		return observable
 	}
 
 	public postCalendars(calendar: Calendar) {
 		const observable = this.http
-			.post<Calendar>(
-				`${environment.apiBaseUrl}/v1/calendars`,
-				JSON.stringify(calendar)
-			)
-			.pipe(
-				share(),
-				catchError(this.handleError)
-			)
+			.post<Calendar>(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
+			.pipe(share(), catchError(this.handleError))
 
 		return observable
 	}
 
 	public connectGoogleCalendar() {
 		const observable = this.http
-			.post<{ url: string }>(
-				`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined
-			)
-			.pipe(
-				share(),
-				catchError(this.handleError)
-			)
+			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined)
+			.pipe(share(), catchError(this.handleError))
+
+		return observable
+	}
+
+	public patchUserSettings(settings: UserSettings) {
+		const observable = this.http
+			.patch<User>(`${environment.apiBaseUrl}/v1/user/settings`, JSON.stringify(settings))
+			.pipe(share(), catchError(this.handleError))
+
+		observable.subscribe((response) => {
+			this.userSubject.next(response)
+		})
 
 		return observable
 	}
@@ -194,7 +185,7 @@ export class AuthService {
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
-		this.toastService.newToast(ToastType.Error, "An error occured.")
+		this.toastService.newToast(ToastType.Error, 'An error occured.')
 		return throwError(error)
 	}
 }
@@ -205,4 +196,6 @@ interface AuthResponse {
 	result: User
 }
 
-interface Calendar { googleCalendar: { calendarId: string, name: string, isActive: boolean }[] }
+interface Calendar {
+	googleCalendar: { calendarId: string; name: string; isActive: boolean }[]
+}
