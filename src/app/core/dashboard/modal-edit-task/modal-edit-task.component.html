@@ -106,6 +106,7 @@
 					<ng-select class="edit w-40 cursor-text"
 							   id="workload-hour"
 							   formControlName="workload"
+							   [clearable]="false"
 							   tabindex="4">
 						<ng-option *ngFor="let duration of durations"
 								   [value]="duration.milliseconds">

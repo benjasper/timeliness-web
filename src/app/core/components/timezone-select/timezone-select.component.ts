@@ -575,6 +575,10 @@ export class TimezoneSelectComponent implements OnInit {
 	newTimeZone() {
 		const newTimeZone = this.timezoneForm.get('timezones')?.value
 
+		if (!newTimeZone || newTimeZone === '') {
+			return
+		}
+
 		this.authService.patchUserSettings({ scheduling: { timeZone: newTimeZone } }).subscribe(() => {
 			this.toastService.newToast(ToastType.Success, `Updated timezone to ${newTimeZone}`)
 		})
