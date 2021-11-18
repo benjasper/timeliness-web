@@ -135,9 +135,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.task = task
 			this.loading = false
 
-			setTimeout(() => {
-				this.setStartsAtWorkUnit()
-			}, 50)
+			this.setStartsAtWorkUnit()
 
 			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
 				if (task.id === this.task.id) {
@@ -145,9 +143,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.task = task
 					this.loading = false
 
-					setTimeout(() => {
-						this.setStartsAtWorkUnit()
-					}, 50)
+					this.setStartsAtWorkUnit()
 				}
 			})
 
@@ -202,7 +198,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 		const index = this.task.workUnits.findIndex((x) => !x.isDone)
 
-		this.startIndex = index === -1 ? 0 : index
+		setTimeout(() => {
+			this.startIndex = index === -1 ? 0 : index
+		}, 50)
 	}
 
 	public generateDurations(task?: Task): void {
@@ -444,6 +442,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.editTask.markAsPristine()
 					this.toastService.newToast(ToastType.Success, 'Task updated')
 					this.loading = false
+					this.setStartsAtWorkUnit()
 				},
 				() => {
 					this.loading = false
