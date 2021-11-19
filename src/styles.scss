@@ -66,7 +66,7 @@ p {
 	color: $color-tertiary;
 
 	&.inset {
-		@apply ml-4 pb-2;
+		@apply ml-6 pb-2;
 	}
 }
 
@@ -131,7 +131,7 @@ input[type='time'],
 textarea,
 input,
 .input {
-	padding: 0.7rem 1rem;
+	padding: 0.8rem 1.5rem;
 	border: none;
 	outline: none;
 	border-radius: 0.5rem;

@@ -1,24 +1,36 @@
 <app-section name="User settings">
-	<div class="flex flex-row gap-8">
-		<div class="flex flex-shrink-0 w-24 h-24 rounded-full bg-secondary">
-			<span class="m-auto text-primary text-xl">{{ user?.firstname?.charAt(0) }}{{ user?.lastname?.charAt(0) }}</span>
-		</div>
-		<div class="flex flex-col my-auto">
-			<span class="text-lg">{{ user?.firstname }}</span>
-			<span class="text-lg">{{ user?.lastname }}</span>
-		</div>
-	</div>
-	<div class="flex flex-row pt-16">
-		<div class="flex flex-col gap-8">
-			<div>
-				<label class="label inset" for="email">Email</label>
-				<input id="email" class="edit" type="text" placeholder="Change your email here" [value]="user?.email" />
+	<div class="flex flex-col gap-12">
+		<div class="flex flex-row gap-8">
+			<div class="flex flex-shrink-0 w-24 h-24 rounded-full bg-secondary">
+				<span class="m-auto text-primary text-xl">
+					{{ user?.firstname?.charAt(0) }}{{ user?.lastname?.charAt(0) }}
+				</span>
 			</div>
-			<app-timezone-select></app-timezone-select>
+			<div class="flex flex-col my-auto">
+				<span class="text-lg">{{ user?.firstname }}</span>
+				<span class="text-lg">{{ user?.lastname }}</span>
+			</div>
+		</div>
+		<div class="flex flex-row">
+			<div class="flex flex-col gap-8">
+				<div>
+					<label class="label inset" for="email">Email</label>
+					<input
+						id="email"
+						class="edit"
+						type="text"
+						placeholder="Change your email here"
+						[value]="user?.email"
+					/>
+				</div>
+			</div>
 		</div>
 	</div>
 </app-section>
 
 <app-section name="Scheduling" description="Here you can specify how Timeliness will schedule your tasks.">
-	<app-timespan-select></app-timespan-select>
+	<div class="flex flex-col gap-12">
+		<app-timezone-select class="md:w-1/2"></app-timezone-select>
+		<app-timespan-select></app-timespan-select>
+	</div>
 </app-section>
