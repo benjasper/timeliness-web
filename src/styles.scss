@@ -442,6 +442,15 @@ input[type='submit'] {
 		}
 	}
 
+	&.secondary {
+		@apply bg-secondary;
+		@apply text-primary;
+
+		.img {
+			@apply fill-current;
+		}
+	}
+
 	&:disabled,
 	&[disabled] {
 		background-color: $color-light-grey;
@@ -452,15 +461,6 @@ input[type='submit'] {
 		.img,
 		&.no-background .img {
 			fill: $color-tertiary !important;
-		}
-	}
-
-	&.secondary {
-		@apply bg-secondary;
-		@apply text-primary;
-
-		.img {
-			@apply fill-current;
 		}
 	}
 }

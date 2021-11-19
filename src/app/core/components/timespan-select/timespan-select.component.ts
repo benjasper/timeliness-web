@@ -51,7 +51,7 @@ export class TimespanSelectComponent implements OnInit {
 	timespanChanged() {
 		if (
 			(this.user &&
-				JSON.stringify(this.user.settings.scheduling.allowedTimespans) ===
+				JSON.stringify(this.toDateTimespan(this.user.settings.scheduling.allowedTimespans ?? [])) ===
 					JSON.stringify(this.toStringTimespan(this.timespans))) ||
 			(this.user?.settings.scheduling.allowedTimespans === undefined && this.timespans.length === 0)
 		) {
@@ -91,9 +91,13 @@ export class TimespanSelectComponent implements OnInit {
 					this.toastService.newToast(ToastType.Success, 'Saved scheduling times')
 				},
 				() => {
-					this.timespans = this.toDateTimespan(this.user?.settings.scheduling.allowedTimespans ?? [])
-					this.wasEdited = false
+					this.cancel()
 				}
 			)
+	}
+
+	cancel() {
+		this.timespans = this.toDateTimespan(this.user?.settings.scheduling.allowedTimespans ?? [])
+		this.wasEdited = false
 	}
 }
