@@ -116,6 +116,7 @@
 				transition: background-color 0.2s ease-out;
 				border-left: 0.5rem solid transparent;
 				border-right: 0.5rem solid transparent;
+				color: $color-primary;
 
 				svg {
 					transform: scale(1.2);
@@ -129,12 +130,12 @@
 				}
 
 				&.active {
-					background-color: $color-primary-pastelle;
-					color: $color-primary;
+					background-color: $color-primary;
+					color: $color-white;
 					cursor: default;
 
 					svg {
-						color: $color-primary;
+						color: $color-white;
 					}
 				}
 			}

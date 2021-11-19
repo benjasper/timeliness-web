@@ -180,7 +180,14 @@
 				</div>
 			</div>
 
-			<div class="flex flex-row justify-end">
+			<div class="flex flex-row justify-end gap-4">
+				<button type="button"
+						class="btn large save secondary"
+						(click)="close()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-exit.svg"></svg-icon>
+					<span>Cancel</span>
+				</button>
 				<button type="submit"
 						class="btn large save"
 						[disabled]="!editTask.valid || !editTask.dirty || loading">

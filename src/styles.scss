@@ -111,6 +111,7 @@ a {
 	color: $color-black;
 	cursor: pointer;
 	transition: all 0.1s;
+	@apply text-primary;
 	@apply dark:text-white;
 
 	&:hover {
@@ -451,6 +452,15 @@ input[type='submit'] {
 		.img,
 		&.no-background .img {
 			fill: $color-tertiary !important;
+		}
+	}
+
+	&.secondary {
+		@apply bg-secondary;
+		@apply text-primary;
+
+		.img {
+			@apply fill-current;
 		}
 	}
 }
