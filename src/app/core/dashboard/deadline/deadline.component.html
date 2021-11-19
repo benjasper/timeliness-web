@@ -12,7 +12,7 @@
 	<div class="w-2 mx-9 rounded-full" [ngClass]="getColorClass(tag ? tag.color: '', 'background')"></div>
 	<div class="deadline-info">
 		<a
-			class="deadline-name truncate-text text-underline"
+			class="deadline-name truncate-text text-underline text-black"
 			title="{{ task.name }}"
 			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
 		>
