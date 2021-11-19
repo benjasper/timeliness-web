@@ -8,7 +8,7 @@
 		class="tag-content"
 		#input
 		contenteditable="true"
-		[textContent]="actualContent"
+		[value]="actualContent"
 		(input)="logInput($event)"
 		(focus)="textFocus($event)"
 		placeholder="Add a new tag"

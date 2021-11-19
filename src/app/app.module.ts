@@ -37,7 +37,8 @@ import { NgxSplideModule } from 'ngx-splide'
 import { TimezoneSelectComponent } from './core/components/timezone-select/timezone-select.component'
 import { TimespanSelectComponent } from './core/components/timespan-select/timespan-select.component'
 import { TimeSelectComponent } from './core/components/time-select/time-select.component'
-import { AuthService } from './services/auth.service'
+import { AuthService } from './services/auth.service';
+import { InputAccessorDirective } from './directives/input-accessor.directive'
 
 @NgModule({
 	declarations: [
@@ -66,6 +67,7 @@ import { AuthService } from './services/auth.service'
 		TimezoneSelectComponent,
 		TimespanSelectComponent,
 		TimeSelectComponent,
+  InputAccessorDirective,
 	],
 	imports: [
 		BrowserModule,
