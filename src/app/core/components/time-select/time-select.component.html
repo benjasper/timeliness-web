@@ -1,0 +1,5 @@
+<ng-select [ngModel]="selected.getTime()" [clearable]="false" [dropdownPosition]="'top'" [virtualScroll]="true" (change)="onTimeChange($event)">
+	<ng-option *ngFor="let time of times" [value]="time.getTime()">
+		{{ time.toLocaleTimeString('default', { hour: 'numeric', minute: '2-digit' }) }}
+	</ng-option>
+</ng-select>

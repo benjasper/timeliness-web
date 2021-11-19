@@ -48,6 +48,10 @@ Date.prototype.isSameDay = function (date: Date): boolean {
 	return hash1 === hash2
 }
 
+Date.prototype.getClock = function (): number {
+	return this.getHours() * 60 * 60 + this.getMinutes() * 60 + this.getSeconds()
+}
+
 // tslint:disable-next-line: only-arrow-functions
 String.prototype.toDate = function (): Date {
 	return new Date(this.valueOf())

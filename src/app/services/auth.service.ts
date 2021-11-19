@@ -25,7 +25,7 @@ export class AuthService {
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
@@ -85,7 +85,7 @@ export class AuthService {
 	private fetchUser() {
 		const observable = this.http
 			.get<User>(`${environment.apiBaseUrl}/v1/user`)
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
@@ -97,7 +97,7 @@ export class AuthService {
 	public fetchCalendars() {
 		const observable = this.http
 			.get<Calendar>(`${environment.apiBaseUrl}/v1/calendars`)
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		return observable
 	}
@@ -105,7 +105,7 @@ export class AuthService {
 	public postCalendars(calendar: Calendar) {
 		const observable = this.http
 			.post<Calendar>(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		return observable
 	}
@@ -113,7 +113,7 @@ export class AuthService {
 	public connectGoogleCalendar() {
 		const observable = this.http
 			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined)
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		return observable
 	}
@@ -121,7 +121,7 @@ export class AuthService {
 	public patchUserSettings(settings: UserSettings) {
 		const observable = this.http
 			.patch<User>(`${environment.apiBaseUrl}/v1/user/settings`, JSON.stringify(settings))
-			.pipe(share(), catchError(this.handleError))
+			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((response) => {
 			this.userSubject.next(response)

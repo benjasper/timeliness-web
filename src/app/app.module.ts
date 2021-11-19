@@ -20,21 +20,24 @@ import { AngularSvgIconModule } from 'angular-svg-icon'
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { StatsComponent } from './core/dashboard/stats/stats.component'
 import { TagComponent } from './core/dashboard/modal-edit-task/tag/tag.component'
-import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component';
-import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component';
-import { AgendaComponent } from './core/agenda/agenda.component';
-import { DatetimePickerComponent } from './core/components/datetime-picker/datetime-picker.component';
-import { DropdownComponent } from './core/components/dropdown/dropdown.component';
-import { AgendaWorkUnitComponent } from './core/agenda/agenda-work-unit/agenda-work-unit.component';
-import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-item/agenda-date-group-item.component';
-import { GeneralComponent } from './core/settings/general/general.component';
-import { CalendarsComponent } from './core/settings/calendars/calendars.component';
-import { SectionComponent } from './core/settings/section/section.component';
-import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component';
+import { CircularProgressComponent } from './core/dashboard/circular-progress/circular-progress.component'
+import { StatsSectionComponent } from './core/dashboard/stats-section/stats-section.component'
+import { AgendaComponent } from './core/agenda/agenda.component'
+import { DatetimePickerComponent } from './core/components/datetime-picker/datetime-picker.component'
+import { DropdownComponent } from './core/components/dropdown/dropdown.component'
+import { AgendaWorkUnitComponent } from './core/agenda/agenda-work-unit/agenda-work-unit.component'
+import { AgendaDateGroupItemComponent } from './core/agenda/agenda-date-group-item/agenda-date-group-item.component'
+import { GeneralComponent } from './core/settings/general/general.component'
+import { CalendarsComponent } from './core/settings/calendars/calendars.component'
+import { SectionComponent } from './core/settings/section/section.component'
+import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component'
 import { ToastService } from './services/toast.service'
 import { TaskService } from './services/task.service'
-import { NgxSplideModule } from 'ngx-splide';
+import { NgxSplideModule } from 'ngx-splide'
 import { TimezoneSelectComponent } from './core/components/timezone-select/timezone-select.component'
+import { TimespanSelectComponent } from './core/components/timespan-select/timespan-select.component'
+import { TimeSelectComponent } from './core/components/time-select/time-select.component'
+import { AuthService } from './services/auth.service'
 
 @NgModule({
 	declarations: [
@@ -60,7 +63,9 @@ import { TimezoneSelectComponent } from './core/components/timezone-select/timez
 		CalendarsComponent,
 		SectionComponent,
 		GoogleCalendarSettingsComponent,
-  TimezoneSelectComponent,
+		TimezoneSelectComponent,
+		TimespanSelectComponent,
+		TimeSelectComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -74,9 +79,9 @@ import { TimezoneSelectComponent } from './core/components/timezone-select/timez
 			configUrl: './assets/config/svg-preload.json',
 		}),
 		NgSelectModule,
-		NgxSplideModule
+		NgxSplideModule,
 	],
-	providers: [httpInterceptorProviders, ToastService],
+	providers: [httpInterceptorProviders, ToastService, TaskService, AuthService],
 	bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
