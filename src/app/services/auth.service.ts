@@ -54,7 +54,7 @@ export class AuthService {
 		this.decodedAccessToken = undefined
 
 		localStorage.clear()
-		this.router.navigate(['signin'])
+		this.router.navigate(['/auth/signin'])
 	}
 
 	public refreshAccessToken(): Observable<{ accessToken: string }> {

@@ -1,0 +1,80 @@
+<div class="flex flex-col gap-32">
+	<form class="flex flex-col gap-16" [formGroup]="form">
+		<div class="mx-auto text-center">
+			<h1 class="mx-auto">Sign up</h1>
+			<h2 class="mx-auto">for a Timeliness account</h2>
+		</div>
+		<div class="flex flex-col md:flex-row gap-8">
+			<div>
+				<label class="label inset" for="firstname">Firstname</label>
+				<input
+					id="firstname"
+					type="text"
+					class="edit with-background"
+					placeholder="Your firstname"
+					formControlName="firstname"
+				/>
+			</div>
+			<div>
+				<label class="label inset" for="lastname">Lastname</label>
+				<input
+					id="lastname"
+					type="text"
+					class="edit with-background"
+					placeholder="Your lastname"
+					formControlName="lastname"
+				/>
+			</div>
+		</div>
+		<div class="flex flex-row">
+			<div class="w-full">
+				<label class="label inset" for="email">Email</label>
+				<input
+					id="email"
+					type="email"
+					class="edit with-background !w-full"
+					placeholder="Your email"
+					formControlName="email"
+				/>
+			</div>
+		</div>
+		<div class="flex flex-col md:flex-row gap-8">
+			<div>
+				<label class="label inset" for="password">Password</label>
+				<input
+					id="password"
+					type="password"
+					class="edit with-background"
+					placeholder="Your password"
+					formControlName="password"
+				/>
+			</div>
+			<div>
+				<label class="label inset" for="password2">Repeat password</label>
+				<input
+					id="password2"
+					type="text"
+					class="edit with-background"
+					placeholder="Repeat your password"
+					formControlName="password2"
+				/>
+			</div>
+		</div>
+		<div class="flex flex-row ml-7">
+			<input id="privacy" type="checkbox" class="edit with-background my-auto mr-4" formControlName="privacy" />
+			<label class="text-base flex flex-row" for="privacy">
+				I have read the&nbsp;
+				<a href="https://timeliness.app/privacy" target="_blank">privacy agreement</a>
+				&nbsp;and I agree with it.
+			</label>
+		</div>
+		<div class="flex flex-row">
+			<button type="submit" class="mx-auto large">Sign up</button>
+		</div>
+	</form>
+	<div class="flex flex-row w-full gap-4 justify-center">
+		<a href="https://timeliness.app">Exit app</a>
+		<span>|</span>
+		<a routerLink="/auth/signin">Sign in instead</a>
+	</div>
+</div>

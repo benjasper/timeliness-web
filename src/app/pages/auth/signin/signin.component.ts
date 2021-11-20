@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { AuthService } from '../services/auth.service'
+import { AuthService } from '../../../services/auth.service'
 
 @Component({
 	selector: 'app-signin',
 	templateUrl: './signin.component.html',
-	styleUrls: ['./signin.component.scss'],
 })
 export class SigninComponent implements OnInit {
 	constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) {}

@@ -14,7 +14,7 @@ import { SettingsComponent } from './core/settings/settings.component'
 import { httpInterceptorProviders } from './interceptors'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { SigninComponent } from './signin/signin.component'
+import { SigninComponent } from './pages/auth/signin/signin.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { AngularSvgIconModule } from 'angular-svg-icon'
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
@@ -38,7 +38,9 @@ import { TimezoneSelectComponent } from './core/components/timezone-select/timez
 import { TimespanSelectComponent } from './core/components/timespan-select/timespan-select.component'
 import { TimeSelectComponent } from './core/components/time-select/time-select.component'
 import { AuthService } from './services/auth.service';
-import { InputAccessorDirective } from './directives/input-accessor.directive'
+import { InputAccessorDirective } from './directives/input-accessor.directive';
+import { SignupComponent } from './pages/auth/signup/signup.component';
+import { AuthComponent } from './pages/auth/auth.component'
 
 @NgModule({
 	declarations: [
@@ -68,6 +70,8 @@ import { InputAccessorDirective } from './directives/input-accessor.directive'
 		TimespanSelectComponent,
 		TimeSelectComponent,
   InputAccessorDirective,
+  SignupComponent,
+  AuthComponent,
 	],
 	imports: [
 		BrowserModule,

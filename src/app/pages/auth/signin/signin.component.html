@@ -1,0 +1,38 @@
+<div class="flex flex-col gap-32 px-20">
+	<form class="flex flex-col gap-16" [formGroup]="signinForm">
+		<div class="mx-auto text-center">
+			<h1 class="mx-auto">Sign in</h1>
+			<h2 class="mx-auto">to your account</h2>
+		</div>
+		<div class="flex flex-col">
+			<label class="label inset" for="email">Email</label>
+			<input
+				class="edit with-background"
+				type="text"
+				id="email"
+				formControlName="email"
+				placeholder="Your email"
+			/>
+		</div>
+		<div class="flex flex-col">
+			<label class="label inset" for="password">Password</label>
+			<input
+				class="edit with-background"
+				type="password"
+				id="password"
+				formControlName="password"
+				placeholder="Your password"
+			/>
+		</div>
+		<div class="flex flex-row">
+			<button type="submit" class="mx-auto large" [disabled]="!signinForm.valid" (submit)="submit()">
+				Sign in
+			</button>
+		</div>
+	</form>
+	<div class="flex flex-row w-full gap-4 justify-center">
+		<a href="https://timeliness.app">Exit app</a>
+		<span>|</span>
+		<a routerLink="/auth/signup">No account yet? Sign up here</a>
+	</div>
+</div>
