@@ -1,75 +1,131 @@
 <div class="flex flex-col gap-32">
-	<form class="flex flex-col gap-16" [formGroup]="form">
+	<form class="flex flex-col gap-16" [formGroup]="form" (submit)="submit()">
 		<div class="mx-auto text-center">
 			<h1 class="mx-auto">Create</h1>
 			<h2 class="mx-auto">your Timeliness account</h2>
 		</div>
 		<div class="flex flex-col md:flex-row gap-8">
 			<div>
-				<label class="label inset" for="firstname">Firstname</label>
+				<div class="flex flex-row justify-between">
+					<label class="label inset" for="firstname">Firstname</label>
+					<label *ngIf="firstname?.errors && firstname?.touched" class="label !text-red" for="firstname">
+						Required
+					</label>
+				</div>
 				<input
 					id="firstname"
 					type="text"
 					class="edit with-background"
 					placeholder="Your firstname"
 					formControlName="firstname"
+					[class.!bg-red-light]="firstname?.errors && firstname?.touched"
 				/>
 			</div>
 			<div>
-				<label class="label inset" for="lastname">Lastname</label>
+				<div class="flex flex-row justify-between">
+					<label class="label inset" for="lastname">Lastname</label>
+					<label *ngIf="lastname?.errors && lastname?.touched" class="label !text-red">
+						Required
+					</label>
+				</div>
 				<input
 					id="lastname"
 					type="text"
 					class="edit with-background"
 					placeholder="Your lastname"
 					formControlName="lastname"
+					[class.!bg-red-light]="lastname?.errors && lastname?.touched"
 				/>
 			</div>
 		</div>
 		<div class="flex flex-row">
 			<div class="w-full">
-				<label class="label inset" for="email">Email</label>
+				<div class="flex flex-row justify-between">
+					<label class="label inset" for="email">Email</label>
+					<label *ngIf="email?.getError('required') && email?.touched" class="label !text-red">
+						Required
+					</label>
+					<label *ngIf="email?.getError('unique')" class="label !text-red">
+						Email is already registered
+					</label>
+					<label *ngIf="email?.getError('email') && email?.touched" class="label !text-red">
+						Not in email format
+					</label>
+				</div>
 				<input
 					id="email"
 					type="email"
 					class="edit with-background !w-full"
 					placeholder="Your email"
 					formControlName="email"
+					[class.!bg-red-light]="email?.errors && email?.touched"
 				/>
 			</div>
 		</div>
 		<div class="flex flex-col md:flex-row gap-8">
 			<div>
-				<label class="label inset" for="password">Password</label>
+				<div class="flex flex-row justify-between">
+					<label class="label inset" for="password">Password</label>
+					<label *ngIf="password?.errors && password?.touched" class="label !text-red">
+						Required
+					</label>
+				</div>
 				<input
 					id="password"
 					type="password"
 					class="edit with-background"
 					placeholder="Your password"
 					formControlName="password"
+					[class.!bg-red-light]="password?.errors && password?.touched"
 				/>
 			</div>
 			<div>
-				<label class="label inset" for="password2">Repeat password</label>
+				<div class="flex flex-row justify-between">
+					<label class="label inset" for="password2">Repeat password</label>
+					<label
+						*ngIf="password2?.errors?.['required'] && password2?.touched"
+						class="label !text-red"
+					>
+						Required
+					</label>
+					<label
+						*ngIf="password2?.hasError('matchOther') && password2?.touched"
+						class="label !text-red"
+					>
+						Doesn't match
+					</label>
+				</div>
 				<input
 					id="password2"
-					type="text"
+					type="password"
 					class="edit with-background"
 					placeholder="Repeat your password"
 					formControlName="password2"
+					[class.!bg-red-light]="password2?.errors && password2?.touched"
 				/>
 			</div>
 		</div>
 		<div class="flex flex-row ml-7">
 			<input id="privacy" type="checkbox" class="edit with-background my-auto mr-4" formControlName="privacy" />
-			<label class="text-base flex flex-row" for="privacy">
+			<label
+				class="text-base flex flex-row"
+				for="privacy"
+				[class.!text-red]="privacy?.errors && privacy?.touched"
+			>
 				I have read the&nbsp;
-				<a href="https://timeliness.app/privacy" target="_blank">privacy agreement</a>
+				<a class="inline-block" href="https://timeliness.app/privacy" target="_blank">privacy agreement</a>
 				&nbsp;and I agree with it.
 			</label>
 		</div>
 		<div class="flex flex-row">
-			<button type="submit" class="mx-auto large" [disabled]="!form.valid">Sign up</button>
+			<button type="submit" class="transition-all mx-auto large flex flex-row" [disabled]="loading">
+				<span class="my-auto">Sign up</span>
+				<svg-icon
+					*ngIf="loading"
+					class="ml-2 w-8 my-auto animate-spin-slow"
+					src="/assets/icons/icon-loading.svg"
+				></svg-icon>
+			</button>
 		</div>
 	</form>
 	<div class="flex flex-row w-full gap-4 justify-center">

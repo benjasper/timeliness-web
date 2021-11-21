@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Task, TaskUnwound } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { UtilityService } from 'src/app/services/utility.service'
@@ -8,7 +8,7 @@ import { UtilityService } from 'src/app/services/utility.service'
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 	constructor(private taskService: TaskService) { }
 
 	public today = new Date()
@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit {
 
 	public deadlineYears = new Map<Number, Number[]>()
 	public workUnitYears = new Map<Number, Number[]>()
+
+	public syncInterval?: NodeJS.Timeout
 
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
@@ -62,6 +64,16 @@ export class DashboardComponent implements OnInit {
 			this.recevieTaskUpdate(task)
 			this.recevieTaskUnwoundUpdate(task)
 		})
+
+		this.syncInterval = setInterval(() => {
+			this.taskService.getTasksByDeadlines(true)
+		}, 60000)
+	}
+
+	public ngOnDestroy() {
+		if (this.syncInterval) {
+			clearInterval(this.syncInterval)
+		}
 	}
 
 	private recevieTaskUpdate(task: Task) {
@@ -252,7 +264,6 @@ export class DashboardComponent implements OnInit {
 
 	public setStartsAtWorkUnit() {
 		const startIndex = this.nextUp.findIndex((x) => x.workUnit.isDone === false)
-		console.log(startIndex)
 		this.startIndex = startIndex === -1 ? 0 : startIndex
 	}
 

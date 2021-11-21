@@ -1,32 +1,58 @@
 <div class="flex flex-col gap-32 px-20">
-	<form class="flex flex-col gap-16" [formGroup]="signinForm">
+	<form class="flex flex-col gap-16" [formGroup]="signinForm" (submit)="submit()">
 		<div class="mx-auto text-center">
 			<h1 class="mx-auto">Sign in</h1>
 			<h2 class="mx-auto">to your account</h2>
 		</div>
 		<div class="flex flex-col">
-			<label class="label inset" for="email">Email</label>
+			<div class="flex flex-row justify-between">
+				<label class="label inset" for="email">Email</label>
+				<label *ngIf="email?.getError('required') && email?.touched" class="label !text-red">
+					Required
+				</label>
+				<label *ngIf="email?.getError('email') && email?.touched" class="label !text-red">
+					Not in email format
+				</label>
+				<label *ngIf="email?.getError('mismatch')" class="label !text-red">
+					Wrong email or password
+				</label>
+			</div>
 			<input
 				class="edit with-background"
 				type="text"
 				id="email"
 				formControlName="email"
 				placeholder="Your email"
+				[class.!bg-red-light]="email?.errors && email?.touched"
 			/>
 		</div>
 		<div class="flex flex-col">
-			<label class="label inset" for="password">Password</label>
+			<div class="flex flex-row justify-between">
+				<label class="label inset" for="password">Password</label>
+				<label *ngIf="password?.getError('required') && password?.touched" class="label !text-red">
+					Required
+				</label>
+				<label *ngIf="password?.getError('mismatch')" class="label !text-red">
+					Wrong email or password
+				</label>
+			</div>
 			<input
 				class="edit with-background"
 				type="password"
 				id="password"
 				formControlName="password"
 				placeholder="Your password"
+				[class.!bg-red-light]="password?.errors && password?.touched"
 			/>
 		</div>
 		<div class="flex flex-row">
-			<button type="submit" class="mx-auto large" [disabled]="!signinForm.valid" (submit)="submit()">
-				Sign in
+			<button type="submit" class="transition-all mx-auto large flex flex-row" [disabled]="loading">
+				<span class="my-auto">Sign in</span>
+				<svg-icon
+					*ngIf="loading"
+					class="ml-2 w-8 my-auto animate-spin-slow"
+					src="/assets/icons/icon-loading.svg"
+				></svg-icon>
 			</button>
 		</div>
 	</form>

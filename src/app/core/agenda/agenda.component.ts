@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Task, TaskAgenda, TaskUnwound } from 'src/app/models/task';
 import { AgendaEventType } from 'src/app/models/event';
 import { TaskService } from 'src/app/services/task.service';
@@ -11,7 +11,7 @@ import { share } from 'rxjs/operators';
 	templateUrl: './agenda.component.html',
 	styleUrls: ['./agenda.component.scss']
 })
-export class AgendaComponent implements OnInit {
+export class AgendaComponent implements OnInit, OnDestroy {
 
 	constructor(private taskService: TaskService) {
 		this.today.setHours(0, 0, 0, 0)
@@ -33,6 +33,8 @@ export class AgendaComponent implements OnInit {
 	pageFuture = 0
 	pagePast = 0
 
+	syncInterval?: NodeJS.Timeout
+
 	@ViewChild('todayElement') todayElement!: ElementRef
 
 	ngOnInit(): void {
@@ -48,6 +50,16 @@ export class AgendaComponent implements OnInit {
 		this.taskService.tasksObservable.subscribe(() => {
 			this.fetchAgenda()
 		})
+
+		this.syncInterval = setInterval(() => {
+			this.taskService.getTasksByDeadlines(true)
+		}, 60000)
+	}
+
+	public ngOnDestroy() {
+		if (this.syncInterval) {
+			clearInterval(this.syncInterval)
+		}
 	}
 
 	private fetchAgenda() {

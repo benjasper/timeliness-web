@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { ToastType } from 'src/app/models/toast'
+import { ToastService } from 'src/app/services/toast.service'
 import { AuthService } from '../../../services/auth.service'
 
 @Component({
@@ -8,16 +10,21 @@ import { AuthService } from '../../../services/auth.service'
 	templateUrl: './signin.component.html',
 })
 export class SigninComponent implements OnInit {
-	constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
+	constructor(
+		private authService: AuthService,
+		private route: ActivatedRoute,
+		private router: Router,
+		private toastService: ToastService
+	) {}
 
 	signinForm = new FormGroup({
-		email: new FormControl('', [Validators.required]),
+		email: new FormControl('', [Validators.required, Validators.email]),
 		password: new FormControl('', [Validators.required]),
 	})
 
 	returnUrl = ''
-	invalidCredentials = false
-	success = false
+
+	loading = false
 
 	ngOnInit(): void {
 		this.route.queryParams.subscribe((params) => {
@@ -25,8 +32,24 @@ export class SigninComponent implements OnInit {
 		})
 	}
 
+	get email() {
+		return this.signinForm.get('email')
+	}
+
+	get password() {
+		return this.signinForm.get('password')
+	}
+
 	public submit() {
-		this.invalidCredentials = false
+		this.signinForm.markAsPristine()
+		this.signinForm.clearValidators()
+		
+		if (this.signinForm.invalid) {
+			this.signinForm.markAllAsTouched()
+			return false
+		}
+		
+		this.loading = true
 
 		this.authService
 			.authenticate({
@@ -40,15 +63,20 @@ export class SigninComponent implements OnInit {
 						route = this.returnUrl
 					}
 
-					this.success = true
+					this.loading = false
+					this.toastService.newToast(ToastType.Success, 'You are now logged in!')
 
-					setTimeout(() => {
-						this.router.navigate([route])
-					}, 500)
+					this.router.navigate([route])
 				},
 				(error) => {
-					this.invalidCredentials = true
+					if (error.status === 400) {
+						this.email?.setErrors({mismatch: true})
+						this.password?.setErrors({mismatch: true})
+					}
+					this.loading = false
 				}
 			)
+
+		return false
 	}
 }

@@ -13,12 +13,13 @@ import { CalendarsComponent } from './core/settings/calendars/calendars.componen
 import { SignupComponent } from './pages/auth/signup/signup.component'
 import { AuthComponent } from './pages/auth/auth.component'
 import { VerificationComponent } from './pages/auth/verification/verification.component'
+import { NotVerifiedGuard } from './guards/not-verified.guard'
 
 const routes: Routes = [
 	{
 		path: '',
 		component: CoreComponent,
-		canActivate: [AuthGuard],
+		canActivate: [AuthGuard, NotVerifiedGuard],
 		children: [
 			{
 				path: 'dashboard',
@@ -49,7 +50,7 @@ const routes: Routes = [
 					{ path: '', redirectTo: '/settings/general', pathMatch: 'full' },
 					{ path: 'general', component: GeneralComponent, pathMatch: 'full' },
 					{ path: 'calendars', component: CalendarsComponent, pathMatch: 'full' },
-				]
+				],
 			},
 			{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 		],
@@ -57,24 +58,23 @@ const routes: Routes = [
 	{
 		path: 'auth',
 		component: AuthComponent,
-		//canActivate: [NoAuthGuard],
 		children: [
 			{
 				path: 'signin',
 				component: SigninComponent,
-				//canActivate: [NoAuthGuard],
+				canActivate: [NoAuthGuard],
 			},
 			{
 				path: 'signup',
 				component: SignupComponent,
-				//canActivate: [NoAuthGuard],
+				canActivate: [NoAuthGuard],
 			},
 			{
 				path: 'verify',
 				component: VerificationComponent,
-				//canActivate: [NoAuthGuard],
 			},
-		]
+			{ path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
+		],
 	},
 	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 	{

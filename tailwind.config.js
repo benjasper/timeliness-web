@@ -27,6 +27,9 @@ module.exports = {
 			},
 			gridTemplateColumns: {
 				'modal': '65rem 1fr',
+			},
+			animation: {
+				'spin-slow': 'spin 3s linear infinite'
 			}
 		},
 		colors: {
@@ -53,7 +56,8 @@ module.exports = {
 				DEFAULT: '#fff'
 			},
 			red: {
-				DEFAULT: '#ef233c'
+				DEFAULT: '#ef233c',
+				light: '#ffe6e9'
 			},
 			green: {
 				DEFAULT: '#CDF0EA',

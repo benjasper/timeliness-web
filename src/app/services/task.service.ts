@@ -29,10 +29,6 @@ export class TaskService {
 				this.dateChangeSubject.next(newDate)
 			}
 		}, 30000)
-
-		setInterval(() => {
-			this.getTasksByDeadlines(this.lastTaskSync)
-		}, 60000)
 	}
 
 	public lastTaskSync: Date = new Date(0)
@@ -50,7 +46,7 @@ export class TaskService {
 	public dateChangeObservable = this.dateChangeSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
 
-	public getTasksByDeadlines(sync?: Date, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
+	public getTasksByDeadlines(sync: boolean = false, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
 		date.setHours(0,0,0,0)
 		const filters = [
 			`isDoneAndDueAt=${date.toISOString()}`,
@@ -59,12 +55,12 @@ export class TaskService {
 		]
 
 		if (sync) {
-			filters.push(`lastModifiedAt=${sync.toISOString()}`)
+			filters.push(`lastModifiedAt=${this.lastTaskSync.toISOString()}`)
 			filters.push(`includeDeleted=true`)
 		}
-
+		
 		this.lastTaskSync = new Date()
-
+		
 		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
 			.pipe(shareReplay(), retry(3), catchError((err) => this.handleError(err)))
@@ -260,7 +256,7 @@ export class TaskService {
 
 		observable.subscribe(() => {
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(this.lastTaskSync)
+			this.getTasksByDeadlines(true)
 		})
 
 		return observable
@@ -273,7 +269,7 @@ export class TaskService {
 
 		observable.subscribe(() => {
 			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(this.lastTaskSync)
+			this.getTasksByDeadlines(true)
 		})
 
 		return observable

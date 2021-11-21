@@ -5,6 +5,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
+import { ApiError } from '../models/error'
 import { ToastType } from '../models/toast'
 import { User, UserSettings } from '../models/user'
 import { ToastService } from './toast.service'
@@ -25,7 +26,10 @@ export class AuthService {
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
@@ -36,10 +40,18 @@ export class AuthService {
 		return observable
 	}
 
-	public register(credentials: { firstname: string, lastname: string, email: string; password: string }): Observable<AuthResponse> {
+	public register(credentials: {
+		firstname: string
+		lastname: string
+		email: string
+		password: string
+	}): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/register`, JSON.stringify(credentials))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((response) => {
 			this.setAccessToken(response.accessToken)
@@ -97,9 +109,10 @@ export class AuthService {
 	}
 
 	private fetchUser() {
-		const observable = this.http
-			.get<User>(`${environment.apiBaseUrl}/v1/user`)
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.get<User>(`${environment.apiBaseUrl}/v1/user`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
@@ -109,9 +122,10 @@ export class AuthService {
 	}
 
 	public fetchCalendars() {
-		const observable = this.http
-			.get<Calendar>(`${environment.apiBaseUrl}/v1/calendars`)
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.get<Calendar>(`${environment.apiBaseUrl}/v1/calendars`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		return observable
 	}
@@ -119,7 +133,10 @@ export class AuthService {
 	public postCalendars(calendar: Calendar) {
 		const observable = this.http
 			.post<Calendar>(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		return observable
 	}
@@ -127,7 +144,10 @@ export class AuthService {
 	public connectGoogleCalendar() {
 		const observable = this.http
 			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined)
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		return observable
 	}
@@ -135,7 +155,10 @@ export class AuthService {
 	public patchUserSettings(settings: UserSettings) {
 		const observable = this.http
 			.patch<User>(`${environment.apiBaseUrl}/v1/user/settings`, JSON.stringify(settings))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
@@ -199,7 +222,16 @@ export class AuthService {
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
-		this.toastService.newToast(ToastType.Error, 'An error occured.')
+		const apiError = error.error as ApiError
+
+		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
+
+		let message = 'An error occured.'
+		if (error.status >= 400 && error.status < 500) {
+			message = 'That did not work.'
+		}
+
+		this.toastService.newToast(ToastType.Error, message)
 		return throwError(error)
 	}
 }
