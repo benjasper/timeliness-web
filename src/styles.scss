@@ -125,13 +125,16 @@ a {
 	}
 }
 
+input[type='text'], input[type='password'] {
+	min-width: 35rem;
+}
+
 input[type='text'],
 input[type='datetime-local'],
 input[type='time'],
 textarea,
 input,
 .input {
-	min-width: 35rem;
 	padding: 0.8rem 1.5rem;
 	border: none;
 	outline: none;
@@ -334,6 +337,12 @@ input[type='submit'] {
 		font-size: inherit;
 		vertical-align: middle;
 		white-space: nowrap;
+		@apply my-auto;
+	}
+	
+	svg-icon {
+		@apply my-auto;
+
 	}
 
 	.img {
@@ -367,37 +376,6 @@ input[type='submit'] {
 		.img {
 			width: 1.2rem;
 			height: 1.2rem;
-		}
-	}
-
-	&.filter {
-		border-radius: 3.5rem;
-		padding: 1.5rem 2.5rem;
-		font-size: 1.6rem;
-		background-color: $color-light-grey;
-		color: $color-black;
-
-		.img {
-			fill: $color-black;
-		}
-
-		&:hover:not(.active) {
-			background-color: $color-primary-light;
-			color: $color-white;
-
-			.img {
-				fill: $color-white;
-			}
-		}
-
-		&.active {
-			background-color: $color-primary;
-			color: $color-white;
-			cursor: default;
-
-			.img {
-				fill: $color-white;
-			}
 		}
 	}
 

@@ -63,8 +63,8 @@ export class AuthService {
 	}
 
 	get user(): Observable<User | undefined> {
-		if (!this.userSubject.getValue()) {
-			this.fetchUser()
+		if (!this.userSubject.getValue() && this.isLoggedIn()) {
+			return this.fetchUser()
 		}
 
 		return this.userObservable

@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div class="flex flex-col md:flex-row gap-8">
-			<div>
+			<div class="w-full">
 				<div class="flex flex-row justify-between">
 					<label class="label inset" for="password">Password</label>
 					<label *ngIf="password?.errors && password?.touched" class="label !text-red">
@@ -79,7 +79,7 @@
 					[class.!bg-red-light]="password?.errors && password?.touched"
 				/>
 			</div>
-			<div>
+			<div class="w-full">
 				<div class="flex flex-row justify-between">
 					<label class="label inset" for="password2">Repeat password</label>
 					<label
