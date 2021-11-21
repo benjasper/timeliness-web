@@ -12,6 +12,7 @@ import { GeneralComponent } from './core/settings/general/general.component'
 import { CalendarsComponent } from './core/settings/calendars/calendars.component'
 import { SignupComponent } from './pages/auth/signup/signup.component'
 import { AuthComponent } from './pages/auth/auth.component'
+import { VerificationComponent } from './pages/auth/verification/verification.component'
 
 const routes: Routes = [
 	{
@@ -66,6 +67,11 @@ const routes: Routes = [
 			{
 				path: 'signup',
 				component: SignupComponent,
+				//canActivate: [NoAuthGuard],
+			},
+			{
+				path: 'verify',
+				component: VerificationComponent,
 				//canActivate: [NoAuthGuard],
 			},
 		]

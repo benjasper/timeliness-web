@@ -40,7 +40,8 @@ import { TimeSelectComponent } from './core/components/time-select/time-select.c
 import { AuthService } from './services/auth.service';
 import { InputAccessorDirective } from './directives/input-accessor.directive';
 import { SignupComponent } from './pages/auth/signup/signup.component';
-import { AuthComponent } from './pages/auth/auth.component'
+import { AuthComponent } from './pages/auth/auth.component';
+import { VerificationComponent } from './pages/auth/verification/verification.component'
 
 @NgModule({
 	declarations: [
@@ -72,6 +73,7 @@ import { AuthComponent } from './pages/auth/auth.component'
   InputAccessorDirective,
   SignupComponent,
   AuthComponent,
+  VerificationComponent,
 	],
 	imports: [
 		BrowserModule,

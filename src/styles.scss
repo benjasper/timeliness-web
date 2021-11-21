@@ -54,7 +54,7 @@ textarea {
 
 span,
 p {
-	font-size: 1.4rem;
+	@apply text-base;
 	padding: 0;
 	margin: 0;
 }

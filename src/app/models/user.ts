@@ -10,6 +10,7 @@ export interface User {
 		status: CalendarConnectionStatus
 	},
 	settings: UserSettings
+	emailVerified: boolean
 }
 
 export interface UserSettings {
