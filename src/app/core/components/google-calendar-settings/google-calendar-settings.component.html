@@ -1,5 +1,5 @@
 <div class="w-full flex flex-col" *ngIf="user">
-	<div class="mb-8" *ngIf="googleCalendars">
+	<div class="mb-8" *ngIf="googleCalendars.length > 0">
 		<span class="text-lg text-grey-dark">Your calendars</span>
 		<div *ngFor="let calendar of googleCalendars" class="flex flex-row">
 			<input [id]="calendar.calendarId" class="mr-4 my-auto" type="checkbox" [checked]="calendar.isActive" 

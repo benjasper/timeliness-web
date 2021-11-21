@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
 	selector: 'app-google-calendar-settings',
@@ -9,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class GoogleCalendarSettingsComponent implements OnInit {
 
-	constructor(private authService: AuthService) { }
+	constructor(private authService: AuthService, private toastService: ToastService) { }
 
 	user?: User
 	isCalendarsChanged = false
@@ -42,7 +44,12 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	connect() {
 		this.authService.connectGoogleCalendar().subscribe(response => {
 			document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
-			window.open(response.url, "_blank");
+			const w = window.open(response.url, "_blank");
+			setTimeout(() => {
+				if (w === null) {
+					this.toastService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 0, {title: 'link', link: response.url})
+				}
+			}, 50)
 		})
 	}
 

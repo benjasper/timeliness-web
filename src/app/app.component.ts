@@ -31,12 +31,15 @@ export class AppComponent implements OnInit {
 
 			if (this.toast) {
 				this.toast = undefined
+
 				setTimeout(() => {
 					this.toast = toast
 
-					setTimeout(() => {
-						this.toast = undefined
-					}, 5000)
+					if (this.toast.seconds > 0) {
+						setTimeout(() => {
+							this.toast = undefined
+						}, this.toast.seconds * 1000)
+					} 
 				}, 200)
 
 				return
@@ -44,9 +47,15 @@ export class AppComponent implements OnInit {
 
 			this.toast = toast
 
-			setTimeout(() => {
-				this.toast = undefined
-			}, 5000)
+			if (this.toast.seconds > 0) {
+				setTimeout(() => {
+					this.toast = undefined
+				}, this.toast.seconds * 1000)
+			} 
 		})
+	}
+
+	dismiss() {
+		this.toast = undefined
 	}
 }
