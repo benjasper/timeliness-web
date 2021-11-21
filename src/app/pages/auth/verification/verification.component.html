@@ -1,12 +1,12 @@
 <div class="flex flex-col gap-16">
-	<div *ngIf="!success" class="flex flex-col">
+	<div *ngIf="!success && initiatedHere" class="flex flex-col">
 		<h1 class="m-auto">Almost there...</h1>
 		<p class="text-center text-lg w-3/4 mx-auto">
 			We just sent you an email containing a verification link. Please click the link to verify your email.
 		</p>
 	</div>
 
-	<div *ngIf="!success" class="flex flex-col gap-8">
+	<div *ngIf="!success && initiatedHere" class="flex flex-col gap-8">
 		<h2 class="text-xl mx-auto">Waiting for email verificiation...</h2>
 		<svg
 			class="animate-spin h-32 w-32 text-primary mx-auto"
@@ -37,6 +37,15 @@
 				<span class="m-auto text-lg font-bold">or</span>
 				<button class="large text-center !mx-auto" routerLink="/onboarding">Continue here</button>
 			</div>
+		</div>
+	</div>
+	<div *ngIf="error" class="flex flex-col gap-24 justify-center text-pink-dark px-40">
+		<div class="flex flex-col gap-8">
+			<h1 class="mx-auto">This did not work.</h1>
+			<svg-icon class="img mx-auto !w-32 !h-32 fill-current border-4 rounded-full p-6" src="/assets/icons/icon-exit.svg"></svg-icon>
+			<p class="mx-auto text-center text-black">
+				If you think this is a mistake please contact us at <a class="inline-block" href="mailto:support@timeliness.app">support@timeliness.app</a>.
+			</p>
 		</div>
 	</div>
 </div>

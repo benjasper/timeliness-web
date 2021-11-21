@@ -10,12 +10,16 @@ export class VerificationComponent implements OnInit {
 	constructor(private route: ActivatedRoute, private authService: AuthService) {}
 
 	success = false
+	error = false
 	initiatedHere = true
 
 	ngOnInit(): void {
 		this.route.queryParams.subscribe((params) => {
-			if (params.success) {
+			if (params.success === "true") {
 				this.success = true
+				this.initiatedHere = false
+			} else if (params.success === "false") {
+				this.error = true
 				this.initiatedHere = false
 			} else {
 				this.authService.user.subscribe(user => {

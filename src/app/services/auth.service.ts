@@ -36,6 +36,20 @@ export class AuthService {
 		return observable
 	}
 
+	public register(credentials: { firstname: string, lastname: string, email: string; password: string }): Observable<AuthResponse> {
+		const observable = this.http
+			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/register`, JSON.stringify(credentials))
+			.pipe(share(), catchError((err) => this.handleError(err)))
+
+		observable.subscribe((response) => {
+			this.setAccessToken(response.accessToken)
+			this.setRefreshToken(response.refreshToken)
+			this.userSubject.next(response.result)
+		})
+
+		return observable
+	}
+
 	get user(): Observable<User | undefined> {
 		if (!this.userSubject.getValue()) {
 			this.fetchUser()
