@@ -11,7 +11,7 @@
 												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
 			</ng-container>
-			<button *ngIf="!tasksPastClicked && !loading"
+			<button *ngIf="!tasksPastClicked && !loading && groupedTasksPast.length > 0"
 					type="button"
 					class="mx-auto my-0 text-lg"
 					(click)="showPastTasks()">View past</button>

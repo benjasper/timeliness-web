@@ -22,13 +22,13 @@ export class StatsSectionComponent implements OnInit {
 		this.loadingPlan = true
 
 		this.taskService.getTasksByWorkunits().subscribe((result) => {
+			this.loadingPlan = false
 			if (result.pagination.resultCount === 0) {
 				return
 			}
 
 			this.lastWorkUnitsUpdate = result.results
 			this.computePlanToday()
-			this.loadingPlan = false
 		}, () => {
 			this.loadingPlan = false
 		})

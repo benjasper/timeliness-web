@@ -23,4 +23,8 @@ export class GeneralComponent implements OnInit {
 			this.user = user
 		})
 	}
+
+	logout() {
+		this.authService.logout()
+	}
 }
