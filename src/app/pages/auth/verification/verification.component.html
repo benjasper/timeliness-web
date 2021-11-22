@@ -10,7 +10,7 @@
 		<h2 class="text-xl mx-auto">Waiting for email verificiation...</h2>
 		<svg-icon class="h-32 w-32 mx-auto text-primary animate-spin-slow" src="/assets/icons/icon-loading.svg"></svg-icon>
 	</div>
-	<div *ngIf="success" class="flex flex-col gap-24 justify-center text-green-dark px-40">
+	<div *ngIf="success" class="flex flex-col gap-24 justify-center text-green-dark">
 		<div *ngIf="initiatedHere" class="flex flex-col gap-16">
 			<div class="flex flex-col gap-8">
 				<h1 class="mx-auto">Email verified!</h1>
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 	</div>
-	<div *ngIf="error" class="flex flex-col gap-24 justify-center text-pink-dark px-40">
+	<div *ngIf="error" class="flex flex-col gap-24 justify-center text-pink-dark">
 		<div class="flex flex-col gap-8">
 			<h1 class="mx-auto">This did not work.</h1>
 			<svg-icon class="img mx-auto !w-32 !h-32 fill-current border-4 rounded-full p-6" src="/assets/icons/icon-exit.svg"></svg-icon>

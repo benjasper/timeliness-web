@@ -125,8 +125,9 @@ a {
 	}
 }
 
-input[type='text'], input[type='password'] {
+input[type='text'], input[type='password'], input[type='email'] {
 	min-width: 35rem;
+	width: 100%;
 }
 
 input[type='text'],

@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-32">
+<div class="flex flex-col gap-32 h-full justify-between">
 	<form class="flex flex-col gap-16" [formGroup]="form" (submit)="submit()">
 		<div class="mx-auto text-center">
 			<h1 class="mx-auto">Create</h1>
@@ -108,13 +108,13 @@
 		<div class="flex flex-row ml-7">
 			<input id="privacy" type="checkbox" class="edit with-background my-auto mr-4" formControlName="privacy" />
 			<label
-				class="text-base flex flex-row"
+				class="text-base inline-block"
 				for="privacy"
 				[class.!text-red]="privacy?.errors && privacy?.touched"
 			>
-				I have read the&nbsp;
+				I have read the
 				<a class="inline-block" href="https://timeliness.app/privacy" target="_blank">privacy agreement</a>
-				&nbsp;and I agree with it.
+				and I agree with it.
 			</label>
 		</div>
 		<div class="flex flex-row">
