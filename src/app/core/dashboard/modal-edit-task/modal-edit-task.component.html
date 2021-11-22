@@ -2,7 +2,7 @@
 	 *ngIf="modalBackground"
 	 (click)="close()"></div>
 <form [formGroup]="editTask"
-	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-2xl dark:bg-black"
+	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-2xl dark:bg-black shadow-lg"
 	  @flyInOut
 	  *ngIf="loaded"
 	  (ngSubmit)="save()">
