@@ -66,17 +66,31 @@ export class Duration {
 
 		duration /= 24
 
+		if (duration < 30.4167) {
+			if (duration % 1 !== 0) {
+				return (
+					Math.floor(duration) +
+					'd' +
+					' ' +
+					new Duration((duration % 1) * 8.64e7).buildDurationString(noSeconds)
+				)
+			}
+
+			return duration + 'd'
+		}
+
+		duration /= 30.4167
 
 		if (duration % 1 !== 0) {
 			return (
 				Math.floor(duration) +
-				'd' +
+				'mo' +
 				' ' +
-				new Duration((duration % 1) * 8.64e7).buildDurationString(noSeconds)
+				new Duration((duration % 1) * 2.628e9).buildDurationString(noSeconds)
 			)
 		}
 
-		return duration + 'd'
+		return duration + 'mo'
 	}
 
 	public toNanoseconds(): number {
