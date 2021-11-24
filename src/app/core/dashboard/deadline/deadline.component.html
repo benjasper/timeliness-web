@@ -27,7 +27,7 @@
 				</span>
 			</div>
 			<div *ngIf="task.dueAt.date.start.toDate().getTime() < now.getTime() && !task.isDone" class="sm-tag bg-pink flex flex-row relative">
-				<span class="text-red">{{ (now.getTime() - task.dueAt.date.start.toDate().getTime()).toDuration()}} overdue</span>
+				<span class="text-red">{{ (now.getTime() - task.dueAt.date.start.toDate().getTime()).toDuration().toStringWithoutSeconds()}} overdue</span>
 				<span class="absolute flex flex-shrink-0 h-3 w-3 -right-1">
 					<span class="animate-ping absolute inline-flex flex-shrink-0 h-full w-full rounded-full bg-red opacity-75"></span>
 					<span class="relative inline-flex rounded-full flex-shrink-0 h-3 w-3 bg-red"></span>

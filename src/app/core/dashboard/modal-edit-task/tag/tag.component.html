@@ -1,7 +1,7 @@
 <div
 	class="tag"
 	[class.isFocused]="isFocused"
-	[ngClass]="getColorClass(selectedColor, 'background')"
+	[ngClass]="selectedColor === '' ? '' : getColorClass(selectedColor, 'background')"
 >
 	<span class="hashtag">#</span>
 	<span
