@@ -10,6 +10,10 @@ export class Duration {
 	}
 
 	public toStringWithoutSeconds(): string {
+		if (this.milliseconds / 1000 < 60) {
+			return this.buildDurationString(false)
+		}
+
 		return this.buildDurationString(true)
 	}
 

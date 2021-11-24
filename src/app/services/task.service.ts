@@ -28,7 +28,7 @@ export class TaskService {
 			if (this.lastNow.getDate() !== newDate.getDate()) {
 				this.dateChangeSubject.next(newDate)
 			}
-		}, 30000)
+		}, 10000)
 	}
 
 	public lastTaskSync: Date = new Date(0)
