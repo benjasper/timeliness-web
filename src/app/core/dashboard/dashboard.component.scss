@@ -157,6 +157,7 @@
 
 			.toggle {
 				display: flex;
+				margin-top: 6rem;
 
 				.img {
 					transform: rotateZ(90deg);
@@ -167,6 +168,10 @@
 				position: absolute;
 				right: 0;
 				background-color: transparent;
+
+				.toggle {
+					margin-top: 3rem;
+				}
 			}
 		}
 
@@ -187,6 +192,17 @@
 				min-width: 0;
 				@apply drop-shadow-lg;
 
+				.toggle {
+					display: inline-block;
+					position: absolute;
+					left: 3rem;
+					margin-top: 6rem;
+				}
+
+				h2 {
+					margin-left: 4rem;
+				}
+
 				@include for-phone-only {
 					width: 100vw;
 
@@ -197,16 +213,10 @@
 							margin-right: 3rem;
 						}
 					}
-				}
 
-				.toggle {
-					display: inline-block;
-					position: absolute;
-					left: 3rem;
-				}
-
-				h2 {
-					margin-left: 4rem;
+					.toggle {
+						margin-top: 3rem;
+					}
 				}
 			}
 		}

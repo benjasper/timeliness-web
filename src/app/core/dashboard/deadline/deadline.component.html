@@ -41,6 +41,7 @@
 				<ng-template #thenBlock>completed</ng-template>
 				<ng-template #elseBlock>{{ getRemainingWorkload(task) }} of work left</ng-template>
 			</div>
+			<span *ngIf="!task.isDone && task.dueAt.date.start.toDate().getTime() > now.getTime()" class="sm-tag grey-background">due in {{ (now.getTime() - task.dueAt.date.start.toDate().getTime()).toDuration().toStringWithoutSeconds()}}</span>
 			<span class="sm-tag" [ngClass]="getColorClass(tag ? tag.color: '', 'background')" *ngFor="let tag of tags">
 				#{{ tag.value }}
 			</span>
