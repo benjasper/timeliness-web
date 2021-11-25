@@ -27,6 +27,14 @@
 		{
 			"iconName": "icon-arrow-down",
 			"iconPath": "/assets/icons/icon-arrow-down.svg"
+		},
+		{
+			"iconName": "icon-loading",
+			"iconPath": "/assets/icons/icon-loading.svg"
+		},
+		{
+			"iconName": "timeliness_logo_small",
+			"iconPath": "/assets/images/timeliness_logo_small.svg"
 		}
 	],
 	"customIcons": []
