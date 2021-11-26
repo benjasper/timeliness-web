@@ -37,11 +37,13 @@ import { NgxSplideModule } from 'ngx-splide'
 import { TimezoneSelectComponent } from './core/components/timezone-select/timezone-select.component'
 import { TimespanSelectComponent } from './core/components/timespan-select/timespan-select.component'
 import { TimeSelectComponent } from './core/components/time-select/time-select.component'
-import { AuthService } from './services/auth.service';
-import { InputAccessorDirective } from './directives/input-accessor.directive';
-import { SignupComponent } from './pages/auth/signup/signup.component';
-import { AuthComponent } from './pages/auth/auth.component';
+import { AuthService } from './services/auth.service'
+import { InputAccessorDirective } from './directives/input-accessor.directive'
+import { SignupComponent } from './pages/auth/signup/signup.component'
+import { AuthComponent } from './pages/auth/auth.component'
 import { VerificationComponent } from './pages/auth/verification/verification.component'
+import { OnboardingComponent } from './pages/onboarding/onboarding.component'
+import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
 
 @NgModule({
 	declarations: [
@@ -70,10 +72,12 @@ import { VerificationComponent } from './pages/auth/verification/verification.co
 		TimezoneSelectComponent,
 		TimespanSelectComponent,
 		TimeSelectComponent,
-  InputAccessorDirective,
-  SignupComponent,
-  AuthComponent,
-  VerificationComponent,
+		InputAccessorDirective,
+		SignupComponent,
+		AuthComponent,
+		VerificationComponent,
+		OnboardingComponent,
+		SuccessGoogleComponent,
 	],
 	imports: [
 		BrowserModule,

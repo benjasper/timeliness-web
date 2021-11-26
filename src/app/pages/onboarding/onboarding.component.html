@@ -1,0 +1,73 @@
+<div class="flex flex-col w-screen h-screen bg-grey-very-light overflow-y-auto">
+	<div
+		class="flex flex-col container m-auto gap-32 px-16 md:px-56 py-16 text-center bg-white md:rounded-3xl shadow-lg"
+	>
+		<img class="img w-80 mx-auto" src="/assets/images/timeliness_logo.svg" alt="Timeliness Logo" />
+		<div class="flex flex-col gap-16">
+			<h1>Let's get you set up</h1>
+			<div>
+				<progress class="md:w-1/2" [value]="(selectedStep + 1)/(steps.length)" max="1"></progress>
+				<span class="text-primary mx-auto">Step {{selectedStep + 1}}/{{steps.length}}</span>
+			</div>
+
+			<ng-container [ngSwitch]="steps[selectedStep].identifier">
+				<div *ngSwitchCase="'calendar'" class="flex flex-col gap-16">
+					<h2 class="mx-auto">{{selectedStep + 1}}. Connect your calendar</h2>
+					<div class="flex flex-row gap-8 justify-around">
+						<div class="flex flex-col gap-16 text-center">
+							<h4>Google Calendar</h4>
+							<img class="w-32 mx-auto" src="/assets/images/google_calendar.png" alt="Google Calendar" />
+							<app-google-calendar-settings (valid)="updateValidStatus('calendar', $event)"></app-google-calendar-settings>
+						</div>
+						<div class="flex flex-col filter grayscale gap-16 text-center">
+							<h4>Microsoft Office Calendar</h4>
+							<img
+								class="w-32 mx-auto"
+								src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTMwIDdIMlYzLjE0M0ExLjI0OSAxLjI0OSAwIDAxMy4zMzMgMmgyNS4zMzRBMS4yNDkgMS4yNDkgMCAwMTMwIDMuMTQzeiIgZmlsbD0iIzAzNjRiOCIvPjxwYXRoIGQ9Ik0yIDIxaDEwdjlIMy4zMDlBMS4zMDkgMS4zMDkgMCAwMTIgMjguNjkxVjIxeiIgZmlsbD0iIzA2NGE4YyIvPjxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0wIDBoMzJ2MzJIMHoiLz48cGF0aCBmaWxsPSIjMDM2NGI4IiBkPSJNMiAxM2gxMHY5SDJ6Ii8+PHBhdGggZmlsbD0iIzAzNjRiOCIgZD0iTTExIDIxaDExdjlIMTF6Ii8+PHBhdGggZmlsbD0iIzAwNzhkNCIgZD0iTTIgNmgxMHY4SDJ6Ii8+PHBhdGggZmlsbD0iIzAwNzhkNCIgZD0iTTExIDEzaDExdjlIMTF6Ii8+PHBhdGggZmlsbD0iIzI4YThlYSIgZD0iTTExIDZoMTB2OEgxMXoiLz48cGF0aCBkPSJNMjEgMjFoOXY3LjY5MUExLjMwOSAxLjMwOSAwIDAxMjguNjkxIDMwSDIxdi05eiIgZmlsbD0iIzAwNzhkNCIvPjxwYXRoIGZpbGw9IiM1MGQ5ZmYiIGQ9Ik0yMSA2aDl2OWgtOXoiLz48cGF0aCBmaWxsPSIjMjhhOGVhIiBkPSJNMjEgMTRoOXY4aC05eiIvPjwvc3ZnPg=="
+								alt="Microsoft Office Calendar"
+							/>
+							<button type="button" disabled class="mx-auto">Not available yet</button>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+
+			<ng-container [ngSwitch]="steps[selectedStep].identifier">
+				<div *ngSwitchCase="'timezone'" class="flex flex-col gap-16">
+					<h2 class="mx-auto">{{selectedStep + 1}}. Set your timezone</h2>
+					<app-timezone-select class="mx-auto text-left !w-[45rem]"></app-timezone-select>
+				</div>
+			</ng-container>
+						
+			<ng-container [ngSwitch]="steps[selectedStep].identifier">
+				<div *ngSwitchCase="'timeslots'" class="flex flex-col gap-16">
+					<h2 class="mx-auto">{{selectedStep + 1}}. Set times where you are generally available</h2>
+					<app-timespan-select class="mx-auto text-left"></app-timespan-select>
+				</div>
+			</ng-container>
+		</div>
+		<div class="flex flex-row justify-center gap-8">
+			<button type="button" class="btn" [disabled]="selectedStep === 0" (click)="back()">
+				<svg-icon
+					class="img text-white transform rotate-90 fill-current"
+					src="/assets/icons/icon-arrow-down.svg"
+				></svg-icon>
+				<span>Back</span>
+			</button>
+			<button *ngIf="selectedStep < steps.length - 1" type="button" class="btn" [disabled]="!steps[selectedStep].isDone" (click)="next()">
+				<span>Next</span>
+				<svg-icon
+					class="img !m-0 !my-auto !ml-2 text-white transform -rotate-90 fill-current"
+					src="/assets/icons/icon-arrow-down.svg"
+				></svg-icon>
+			</button>
+			<button *ngIf="selectedStep === steps.length - 1" type="button" class="btn" (click)="finish()">
+				<span>Let's go</span>
+				<svg-icon
+					class="img !m-0 !my-auto !ml-2 text-white transform -rotate-90 fill-current"
+					src="/assets/icons/icon-arrow-down.svg"
+				></svg-icon>
+			</button>
+		</div>
+	</div>
+</div>

@@ -64,7 +64,7 @@ export class AuthService {
 
 	get user(): Observable<User | undefined> {
 		if (!this.userSubject.getValue() && this.isLoggedIn()) {
-			return this.fetchUser()
+			this.fetchUser()
 		}
 
 		return this.userObservable
@@ -132,7 +132,7 @@ export class AuthService {
 
 	public postCalendars(calendar: Calendar) {
 		const observable = this.http
-			.post<Calendar>(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
+			.post(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
 			.pipe(
 				share(),
 				catchError((err) => this.handleError(err))

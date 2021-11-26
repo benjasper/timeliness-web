@@ -4,6 +4,7 @@ import { ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'app-google-calendar-settings',
@@ -17,6 +18,8 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	isCalendarsChanged = false
 	lastCalendarsHash = "start"
 
+	@Output() valid = new EventEmitter<boolean>()
+
 	CONNECTION_STATUS = CalendarConnectionStatus
 
 	googleCalendars: {calendarId: string, name: string, isActive: boolean}[] = []
@@ -27,6 +30,8 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 				return
 			}
 
+			this.valid.emit(user.googleCalendarConnection.status === CalendarConnectionStatus.Active)
+			
 			this.user = user
 
 			if (user.googleCalendarConnection.status === CalendarConnectionStatus.Active) {
@@ -69,9 +74,6 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	saveChanges() {
 		this.authService.postCalendars({googleCalendar: this.googleCalendars}).subscribe(response => {
-			this.googleCalendars = response.googleCalendar.sort((a,b) => {
-				return a.name.localeCompare(b.name)
-			})
 			this.lastCalendarsHash = this.calculateHash()
 			this.calendarsChanged()
 		})

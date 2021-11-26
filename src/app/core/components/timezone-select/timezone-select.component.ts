@@ -568,7 +568,7 @@ export class TimezoneSelectComponent implements OnInit {
 				return
 			}
 
-			this.timezoneForm.get('timezones')?.setValue(user.settings.scheduling.timeZone)
+			this.timezoneForm.get('timezones')?.setValue(user.settings.scheduling?.timeZone)
 		})
 	}
 

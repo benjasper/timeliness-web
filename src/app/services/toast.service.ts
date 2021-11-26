@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
-import { Subject } from 'rxjs'
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs'
+import { OnboardingStep } from '../models/onboarding-step'
 import { Toast, ToastType } from '../models/toast'
 
 @Injectable({

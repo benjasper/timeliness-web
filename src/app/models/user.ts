@@ -14,7 +14,8 @@ export interface User {
 }
 
 export interface UserSettings {
-	scheduling: {
+	onboardingCompleted?: boolean
+	scheduling?: {
 		timeZone?: string
 		allowedTimespans?: Timespan[]
 	}

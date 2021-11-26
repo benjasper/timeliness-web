@@ -14,12 +14,15 @@ import { SignupComponent } from './pages/auth/signup/signup.component'
 import { AuthComponent } from './pages/auth/auth.component'
 import { VerificationComponent } from './pages/auth/verification/verification.component'
 import { NotVerifiedGuard } from './guards/not-verified.guard'
+import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
+import { OnboardingComponent } from './pages/onboarding/onboarding.component'
+import { NoOnboardingGuard } from './guards/no-onboarding.guard'
 
 const routes: Routes = [
 	{
 		path: '',
 		component: CoreComponent,
-		canActivate: [AuthGuard, NotVerifiedGuard],
+		canActivate: [AuthGuard, NotVerifiedGuard, NoOnboardingGuard],
 		children: [
 			{
 				path: 'dashboard',
@@ -74,6 +77,19 @@ const routes: Routes = [
 				component: VerificationComponent,
 			},
 			{ path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
+		],
+	},
+	{
+		path: 'onboarding',
+		component: OnboardingComponent,
+	},
+	{
+		path: 'static',
+		children: [
+			{
+				path: 'google-connected',
+				component: SuccessGoogleComponent,
+			},
 		],
 	},
 	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },

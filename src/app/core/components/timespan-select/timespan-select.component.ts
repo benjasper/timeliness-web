@@ -23,7 +23,7 @@ export class TimespanSelectComponent implements OnInit {
 				return
 			}
 
-			this.timespans = this.toDateTimespan(user.settings.scheduling.allowedTimespans ?? [])
+			this.timespans = this.toDateTimespan(user.settings.scheduling?.allowedTimespans ?? [])
 			this.user = user
 		})
 	}
@@ -51,9 +51,9 @@ export class TimespanSelectComponent implements OnInit {
 	timespanChanged() {
 		if (
 			(this.user &&
-				JSON.stringify(this.toDateTimespan(this.user.settings.scheduling.allowedTimespans ?? [])) ===
+				JSON.stringify(this.toDateTimespan(this.user.settings.scheduling?.allowedTimespans ?? [])) ===
 					JSON.stringify(this.toStringTimespan(this.timespans))) ||
-			(this.user?.settings.scheduling.allowedTimespans === undefined && this.timespans.length === 0)
+			(this.user?.settings.scheduling?.allowedTimespans === undefined && this.timespans.length === 0)
 		) {
 			this.wasEdited = false
 		} else {
@@ -97,7 +97,7 @@ export class TimespanSelectComponent implements OnInit {
 	}
 
 	cancel() {
-		this.timespans = this.toDateTimespan(this.user?.settings.scheduling.allowedTimespans ?? [])
+		this.timespans = this.toDateTimespan(this.user?.settings.scheduling?.allowedTimespans ?? [])
 		this.wasEdited = false
 	}
 }
