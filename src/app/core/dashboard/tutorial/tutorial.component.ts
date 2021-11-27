@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './tutorial.component.html',
   animations: [
 		trigger('flyInOut', [
-			transition(':enter', [style({ transform: 'translate(-50%, -250%)', opacity: 0 }), animate(200)]),
+			transition(':enter', [style({ opacity: 0 }), animate(200)]),
 			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
 		]),
 	],
