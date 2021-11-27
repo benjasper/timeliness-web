@@ -40,6 +40,9 @@ module.exports = {
 			secondary: {
 				DEFAULT: '#dbe2ff'
 			},
+			transparent: {
+				DEFAULT: 'transparent'
+			},
 			purple: {
 				DEFAULT: '#9d78f5',
 				dark: primaryColor

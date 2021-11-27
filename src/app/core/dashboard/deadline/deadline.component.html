@@ -14,7 +14,7 @@
 		<a
 			class="deadline-name truncate-text text-underline text-black"
 			title="{{ task.name }}"
-			[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+			[routerLink]="['task', task.id]"
 		>
 			{{ task.name }}
 		</a>

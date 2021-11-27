@@ -31,7 +31,6 @@ const routes: Routes = [
 					{
 						path: 'task/:id',
 						component: ModalEditTaskComponent,
-						outlet: 'modal',
 					},
 				],
 			},
@@ -42,7 +41,6 @@ const routes: Routes = [
 					{
 						path: 'task/:id',
 						component: ModalEditTaskComponent,
-						outlet: 'modal',
 					},
 				],
 			},

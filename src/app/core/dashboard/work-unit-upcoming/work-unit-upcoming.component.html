@@ -1,5 +1,5 @@
 <div *ngIf="!loading" class="work-unit-upcoming" [ngClass]="getColorClass(tag ? tag.color: '', 'calendar')" routerLinkActive="active">
-	<a class="calendar-date m-auto" [routerLink]="[{ outlets: { modal: ['task', task.id] } }]">
+	<a class="calendar-date m-auto" [routerLink]="['task', task.id]">
 		<span class="day">{{ task.workUnit.scheduledAt.date.start.toDate().getDate() }}</span>
 		<span class="weekday">
 			{{ task.workUnit.scheduledAt.date.start.toDate().toLocaleString('default', { weekday: 'short' }) }}
@@ -10,7 +10,7 @@
 			<a
 				class="task-title truncate-text text-underline text-black"
 				title="{{ task.name }}"
-				[routerLink]="[{ outlets: { modal: ['task', task.id] } }]"
+				[routerLink]="['task', task.id]"
 			>
 				{{ task.name }}
 			</a>

@@ -149,7 +149,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 			this.registerForTags()
 		}, () => {
-			this.router.navigate(['.', { outlets: { modal: null } }], { relativeTo: this.route.parent })
+			this.router.navigate(['.'], { relativeTo: this.route.parent })
 		})
 
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
@@ -326,7 +326,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.loaded = false
 		this.modalBackground = false
 		setTimeout(() => {
-			this.router.navigate(['.', { outlets: { modal: null } }], { relativeTo: this.route.parent })
+			this.router.navigate(['.'], { relativeTo: this.route.parent })
 		}, 200)
 	}
 
@@ -428,7 +428,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.isNew = false
 					this.loading = false
 					this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
-					this.router.navigate(['.', { outlets: { modal: ['task', task.id] } }], {
+					this.router.navigate(['.', ['task', task.id]], {
 						relativeTo: this.route.parent,
 					})
 				},
