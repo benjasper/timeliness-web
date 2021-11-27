@@ -15,7 +15,7 @@ export class NoOnboardingGuard implements CanActivate {
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		return new Promise(async (resolve, reject) => {
 			this.authService.user.subscribe((user) => {
-				if (user && !user.settings.onboardingCompleted) {
+				if (user && user.emailVerified && !user.settings.onboardingCompleted) {
 					this.router.navigate(['/onboarding'])
 					resolve(false)
 				} else {
