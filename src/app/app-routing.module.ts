@@ -17,6 +17,7 @@ import { NotVerifiedGuard } from './guards/not-verified.guard'
 import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
 import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { NoOnboardingGuard } from './guards/no-onboarding.guard'
+import { TutorialComponent } from './core/dashboard/tutorial/tutorial.component'
 
 const routes: Routes = [
 	{
@@ -31,6 +32,10 @@ const routes: Routes = [
 					{
 						path: 'task/:id',
 						component: ModalEditTaskComponent,
+					},
+					{
+						path: 'tutorial',
+						component: TutorialComponent,
 					},
 				],
 			},

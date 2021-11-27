@@ -1,0 +1,51 @@
+<div *ngIf="isShowing" class="fixed w-screen z-10 h-screen bg-black opacity-30 top-0 left-0"></div>
+<form
+	*ngIf="isShowing"
+	@flyInOut
+	class="
+		absolute
+		inset-center
+		z-20
+		p-16
+		flex flex-col
+		gap-8
+		md:gap-16
+		w-screen
+		h-screen
+		md:w-auto md:h-auto md:grid
+		overflow-y-auto
+		md:overflow-visible
+		bg-white
+		md:rounded-3xl
+		dark:bg-black
+		shadow-lg
+	"
+>
+	<svg-icon class="img w-16 md:w-24 mx-auto" src="/assets/images/timeliness_logo_small.svg"></svg-icon>
+	<h2 class="mx-auto">How does it work?</h2>
+	<div class="flex flex-col gap-8 md:max-h-[50rem] max-w-5xl overflow-y-auto">
+		<div>
+			<h3>Calendar</h3>
+			<p class="text-grey-dark text-lg">
+				Timeliness uses your calendar to create events marking your deadlines (indicated by the 📅
+				emoji) and of course specific events we call work units (indicated by the ⚙️ emoji), that block out time
+				in your calendar, so you know when to work on which task.
+				<br />
+				These events will be created in a separate calendar, that Timeliness will create, so they won't pollute
+				your existing calendars.
+			</p>
+		</div>
+		<div>
+			<h3>This is a beta</h3>
+			<p class="text-grey-dark text-lg">
+				Since we are still in beta expect to encouter bugs, problems or unfinished features.
+				But also we would love to hear about problems you encounter, as well as general feedback.
+				<br>
+				You can write us at <a class="inline-block" href="mailto:support@timeliness.app">support@timeliness.app</a>.
+			</p>
+		</div>
+	</div>
+	<div class="flex flex-row justify-end">
+		<button class="my-0 mt-8" type="button" (click)="close()">Alright!</button>
+	</div>
+</form>

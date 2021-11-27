@@ -71,7 +71,7 @@ export class OnboardingComponent implements OnInit {
 
 	finish() {
 		this.authService.patchUserSettings({ onboardingCompleted: true }).subscribe(() => {
-			this.router.navigate(['/'])
+			this.router.navigate(['/dashboard/tutorial'])
 		})
 	}
 }

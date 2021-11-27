@@ -1,8 +1,8 @@
 <div class="flex flex-col w-screen h-screen bg-grey-very-light overflow-y-auto">
 	<div
-		class="flex flex-col container m-auto gap-32 px-16 md:px-56 py-16 text-center bg-white md:rounded-3xl shadow-lg"
+		class="flex flex-col m-auto max-w-6xl gap-32 px-16 md:px-32 py-16 text-center bg-white md:rounded-3xl shadow-lg"
 	>
-		<img class="img w-80 mx-auto" src="/assets/images/timeliness_logo.svg" alt="Timeliness Logo" />
+		<img class="img w-52 mx-auto" src="/assets/images/timeliness_logo.svg" alt="Timeliness Logo" />
 		<div class="flex flex-col gap-16">
 			<h1>Let's get you set up</h1>
 			<div>
@@ -16,9 +16,6 @@
 						<h2 class="mx-auto">{{selectedStep + 1}}. Connect your calendar</h2>
 						<p class="text-grey-dark md:w-2/3 mx-auto">
 							In order to be able to determine your availability and therefore schedule your tasks optimally, Timeliness needs access to your calendar.
-							<br><br>
-							Timeliness will also use your calendar to create events marking your deadlines (indicated by the 📅 emoji) and of course specific events we call work units (indicated by the ⚙️ emoji), that block out time in your calendar, so you know when to work on which task.
-							These events will be created in a separate calendar, that Timeliness will create, so they won't pollute your existing calendars.
 						</p>
 					</div>
 					<div class="flex flex-row gap-16 justify-center">
@@ -46,18 +43,18 @@
 							Please adjust your timezone if necessary.
 						</p>
 					</div>
-					<app-timezone-select [shouldApplyUserTimezone]="true" class="mx-auto text-left !w-[45rem]"></app-timezone-select>
+					<app-timezone-select [shouldApplyUserTimezone]="true" class="mx-auto text-left w-full md:!w-[45rem]"></app-timezone-select>
 				</div>
 						
 				<div *ngSwitchCase="'timeslots'" class="flex flex-col gap-16">
 					<div>
 						<h2 class="mx-auto">{{selectedStep + 1}}. Set your general availability</h2>
-						<p class="text-grey-dark md:w-2/3 mx-auto">
+						<p class="text-grey-dark mx-auto">
 							Here you can add specific time slots for when you are generally available to work on tasks.
 							Of course when Timeliness schedules your tasks your calendar availability is also taken into account. The purpose of this is so we don't schedule tasks while you are e.g. sleeping.
 						</p>
 					</div>
-					<app-timespan-select class="mx-auto text-left md:w-1/3"></app-timespan-select>
+					<app-timespan-select class="mx-auto text-left w-2/3"></app-timespan-select>
 				</div>
 			</ng-container>		
 		</div>

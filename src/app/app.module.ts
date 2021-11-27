@@ -44,6 +44,7 @@ import { AuthComponent } from './pages/auth/auth.component'
 import { VerificationComponent } from './pages/auth/verification/verification.component'
 import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
+import { TutorialComponent } from './core/dashboard/tutorial/tutorial.component'
 
 @NgModule({
 	declarations: [
@@ -78,6 +79,7 @@ import { SuccessGoogleComponent } from './pages/static/success-google/success-go
 		VerificationComponent,
 		OnboardingComponent,
 		SuccessGoogleComponent,
+		TutorialComponent,
 	],
 	imports: [
 		BrowserModule,

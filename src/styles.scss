@@ -189,6 +189,10 @@ input,
 	.ng-input {
 		top: auto !important;
 		padding: 0 1.5rem !important;
+
+		input {
+			min-width: 0 !important;
+		}
 	}
 
 	&.ng-select-opened .ng-select-container,
