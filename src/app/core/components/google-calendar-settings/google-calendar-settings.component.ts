@@ -18,6 +18,8 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	isCalendarsChanged = false
 	lastCalendarsHash = "start"
 
+	loading = false
+
 	@Output() valid = new EventEmitter<boolean>()
 
 	CONNECTION_STATUS = CalendarConnectionStatus
@@ -73,9 +75,13 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	}
 
 	saveChanges() {
+		this.loading = true
 		this.authService.postCalendars({googleCalendar: this.googleCalendars}).subscribe(response => {
 			this.lastCalendarsHash = this.calculateHash()
 			this.calendarsChanged()
+			this.loading = false
+		}, () => {
+			this.loading = false
 		})
 	}
 
