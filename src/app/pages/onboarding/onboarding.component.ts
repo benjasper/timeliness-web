@@ -44,7 +44,6 @@ export class OnboardingComponent implements OnInit {
 	selectedStep = 0
 
 	ngOnInit(): void {
-		console.log(this.selectedStep)
 	}
 
 	async evaluateOnboardingState() {

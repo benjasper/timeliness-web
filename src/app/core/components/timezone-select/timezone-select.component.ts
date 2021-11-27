@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { FormGroup, FormControl } from '@angular/forms'
 import { ToastType } from 'src/app/models/toast'
 import { AuthService } from 'src/app/services/auth.service'
@@ -560,6 +560,9 @@ export class TimezoneSelectComponent implements OnInit {
 		timezones: new FormControl(''),
 	})
 
+	@Input() shouldApplyUserTimezone = false
+	appliedUserTimezone = false
+
 	constructor(private authService: AuthService, private toastService: ToastService) {}
 
 	ngOnInit(): void {
@@ -569,10 +572,20 @@ export class TimezoneSelectComponent implements OnInit {
 			}
 
 			this.timezoneForm.get('timezones')?.setValue(user.settings.scheduling?.timeZone)
+
+			if (this.shouldApplyUserTimezone && this.appliedUserTimezone === false) {
+				const userTimezone = this.getUserTimezone()
+
+				if (userTimezone && userTimezone != user.settings.scheduling?.timeZone) {
+					this.timezoneForm.get('timezones')?.setValue(userTimezone)
+					this.appliedUserTimezone = true
+					this.saveNewTimezone()
+				}
+			}
 		})
 	}
 
-	newTimeZone() {
+	saveNewTimezone() {
 		const newTimeZone = this.timezoneForm.get('timezones')?.value
 
 		if (!newTimeZone || newTimeZone === '') {
@@ -582,5 +595,15 @@ export class TimezoneSelectComponent implements OnInit {
 		this.authService.patchUserSettings({ scheduling: { timeZone: newTimeZone } }).subscribe(() => {
 			this.toastService.newToast(ToastType.Success, `Updated timezone to ${newTimeZone}`)
 		})
+	}
+
+	getUserTimezone(): string|undefined {
+		const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+		if (this.timezones.find(x => x === userTimezone)) {
+			
+			return userTimezone
+		}
+
+		return undefined
 	}
 }
