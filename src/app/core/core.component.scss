@@ -148,7 +148,7 @@
 		.middle {
 			display: flex;
 			flex-flow: column;
-			flex-grow: 2;
+			flex-grow: 1;
 
 			@include for-phone-only {
 				width: 100%;
