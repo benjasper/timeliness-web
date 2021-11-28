@@ -26,7 +26,7 @@ module.exports = {
 				sans: ['"noto-sans"', ...defaultTheme.fontFamily.sans]
 			},
 			gridTemplateColumns: {
-				'modal': '65rem 40rem',
+				'modal': '65rem 42rem',
 			},
 			animation: {
 				'spin-slow': 'spin 3s linear infinite'
