@@ -78,6 +78,7 @@ export class AuthService {
 		this.accessToken = ''
 		this.refreshToken = ''
 		this.decodedAccessToken = undefined
+		this.userSubject.next(undefined)
 
 		localStorage.clear()
 		this.router.navigate(['/auth/signin'])
