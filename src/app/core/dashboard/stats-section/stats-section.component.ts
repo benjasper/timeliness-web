@@ -12,6 +12,9 @@ export class StatsSectionComponent implements OnInit {
 	workUnitsCompleted: number = 0
 	workUnitsToComplete: number = 0
 
+	tasksCompletedMonth = 0
+	workUnitCompletedMonth = 0
+
 	lastWorkUnitsUpdate: TaskUnwound[] = []
 
 	loadingPlan = false
@@ -20,6 +23,8 @@ export class StatsSectionComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.loadingPlan = true
+
+		this.updateTaskAndWorkUnitCounter()
 
 		this.taskService.getTasksByWorkunits().subscribe((result) => {
 			this.loadingPlan = false
@@ -35,6 +40,7 @@ export class StatsSectionComponent implements OnInit {
 
 		this.taskService.tasksObservable.subscribe((task) => {
 			const today = new Date(this.now)
+			this.updateTaskAndWorkUnitCounter()
 
 			const unwounds = this.taskService
 				.taskToUnwound(task)
@@ -71,5 +77,22 @@ export class StatsSectionComponent implements OnInit {
 
 		this.workUnitsToComplete = todaysWorkUnits.length
 		this.workUnitsCompleted = todaysWorkUnits.filter((x) => x.workUnit.isDone === true).length
+	}
+
+	updateTaskAndWorkUnitCounter() {
+		const now = new Date()
+		const from = new Date(now.getFullYear(), now.getMonth(), 1)
+		from.setHours(0,0,0,0)
+
+		const to = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+		to.setHours(23,59,59,0)
+
+		this.taskService.getTaskBetween(from, to).subscribe(result => {
+			this.tasksCompletedMonth = result.count
+		})
+
+		this.taskService.getWorkUnitsBetween(from, to).subscribe(result => {
+			this.workUnitCompletedMonth = result.count
+		})
 	}
 }

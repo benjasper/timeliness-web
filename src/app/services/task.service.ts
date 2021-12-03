@@ -249,6 +249,28 @@ export class TaskService {
 			.pipe(retry(3), catchError((err) => this.handleError(err)))
 	}
 
+	public getTaskBetween(from: Date, to: Date): Observable<{count: number}> {
+		const query = [
+			`from=${from.toISOString()}`,
+			`to=${to.toISOString()}`,
+		]
+
+		return this.http
+			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/between?` + query.join('&'))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
+	}
+
+	public getWorkUnitsBetween(from: Date, to: Date): Observable<{count: number}> {
+		const query = [
+			`from=${from.toISOString()}`,
+			`to=${to.toISOString()}`,
+		]
+
+		return this.http
+			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/workunits/between?` + query.join('&'))
+			.pipe(retry(3), catchError((err) => this.handleError(err)))
+	}
+
 	public patchTask(id: string, task: TaskModified): Observable<Task> {
 		const observable = this.http
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))

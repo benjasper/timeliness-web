@@ -31,19 +31,19 @@
 </div>
 <div class="grid widgets-small">
 	<app-stats class="simple-widget dark:!bg-primary dark:!text-white">
-		<span class="info">3</span>
+		<span class="info">{{ tasksCompletedMonth }}</span>
 		<span class="title">
 			<svg-icon class="img fill-current"
 					  src="/assets/icons/icon-clipboard-check.svg"></svg-icon>
-			Tasks completed this week
+			Task{{tasksCompletedMonth != 1 ? 's' : '' }} completed this month
 		</span>
 	</app-stats>
 	<app-stats class="simple-widget dark:!bg-primary dark:!text-white">
-		<span class="info">5</span>
+		<span class="info">{{ workUnitCompletedMonth }}</span>
 		<span class="title">
 			<svg-icon class="img fill-current"
 					  src="/assets/icons/icon-check-multiple.svg"></svg-icon>
-			Work units completed this week
+			Work unit{{workUnitCompletedMonth != 1 ? 's' : '' }} completed this month
 		</span>
 	</app-stats>
 </div>
