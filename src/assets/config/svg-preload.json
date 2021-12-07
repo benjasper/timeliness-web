@@ -1,6 +1,26 @@
 {
 	"iconImageFiles": [
 		{
+			"iconName": "icon-dashboard",
+			"iconPath": "/assets/icons/icon-dashboard.svg"
+		},
+		{
+			"iconName": "icon-agenda",
+			"iconPath": "/assets/icons/icon-agenda.svg"
+		},
+		{
+			"iconName": "icon-settings",
+			"iconPath": "/assets/icons/icon-settings.svg"
+		},
+		{
+			"iconName": "icon-logout",
+			"iconPath": "/assets/icons/icon-logout.svg"
+		},
+		{
+			"iconName": "icon-feedback",
+			"iconPath": "/assets/icons/icon-feedback.svg"
+		},
+		{
 			"iconName": "icon-check",
 			"iconPath": "/assets/icons/icon-check.svg"
 		},

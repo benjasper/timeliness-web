@@ -13,12 +13,7 @@
 		width: 12rem;
 	}
 
-	.img.logo {
-		display: none !important;
-		margin: auto;
-	}
-
-	.img.logo-small {
+	.logo-small {
 		display: block !important;
 		margin: auto;
 	}
@@ -77,16 +72,13 @@
 		h1 {
 			padding-top: 2rem;
 
-			.img.logo {
-				width: auto;
-				height: 10rem;
-				margin: auto;
-			}
-
-			.img.logo-small {
+			&.logo-small {
 				margin-top: 2rem;
-				display: none;
-				width: 5rem;
+				height: 7.5rem;
+
+				@include for-phone-only {
+					display: none !important;
+				}
 			}
 		}
 
