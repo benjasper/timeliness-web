@@ -8,4 +8,3 @@
 
 [context.staging]
   command = "ng build --configuration staging"
-  base = "staging"
