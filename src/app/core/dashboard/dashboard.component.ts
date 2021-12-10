@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.taskService.now.subscribe((date) => {
 			this.today = date
+			this.checkNextUpMessage()
 		})
 
 		this.taskService.dateChangeObservable.subscribe(() => {
