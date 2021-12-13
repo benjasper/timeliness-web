@@ -11,7 +11,7 @@
 					class="mr-4 my-auto"
 					type="checkbox"
 					[checked]="calendar.isActive"
-					(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendar)"
+					(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendars.get(connection.id) ?? [])"
 				/>
 				<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
 			</div>

@@ -77,13 +77,14 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 		}
 	}
 
-	saveChanges(connectionId: string, calendar: Calendar) {
+	saveChanges(connectionId: string, calendars: Calendars) {
 		this.loading = true
-		this.authService.updateCalendarsForConnection(connectionId, calendar).subscribe(response => {
+		this.authService.updateCalendarsForConnection(connectionId, calendars).subscribe(response => {
 			this.loading = false
-			this.toastService.newToast(ToastType.Success, `Calendar ${calendar.name} updated`)
+			this.toastService.newToast(ToastType.Success, `Calendars updated`)
 		}, () => {
 			this.loading = false
+			this.authService.forceUserUpdate()
 		})
 	}
 

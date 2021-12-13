@@ -131,9 +131,9 @@ export class AuthService {
 		return observable
 	}
 
-	public updateCalendarsForConnection(connectionId: string, calendar: Calendar) {
+	public updateCalendarsForConnection(connectionId: string, calendar: Calendars) {
 		const observable = this.http
-			.patch(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`, JSON.stringify([calendar]))
+			.put(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`, JSON.stringify(calendar))
 			.pipe(
 				share(),
 				catchError((err) => this.handleError(err))
