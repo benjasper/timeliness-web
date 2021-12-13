@@ -1,34 +1,36 @@
-<div class="w-full flex flex-col" *ngIf="user">
-	<div class="mb-8 text-left" *ngIf="googleCalendars.length > 0">
-		<span class="text-lg text-grey-dark">Calendars indicating your availability:</span>
-		<div *ngFor="let calendar of googleCalendars" class="flex flex-row">
-			<input
-				[id]="calendar.calendarId"
-				class="mr-4 my-auto"
-				type="checkbox"
-				[checked]="calendar.isActive"
-				(change)="calendar.isActive = !calendar.isActive; calendarsChanged()"
-			/>
-			<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
+<div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
+	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
+		<div class="mb-8 text-left">
+			<span class="text-lg text-grey-dark">Connection {{ connection.id }}:</span>
+			<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
+				Calendars indicating your availability
+			</span>
+			<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
+				<input
+					[id]="calendar.calendarId"
+					class="mr-4 my-auto"
+					type="checkbox"
+					[checked]="calendar.isActive"
+					(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendars.get(connection.id) ?? [])"
+				/>
+				<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
+			</div>
 		</div>
-		<button class="mt-4 with-border" *ngIf="isCalendarsChanged" (click)="saveChanges()" [disabled]="loading">
-			<span>Save changes</span>
-			<svg-icon
-				*ngIf="loading"
-				class="ml-2 w-8 my-auto animate-spin-slow"
-				src="/assets/icons/icon-loading.svg"
-			></svg-icon>
-		</button>
+		<div class="flex flex-row justify-between">
+			<button class="mr-auto with-border" role="button" (click)="connect(connection.id)">
+				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Inactive">
+					Connect to Google Calendar
+				</ng-container>
+				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">Force reconnect</ng-container>
+				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">Reconnect</ng-container>
+			</button>
+			<button role="button" class="danger" (click)="disconnect(connection.id)">
+				Disconnect
+			</button>
+		</div>
 	</div>
 	<button class="mr-auto" role="button" (click)="connect()">
-		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Inactive">
-			Connect to Google Calendar
-		</ng-container>
-		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Active">
-			Force reconnect
-		</ng-container>
-		<ng-container *ngIf="user.googleCalendarConnection.status === CONNECTION_STATUS.Expired">
-			Reconnect
-		</ng-container>
+		<svg-icon class="img" src="/assets/icons/icon-plus.svg"></svg-icon>
+		Connect Google Calendar
 	</button>
 </div>

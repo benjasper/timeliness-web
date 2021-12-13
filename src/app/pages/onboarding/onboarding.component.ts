@@ -15,39 +15,20 @@ export class OnboardingComponent implements OnInit {
 		{
 			identifier: 'calendar',
 			isDone: false,
-			evaluate: async () => {
-				const user = await this.authService.user.toPromise()
-
-				return user?.googleCalendarConnection.status === CalendarConnectionStatus.Active
-			},
 		},
 		{
 			identifier: 'timezone',
 			isDone: true,
-			evaluate: async () => {
-				const user = await this.authService.user.toPromise()
-
-				return true
-			},
 		},
 		{
 			identifier: 'timeslots',
 			isDone: true,
-			evaluate: async () => {
-				const user = await this.authService.user.toPromise()
-
-				return true
-			},
 		},
 	]
 
 	selectedStep = 0
 
 	ngOnInit(): void {
-	}
-
-	async evaluateOnboardingState() {
-		const results = await Promise.all(this.steps.map((step) => step.evaluate()))
 	}
 
 	updateValidStatus(identifier: string, validStatus: boolean) {

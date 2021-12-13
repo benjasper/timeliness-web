@@ -428,7 +428,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.isNew = false
 					this.loading = false
 					this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
-					this.router.navigate(['.', ['task', task.id]], {
+					this.router.navigate(['task', task.id], {
 						relativeTo: this.route.parent,
 					})
 				},

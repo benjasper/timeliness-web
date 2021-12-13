@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
-import { catchError, retry, share, tap, windowTime } from 'rxjs/operators'
+import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { ApiError } from '../models/error'
 import { ToastType } from '../models/toast'
@@ -122,8 +122,8 @@ export class AuthService {
 		return observable
 	}
 
-	public fetchCalendars() {
-		const observable = this.http.get<Calendar>(`${environment.apiBaseUrl}/v1/calendars`).pipe(
+	public fetchCalendarsByConnection(connectionId: string) {
+		const observable = this.http.get<{calendars: Calendars}>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`).pipe(
 			share(),
 			catchError((err) => this.handleError(err))
 		)
@@ -131,9 +131,9 @@ export class AuthService {
 		return observable
 	}
 
-	public postCalendars(calendar: Calendar) {
+	public updateCalendarsForConnection(connectionId: string, calendar: Calendars) {
 		const observable = this.http
-			.post(`${environment.apiBaseUrl}/v1/calendars`, JSON.stringify(calendar))
+			.put(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`, JSON.stringify(calendar))
 			.pipe(
 				share(),
 				catchError((err) => this.handleError(err))
@@ -142,9 +142,25 @@ export class AuthService {
 		return observable
 	}
 
-	public connectGoogleCalendar() {
+	public deleteConnection(connectionId: string) {
 		const observable = this.http
-			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/calendar/google/connect`, undefined)
+			.delete(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google`)
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
+
+		return observable
+	}
+
+	public connectGoogleCalendar(connectionId?: string) {
+		let stringWithConnection = ""
+		if (connectionId) {
+			stringWithConnection = `/${connectionId}`
+		}
+
+		const observable = this.http
+			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/connections${stringWithConnection}/google`, undefined)
 			.pipe(
 				share(),
 				catchError((err) => this.handleError(err))
@@ -243,6 +259,10 @@ interface AuthResponse {
 	result: User
 }
 
-interface Calendar {
-	googleCalendar: { calendarId: string; name: string; isActive: boolean }[]
+export interface Calendar {
+	 calendarId: string 
+	 name: string 
+	 isActive: boolean 
 }
+
+export interface Calendars extends Array<Calendar>{}

@@ -90,6 +90,14 @@
 									"with": "src/environments/environment.prod.ts"
 								}
 							]
+						},
+						"staging": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.staging.ts"
+								}
+							]
 						}
 					},
 					"defaultConfiguration": ""
@@ -105,6 +113,9 @@
 						},
 						"debug": {
 							"browserTarget": "timeliness-web:build:debug"
+						},
+						"staging": {
+							"browserTarget": "timeliness-web:build:staging"
 						}
 					}
 				},

@@ -462,6 +462,10 @@ input[type='submit'] {
 			fill: $color-tertiary !important;
 		}
 	}
+
+	&.danger {
+		@apply bg-white text-red border border-solid border-red;
+	}
 }
 
 ::-moz-progress-bar {

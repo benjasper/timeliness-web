@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService, Calendar, Calendars } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Output, EventEmitter } from '@angular/core';
 
@@ -15,8 +15,6 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	constructor(private authService: AuthService, private toastService: ToastService) { }
 
 	user?: User
-	isCalendarsChanged = false
-	lastCalendarsHash = "start"
 
 	loading = false
 
@@ -24,7 +22,9 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	CONNECTION_STATUS = CalendarConnectionStatus
 
-	googleCalendars: {calendarId: string, name: string, isActive: boolean}[] = []
+	connections: {id: string, status: CalendarConnectionStatus, calendars: Calendars}[] = []
+
+	calendars: Map<string, Calendars> = new Map()
 
 	ngOnInit(): void {
 		this.authService.user.subscribe(user => {
@@ -32,24 +32,31 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 				return
 			}
 
-			this.valid.emit(user.googleCalendarConnection.status === CalendarConnectionStatus.Active)
+			this.valid.emit(user.googleCalendarConnections.filter(x => x.status === CalendarConnectionStatus.Active).length > 0)
 			
+			this.calendars.clear()
+			user.googleCalendarConnections.filter(x => x.status === CalendarConnectionStatus.Active).forEach(connection => {
+				this.calendars = this.calendars.set(connection.id, [])
+			})
+
 			this.user = user
 
-			if (user.googleCalendarConnection.status === CalendarConnectionStatus.Active) {
-				this.authService.fetchCalendars().subscribe(response => {
-					this.googleCalendars = response.googleCalendar.sort((a,b) => {
+			user.googleCalendarConnections.forEach(connection => {
+				if (connection.status !== CalendarConnectionStatus.Active) {
+					return
+				}
+
+				this.authService.fetchCalendarsByConnection(connection.id).subscribe(response => {
+					this.calendars = this.calendars.set(connection.id, response.calendars.sort((a,b) => {
 						return a.name.localeCompare(b.name)
-					})
-					this.lastCalendarsHash = this.calculateHash()
-					this.calendarsChanged()
+					}))
 				})
-			}
+			})
 		})
 	}
 
-	connect() {
-		this.authService.connectGoogleCalendar().subscribe(response => {
+	connect(connectionId?: string) {
+		this.authService.connectGoogleCalendar(connectionId).subscribe(response => {
 			document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
 			const w = window.open(response.url, "_blank");
 			setTimeout(() => {
@@ -70,28 +77,21 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 		}
 	}
 
-	calendarsChanged() {
-		this.isCalendarsChanged = !(this.calculateHash() === this.lastCalendarsHash)
-	}
-
-	saveChanges() {
+	saveChanges(connectionId: string, calendars: Calendars) {
 		this.loading = true
-		this.authService.postCalendars({googleCalendar: this.googleCalendars}).subscribe(response => {
-			this.lastCalendarsHash = this.calculateHash()
-			this.calendarsChanged()
+		this.authService.updateCalendarsForConnection(connectionId, calendars).subscribe(response => {
 			this.loading = false
+			this.toastService.newToast(ToastType.Success, `Calendars updated`)
 		}, () => {
 			this.loading = false
+			this.authService.forceUserUpdate()
 		})
 	}
 
-	calculateHash(): string {
-		const actives = this.googleCalendars.filter(x => x.isActive)
-		let hash = ""
-		actives.forEach(x => {
-			hash += x.calendarId
+	disconnect(connectionId: string) {
+		this.authService.deleteConnection(connectionId).subscribe(response => {
+			this.toastService.newToast(ToastType.Success, `Connection deleted`)
+			this.authService.forceUserUpdate()
 		})
-
-		return hash
 	}
 }
