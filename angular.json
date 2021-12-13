@@ -113,6 +113,9 @@
 						},
 						"debug": {
 							"browserTarget": "timeliness-web:build:debug"
+						},
+						"staging": {
+							"browserTarget": "timeliness-web:build:staging"
 						}
 					}
 				},

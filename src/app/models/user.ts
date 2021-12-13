@@ -6,9 +6,10 @@ export interface User {
 	email: string
 	createdAt: string
 	lastModifiedAt: string
-	googleCalendarConnection: {
-		status: CalendarConnectionStatus
-	},
+	googleCalendarConnections: {
+		status: CalendarConnectionStatus,
+		id: string
+	}[],
 	settings: UserSettings
 	emailVerified: boolean
 }
@@ -22,5 +23,5 @@ export interface UserSettings {
 }
 
 export enum CalendarConnectionStatus {
-	Inactive = '', Active = 'active', Expired = 'expired'
+	Inactive = '', Active = 'active', Expired = 'expired', Unverified = 'unverified'
 }
