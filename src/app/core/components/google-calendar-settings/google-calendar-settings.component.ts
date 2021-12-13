@@ -32,14 +32,17 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 				return
 			}
 
+			this.user = user
+			this.calendars.clear()
+			if (!user.googleCalendarConnections) {
+				return
+			}
+
 			this.valid.emit(user.googleCalendarConnections.filter(x => x.status === CalendarConnectionStatus.Active).length > 0)
 			
-			this.calendars.clear()
 			user.googleCalendarConnections.filter(x => x.status === CalendarConnectionStatus.Active).forEach(connection => {
 				this.calendars = this.calendars.set(connection.id, [])
 			})
-
-			this.user = user
 
 			user.googleCalendarConnections.forEach(connection => {
 				if (connection.status !== CalendarConnectionStatus.Active) {

@@ -6,7 +6,7 @@ export interface User {
 	email: string
 	createdAt: string
 	lastModifiedAt: string
-	googleCalendarConnections: {
+	googleCalendarConnections?: {
 		status: CalendarConnectionStatus,
 		id: string
 	}[],
