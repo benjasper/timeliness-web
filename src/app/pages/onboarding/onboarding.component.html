@@ -1,6 +1,6 @@
 <div class="flex flex-col w-screen h-screen bg-grey-very-light overflow-y-auto">
 	<div
-		class="flex flex-col m-auto max-w-6xl gap-32 px-16 md:px-32 py-16 text-center bg-white md:rounded-3xl shadow-lg"
+		class="flex flex-col m-auto gap-32 px-16 md:px-32 py-16 text-center bg-white md:rounded-3xl shadow-lg"
 	>
 		<img class="img w-52 mx-auto" src="/assets/images/timeliness_logo.svg" alt="Timeliness Logo" />
 		<div class="flex flex-col gap-16">
@@ -13,7 +13,7 @@
 			<ng-container [ngSwitch]="steps[selectedStep].identifier">
 				<div *ngSwitchCase="'calendar'" class="flex flex-col gap-16">
 					<div>
-						<h2 class="mx-auto">{{selectedStep + 1}}. Connect your calendar</h2>
+						<h2 class="mx-auto">{{selectedStep + 1}}. Connect your calendar(s)</h2>
 						<p class="text-grey-dark md:w-2/3 mx-auto">
 							In order to be able to determine your availability and therefore schedule your tasks optimally, Timeliness needs access to your calendar.
 						</p>
@@ -46,8 +46,8 @@
 					<app-timezone-select [shouldApplyUserTimezone]="true" class="mx-auto text-left w-full md:!w-[45rem]"></app-timezone-select>
 				</div>
 						
-				<div *ngSwitchCase="'timeslots'" class="flex flex-col gap-16">
-					<div>
+				<div *ngSwitchCase="'timeslots'" class="flex flex-col gap-16 max-w-4xl ">
+					<div class="m-auto">
 						<h2 class="mx-auto">{{selectedStep + 1}}. Set your general availability</h2>
 						<p class="text-grey-dark mx-auto">
 							Here you can add specific time slots for when you are generally available to work on tasks.
