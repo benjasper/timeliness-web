@@ -1,0 +1,19 @@
+<form class="flex flex-col" [formGroup]="form">
+	<label class="label inset" for="timezone">Distance between events</label>
+	<ng-select
+		formControlName="spacing"
+		[clearable]="false"
+		[dropdownPosition]="'top'"
+		[virtualScroll]="true"
+		(change)="change()"
+	>
+		<ng-option *ngFor="let option of options" [value]="option.toNanoseconds()">
+			<span *ngIf="option.milliseconds !== 0">
+				{{ option }}
+			</span>
+			<span *ngIf="option.milliseconds === 0">
+				No spacing
+			</span>
+		</ng-option>
+	</ng-select>
+</form>
