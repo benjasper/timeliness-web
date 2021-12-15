@@ -32,9 +32,10 @@
 	</div>
 </app-section>
 
-<app-section name="Scheduling" description="Here you can specify how Timeliness will schedule your tasks.">
-	<div class="flex flex-col gap-12">
+<app-section name="Scheduling" description="Here you can specify how Timeliness will schedule your tasks. These settings will take effect as soon as the next task is scheduled. It won't affect previously scheduled tasks.">
+	<div class="flex flex-col gap-16">
 		<app-timezone-select class="md:w-1/2"></app-timezone-select>
 		<app-timespan-select class="md:w-1/2 mr-auto"></app-timespan-select>
+		<app-busy-padding class="md:1/2 mr-auto"></app-busy-padding>
 	</div>
 </app-section>

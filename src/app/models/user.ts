@@ -19,6 +19,7 @@ export interface UserSettings {
 	scheduling?: {
 		timeZone?: string
 		allowedTimespans?: Timespan[]
+		busyTimeSpacing?: number
 	}
 }
 
