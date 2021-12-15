@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
 		<div class="mb-8 text-left">
-			<span class="text-lg text-grey-dark">Connection {{ connection.id }}:</span>
+			<h4 class="text-lg text-primary">Connection {{ connection.id }}</h4>
 			<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
 				Calendars indicating your availability
 			</span>
