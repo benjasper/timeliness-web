@@ -56,6 +56,17 @@
 					</div>
 					<app-timespan-select class="mx-auto text-left w-2/3"></app-timespan-select>
 				</div>
+
+				<div *ngSwitchCase="'spacing'" class="flex flex-col gap-16 max-w-4xl ">
+					<div class="m-auto">
+						<h2 class="mx-auto">{{selectedStep + 1}}. You deserve a break!</h2>
+						<p class="text-grey-dark mx-auto">
+							This setting defines how much space Timeliness should allow between events, when scheduling your tasks.
+							Basically how long of a break you want.
+						</p>
+					</div>
+					<app-busy-padding class="mx-auto text-left w-2/3"></app-busy-padding>
+				</div>
 			</ng-container>		
 		</div>
 		<div class="flex flex-row justify-center gap-8">
