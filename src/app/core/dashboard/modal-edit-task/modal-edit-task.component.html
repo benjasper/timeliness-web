@@ -35,18 +35,12 @@
 		<div>
 			<label *ngIf="(task && task.workUnits.length > 0) || loading"
 				   class="label inset">Work units</label>
-			<ng-container *ngIf="loading">
-				<ul class="flex flex-row gap-8 w-full overflow-hidden">
-					<li>
-						<app-work-unit-card [loading]="true"
-											[small]="true"></app-work-unit-card>
-					</li>
-					<li>
-						<app-work-unit-card [loading]="true"
-											[small]="true"></app-work-unit-card>
-					</li>
-				</ul>
-			</ng-container>
+			<splide *ngIf="loading" class="w-full" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
+				<splide-slide *ngFor="let workUnit of [1,2,3] let i = index">
+					<app-work-unit-card [loading]="true"
+										[small]="true"></app-work-unit-card>
+				</splide-slide>
+			</splide>
 			<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [selectedSlideIndex]="startIndex" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
 				<splide-slide *ngFor="let workUnit of task.workUnits; let i = index">
 					<app-work-unit-card [task]="task"
