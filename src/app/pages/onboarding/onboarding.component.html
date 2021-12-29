@@ -65,9 +65,25 @@
 							Basically how long of a break you want.
 						</p>
 					</div>
-					<app-busy-padding class="mx-auto text-left w-2/3"></app-busy-padding>
+					<app-busy-padding class="mx-auto text-left w-96"></app-busy-padding>
 				</div>
-			</ng-container>		
+
+				<div *ngSwitchCase="'timing'" class="flex flex-col gap-16 max-w-4xl ">
+					<div class="m-auto">
+						<h2 class="mx-auto">{{selectedStep + 1}}. When should we plan your tasks?</h2>
+						<p class="text-grey-dark mx-auto">
+							This setting determines how the scheduling algorithm should plan your tasks.
+							<br>
+							Deciding on one very much depends on how you work:
+							Do you start work on your tasks immediately or do you wait until the last moment?
+							Either way you will never have to worry about your tasks being late.
+							<br><br>
+							If your not sure yet you can always try out different options later.
+						</p>
+					</div>
+					<app-timing-preference class="mx-auto text-left w-96"></app-timing-preference>
+				</div>
+			</ng-container>
 		</div>
 		<div class="flex flex-row justify-center gap-8">
 			<button type="button" class="btn" [disabled]="selectedStep === 0" (click)="back()">

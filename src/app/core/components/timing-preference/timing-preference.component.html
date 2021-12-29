@@ -1,0 +1,9 @@
+<form class="flex flex-col" [formGroup]="form">
+	<label class="label inset" for="timing">Timing preference</label>
+	<ng-select id="timing" formControlName="timing" (change)="save()" [clearable]="false">
+		<ng-option [value]="TIMING_PREFERENCES.Early">🚀 As early as possible</ng-option>
+		<ng-option [value]="TIMING_PREFERENCES.VeryEarly">☀️ Early</ng-option>
+		<ng-option [value]="TIMING_PREFERENCES.Late">🏖 Late</ng-option>
+		<ng-option [value]="TIMING_PREFERENCES.VeryLate">🥵 Very late</ng-option>
+	</ng-select>
+</form>

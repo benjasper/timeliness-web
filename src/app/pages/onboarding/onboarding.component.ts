@@ -28,6 +28,10 @@ export class OnboardingComponent implements OnInit {
 			identifier: 'spacing',
 			isDone: true,
 		},
+		{
+			identifier: 'timing',
+			isDone: true,
+		},
 	]
 
 	selectedStep = 0

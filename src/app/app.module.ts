@@ -45,7 +45,8 @@ import { VerificationComponent } from './pages/auth/verification/verification.co
 import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
 import { TutorialComponent } from './core/dashboard/tutorial/tutorial.component';
-import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component'
+import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component';
+import { TimingPreferenceComponent } from './core/components/timing-preference/timing-preference.component'
 
 @NgModule({
 	declarations: [
@@ -82,6 +83,7 @@ import { BusyPaddingComponent } from './core/components/busy-padding/busy-paddin
 		SuccessGoogleComponent,
 		TutorialComponent,
   BusyPaddingComponent,
+  TimingPreferenceComponent,
 	],
 	imports: [
 		BrowserModule,
