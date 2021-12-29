@@ -31,7 +31,7 @@
 					!task.workUnits[workUnitIndex].isDone
 				">
 				<div *ngIf="
-						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getDate() === today.getDate();
+						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().isSameDay(today);
 						then todayThen;
 						else todayElse
 					"></div>

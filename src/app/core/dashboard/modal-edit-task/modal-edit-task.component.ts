@@ -23,7 +23,7 @@ import { ToastType } from 'src/app/models/toast'
 			transition(':leave', [animate(100, style({ opacity: 0 }))]),
 		]),
 		trigger('flyInOut', [
-			transition(':enter', [style({ transform: 'translate(-50%, -250%)', opacity: 0 }), animate(200)]),
+			transition(':enter', [style({ transform: 'translate(-50%, -150%)', opacity: 0 }), animate(200)]),
 			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
 		]),
 		trigger('shrinkOut', [
@@ -440,6 +440,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			this.taskService.patchTask(this.taskId, updatingTask).subscribe(
 				(task) => {
 					this.editTask.markAsPristine()
+					this.patchForm(task)
 					this.toastService.newToast(ToastType.Success, 'Task updated')
 					this.loading = false
 					this.setStartsAtWorkUnit()

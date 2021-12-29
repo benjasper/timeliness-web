@@ -20,7 +20,12 @@ export interface UserSettings {
 		timeZone?: string
 		allowedTimespans?: Timespan[]
 		busyTimeSpacing?: number
+		timingPreference?: TimingPreferences
 	}
+}
+
+export enum TimingPreferences {
+	Early = 'early', VeryEarly = 'veryEarly', Late = 'late', VeryLate = 'veryLate'
 }
 
 export enum CalendarConnectionStatus {

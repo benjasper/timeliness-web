@@ -91,9 +91,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.loading = true
 		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(() => {
-			let message = "Workunit marked as done"
+			let message = "Work unit marked as done"
 			if (done === false) {
-				message = "Workunit marked as un-done"
+				message = "Work unit marked as un-done"
 			}
 
 			this.toastService.newToast(ToastType.Success, message)
@@ -106,7 +106,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	public rescheduleWorkUnit(task: Task): void {
 		this.loading = true
 		this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(() => {
-			this.toastService.newToast(ToastType.Success, "Workunit rescheduled")
+			this.toastService.newToast(ToastType.Success, "Work unit rescheduled")
 			this.loading = false
 		}, () => {
 			this.loading = false
