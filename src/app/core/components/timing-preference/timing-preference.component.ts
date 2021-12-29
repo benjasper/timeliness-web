@@ -24,6 +24,11 @@ export class TimingPreferenceComponent implements OnInit {
 		this.authService.user.subscribe((user) => {
 			if (user) {
 				this.user = user
+				if (!user.settings.scheduling?.timingPreference) {
+					this.form.patchValue({
+						timing: TimingPreferences.Early,
+					})
+				}
 				this.form.get('timing')?.setValue(user.settings.scheduling?.timingPreference ?? TimingPreferences.Early)
 			}
 		})
