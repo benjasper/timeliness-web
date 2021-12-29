@@ -28,8 +28,9 @@ export class TimingPreferenceComponent implements OnInit {
 					this.form.patchValue({
 						timing: TimingPreferences.Early,
 					})
+				} else {
+					this.form.get('timing')?.setValue(user.settings.scheduling?.timingPreference ?? TimingPreferences.Early)
 				}
-				this.form.get('timing')?.setValue(user.settings.scheduling?.timingPreference ?? TimingPreferences.Early)
 			}
 		})
 	}
