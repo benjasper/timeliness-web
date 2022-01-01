@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { FormGroup, FormControl } from '@angular/forms'
 import { ToastType } from 'src/app/models/toast'
 import { AuthService } from 'src/app/services/auth.service'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-timezone-select',
@@ -563,7 +563,7 @@ export class TimezoneSelectComponent implements OnInit {
 	@Input() shouldApplyUserTimezone = false
 	appliedUserTimezone = false
 
-	constructor(private authService: AuthService, private toastService: ToastService) {}
+	constructor(private authService: AuthService, private modalService: ModalService) {}
 
 	ngOnInit(): void {
 		this.authService.user.subscribe((user) => {
@@ -593,7 +593,7 @@ export class TimezoneSelectComponent implements OnInit {
 		}
 
 		this.authService.patchUserSettings({ scheduling: { timeZone: newTimeZone } }).subscribe(() => {
-			this.toastService.newToast(ToastType.Success, `Updated timezone to ${newTimeZone}`)
+			this.modalService.newToast(ToastType.Success, `Updated timezone to ${newTimeZone}`)
 		})
 	}
 

@@ -10,7 +10,7 @@ import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
 import { Tag, TagModified } from '../models/tag'
 import { ApiError } from '../models/error'
-import { ToastService } from './toast.service'
+import { ModalService } from './modal.service'
 import { ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
 
@@ -18,7 +18,7 @@ import { Timespan } from '../models/timespan'
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient, private toastService: ToastService) {
+	constructor(private http: HttpClient, private modalService: ModalService) {
 		this.getTags()
 
 		setInterval(() => {
@@ -361,7 +361,7 @@ export class TaskService {
 		
 		let userMessage = "We\'ve encoutered an error, we are on it!"
 
-		this.toastService.newToast(ToastType.Error, userMessage)
+		this.modalService.newToast(ToastType.Error, userMessage)
 		// Return an observable with a user-facing error message.
 		return throwError(userMessage)
 	}

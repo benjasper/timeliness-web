@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { ToastType } from 'src/app/models/toast'
 import { AuthService } from 'src/app/services/auth.service'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-signup',
@@ -12,7 +12,7 @@ import { ToastService } from 'src/app/services/toast.service'
 export class SignupComponent implements OnInit {
 	loading = false
 
-	constructor(private authService: AuthService, private toastService: ToastService, private router: Router) {}
+	constructor(private authService: AuthService, private modalService: ModalService, private router: Router) {}
 
 	ngOnInit(): void {}
 
@@ -70,7 +70,7 @@ export class SignupComponent implements OnInit {
 			.subscribe(
 				() => {
 					this.loading = false
-					this.toastService.newToast(ToastType.Success, 'Account created!')
+					this.modalService.newToast(ToastType.Success, 'Account created!')
 					this.router.navigate(['/auth/verify'])
 				},
 				(error) => {

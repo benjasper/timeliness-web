@@ -10,10 +10,9 @@ import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { smoothHeight } from 'src/app/animations'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 import { ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
-import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-modal-edit-task',
@@ -68,7 +67,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		private router: Router,
 		private route: ActivatedRoute,
 		private taskService: TaskService,
-		private toastService: ToastService,
 		private modalService: ModalService
 	) {
 		super()
@@ -127,6 +125,10 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	ngOnInit(): void {
 		this.modalBackground = true
 		this.generateDurations()
+
+		this.modalService.newToast(ToastType.Success, 'Loading task...', true, 10)
+		this.modalService.newToast(ToastType.Success, 'Loading task 2...', true, 5)
+		this.modalService.newToast(ToastType.Success, 'Loading task 3...', false, 10)
 
 		if (this.taskId === 'new') {
 			this.isNew = true
@@ -449,7 +451,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.taskId = task.id
 					this.isNew = false
 					this.loading = false
-					this.toastService.newToast(ToastType.Success, `New task "${task.name}" created`)
+					this.modalService.newToast(ToastType.Success, `New task "${task.name}" created`)
 					this.router.navigate(['task', task.id], {
 						relativeTo: this.route.parent,
 					})
@@ -463,7 +465,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				(task) => {
 					this.editTask.markAsPristine()
 					this.patchForm(task)
-					this.toastService.newToast(ToastType.Success, 'Task updated')
+					this.modalService.newToast(ToastType.Success, 'Task updated')
 					this.loading = false
 					this.setStartsAtWorkUnit()
 				},

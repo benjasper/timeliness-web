@@ -31,7 +31,6 @@ import { GeneralComponent } from './core/pages/settings/general/general.componen
 import { CalendarsComponent } from './core/pages/settings/calendars/calendars.component'
 import { SectionComponent } from './core/pages/settings/section/section.component'
 import { GoogleCalendarSettingsComponent } from './core/components/google-calendar-settings/google-calendar-settings.component'
-import { ToastService } from './services/toast.service'
 import { TaskService } from './services/task.service'
 import { NgxSplideModule } from 'ngx-splide'
 import { TimezoneSelectComponent } from './core/components/timezone-select/timezone-select.component'
@@ -48,8 +47,9 @@ import { TutorialComponent } from './core/pages/dashboard/tutorial/tutorial.comp
 import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component'
 import { TimingPreferenceComponent } from './core/components/timing-preference/timing-preference.component'
 import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/rescheduling-modal.component'
-import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal';
+import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 import { ConfirmationModalComponent } from './core/modals/confirmation-modal/confirmation-modal.component'
+import { ToastComponent } from './core/modals/toast/toast.component'
 
 @NgModule({
 	declarations: [
@@ -88,7 +88,8 @@ import { ConfirmationModalComponent } from './core/modals/confirmation-modal/con
 		BusyPaddingComponent,
 		TimingPreferenceComponent,
 		ReschedulingModalComponent,
-  ConfirmationModalComponent,
+		ConfirmationModalComponent,
+		ToastComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -103,7 +104,8 @@ import { ConfirmationModalComponent } from './core/modals/confirmation-modal/con
 		}),
 		NgSelectModule,
 		NgxSplideModule,
-		SimpleModalModule.forRoot({container: document.body},
+		SimpleModalModule.forRoot(
+			{ container: document.body },
 			{
 				...defaultSimpleModalOptions,
 				...{
@@ -115,11 +117,8 @@ import { ConfirmationModalComponent } from './core/modals/confirmation-modal/con
 			}
 		),
 	],
-	entryComponents: [
-		ReschedulingModalComponent,
-		ConfirmationModalComponent,
-	],
-	providers: [httpInterceptorProviders, ToastService, TaskService, AuthService],
+	entryComponents: [ReschedulingModalComponent, ConfirmationModalComponent, ToastComponent],
+	providers: [httpInterceptorProviders, TaskService, AuthService],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

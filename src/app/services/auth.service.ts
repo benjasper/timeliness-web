@@ -8,13 +8,13 @@ import { environment } from 'src/environments/environment'
 import { ApiError } from '../models/error'
 import { ToastType } from '../models/toast'
 import { User, UserSettings } from '../models/user'
-import { ToastService } from './toast.service'
+import { ModalService } from './modal.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient, private router: Router, private toastService: ToastService) {}
+	constructor(private http: HttpClient, private router: Router, private modalService: ModalService) {}
 
 	private accessToken = ''
 	private refreshToken = ''
@@ -248,7 +248,7 @@ export class AuthService {
 			message = 'That did not work.'
 		}
 
-		this.toastService.newToast(ToastType.Error, message)
+		this.modalService.newToast(ToastType.Error, message)
 		return throwError(error)
 	}
 }

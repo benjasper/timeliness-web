@@ -1,7 +1,9 @@
 import { Injectable, Type } from '@angular/core'
 import { SimpleModalComponent, SimpleModalOptions, SimpleModalService } from 'ngx-simple-modal'
-import { Observable, pipe } from 'rxjs'
+import { asyncScheduler, Observable, pipe, queueScheduler } from 'rxjs'
 import { publishReplay, share, take } from 'rxjs/operators'
+import { ToastComponent } from '../core/modals/toast/toast.component'
+import { Toast, ToastType } from '../models/toast'
 
 export interface ModalEntry {
 	id: string
@@ -17,6 +19,8 @@ export class ModalResult<T> {
 export class ModalService extends SimpleModalService {
 
 	modalEntries: ModalEntry[] = []
+	toastQueue: Toast[] = []
+	toastBeingShown: Toast | undefined
 
 	addModal<T, ModalResult>(
 		component: Type<SimpleModalComponent<T, ModalResult>>,
@@ -33,6 +37,53 @@ export class ModalService extends SimpleModalService {
 		})
 
 		return observable
+	}
+
+	public newToast(
+		type: ToastType,
+		message: string,
+		dismissable = false,
+		seconds = 5,
+		link?: { title: string; link: string }
+	) {
+		const toast = new Toast(type, message, dismissable, seconds, link)
+		this.toastQueue.push(toast)
+		this.runNextToast()
+	}
+
+	public runNextToast() {
+		console.log(this.toastBeingShown)
+		console.log(this.toastQueue)
+
+		if (this.toastBeingShown) {
+			return
+		}
+
+		const toast = this.toastQueue.shift()
+		this.toastBeingShown = toast
+
+		if (!toast) {
+			return
+		}
+
+		let observable = super.addModal(ToastComponent, {toast})
+
+		observable = observable.pipe(share())
+
+		const timeout = setTimeout(() => {
+			subscription.unsubscribe()
+			this.finishToast(toast)
+		}, toast.seconds * 1000)
+		
+		const subscription = observable.subscribe(() => {
+			this.finishToast(toast)
+			clearTimeout(timeout)
+		})
+	}
+
+	private finishToast(toast: Toast) {
+		this.toastBeingShown = undefined
+		this.runNextToast()
 	}
 
 	hasOpenModals(): boolean {

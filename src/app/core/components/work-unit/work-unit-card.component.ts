@@ -4,10 +4,9 @@ import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Tag } from 'src/app/models/tag'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 import { ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
-import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -23,7 +22,6 @@ import { ModalService } from 'src/app/services/modal.service'
 export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	constructor(
 		private taskService: TaskService,
-		private toastService: ToastService,
 		private modalService: ModalService
 	) {
 		super()
@@ -102,7 +100,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 					message = 'Work unit marked as un-done'
 				}
 
-				this.toastService.newToast(ToastType.Success, message)
+				this.modalService.newToast(ToastType.Success, message)
 				this.loading = false
 			},
 			() => {
@@ -123,7 +121,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 				if (result.result.length === 0) {
 					this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(
 						() => {
-							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
+							this.modalService.newToast(ToastType.Success, 'Work unit rescheduled')
 							this.loading = false
 						},
 						() => {
@@ -133,7 +131,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 				} else {
 					this.taskService.rescheduleWorkUnitWithTimespans(task, this.workUnitIndex, result.result).subscribe(
 						() => {
-							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
+							this.modalService.newToast(ToastType.Success, 'Work unit rescheduled')
 							this.loading = false
 						},
 						() => {

@@ -3,14 +3,14 @@ import { FormGroup, FormControl } from '@angular/forms'
 import { ToastType } from 'src/app/models/toast'
 import { TimingPreferences, User } from 'src/app/models/user'
 import { AuthService } from 'src/app/services/auth.service'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-timing-preference',
 	templateUrl: './timing-preference.component.html',
 })
 export class TimingPreferenceComponent implements OnInit {
-	constructor(private authService: AuthService, private toastService: ToastService) {}
+	constructor(private authService: AuthService, private modalService: ModalService) {}
 
 	form = new FormGroup({
 		timing: new FormControl(''),
@@ -40,7 +40,7 @@ export class TimingPreferenceComponent implements OnInit {
 		this.authService.patchUserSettings({
 			scheduling: { timingPreference: this.form.value.timing ?? TimingPreferences.Early },
 		}).subscribe(() => {
-			this.toastService.newToast(ToastType.Success, 'Timing preference saved!')
+			this.modalService.newToast(ToastType.Success, 'Timing preference saved!')
 		})
 	}
 }

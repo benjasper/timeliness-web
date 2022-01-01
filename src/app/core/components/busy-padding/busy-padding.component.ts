@@ -4,7 +4,7 @@ import { Duration, DurationUnit } from 'src/app/models/duration';
 import { ToastType } from 'src/app/models/toast';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
 	selector: 'app-busy-padding',
@@ -12,7 +12,7 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class BusyPaddingComponent implements OnInit {
 
-	constructor(private authService: AuthService, private toastService: ToastService) { }
+	constructor(private authService: AuthService, private modalService: ModalService) { }
 
 	user: User | undefined
 
@@ -48,7 +48,7 @@ export class BusyPaddingComponent implements OnInit {
 			.patchUserSettings({ scheduling: { busyTimeSpacing: spacing.toNanoseconds() } })
 			.subscribe(
 				() => {
-					this.toastService.newToast(ToastType.Success, 'Updated distance between events')
+					this.modalService.newToast(ToastType.Success, 'Updated distance between events')
 				}
 			)
 	}

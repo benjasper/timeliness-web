@@ -4,14 +4,14 @@ import { Timespan, TimespanWithDate } from 'src/app/models/timespan'
 import { ToastType } from 'src/app/models/toast'
 import { User } from 'src/app/models/user'
 import { AuthService } from 'src/app/services/auth.service'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-timespan-select',
 	templateUrl: './timespan-select.component.html',
 })
 export class TimespanSelectComponent implements OnInit {
-	constructor(private authService: AuthService, private toastService: ToastService) {}
+	constructor(private authService: AuthService, private modalService: ModalService) {}
 
 	timespans: TimespanWithDate[] = []
 	user?: User
@@ -88,7 +88,7 @@ export class TimespanSelectComponent implements OnInit {
 			.subscribe(
 				() => {
 					this.wasEdited = false
-					this.toastService.newToast(ToastType.Success, 'Saved scheduling times')
+					this.modalService.newToast(ToastType.Success, 'Saved scheduling times')
 				},
 				() => {
 					this.cancel()
