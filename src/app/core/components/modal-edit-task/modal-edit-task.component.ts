@@ -126,10 +126,6 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.modalBackground = true
 		this.generateDurations()
 
-		this.modalService.newToast(ToastType.Success, 'Loading task...', true, 10)
-		this.modalService.newToast(ToastType.Success, 'Loading task 2...', true, 5)
-		this.modalService.newToast(ToastType.Success, 'Loading task 3...', false, 10)
-
 		if (this.taskId === 'new') {
 			this.isNew = true
 			return

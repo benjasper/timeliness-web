@@ -17,7 +17,6 @@ export class ModalResult<T> {
 	providedIn: 'root',
 })
 export class ModalService extends SimpleModalService {
-
 	modalEntries: ModalEntry[] = []
 	toastQueue: Toast[] = []
 	toastBeingShown: Toast | undefined
@@ -28,12 +27,16 @@ export class ModalService extends SimpleModalService {
 		options?: Partial<SimpleModalOptions>
 	): Observable<ModalResult> {
 		const id = this.generateID()
+
 		this.modalEntries.push({ id })
 		let observable = super.addModal(component, data, options)
 		observable = observable.pipe(share())
-		
-		observable.subscribe((result) => {
-			this.modalEntries.splice(this.modalEntries.findIndex(x => x.id === id), 1)
+
+		observable.subscribe(() => {
+			this.modalEntries.splice(
+				this.modalEntries.findIndex((x) => x.id === id),
+				1
+			)
 		})
 
 		return observable
@@ -44,17 +47,23 @@ export class ModalService extends SimpleModalService {
 		message: string,
 		dismissable = false,
 		seconds = 5,
-		link?: { title: string; link: string }
+		link?: { title: string; link: string },
+		loading?: Promise<void|any>,
+		loadingText?: string
 	) {
-		const toast = new Toast(type, message, dismissable, seconds, link)
+		const toast = new Toast(type, message, dismissable, seconds, link, loading, loadingText)
+		this.toastQueue.push(toast)
+		this.runNextToast()
+	}
+
+	public addToast(
+		toast: Toast
+	) {
 		this.toastQueue.push(toast)
 		this.runNextToast()
 	}
 
 	public runNextToast() {
-		console.log(this.toastBeingShown)
-		console.log(this.toastQueue)
-
 		if (this.toastBeingShown) {
 			return
 		}
@@ -66,15 +75,31 @@ export class ModalService extends SimpleModalService {
 			return
 		}
 
-		let observable = super.addModal(ToastComponent, {toast})
+		let observable = super.addModal(ToastComponent, { toast })
 
 		observable = observable.pipe(share())
+
+		if (toast.loading) {
+			toast.loading.then(() => {
+				const timeout = setTimeout(() => {
+					subscription.unsubscribe()
+					this.finishToast(toast)
+				}, toast.seconds * 1000)
+
+				const subscription = observable.subscribe(() => {
+					this.finishToast(toast)
+					clearTimeout(timeout)
+				})
+			})
+
+			return
+		}
 
 		const timeout = setTimeout(() => {
 			subscription.unsubscribe()
 			this.finishToast(toast)
 		}, toast.seconds * 1000)
-		
+
 		const subscription = observable.subscribe(() => {
 			this.finishToast(toast)
 			clearTimeout(timeout)

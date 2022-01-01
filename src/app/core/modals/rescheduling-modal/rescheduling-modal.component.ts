@@ -33,6 +33,8 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 	loading = false
 	noOptionsAvailable: boolean = false
 
+	result = new ModalResult<Timespan[]>([], false)
+
 	constructor(private taskService: TaskService) {
 		super()
 	}
@@ -52,12 +54,11 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 
 	close(): Promise<any> {
 		this.isOpen = false
-		this.result = new ModalResult([], false)
 		return super.close()
 	}
 
-	apply(timespans: Timespan[], hasValue: boolean): void {
-		this.result = new ModalResult(timespans, hasValue)
+	apply(timespans: Timespan[]): void {
+		this.result = new ModalResult(timespans, true)
 		this.close()
 	}
 }

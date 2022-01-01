@@ -5,7 +5,7 @@ import { TaskComponent } from '../../task.component'
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Tag } from 'src/app/models/tag'
 import { ModalService } from 'src/app/services/modal.service'
-import { ToastType } from 'src/app/models/toast'
+import { Toast, ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
 
 @Component({
@@ -20,10 +20,7 @@ import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/resc
 	],
 })
 export class WorkUnitCardComponent extends TaskComponent implements OnInit {
-	constructor(
-		private taskService: TaskService,
-		private modalService: ModalService
-	) {
+	constructor(private taskService: TaskService, private modalService: ModalService) {
 		super()
 	}
 
@@ -93,14 +90,19 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.loading = true
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(
-			() => {
-				let message = 'Work unit marked as done'
-				if (done === false) {
-					message = 'Work unit marked as un-done'
-				}
+		const observable = this.taskService.markWorkUnitAsDone(task, workUnitIndex, done)
 
-				this.modalService.newToast(ToastType.Success, message)
+		let message = 'Work unit marked as done'
+		if (done === false) {
+			message = 'Work unit marked as un-done'
+		}
+
+		const toast = new Toast(ToastType.Success, message)
+		toast.loading = observable.toPromise()
+		this.modalService.addToast(toast)
+
+		observable.subscribe(
+			() => {
 				this.loading = false
 			},
 			() => {
@@ -119,25 +121,37 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 
 				this.loading = true
 				if (result.result.length === 0) {
-					this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(
+					const observable = this.taskService.rescheduleWorkUnit(task, this.workUnitIndex)
+					observable.subscribe(
 						() => {
-							this.modalService.newToast(ToastType.Success, 'Work unit rescheduled')
 							this.loading = false
 						},
 						() => {
 							this.loading = false
 						}
 					)
+					
+					const toast = new Toast(ToastType.Success, 'Work unit rescheduled')
+					toast.loading = observable.toPromise()
+					this.modalService.addToast(toast)
 				} else {
-					this.taskService.rescheduleWorkUnitWithTimespans(task, this.workUnitIndex, result.result).subscribe(
+					const observable = this.taskService.rescheduleWorkUnitWithTimespans(
+						task,
+						this.workUnitIndex,
+						result.result
+					)
+					observable.subscribe(
 						() => {
-							this.modalService.newToast(ToastType.Success, 'Work unit rescheduled')
 							this.loading = false
 						},
 						() => {
 							this.loading = false
 						}
 					)
+
+					const toast = new Toast(ToastType.Success, 'Work unit rescheduled')
+					toast.loading = observable.toPromise()
+					this.modalService.addToast(toast)
 				}
 			})
 		return

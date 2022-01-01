@@ -7,10 +7,10 @@
 		text-base
 		flex flex-row
 		center-x
-		bottom-16
+		bottom-[3vh]
 		bg-pink
 		text-red
-		p-12
+		px-8
 		py-4
 		rounded-xl
 		drop-shadow-lg
@@ -19,7 +19,7 @@
 	[class.green-background]="TOAST_TYPE.Success === toast.type"
 	[class.yellow-background]="TOAST_TYPE.Warning === toast.type"
 >
-	<div class="flex flex-row text-lg font-bold my-auto" [ngSwitch]="toast.type">
+	<div *ngIf="!isLoading" class="flex flex-row text-lg font-bold my-auto" [ngSwitch]="toast.type">
 		<div class="flex w-12 h-12 rounded-full border-2 mr-4">
 			<ng-container *ngSwitchCase="TOAST_TYPE.Error">
 				<svg-icon class="img w-5 fill-current m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
@@ -32,14 +32,27 @@
 			</ng-container>
 		</div>
 	</div>
-	<span class="text-base my-auto">
+	<div *ngIf="isLoading" class="flex flex-row gap-4 text-lg font-bold my-auto">
+		<svg class="h-12 w-12 fill-current animate-spin-slow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M12 4.75V6.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M17.1266 6.87347L16.0659 7.93413" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M19.25 12L17.75 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M17.1266 17.1265L16.0659 16.0659" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M12 17.75V19.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M7.9342 16.0659L6.87354 17.1265" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M6.25 12L4.75 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M7.9342 7.93413L6.87354 6.87347" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+		<span class="my-auto">Loading...</span>
+	</div>
+	<span *ngIf="!isLoading" class="text-base my-auto">
 		{{ toast.message }}
 		<a *ngIf="toast.link" class="inline-block text-base my-auto" target="_blank" [href]="toast.link.link">
 			{{ toast.link.title }}
 		</a>
 	</span>
 	<button
-		*ngIf="toast.dismissable"
+		*ngIf="toast.dismissable && !isLoading"
 		(click)="dismiss()"
 		class="ml-4 tiny-button !w-10 !h-10 flex-shrink-0 my-auto !text-grey-dark"
 	>

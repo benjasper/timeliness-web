@@ -36,7 +36,6 @@ export class TimingPreferenceComponent implements OnInit {
 	}
 
 	save() {
-		console.log(this.form.value)
 		this.authService.patchUserSettings({
 			scheduling: { timingPreference: this.form.value.timing ?? TimingPreferences.Early },
 		}).subscribe(() => {

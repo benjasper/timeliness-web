@@ -17,14 +17,31 @@ export interface ToastComponentData {
 		]),
 	],
 })
-export class ToastComponent extends SimpleModalComponent<ToastComponentData,undefined> implements OnInit, ToastComponentData {
+export class ToastComponent
+	extends SimpleModalComponent<ToastComponentData, undefined>
+	implements OnInit, ToastComponentData
+{
 	toast!: Toast
 	TOAST_TYPE = ToastType
 
 	isOpen = false
+	isLoading = false
 
 	ngOnInit(): void {
 		this.isOpen = true
+
+		if (this.toast.loading) {
+			this.isLoading = true
+
+			this.toast.loading.then(
+				() => {
+					this.isLoading = false
+				},
+				() => {
+					this.close()
+				}
+			)
+		}
 	}
 
 	close(): Promise<any> {
