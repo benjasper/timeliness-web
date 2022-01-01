@@ -1,4 +1,4 @@
-@import '../../../variables.scss';
+@import '../../../../variables.scss';
 
 .dashboard-container {
 	display: grid;
@@ -13,7 +13,6 @@
 			}
 		}
 	}
-
 
 	.main {
 		min-width: 0;

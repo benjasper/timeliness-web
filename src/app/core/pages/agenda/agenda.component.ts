@@ -9,7 +9,6 @@ import { share } from 'rxjs/operators';
 @Component({
 	selector: 'app-agenda',
 	templateUrl: './agenda.component.html',
-	styleUrls: ['./agenda.component.scss']
 })
 export class AgendaComponent implements OnInit, OnDestroy {
 

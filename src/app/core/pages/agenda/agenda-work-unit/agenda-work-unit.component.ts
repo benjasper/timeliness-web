@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { Tag } from 'src/app/models/tag'
 import { Task, TaskAgenda } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
-import { TaskComponent } from '../../task.component'
+import { TaskComponent } from '../../../task.component'
 
 @Component({
 	selector: 'app-agenda-work-unit',
