@@ -12,6 +12,7 @@ import { Tag, TagModified } from '../models/tag'
 import { ApiError } from '../models/error'
 import { ToastService } from './toast.service'
 import { ToastType } from '../models/toast'
+import { Timespan } from '../models/timespan'
 
 @Injectable({
 	providedIn: 'root',
@@ -321,6 +322,18 @@ export class TaskService {
 		return observable
 	}
 
+	public rescheduleWorkUnitWithTimespans(task: Task, workUnitIndex: number, timespans: Timespan[]): Observable<Task> {
+		const observable = this.http
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/reschedule`, { chosenTimespans: timespans })
+			.pipe(share(), catchError((err) => this.handleError(err)))
+
+		observable.subscribe((newTask) => {
+			// TODO save in task cache
+			this.tasksSubject.next(newTask)
+		})
+		return observable
+	}
+
 	public rescheduleWorkUnit(task: Task, index: number): Observable<Task> {
 		const observable = this.http
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
@@ -330,6 +343,14 @@ export class TaskService {
 			// TODO save in task cache
 			this.tasksSubject.next(newTask)
 		})
+		return observable
+	}
+
+	public fetchReschedulingSuggestions(task: Task, workUnitIndex: number): Observable<Timespan[][]> {
+		const observable = this.http
+			.get<Timespan[][]>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/reschedule`, {})
+			.pipe(share(), catchError((err) => this.handleError(err)))
+
 		return observable
 	}
 

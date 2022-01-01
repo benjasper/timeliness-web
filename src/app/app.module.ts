@@ -44,9 +44,11 @@ import { AuthComponent } from './pages/auth/auth.component'
 import { VerificationComponent } from './pages/auth/verification/verification.component'
 import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { SuccessGoogleComponent } from './pages/static/success-google/success-google.component'
-import { TutorialComponent } from './core/dashboard/tutorial/tutorial.component';
-import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component';
+import { TutorialComponent } from './core/dashboard/tutorial/tutorial.component'
+import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component'
 import { TimingPreferenceComponent } from './core/components/timing-preference/timing-preference.component'
+import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/rescheduling-modal.component'
+import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 
 @NgModule({
 	declarations: [
@@ -82,8 +84,9 @@ import { TimingPreferenceComponent } from './core/components/timing-preference/t
 		OnboardingComponent,
 		SuccessGoogleComponent,
 		TutorialComponent,
-  BusyPaddingComponent,
-  TimingPreferenceComponent,
+		BusyPaddingComponent,
+		TimingPreferenceComponent,
+		ReschedulingModalComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -98,6 +101,20 @@ import { TimingPreferenceComponent } from './core/components/timing-preference/t
 		}),
 		NgSelectModule,
 		NgxSplideModule,
+		SimpleModalModule.forRoot({container: document.body},
+			{
+				...defaultSimpleModalOptions,
+				...{
+					closeOnEscape: true,
+					closeOnClickOutside: true,
+					animationDuration: 400,
+					autoFocus: true,
+				},
+			}
+		),
+	],
+	entryComponents: [
+		ReschedulingModalComponent
 	],
 	providers: [httpInterceptorProviders, ToastService, TaskService, AuthService],
 	bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ViewChild } from '@angular/core'
 import { Task, TaskUnwound } from 'src/app/models/task'
 import { DurationUnit, Duration } from 'src/app/models/duration'
 import { TaskService } from 'src/app/services/task.service'
@@ -9,6 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { ApiError } from 'src/app/models/error'
 import { ToastService } from 'src/app/services/toast.service'
 import { ToastType } from 'src/app/models/toast'
+import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
+import { SimpleModalService } from 'ngx-simple-modal'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -22,7 +24,11 @@ import { ToastType } from 'src/app/models/toast'
 	],
 })
 export class WorkUnitCardComponent extends TaskComponent implements OnInit {
-	constructor(private taskService: TaskService, private toastService: ToastService) {
+	constructor(
+		private taskService: TaskService,
+		private toastService: ToastService,
+		private modalService: SimpleModalService
+	) {
 		super()
 	}
 
@@ -36,18 +42,20 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	@Input() small = false
 	@Input() loading = false
 
+	@ViewChild('reschedulingModal', { static: false }) reschedulingModal!: ReschedulingModalComponent
+
 	ngOnInit(): void {
 		if (this.loading) {
 			return
 		}
-		
+
 		if ((this.task === undefined || this.workUnitIndex === undefined) && this.loading === false) {
 			throw Error('Missing required arguments!')
 		}
 
 		if (this.task.tags[0]) {
-			this.taskService.tagsObservable.subscribe(newTags => {
-				const foundTag = newTags.find(x => x.id === this.task.tags[0])
+			this.taskService.tagsObservable.subscribe((newTags) => {
+				const foundTag = newTags.find((x) => x.id === this.task.tags[0])
 				if (foundTag) {
 					this.tag = foundTag
 				}
@@ -90,26 +98,53 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
 		this.loading = true
-		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(() => {
-			let message = "Work unit marked as done"
-			if (done === false) {
-				message = "Work unit marked as un-done"
-			}
+		this.taskService.markWorkUnitAsDone(task, workUnitIndex, done).subscribe(
+			() => {
+				let message = 'Work unit marked as done'
+				if (done === false) {
+					message = 'Work unit marked as un-done'
+				}
 
-			this.toastService.newToast(ToastType.Success, message)
-			this.loading = false
-		}, () => {
-			this.loading = false
-		})
+				this.toastService.newToast(ToastType.Success, message)
+				this.loading = false
+			},
+			() => {
+				this.loading = false
+			}
+		)
 	}
 
 	public rescheduleWorkUnit(task: Task): void {
-		this.loading = true
-		this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(() => {
-			this.toastService.newToast(ToastType.Success, "Work unit rescheduled")
-			this.loading = false
-		}, () => {
-			this.loading = false
-		})
+		this.modalService
+			.addModal(ReschedulingModalComponent, { task: task, workUnitIndex: this.workUnitIndex })
+			.subscribe((result) => {
+				if (!result) {
+					return
+				}
+
+				this.loading = true
+				if (result.length === 0) {
+					this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(
+						() => {
+							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
+							this.loading = false
+						},
+						() => {
+							this.loading = false
+						}
+					)
+				} else {
+					this.taskService.rescheduleWorkUnitWithTimespans(task, this.workUnitIndex, result).subscribe(
+						() => {
+							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
+							this.loading = false
+						},
+						() => {
+							this.loading = false
+						}
+					)
+				}
+			})
+		return
 	}
 }
