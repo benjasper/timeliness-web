@@ -1,16 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core'
-import { Task, TaskUnwound } from 'src/app/models/task'
-import { DurationUnit, Duration } from 'src/app/models/duration'
+import { Task } from 'src/app/models/task'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Tag } from 'src/app/models/tag'
-import { HttpErrorResponse } from '@angular/common/http'
-import { ApiError } from 'src/app/models/error'
 import { ToastService } from 'src/app/services/toast.service'
 import { ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
-import { SimpleModalService } from 'ngx-simple-modal'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -27,7 +24,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	constructor(
 		private taskService: TaskService,
 		private toastService: ToastService,
-		private modalService: SimpleModalService
+		private modalService: ModalService
 	) {
 		super()
 	}
@@ -118,12 +115,12 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		this.modalService
 			.addModal(ReschedulingModalComponent, { task: task, workUnitIndex: this.workUnitIndex })
 			.subscribe((result) => {
-				if (!result) {
+				if (!result.hasValue) {
 					return
 				}
 
 				this.loading = true
-				if (result.length === 0) {
+				if (result.result.length === 0) {
 					this.taskService.rescheduleWorkUnit(task, this.workUnitIndex).subscribe(
 						() => {
 							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
@@ -134,7 +131,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 						}
 					)
 				} else {
-					this.taskService.rescheduleWorkUnitWithTimespans(task, this.workUnitIndex, result).subscribe(
+					this.taskService.rescheduleWorkUnitWithTimespans(task, this.workUnitIndex, result.result).subscribe(
 						() => {
 							this.toastService.newToast(ToastType.Success, 'Work unit rescheduled')
 							this.loading = false

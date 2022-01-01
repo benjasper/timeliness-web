@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
 import { Task } from 'src/app/models/task'
 import { Timespan } from 'src/app/models/timespan'
+import { ModalResult } from 'src/app/services/modal.service'
 import { TaskService } from 'src/app/services/task.service'
 
 export interface ReschedulingModalData {
@@ -23,7 +24,7 @@ export interface ReschedulingModalData {
 		]),
 	],
 })
-export class ReschedulingModalComponent extends SimpleModalComponent<ReschedulingModalData, Timespan[]|undefined> implements OnInit, ReschedulingModalData {
+export class ReschedulingModalComponent extends SimpleModalComponent<ReschedulingModalData, ModalResult<Timespan[]>> implements OnInit, ReschedulingModalData {
 	task!: Task
 	workUnitIndex!: number
 	timespanGroups: Timespan[][] = []
@@ -51,11 +52,12 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 
 	close(): Promise<any> {
 		this.isOpen = false
+		this.result = new ModalResult([], false)
 		return super.close()
 	}
 
-	apply(timespans: Timespan[]): void {
-		this.result = timespans
+	apply(timespans: Timespan[], hasValue: boolean): void {
+		this.result = new ModalResult(timespans, hasValue)
 		this.close()
 	}
 }

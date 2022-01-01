@@ -12,15 +12,16 @@ import { TaskComponent } from '../../task.component'
 import { smoothHeight } from 'src/app/animations'
 import { ToastService } from 'src/app/services/toast.service'
 import { ToastType } from 'src/app/models/toast'
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
 	selector: 'app-modal-edit-task',
 	templateUrl: './modal-edit-task.component.html',
-	styleUrls: ['./modal-edit-task.component.scss'],
 	animations: [
 		trigger('modalBackground', [
 			transition(':enter', [style({ opacity: 0 }), animate(100)]),
-			transition(':leave', [animate(100, style({ opacity: 0 }))]),
+			transition(':leave', [animate(100, style({ opacity: 0.6 }))]),
 		]),
 		trigger('flyInOut', [
 			transition(':enter', [style({ transform: 'translate(-50%, -150%)', opacity: 0 }), animate(200)]),
@@ -67,7 +68,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		private router: Router,
 		private route: ActivatedRoute,
 		private taskService: TaskService,
-		private toastService: ToastService
+		private toastService: ToastService,
+		private modalService: ModalService
 	) {
 		super()
 		this.route.paramMap.subscribe((param) => {
@@ -87,7 +89,9 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	@HostListener('document:keydown.escape', ['$event'])
 	handleEscape(event: KeyboardEvent): void {
-		event.stopImmediatePropagation()
+		if (this.modalService.hasOpenModals()) {
+			return
+		}
 		event.preventDefault()
 		this.closeModal()
 	}
@@ -130,27 +134,30 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		}
 
 		this.loading = true
-		this.taskService.getTask(this.taskId).subscribe((task) => {
-			this.patchForm(task)
-			this.task = task
-			this.loading = false
+		this.taskService.getTask(this.taskId).subscribe(
+			(task) => {
+				this.patchForm(task)
+				this.task = task
+				this.loading = false
 
-			this.setStartsAtWorkUnit()
+				this.setStartsAtWorkUnit()
 
-			this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
-				if (task.id === this.task.id) {
-					this.patchForm(task)
-					this.task = task
-					this.loading = false
+				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
+					if (task.id === this.task.id) {
+						this.patchForm(task)
+						this.task = task
+						this.loading = false
 
-					this.setStartsAtWorkUnit()
-				}
-			})
+						this.setStartsAtWorkUnit()
+					}
+				})
 
-			this.registerForTags()
-		}, () => {
-			this.router.navigate(['.'], { relativeTo: this.route.parent })
-		})
+				this.registerForTags()
+			},
+			() => {
+				this.router.navigate(['.'], { relativeTo: this.route.parent })
+			}
+		)
 
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
 			this.today = date
@@ -331,9 +338,24 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 	}
 
 	public delete(): void {
-		this.taskService.deleteTask(this.task).subscribe(() => {
-			this.closeModal()
-		})
+		this.modalService
+			.addModal(ConfirmationModalComponent, {
+				title: 'Delete task',
+				message: 'Are you sure you want to delete this task?',
+			})
+			.subscribe((result) => {
+				if (result.hasValue && result.result) {
+					this.loading = true
+					this.taskService.deleteTask(this.task).subscribe(
+						() => {
+							this.closeModal()
+						},
+						() => {
+							this.loading = false
+						}
+					)
+				}
+			})
 	}
 
 	public async save(): Promise<boolean> {

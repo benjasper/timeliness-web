@@ -48,7 +48,8 @@ import { TutorialComponent } from './core/pages/dashboard/tutorial/tutorial.comp
 import { BusyPaddingComponent } from './core/components/busy-padding/busy-padding.component'
 import { TimingPreferenceComponent } from './core/components/timing-preference/timing-preference.component'
 import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/rescheduling-modal.component'
-import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
+import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal';
+import { ConfirmationModalComponent } from './core/modals/confirmation-modal/confirmation-modal.component'
 
 @NgModule({
 	declarations: [
@@ -87,6 +88,7 @@ import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 		BusyPaddingComponent,
 		TimingPreferenceComponent,
 		ReschedulingModalComponent,
+  ConfirmationModalComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -114,7 +116,8 @@ import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 		),
 	],
 	entryComponents: [
-		ReschedulingModalComponent
+		ReschedulingModalComponent,
+		ConfirmationModalComponent,
 	],
 	providers: [httpInterceptorProviders, ToastService, TaskService, AuthService],
 	bootstrap: [AppComponent],
