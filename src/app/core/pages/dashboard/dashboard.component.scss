@@ -1,0 +1,294 @@
+@import '../../../../variables.scss';
+
+.dashboard-container {
+	display: grid;
+	grid-template-columns: 1fr auto;
+
+	.dashboard-container {
+		::ng-deep {
+			button {
+				&.prev {
+					left: -4.5rem;
+				}
+			}
+		}
+	}
+
+	.main {
+		min-width: 0;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+
+		@media (max-width: 1399.98px) {
+			padding-right: 8rem;
+		}
+
+		@include for-phone-only {
+			padding: 0;
+		}
+
+		.next-up {
+			display: flex;
+			flex-direction: row;
+
+			li {
+				margin-right: 5rem;
+			}
+		}
+
+		img.next-up-finished {
+			height: 28rem;
+			margin: auto;
+		}
+
+		.upcoming-work-units-header {
+			display: flex;
+			flex-flow: row;
+			justify-content: space-between;
+
+			.upcoming-work-units-title {
+				margin: auto 0;
+			}
+
+			.filters {
+				.filter {
+					margin-left: 1.5rem;
+
+					.img {
+						width: 1.6rem;
+						vertical-align: bottom;
+					}
+				}
+			}
+		}
+
+		.upcoming-work-units-list {
+			overflow-y: auto;
+
+			@include for-phone-only {
+				overflow-y: visible;
+			}
+
+			.date-group {
+				background-color: $color-white;
+				border-radius: 1.5rem;
+				margin-top: 3rem;
+				margin-bottom: 3rem;
+			}
+		}
+	}
+
+	.lower-dashboard {
+		display: flex;
+		flex-flow: row;
+		flex: 1;
+		height: 100%;
+		position: relative;
+		overflow: hidden;
+
+		@include for-phone-only {
+			flex-flow: column-reverse;
+			height: auto;
+			flex: auto;
+			overflow: visible;
+		}
+
+		.upcoming-workunits {
+			width: 50%;
+			display: flex;
+			flex-flow: column;
+			height: 100%;
+
+			@media (max-width: 780px) {
+				margin-top: 4rem;
+				width: 100%;
+			}
+		}
+
+		.section-stats {
+			padding-left: 4rem;
+			width: 50%;
+			height: 100%;
+
+			@media (max-width: 780px) {
+				width: 100%;
+				padding: 0;
+			}
+		}
+	}
+
+	.deadlines {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		z-index: 2;
+		background-color: $color-very-light-grey;
+		min-width: 50rem;
+		width: 30vw;
+		transition: all 0.2s;
+		overflow: hidden;
+
+		@include for-phone-only {
+			height: calc(100vh - 9.5rem);
+		}
+
+		.toggle {
+			display: none;
+			margin-top: 3rem;
+			cursor: pointer;
+			
+			.img {
+				transition: all 0.2s;
+				transform: rotateZ(90deg) rotateX(180deg);
+				display: block;
+				width: 2.5rem;
+    			margin-top: 1rem;
+				fill: $color-primary;
+			}
+		}
+
+		@mixin collapsed() {
+			position: relative;
+			width: 8rem;
+			min-width: 0;
+
+			ul {
+				overflow: hidden;
+				opacity: 0;
+			}
+
+			.hide-collapsed {
+				display: none;
+			}
+
+			.toggle {
+				display: flex;
+				margin-top: 6.3rem;
+
+				.img {
+					transform: rotateZ(90deg);
+				}
+			}
+
+			@include for-phone-only {
+				position: absolute;
+				right: 0;
+				width: 0;
+
+				.toggle {
+					margin-top: 3.1rem;
+					position: fixed;
+					right: 3rem;
+				}
+			}
+		}
+
+		@media (max-width: 1399.98px) {
+			&:not(.extended) {
+				@include collapsed();
+				position: absolute;
+				right: 0;
+
+				.deadlines-header {
+					justify-content: center;
+				}
+			}
+
+			&.extended {
+				position: absolute;
+				right: 0;
+				width: 75vw;
+				max-width: 65rem;
+				min-width: 0;
+				@apply shadow-xl;
+
+				.toggle {
+					display: inline-block;
+					position: absolute;
+					left: 2.2rem;
+					margin-top: 6rem;
+				}
+
+				@include for-phone-only {
+					width: 100vw;
+
+					.deadline-list {
+						margin-right: 0;
+	
+						.date-group {
+							margin-right: 3rem;
+						}
+					}
+
+					.toggle {
+						margin-top: 3rem;
+						left: 3rem;
+					}
+
+					h2 {
+						margin-left: 4rem;
+						white-space: nowrap;
+					}
+				}
+			}
+		}
+
+		.deadlines-header {
+			display: flex;
+			flex-flow: row;
+			justify-content: flex-start;
+		}
+
+		.date-group {
+			margin: 0 3rem 3rem 6rem;
+			background-color: $color-white;
+			padding: 2rem;
+			box-shadow: $box-shadow;
+			border-radius: 1.5rem;
+			margin-bottom: 3rem;
+
+			@include for-phone-only {
+				margin: 0 1.5rem 1.5rem 3rem;
+			}
+
+			.date-spacer {
+				margin-bottom: 2rem;
+			}
+		}
+
+		.list-message {
+			padding: 0 6rem;
+			span {
+				font-size: 1.8rem;
+				color: $color-tertiary;
+
+				&.big {
+					font-size: 2.2rem;
+					font-weight: bold;
+				}
+			}
+		}
+
+		h2 {
+			margin-bottom: 3rem;
+		}
+
+		.dategroup-list {
+			display: flex;
+			flex-flow: column;
+			gap: 2rem;
+		}
+	}
+
+	.date-spacer {
+		font-size: 2.2rem;
+		color: $color-tertiary;
+	}
+
+	.deadline-list {
+		overflow-y: auto;
+		margin-right: 3rem;
+		height: 100%;
+	}
+}

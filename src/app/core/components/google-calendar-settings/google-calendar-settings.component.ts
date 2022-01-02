@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
 import { AuthService, Calendar, Calendars } from 'src/app/services/auth.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { ModalService } from 'src/app/services/modal.service';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -12,7 +12,7 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class GoogleCalendarSettingsComponent implements OnInit {
 
-	constructor(private authService: AuthService, private toastService: ToastService) { }
+	constructor(private authService: AuthService, private modalService: ModalService) { }
 
 	user?: User
 
@@ -64,7 +64,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 			const w = window.open(response.url, "_blank");
 			setTimeout(() => {
 				if (w === null) {
-					this.toastService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 0, {title: 'link', link: response.url})
+					this.modalService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 0, {title: 'link', link: response.url})
 				}
 			}, 50)
 		})
@@ -84,7 +84,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 		this.loading = true
 		this.authService.updateCalendarsForConnection(connectionId, calendars).subscribe(response => {
 			this.loading = false
-			this.toastService.newToast(ToastType.Success, `Calendars updated`)
+			this.modalService.newToast(ToastType.Success, `Calendars updated`)
 		}, () => {
 			this.loading = false
 			this.authService.forceUserUpdate()
@@ -93,7 +93,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	disconnect(connectionId: string) {
 		this.authService.deleteConnection(connectionId).subscribe(response => {
-			this.toastService.newToast(ToastType.Success, `Connection deleted`)
+			this.modalService.newToast(ToastType.Success, `Connection deleted`)
 			this.authService.forceUserUpdate()
 		})
 	}

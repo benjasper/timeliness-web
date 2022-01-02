@@ -1,0 +1,95 @@
+@import '../../../../../variables.scss';
+.work-unit-upcoming {
+	display: flex;
+	flex-flow: row;
+	margin-top: 1rem;
+	padding-right: 1rem;
+	padding-top: 1rem;
+	transition: all 0.2s ease-in-out;
+	border-radius: 1.5rem;
+	cursor: default;
+	padding: 1rem 0;
+
+	&:hover,
+	&.active {
+		.calendar-date {
+			border-color: $color-primary;
+		}
+	}
+
+	.calendar-date {
+		display: flex;
+		justify-content: center;
+		flex-flow: column;
+		user-select: none;
+		margin-right: 2rem;
+		text-decoration: none;
+
+		color: $color-primary;
+		border: 0.1rem solid $color-primary-pastelle;
+		background-color: $color-primary-pastelle;
+		border-radius: 1.5rem;
+		height: 6.2rem;
+		width: 6.2rem;
+		text-align: center;
+		transition: all 0.2s ease-in;
+
+		.day {
+			font-size: 2.2rem;
+			line-height: 1;
+		}
+
+		.weekday {
+			font-size: 1.4rem;
+		}
+	}
+
+	.contents {
+		flex: 1;
+		margin: auto 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		overflow: hidden;
+
+		.work-unit-info {
+			margin: auto 0;
+			overflow: hidden;
+			flex: 1;
+
+			.task-title {
+				font-size: 2rem;
+				font-weight: 500;
+				margin-bottom: -0.1rem;
+			}
+
+			.subtitle {
+				margin-top: -0.1rem;
+			}
+		}
+	}
+
+	&.loading {
+		margin-top: 4rem;
+		padding: 2rem 2rem;
+
+		.calendar-date {
+			border: none;
+			background-color: $color-light-grey;
+		}
+
+		&:hover {
+			background-color: $color-light-grey;
+			margin-right: 0;
+		}
+
+		.loading-component {
+			background-color: $color-light-grey;
+			border-radius: 1.5rem;
+		}
+
+		.task-title {
+			width: 60%;
+		}
+	}
+}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ToastType } from 'src/app/models/toast'
-import { ToastService } from 'src/app/services/toast.service'
+import { ModalService } from 'src/app/services/modal.service'
 import { AuthService } from '../../../services/auth.service'
 
 @Component({
@@ -14,7 +14,7 @@ export class SigninComponent implements OnInit {
 		private authService: AuthService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private toastService: ToastService
+		private modalService: ModalService
 	) {}
 
 	signinForm = new FormGroup({
@@ -64,7 +64,7 @@ export class SigninComponent implements OnInit {
 					}
 
 					this.loading = false
-					this.toastService.newToast(ToastType.Success, 'You are now logged in!')
+					this.modalService.newToast(ToastType.Success, 'You are now logged in!')
 
 					this.router.navigate([route])
 				},

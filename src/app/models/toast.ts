@@ -1,23 +1,13 @@
 export class Toast {
-	type: ToastType
-	message: String
-	seconds: number
-	link?: { title: string; link: string }
-	dismissable: boolean
-
 	constructor(
-		type: ToastType,
-		message: string,
-		dismissable = false,
-		seconds = 5,
-		link?: { title: string; link: string }
-	) {
-		this.type = type
-		this.message = message
-		this.seconds = seconds
-		this.link = link
-		this.dismissable = dismissable
-	}
+		public type: ToastType,
+		public message: string,
+		public dismissable = false,
+		public seconds = 5,
+		public link?: { title: string; link: string },
+		public loading?: Promise<void|any>,
+		public loadingText?: string
+	) {}
 }
 
 export enum ToastType {

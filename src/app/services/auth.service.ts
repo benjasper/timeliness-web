@@ -8,13 +8,13 @@ import { environment } from 'src/environments/environment'
 import { ApiError } from '../models/error'
 import { ToastType } from '../models/toast'
 import { User, UserSettings } from '../models/user'
-import { ToastService } from './toast.service'
+import { ModalService } from './modal.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient, private router: Router, private toastService: ToastService) {}
+	constructor(private http: HttpClient, private router: Router, private modalService: ModalService) {}
 
 	private accessToken = ''
 	private refreshToken = ''
@@ -22,6 +22,8 @@ export class AuthService {
 
 	private userSubject = new BehaviorSubject<User | undefined>(undefined)
 	private userObservable = this.userSubject.asObservable()
+
+	private userRequestInProgress = false
 
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
@@ -63,7 +65,7 @@ export class AuthService {
 	}
 
 	get user(): Observable<User | undefined> {
-		if (!this.userSubject.getValue() && this.isLoggedIn()) {
+		if (!this.userSubject.getValue() && this.isLoggedIn() && !this.userRequestInProgress) {
 			this.fetchUser()
 		}
 
@@ -110,23 +112,32 @@ export class AuthService {
 	}
 
 	private fetchUser() {
+		this.userRequestInProgress = true
 		const observable = this.http.get<User>(`${environment.apiBaseUrl}/v1/user`).pipe(
 			share(),
 			catchError((err) => this.handleError(err))
 		)
 
-		observable.subscribe((response) => {
-			this.userSubject.next(response)
-		})
+		observable.subscribe(
+			(response) => {
+				this.userSubject.next(response)
+			},
+			undefined,
+			() => {
+				this.userRequestInProgress = false
+			}
+		)
 
 		return observable
 	}
 
 	public fetchCalendarsByConnection(connectionId: string) {
-		const observable = this.http.get<{calendars: Calendars}>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`).pipe(
-			share(),
-			catchError((err) => this.handleError(err))
-		)
+		const observable = this.http
+			.get<{ calendars: Calendars }>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/calendars`)
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		return observable
 	}
@@ -143,18 +154,16 @@ export class AuthService {
 	}
 
 	public deleteConnection(connectionId: string) {
-		const observable = this.http
-			.delete(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google`)
-			.pipe(
-				share(),
-				catchError((err) => this.handleError(err))
-			)
+		const observable = this.http.delete(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		return observable
 	}
 
 	public connectGoogleCalendar(connectionId?: string) {
-		let stringWithConnection = ""
+		let stringWithConnection = ''
 		if (connectionId) {
 			stringWithConnection = `/${connectionId}`
 		}
@@ -248,7 +257,7 @@ export class AuthService {
 			message = 'That did not work.'
 		}
 
-		this.toastService.newToast(ToastType.Error, message)
+		this.modalService.newToast(ToastType.Error, message)
 		return throwError(error)
 	}
 }
@@ -260,9 +269,9 @@ interface AuthResponse {
 }
 
 export interface Calendar {
-	 calendarId: string 
-	 name: string 
-	 isActive: boolean 
+	calendarId: string
+	name: string
+	isActive: boolean
 }
 
-export interface Calendars extends Array<Calendar>{}
+export interface Calendars extends Array<Calendar> {}

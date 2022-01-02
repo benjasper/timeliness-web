@@ -1,0 +1,189 @@
+<div class="fixed top-0 left-0 h-screen w-screen bg-black opacity-60 z-10"
+	 *ngIf="modalBackground"
+	 (click)="close()"></div>
+<form [formGroup]="editTask"
+	  class="absolute inset-center z-20 flex flex-col w-screen h-screen md:w-auto md:h-auto md:grid grid-cols-modal overflow-y-auto md:overflow-visible bg-white md:rounded-3xl dark:bg-black shadow-lg"
+	  @flyInOut
+	  *ngIf="loaded"
+	  (ngSubmit)="save()">
+	<div class="flex flex-col w-auto bg-white dark:bg-black dark:text-white p-16 md:rounded-l-2xl gap-16">
+		<div>
+			<label *ngIf="task"
+				   class="label inset !pb-10">Edit task</label>
+			<label *ngIf="!task"
+				   class="label inset !pb-10">New task</label>
+			<input id="title"
+				   tabindex="1"
+				   type="text"
+				   class="!text-2xl edit font-bold w-full !leading-none"
+				   placeholder="Title"
+				   formControlName="name"
+				   autocomplete="off" />
+		</div>
+		<div>
+			<label for="task-description"
+				   class="label inset">Description</label>
+			<textarea tabindex="2"
+					  type="textarea"
+					  id="task-description"
+					  class="edit w-full rounded-2xl"
+					  rows="6"
+					  placeholder="Describe your task here"
+					  formControlName="description"
+					  autocomplete="off"></textarea>
+		</div>
+		<div>
+			<label *ngIf="(task && task.workUnits.length > 0) || loading"
+				   class="label inset">Work units</label>
+			<splide *ngIf="loading" class="w-full" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
+				<splide-slide *ngFor="let workUnit of [1,2,3] let i = index">
+					<app-work-unit-card [loading]="true"
+										[small]="true"></app-work-unit-card>
+				</splide-slide>
+			</splide>
+			<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [selectedSlideIndex]="startIndex" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
+				<splide-slide *ngFor="let workUnit of task.workUnits; let i = index">
+					<app-work-unit-card [task]="task"
+										[workUnitIndex]="i"
+										[small]="true"></app-work-unit-card>
+				</splide-slide>
+			</splide>
+		</div>
+	</div>
+	<div class="flex flex-col p-16 bg-grey-very-light md:rounded-r-2xl">
+		<div class="absolute flex flex-row justify-end pb-6 gap-4 right-16 top-16">
+			<button class="tiny-button no-background"
+					[disabled]="!editTask.dirty || isNew"
+					type="button"
+					(click)="undo()">
+				<svg-icon class="img !fill-current text-primary"
+						  src="/assets/icons/icon-undo.svg"
+						  alt="Undo"></svg-icon>
+			</button>
+			<app-dropdown>
+				<li class="flex flex-row"
+					*ngIf="task"
+					(click)="delete()">
+					<svg-icon class="w-8"
+							  src="/assets/icons/icon-trash.svg"
+							  alt="Delete"></svg-icon>
+					<span class="text-base">Delete</span>
+				</li>
+			</app-dropdown>
+			<button class="tiny-button no-background"
+					type="button"
+					(click)="close()">
+				<svg-icon class="img !fill-current text-primary"
+						  src="/assets/icons/icon-exit.svg"
+						  alt="Exit"></svg-icon>
+			</button>
+		</div>
+		<div class="flex flex-col w-full justify-between h-full md:pt-16">
+			<div class="flex flex-col gap-4 pt-8">
+				<div class="flex flex-row">
+					<label for="due-date"
+						   class="label my-auto w-48 flex-shrink-0">Due date</label>
+					<app-datetime-picker id="due-date"
+										 class="edit"
+										 tabindex="3"
+										 formControlName="dueAt"></app-datetime-picker>
+				</div>
+				<div class="flex flex-row">
+					<label for="workload-hour"
+						   class="label my-auto w-48 flex-shrink-0">Workload</label>
+					<ng-select class="edit w-40 cursor-text"
+							   id="workload-hour"
+							   formControlName="workload"
+							   [clearable]="false"
+							   tabindex="4">
+						<ng-option *ngFor="let duration of durations"
+								   [value]="duration.milliseconds">
+							{{ duration.toString() }}
+						</ng-option>
+					</ng-select>
+				</div>
+				<div *ngIf="task && task.notScheduled !== 0"
+					 class="flex flex-row">
+					<label for="not-scheduled"
+						   class="label my-auto w-48 flex-shrink-0">Not scheduled</label>
+					<div *ngIf="task.notScheduled !== 0"
+						 class="sm-tag bg-pink flex flex-row relative ml-4">
+						<span class="text-red text-base">{{ task.notScheduled.toDuration(NANOSECONDS) }} not scheduled</span>
+						<span class="absolute flex flex-shrink-0 h-3 w-3 -right-1">
+							<span
+								  class="animate-ping absolute inline-flex flex-shrink-0 h-full w-full rounded-full bg-red opacity-75"></span>
+							<span class="relative inline-flex rounded-full flex-shrink-0 h-3 w-3 bg-red"></span>
+						</span>
+					</div>
+				</div>
+				<div *ngIf="task"
+					 class="flex flex-col">
+					<label for="progress-bar"
+						   class="label pb-2">Progress</label>
+					<app-circular-progress id="progress-bar"
+										   [progress]="+getProgress(task)"
+										   [radius]="10"
+										   class="mx-auto">
+						<div class="flex flex-col gap-6">
+							<span *ngIf="task"
+								  class="flex flex-row text-center text-sm justify-center whitespace-nowrap">
+								<div class="w-2 h-2 bg-primary rounded-md my-auto mr-3"></div>
+								{{getFinishedWorkload(task)}}
+								done
+							</span>
+							<span *ngIf="task"
+								  class="m-auto text-xl text-center">{{getProgress(task)}}%</span>
+							<span *ngIf="task && +getProgress(task) !== 100"
+								  class="flex flex-row text-center text-sm justify-center">
+								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
+								{{getRemainingWorkload(task)}} left
+							</span>
+							<span *ngIf="task && +getProgress(task) === 100"
+								  class="flex flex-row text-center text-sm justify-center">
+								<div class="w-2 h-2 bg-grey rounded-md my-auto mr-3"></div>
+								completed
+							</span>
+						</div>
+					</app-circular-progress>
+				</div>
+				<div class="flex flex-col flex-shrink-0 min-h-[20rem] w-full" [class.empty]="tags.length === 0">
+					<label for="tags"
+						   class="label pb-2">Tags</label>
+					<ul class="flex flex-row flex-shrink-0 flex-wrap gap-4 w-full">
+						<app-tag *ngFor="let tag of tags; let i = index"
+								 [tag]="tag"
+								 [isFirst]="i === 0"
+								 (valueChange)="changeTag(tag, $event)"
+								 (onDelete)="deleteTag(tag.id, tag.value)"
+								 [existingTags]="tags"
+								 (promoteTag)="promoteToFirst(tag)"></app-tag>
+						<app-tag class="new"
+								 [class.first]="tags.length === 0"
+								 [new]="true"
+								 [isFirst]="tags.length === 0"
+								 [tag]="emptyTag"
+								 (valueChange)="changeTag(emptyTag, $event)"
+								 [existingTags]="tags"></app-tag>
+					</ul>
+				</div>
+			</div>
+
+			<div class="flex flex-row justify-end gap-4">
+				<button type="button"
+						class="btn large save secondary"
+						(click)="close()">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-exit.svg"></svg-icon>
+					<span>Cancel</span>
+				</button>
+				<button type="submit"
+						class="btn large save"
+						[disabled]="!editTask.valid || !editTask.dirty || loading">
+					<svg-icon class="img"
+							  src="/assets/icons/icon-save.svg"></svg-icon>
+					<span>Save</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</form>
