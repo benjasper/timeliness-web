@@ -32,7 +32,7 @@
 				"
 			>
 				<ng-container [ngSwitch]="scheduleState">
-					<span *ngSwitchCase="SCHEDULE_TYPE.Now">Right now</span>
+					<span *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
 					<span *ngSwitchCase="SCHEDULE_TYPE.Future">
 						{{
 							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
@@ -45,7 +45,7 @@
 						}}
 					</span>
 					<span *ngSwitchCase="SCHEDULE_TYPE.Past">
-						Ended {{ endedAgo() }} ago
+						Ended {{ durationToEnd() }} ago
 					</span>
 				</ng-container>
 
