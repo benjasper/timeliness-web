@@ -1,6 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, Input, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
+import { Duration, DurationUnit } from 'src/app/models/duration'
 import { Task } from 'src/app/models/task'
 import { Timespan } from 'src/app/models/timespan'
 import { ModalResult } from 'src/app/services/modal.service'
@@ -35,6 +36,8 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 
 	result = new ModalResult<Timespan[]>([], false)
 
+	DURATION_UNIT = DurationUnit
+
 	constructor(private taskService: TaskService) {
 		super()
 	}
@@ -60,5 +63,9 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 	apply(timespans: Timespan[]): void {
 		this.result = new ModalResult(timespans, true)
 		this.close()
+	}
+
+	timespanToDuration(timespan: Timespan) {
+		return Timespan.timespanToDuration(timespan)
 	}
 }

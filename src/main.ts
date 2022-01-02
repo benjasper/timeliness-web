@@ -52,6 +52,20 @@ Date.prototype.getClock = function (): number {
 	return this.getHours() * 60 * 60 + this.getMinutes() * 60 + this.getSeconds()
 }
 
+Date.prototype.getCloseToTodayString = function (): string | undefined {
+	const today = new Date()
+	if (this.isSameDay(today)) {
+		return 'Today'
+	}
+	if (this.isSameDay(today.addDays(1))) {
+		return 'Tomorrow'
+	}
+	if (this.isSameDay(today.addDays(-1))) {
+		return 'Yesterday'
+	}
+	return undefined
+}
+
 // tslint:disable-next-line: only-arrow-functions
 String.prototype.toDate = function (): Date {
 	return new Date(this.valueOf())

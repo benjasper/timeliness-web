@@ -75,7 +75,10 @@ export class ModalService extends SimpleModalService {
 			return
 		}
 
-		let observable = super.addModal(ToastComponent, { toast })
+		let observable = super.addModal(ToastComponent, { toast }, {
+			closeOnEscape: false,
+			closeOnClickOutside: false,
+		})
 
 		observable = observable.pipe(share())
 

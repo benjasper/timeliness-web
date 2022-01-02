@@ -11,7 +11,7 @@ import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
 import { smoothHeight } from 'src/app/animations'
 import { ModalService } from 'src/app/services/modal.service'
-import { ToastType } from 'src/app/models/toast'
+import { Toast, ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
 
 @Component({
@@ -440,14 +440,15 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.loading = true
 
 		if (this.isNew) {
-			this.taskService.newTask(updatingTask).subscribe(
+			const observable = this.taskService.newTask(updatingTask)
+			observable.subscribe(
 				(task) => {
 					this.editTask.markAsPristine()
 					this.task = task
 					this.taskId = task.id
 					this.isNew = false
 					this.loading = false
-					this.modalService.newToast(ToastType.Success, `New task "${task.name}" created`)
+
 					this.router.navigate(['task', task.id], {
 						relativeTo: this.route.parent,
 					})
@@ -456,12 +457,16 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.loading = false
 				}
 			)
+
+			const toast = new Toast(ToastType.Success, `New task "${updatingTask.name}" created`)
+			toast.loading = observable.toPromise()
+			toast.loadingText = 'Creating task...'
+			this.modalService.addToast(toast)
 		} else {
-			this.taskService.patchTask(this.taskId, updatingTask).subscribe(
+			const observable = this.taskService.patchTask(this.taskId, updatingTask)
+			observable.subscribe(
 				(task) => {
 					this.editTask.markAsPristine()
-					this.patchForm(task)
-					this.modalService.newToast(ToastType.Success, 'Task updated')
 					this.loading = false
 					this.setStartsAtWorkUnit()
 				},
@@ -469,6 +474,11 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 					this.loading = false
 				}
 			)
+
+			const toast = new Toast(ToastType.Success, 'Task updated')
+			toast.loading = observable.toPromise()
+			toast.loadingText = "Updating task..."
+			this.modalService.addToast(toast)
 		}
 
 		return false

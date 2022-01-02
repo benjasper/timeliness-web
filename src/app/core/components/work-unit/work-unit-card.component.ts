@@ -7,6 +7,7 @@ import { Tag } from 'src/app/models/tag'
 import { ModalService } from 'src/app/services/modal.service'
 import { Toast, ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
+import { Duration } from 'src/app/models/duration'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -33,6 +34,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	@Input() workUnitIndex!: number
 	@Input() small = false
 	@Input() loading = false
+
+	scheduleState: WorkUnitScheduleType = WorkUnitScheduleType.Future
+	SCHEDULE_TYPE = WorkUnitScheduleType
 
 	@ViewChild('reschedulingModal', { static: false }) reschedulingModal!: ReschedulingModalComponent
 
@@ -62,9 +66,26 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			}, 1000)
 		}
 
+		this.checkIfRightNow()
 		this.taskService.now.subscribe((date) => {
 			this.today = date
+
+			this.checkIfRightNow()
 		})
+	}
+
+	private checkIfRightNow(): void {
+		if (this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() <= this.today.getTime() && this.today.getTime() <= this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime()) {
+			this.scheduleState = WorkUnitScheduleType.Now
+		} else if (this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() > this.today.getTime()) {
+			this.scheduleState = WorkUnitScheduleType.Future
+		} else {
+			this.scheduleState = WorkUnitScheduleType.Past
+		}
+	}
+
+	public endedAgo(): string {
+		return new Duration(this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime() - this.today.getTime()).toStringWithoutSeconds()
 	}
 
 	public getWorkUnitProgress(now: Date): number {
@@ -156,4 +177,8 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			})
 		return
 	}
+}
+
+export enum WorkUnitScheduleType {
+	Past, Now, Future,
 }

@@ -13,22 +13,24 @@ import { ApiError } from '../models/error'
 import { ModalService } from './modal.service'
 import { ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
+import { AuthService } from './auth.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient, private modalService: ModalService) {
-		this.getTags()
+	constructor(private http: HttpClient, private modalService: ModalService, private authService: AuthService) {
+		this.authService.user.subscribe(user => {
+			if (!user) {
+				this.tagsSubject.next([])
+				return
+			}
+
+			this.getTags()
+		})
 
 		setInterval(() => {
-			const newDate = new Date()
-			this.lastNow = newDate
-			this.nowSubject.next(newDate)
-
-			if (this.lastNow.getDate() !== newDate.getDate()) {
-				this.dateChangeSubject.next(newDate)
-			}
+			this.trackTimeAndDate()
 		}, 10000)
 	}
 
@@ -46,6 +48,16 @@ export class TaskService {
 	public now = this.nowSubject.asObservable()
 	public dateChangeObservable = this.dateChangeSubject.asObservable()
 	public tagsObservable = this.tagsSubject.asObservable()
+
+	private trackTimeAndDate() {
+		const newDate = new Date()
+		this.lastNow = newDate
+		this.nowSubject.next(newDate)
+
+		if (this.lastNow.getDate() !== newDate.getDate()) {
+			this.dateChangeSubject.next(newDate)
+		}
+	}
 
 	public getTasksByDeadlines(sync: boolean = false, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
 		date.setHours(0,0,0,0)
@@ -277,9 +289,8 @@ export class TaskService {
 			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
-		observable.subscribe(() => {
-			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(true)
+		observable.subscribe((task) => {
+			this.tasksSubject.next(task)
 		})
 
 		return observable
@@ -290,9 +301,8 @@ export class TaskService {
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
-		observable.subscribe(() => {
-			this.getTasksByWorkunits(this.lastTaskUnwoundSync)
-			this.getTasksByDeadlines(true)
+		observable.subscribe((task) => {
+			this.tasksSubject.next(task)
 		})
 
 		return observable

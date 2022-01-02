@@ -7,22 +7,28 @@
 <div
 	@flyInOut
 	*ngIf="isOpen"
-	class="inset-center !fixed bg-white rounded-2xl p-16 z-50 shadow-xl flex flex-col w-5/6 md:w-auto"
+	class="inset-center !fixed bg-white rounded-2xl p-16 z-50 shadow-xl flex flex-col w-5/6 md:w-auto max-w-screen-sm"
 >
 	<div class="flex flex-col">
 		<label class="label !pb-10">Reschedule work unit {{ workUnitIndex + 1 }}</label>
-		<h2>
-			Reschedule&nbsp;
-			<span class="h2 !text-purple">{{ task.name }}</span>
+		<h2 class="truncate min-w-0 flex-shrink-0">
+			<span class="h2 min-w-0 flex-shrink-0">Reschedule&nbsp;</span>
+			<span class="h2 !text-purple min-w-0 flex-shrink-0">{{ task.name }}</span>
 		</h2>
-		<div class="flex flex-row mt-4 gap-4">
+		<div class="flex flex-row flex-wrap mt-4 gap-2">
 			<span class="text-grey-dark text-base">Original time:</span>
 			<span class="sm-tag text-base grey-background px-8 py-4 my-auto rounded-full cursor-default">
 				{{
-					task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleString([], {
-						weekday: 'short',
-						month: 'short',
-						day: '2-digit',
+					task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
+						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
+							weekday: 'short',
+							month: 'short',
+							day: '2-digit'
+						})
+				}}
+				•
+				{{
+					task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
 						hour: 'numeric',
 						minute: 'numeric'
 					})
@@ -34,6 +40,8 @@
 						minute: 'numeric'
 					})
 				}}
+				|
+				{{ task.workUnits[workUnitIndex].workload.toDuration(DURATION_UNIT.Nanoseconds).toString() }}
 			</span>
 		</div>
 		<p class="text-grey-dark mt-1">Choose a time out of the options below that works for you.</p>
@@ -50,8 +58,7 @@
 						flex-shrink-0
 						text-grey-dark
 						opacity-0
-						group-hover:text-primary
-						group-hover:opacity-100
+						group-hover:text-primary group-hover:opacity-100
 						fill-current
 						w-5
 						transform
@@ -67,21 +74,29 @@
 						class="sm-tag text-base grey-background px-8 py-4 rounded-full"
 					>
 						{{
-							timespan.start.toDate().toLocaleString([], {
-								weekday: 'short',
-								month: 'short',
-								day: '2-digit',
+							timespan.start.toDate().getCloseToTodayString() ??
+								timespan.start.toDate().toLocaleDateString([], {
+									weekday: 'short',
+									month: 'short',
+									day: '2-digit'
+								})
+						}}
+						•
+						{{
+							timespan.start.toDate().toLocaleTimeString([], {
 								hour: 'numeric',
 								minute: 'numeric'
 							})
 						}}
 						-
 						{{
-							timespan.end.toDate().toLocaleString([], {
+							timespan.end.toDate().toLocaleTimeString([], {
 								hour: 'numeric',
 								minute: 'numeric'
 							})
 						}}
+						|
+						{{ timespanToDuration(timespan) }}
 					</span>
 				</div>
 			</div>
@@ -100,6 +115,8 @@
 	</div>
 	<div class="flex flex-row gap-8 mt-16 justify-end">
 		<button class="secondary" type="button" (click)="close()">Cancel</button>
-		<button type="button" (click)="apply([])">I don't care, just not now</button>
+		<button type="button" (click)="apply([])" title="Reschedules this work unit to a time chosen by Timeliness">
+			I don't care, just not now
+		</button>
 	</div>
 </div>
