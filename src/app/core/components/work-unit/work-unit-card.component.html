@@ -45,7 +45,15 @@
 						}}
 					</span>
 					<span *ngSwitchCase="SCHEDULE_TYPE.Past">
-						Ended {{ durationToEnd() }} ago
+						{{
+							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
+								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
+									weekday: 'short',
+									month: 'long',
+									day: '2-digit',
+									year: 'numeric'
+								})
+						}}
 					</span>
 				</ng-container>
 

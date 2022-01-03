@@ -1,56 +1,84 @@
-<div class="core-container">
-	<nav class="sidebar shadow-2xl md:shadow-none dark:!bg-grey-very-dark">
-		<div class="child logo-container">
-			<h1 class="logo-small">
-				<img class="w-full h-full" src="/assets/images/timeliness_logo_small.svg" loading="eager">
-			</h1>
-		</div>
-		<div *ngIf="user" class="child user">
-			<div class="profile-picture">
-				<span>{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
+<div class="relative w-screen h-screen grid grid-rows-app-bar md:grid-cols-sidebar md:grid-rows-none">
+	<div class="md:order-2 relative overflow-y-auto md:overflow-y-hidden" [@routeAnimations]="prepareRoute(outlet)">
+		<router-outlet #outlet="outlet"></router-outlet>
+	</div>
+	<div class="md:order-1 flex flex-col justify-between w-full md:w-48 shadow-2xl md:shadow-none bg-grey-very-light dark:!bg-grey-very-dark">
+		<h1 class="hidden md:block px-14 mt-20">
+			<img class="w-full h-full" src="/assets/images/timeliness_logo_small.svg" loading="eager" alt="Timeliness logo" />
+		</h1>
+		<div>
+			<div *ngIf="user" class="hidden md:flex w-24 h-24 rounded-full flex-shrink-0 bg-secondary mx-auto">
+				<span class="text-primary text-3xl m-auto">{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
 			</div>
-		</div>
-		<div *ngIf="!user" class="child user">
-			<div class="profile-picture loading">
+			<div *ngIf="!user" class="hidden md:flex w-24 h-24 rounded-full flex-shrink-0 mx-auto loading">
 				<span>&nbsp;&nbsp;</span>
 			</div>
-		</div>
-		<div class="middle child">
-			<ul>
-				<li>
-					<a class="text-underline transition-all" routerLink="/dashboard" routerLinkActive="active" title="Dashboard">
-						<svg-icon class="img transition-all" src="/assets/icons/icon-dashboard.svg"></svg-icon>
-					</a>
-				</li>
-				<li>
-					<a class="text-underline transition-all" routerLink="/agenda" routerLinkActive="active" title="Agenda">
-						<svg-icon class="img transition-all" src="/assets/icons/icon-agenda.svg"></svg-icon>
-					</a>
-				</li>
-				<!--
+			<nav class="md:mt-12 py-8 md:py-0">
+				<ul class="flex flex-row md:flex-col gap-8 md:gap-4 justify-center md:justify-between">
+					<li>
+						<a
+							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+							routerLink="/dashboard"
+							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
+							title="Dashboard"
+						>
+							<svg-icon
+								class="block m-auto w-14 transition-all"
+								src="/assets/icons/icon-dashboard.svg"
+							></svg-icon>
+						</a>
+					</li>
+					<li>
+						<a
+							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+							routerLink="/agenda"
+							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
+							title="Agenda"
+						>
+							<svg-icon
+								class="block m-auto w-14 transition-all"
+								src="/assets/icons/icon-agenda.svg"
+							></svg-icon>
+						</a>
+					</li>
+					<!--
 					<li>
 						<a class="text-underline transition-all !text-grey-dark hover:!bg-transparent !cursor-default" routerLinkActive="active" title="Contacts">
 							<svg-icon class="img transition-all" src="/assets/icons/icon-users.svg"></svg-icon>
 						</a>
 					</li>
 				-->
-				<li>
-					<a class="text-underline transition-all" routerLink="/settings" routerLinkActive="active" title="Settings">
-						<svg-icon class="img transition-all" src="/assets/icons/icon-settings.svg"></svg-icon>
-					</a>
-				</li>
-			</ul>
+					<li>
+						<a
+							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+							routerLink="/settings"
+							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
+							title="Settings"
+						>
+							<svg-icon
+								class="block m-auto w-14 transition-all"
+								src="/assets/icons/icon-settings.svg"
+							></svg-icon>
+						</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
-		<div class="child bottom hidden md:flex flex-col gap-2">
-			<a class="text-underline" href="mailto:feedback@timeliness.app?subject=Feedback/Bugs/Suggestions&body=Fill in what you want to suggest/report" title="Feedback">
-				<svg-icon class="img" src="/assets/icons/icon-feedback.svg"></svg-icon>
+		<div class="hidden md:flex flex-col gap-8 mb-12">
+			<a
+				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+				href="mailto:feedback@timeliness.app?subject=Feedback/Bugs/Suggestions&body=Fill in what you want to suggest/report"
+				title="Feedback"
+			>
+				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-feedback.svg"></svg-icon>
 			</a>
-			<a class="text-underline" (click)="logout()" title="Log out">
-				<svg-icon class="img" src="/assets/icons/icon-logout.svg"></svg-icon>
+			<a
+				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+				(click)="logout()"
+				title="Log out"
+			>
+				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-logout.svg"></svg-icon>
 			</a>
 		</div>
-	</nav>
-	<div class="content">
-		<router-outlet></router-outlet>
 	</div>
 </div>

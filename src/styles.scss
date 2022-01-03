@@ -24,7 +24,6 @@ h6,
 span,
 ul,
 ol,
-li,
 a,
 label,
 textarea,
@@ -53,7 +52,7 @@ textarea {
 }
 
 span,
-p {
+p, li{
 	@apply text-base;
 	padding: 0;
 	margin: 0;
@@ -346,6 +345,7 @@ input[type='submit'] {
 	font-size: 1.6rem;
 	line-height: 1;
 	margin: auto 0;
+	@apply transition-all;
 
 	span {
 		display: inline-flex;
@@ -460,6 +460,11 @@ input[type='submit'] {
 		.img,
 		&.no-background .img {
 			fill: $color-tertiary !important;
+		}
+
+		&.no-disabled {
+			background-color: $color-primary;
+			color: $color-white;
 		}
 	}
 

@@ -27,6 +27,10 @@ module.exports = {
 			},
 			gridTemplateColumns: {
 				'modal': '65rem 42rem',
+				'sidebar': 'auto 1fr'
+			},
+			gridTemplateRows: {
+				'app-bar': '1fr auto'
 			},
 			animation: {
 				'spin-slow': 'spin 3s linear infinite'
@@ -51,7 +55,7 @@ module.exports = {
 				DEFAULT: '#eee',
 				light: '#f4f4f4',
 				'very-light': '#F5F7FB',
-				dark: '#8d99ae',
+				dark: '#707a8b',
 				'very-dark': '#15181C'
 			},
 			black: '#040f0f',

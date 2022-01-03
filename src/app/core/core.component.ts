@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
+import { sliderRoutes } from '../animations'
 import { User } from '../models/user'
 import { AuthService } from '../services/auth.service'
 
 @Component({
 	selector: 'app-core',
 	templateUrl: './core.component.html',
-	styleUrls: ['./core.component.scss'],
+	animations: [
+		sliderRoutes
+	]
 })
 export class CoreComponent implements OnInit {
 	constructor(private authService: AuthService) {}
@@ -17,6 +21,10 @@ export class CoreComponent implements OnInit {
 				this.user = user
 			}
 		})
+	}
+
+	prepareRoute(outlet: RouterOutlet) {
+		return outlet?.activatedRouteData?.['animation']
 	}
 
 	public logout(): void {

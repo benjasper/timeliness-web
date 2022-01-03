@@ -17,12 +17,13 @@
 			</div>
 		</div>
 		<div class="flex flex-row justify-between">
-			<button class="mr-auto with-border" role="button" (click)="connect(connection.id)">
-				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Inactive">
+			<button class="mr-auto with-border" role="button" [ngSwitch]="connection.status" (click)="connect(connection.id)">
+				<ng-container *ngSwitchCase="CONNECTION_STATUS.Inactive">
 					Connect to Google Calendar
 				</ng-container>
-				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">Force reconnect</ng-container>
-				<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">Reconnect</ng-container>
+				<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect</ng-container>
+				<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect</ng-container>
+				<ng-container *ngSwitchDefault>Reconnect</ng-container>
 			</button>
 			<button role="button" class="danger" (click)="disconnect(connection.id)">
 				Disconnect

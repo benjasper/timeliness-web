@@ -6,7 +6,8 @@
 		absolute
 		inset-center
 		z-20
-		p-16
+		px-16
+		pt-16
 		flex flex-col
 		gap-8
 		md:gap-16
@@ -22,30 +23,121 @@
 	"
 >
 	<svg-icon class="img w-16 md:w-24 mx-auto" src="/assets/images/timeliness_logo_small.svg"></svg-icon>
-	<h2 class="mx-auto">How does it work?</h2>
-	<div class="flex flex-col gap-8 md:max-h-[50rem] max-w-5xl overflow-y-auto">
-		<div>
-			<h3>Calendar</h3>
-			<p class="text-grey-dark text-lg">
-				Timeliness uses your calendar to create events marking your deadlines (indicated by the 📅
-				emoji) and of course specific events we call work units (indicated by the ⚙️ emoji), that block out time
-				in your calendar, so you know when to work on which task.
-				<br />
-				These events will be created in a separate calendar, that Timeliness will create, so they won't pollute
-				your existing calendars.
-			</p>
-		</div>
-		<div>
-			<h3>This is a beta</h3>
-			<p class="text-grey-dark text-lg">
-				Since we are still in beta expect to encouter bugs, problems or unfinished features.
-				But also we would love to hear about problems you encounter, as well as general feedback.
-				<br>
-				You can write us at <a class="inline-block text-lg" href="mailto:support@timeliness.app">support@timeliness.app</a>.
-			</p>
-		</div>
+	<h2 class="mx-auto">Getting started: How does it work?</h2>
+	<div class="flex flex-col gap-8 max-w-6xl">
+		<splide
+			class="w-full"
+			[options]="{
+				type: 'slide',
+				perPage: 1,
+				perMove: 1,
+				pagination: true
+			}"
+			[(selectedSlideIndex)]="slideIndex"
+			(onInit)="onSplideInit($event)"
+		>
+			<splide-slide>
+				<div class="flex flex-col gap-8 md:px-4">
+					<h3>Creating a task</h3>
+					<p class="text-lg text-grey-dark">
+						Create a task by clicking the "Add task" button in the top right corner. Besides the usual
+						fields you probably already know from other apps like name, description and tags in Timeliness
+						you set a due date and a workload.
+						<br />
+						The workload is the amount of time you expect to spend on the task. It is impossible to
+						determine this beforehand with great accuracy, but that's fine, just go for an estimate, as you
+						can always refine this later.
+						<br />
+						<br />
+						When you save a task, Timeliness will add an event to your calendar representing the due date
+						(indicated by the 📅emoji). Also depending on your availabilty and workload Timeliness will add
+						events to your calendar that block out time for you to work on your specific task.
+						<br />
+						These events are called "work units" (indicated by the ⚙️emoji in your calendar).
+					</p>
+				</div>
+			</splide-slide>
+			<splide-slide>
+				<div class="flex flex-col gap-8 md:px-4">
+					<h3>Work units</h3>
+					<p class="text-grey-dark text-lg">
+						You will find all of the events, that Timeliness creates or moves in a separate calendar, that
+						Timeliness will create, so they won't pollute your existing calendars.
+						<br />
+						<br />
+						Work units play a central role in Timeliness. They are not only the main way to track your
+						progress through a tasks life cycle but also a way to portion larger tasks into smaller
+						managable chunks.
+						<br />
+						After a work unit event ended, Timeliness will ask you to review the work unit and decide if you
+						are done with it. You the mark the work unit as done and it accounts towards the tasks progress
+						or you simply reschedule it.
+					</p>
+				</div>
+			</splide-slide>
+			<splide-slide>
+				<div class="flex flex-col gap-8 md:px-4">
+					<h3>Calendar features</h3>
+					<p class="text-grey-dark text-lg">
+						Having your right in your calendar is not only very helpful regarding visibility, but also very
+						convenient for moving things around.
+						<br />
+						<br />
+						So what exactly can you do?
+					</p>
+					<ul class="list-disc text-grey-dark pl-16">
+						<li class="text-lg">
+							You can move work units and due dates around as much as you like. They are all synced back
+							to Timeliness.
+						</li>
+						<li class="text-lg">
+							You can delete work units, which reduces the tasks workload or even delete due dates which
+							simply deletes the task with all of its work units.
+						</li>
+						<li class="text-lg">
+							You can move more important events or work unit on top of work units, wait a few seconds,
+							and see them automatically reschedule.
+						</li>
+						<li class="text-lg">
+							You can move work units directly next to each other (or overlap them) as merge them together
+							to one work unit.
+						</li>
+					</ul>
+				</div>
+			</splide-slide>
+			<splide-slide>
+				<div class="flex flex-col gap-8 md:px-4">
+					<h3>Timeliness is currently in early access</h3>
+					<p class="text-grey-dark text-lg">
+						Since we are still in early access expect to encouter bugs, problems or unfinished features.
+						<br />
+						But also we would love to hear about problems you encounter, as well as general feedback to our
+						apps features and capabilities.
+						<br />
+						You can write us at
+						<a class="inline-block text-lg" href="mailto:hello@timeliness.app">hello@timeliness.app</a>
+						.
+					</p>
+				</div>
+			</splide-slide>
+		</splide>
 	</div>
-	<div class="flex flex-row justify-end">
-		<button class="my-0 mt-8" type="button" (click)="close()">Alright!</button>
+	<div class="flex flex-row pb-16 pt-8 md:pt-0 gap-8 justify-between sticky md:relative bottom-0 z-20 bg-white">
+		<button class="secondary my-0 mt-8" type="button" (click)="close()">Skip guide</button>
+		<div class="flex flex-row gap-8">
+			<button
+				class="my-0 mt-8"
+				[class.no-disabled]="slideIndex !== 0"
+				type="button"
+				(click)="previous()"
+				[disabled]="slideOnTheMove || slideIndex === 0"
+			>
+				Previous
+			</button>
+			<button class="no-disabled my-0 mt-8" type="button" (click)="next()" [disabled]="slideOnTheMove">
+				<ng-container *ngIf="slideIndex === numberOfSlides - 1">Alright, lets' go!</ng-container>
+				<ng-container *ngIf="slideIndex !== numberOfSlides - 1">Next</ng-container>
+			</button>
+		</div>
 	</div>
 </form>
