@@ -1,5 +1,5 @@
 <div class="relative w-screen h-screen grid grid-rows-app-bar md:grid-cols-sidebar md:grid-rows-none">
-	<div class="md:order-2 relative overflow-y-auto md:overflow-y-hidden" [@routeAnimations]="prepareRoute(outlet)">
+	<div class="md:order-2 relative overflow-y-hidden md:overflow-y-hidden" [@routeAnimations]="prepareRoute(outlet)">
 		<router-outlet #outlet="outlet"></router-outlet>
 	</div>
 	<div class="md:order-1 flex flex-col justify-between w-full md:w-48 shadow-2xl md:shadow-none bg-grey-very-light dark:!bg-grey-very-dark">
