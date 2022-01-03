@@ -71,7 +71,7 @@
 				<div class="flex flex-row flex-wrap gap-4">
 					<span
 						*ngFor="let timespan of timespanGroup"
-						class="sm-tag text-base grey-background px-8 py-4 rounded-full"
+						class="sm-tag text-base grey-background px-8 py-4 rounded-full border border-grey-very-light group-hover:border-primary transition-all"
 					>
 						{{
 							timespan.start.toDate().getCloseToTodayString() ??
@@ -104,7 +104,7 @@
 		<ng-container *ngIf="loading">
 			<div *ngFor="let timespanGroup of [1, 2, 3, 4, 5]" class="flex flex-row group hover:cursor-default">
 				<div class="flex flex-row flex-wrap gap-4">
-					<span class="sm-tag text-base grey-background px-8 py-4 rounded-full loading w-72">&nbsp;</span>
+					<span class="sm-tag text-base grey-background px-8 py-4 border border-grey-very-light rounded-full loading w-72">&nbsp;</span>
 				</div>
 			</div>
 		</ng-container>
@@ -115,7 +115,7 @@
 	</div>
 	<div class="flex flex-row gap-8 mt-16 justify-end">
 		<button class="secondary" type="button" (click)="close()">Cancel</button>
-		<button type="button" (click)="apply([])" title="Reschedules this work unit to a time chosen by Timeliness">
+		<button type="button" (click)="apply([])" [disabled]="noOptionsAvailable" title="Reschedules this work unit to a time chosen by Timeliness">
 			I don't care, just not now
 		</button>
 	</div>
