@@ -266,22 +266,11 @@
 			span {
 				font-size: 1.8rem;
 				color: $color-tertiary;
-
-				&.big {
-					font-size: 2.2rem;
-					font-weight: bold;
-				}
 			}
 		}
 
 		h2 {
 			margin-bottom: 3rem;
-		}
-
-		.dategroup-list {
-			display: flex;
-			flex-flow: column;
-			gap: 2rem;
 		}
 	}
 
