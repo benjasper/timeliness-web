@@ -4,6 +4,10 @@
 	display: grid;
 	grid-template-columns: 1fr auto;
 
+	@include for-phone-only {
+		grid-template-columns: none;
+	}
+
 	.dashboard-container {
 		::ng-deep {
 			button {
@@ -26,6 +30,7 @@
 
 		@include for-phone-only {
 			padding: 0;
+			height: 100%;
 		}
 
 		.next-up {
@@ -91,7 +96,6 @@
 			flex-flow: column-reverse;
 			height: auto;
 			flex: auto;
-			overflow: visible;
 		}
 
 		.upcoming-workunits {
