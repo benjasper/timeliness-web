@@ -23,8 +23,8 @@ import { ConfirmationModalComponent } from '../../modals/confirmation-modal/conf
 			transition(':leave', [animate(100, style({ opacity: 0.6 }))]),
 		]),
 		trigger('flyInOut', [
-			transition(':enter', [style({ transform: 'translate(-50%, -150%)', opacity: 0 }), animate(200)]),
-			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
+			transition(':enter', [style({ transform: 'translateY(-150%)', opacity: 0 }), animate(200)]),
+			transition(':leave', [animate(200, style({ transform: 'translateY(150%)', opacity: 0 }))]),
 		]),
 		trigger('shrinkOut', [
 			state('in', style({ height: '*' })),

@@ -52,7 +52,8 @@ textarea {
 }
 
 span,
-p, li{
+p,
+li {
 	@apply text-base;
 	padding: 0;
 	margin: 0;
@@ -134,7 +135,9 @@ a {
 	}
 }
 
-input[type='text'], input[type='password'], input[type='email'] {
+input[type='text'],
+input[type='password'],
+input[type='email'] {
 	min-width: 35rem;
 	width: 100%;
 }
@@ -288,6 +291,7 @@ ul.splide__pagination {
 	li {
 		button.splide__pagination__page {
 			opacity: 1;
+			@apply bg-grey;
 
 			&.is-active {
 				transform: scale(1.2);
@@ -306,6 +310,7 @@ ul.splide__pagination {
 
 	svg {
 		fill: $color-primary;
+		@apply w-8 h-8;
 	}
 
 	&--prev {
@@ -328,9 +333,11 @@ ul.splide__pagination {
 	}
 }
 
-button,
 a.btn,
-input[type='submit'] {
+button:not(.splide__arrow):not(.splide__pagination__page),
+[type='button']:not(.splide__arrow):not(.splide__pagination__page),
+[type='reset'],
+[type='submit'] {
 	appearance: none;
 	border: none;
 	display: inline-flex;
@@ -354,10 +361,9 @@ input[type='submit'] {
 		white-space: nowrap;
 		@apply my-auto;
 	}
-	
+
 	svg-icon {
 		@apply my-auto;
-
 	}
 
 	.img {
