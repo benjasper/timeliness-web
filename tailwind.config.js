@@ -27,6 +27,10 @@ module.exports = {
 			},
 			gridTemplateColumns: {
 				'modal': '65rem 42rem',
+				'sidebar': 'auto 1fr'
+			},
+			gridTemplateRows: {
+				'app-bar': '1fr auto'
 			},
 			animation: {
 				'spin-slow': 'spin 3s linear infinite'

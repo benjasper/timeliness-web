@@ -7,7 +7,6 @@ import { AuthService } from '../services/auth.service'
 @Component({
 	selector: 'app-core',
 	templateUrl: './core.component.html',
-	styleUrls: ['./core.component.scss'],
 	animations: [
 		sliderRoutes
 	]

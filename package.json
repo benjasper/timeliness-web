@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "debug": "ng serve -o --configuration=\"debug\"",
-    "staging": "ng serve -o --configuration=\"staging\"",
+    "debug": "ng serve --configuration=\"debug\"",
+    "staging": "ng serve --configuration=\"staging\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
