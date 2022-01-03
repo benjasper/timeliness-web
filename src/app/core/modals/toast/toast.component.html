@@ -24,7 +24,7 @@
 	<div *ngIf="!isLoading" class="flex flex-row text-lg font-bold my-auto" [ngSwitch]="toast.type">
 		<div class="flex w-12 h-12 rounded-full border-2 mr-4">
 			<ng-container *ngSwitchCase="TOAST_TYPE.Error">
-				<svg-icon class="img w-5 fill-current m-auto animate-ping" src="/assets/icons/icon-exit.svg"></svg-icon>
+				<svg-icon class="img w-5 fill-current m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 			</ng-container>
 			<ng-container *ngSwitchCase="TOAST_TYPE.Warning">
 				<span class="text-base m-auto">!</span>
