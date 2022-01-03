@@ -3,8 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const primaryColor = '#22125a'
 
 module.exports = {
-	mode: 'jit',
-	purge: ["./src/app/**/*.{js,ts,html}"],
+	content: ["./src/app/**/*.{js,ts,html}"],
 	darkMode: 'class',
 	theme: {
 		fontSize: {
@@ -47,6 +46,7 @@ module.exports = {
 			transparent: {
 				DEFAULT: 'transparent'
 			},
+			current: 'currentColor',
 			purple: {
 				DEFAULT: '#9d78f5',
 				dark: primaryColor
