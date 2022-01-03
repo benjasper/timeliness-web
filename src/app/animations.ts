@@ -55,10 +55,11 @@ function slideTo(direction: string) {
 			[
 				style({
 					position: 'absolute',
-					left: '50%',
-					transform: 'translateX(-50%)',
+					left: 0,
 					[direction]: 0,
 					width: '100%',
+					height: '100%',
+					overflow: 'hidden',
 				}),
 			],
 			optional
@@ -71,7 +72,7 @@ function slideTo(direction: string) {
 		// Normalize the page style... Might not be necessary
 
 		// Required only if you have child animations on the page
-		// query(':leave', animateChild()),
-		// query(':enter', animateChild()),
+		query(':leave', animateChild()),
+		query(':enter', animateChild()),
 	]
 }
