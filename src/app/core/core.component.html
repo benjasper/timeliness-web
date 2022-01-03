@@ -1,5 +1,5 @@
 <div class="core-container">
-	<nav class="sidebar shadow-2xl md:shadow-none dark:!bg-grey-very-dark">
+	<nav class="sidebar z-10 shadow-2xl md:shadow-none dark:!bg-grey-very-dark">
 		<div class="child logo-container">
 			<h1 class="logo-small">
 				<img class="w-full h-full" src="/assets/images/timeliness_logo_small.svg" loading="eager">
@@ -50,7 +50,7 @@
 			</a>
 		</div>
 	</nav>
-	<div class="content">
-		<router-outlet></router-outlet>
+	<div class="content relative" [@routeAnimations]="prepareRoute(outlet)">
+		<router-outlet #outlet="outlet"></router-outlet>
 	</div>
 </div>
