@@ -17,7 +17,7 @@
 		</h2>
 		<div class="flex flex-row flex-wrap mt-4 gap-2">
 			<span class="text-grey-dark text-base">Original time:</span>
-			<span class="sm-tag text-base grey-background px-8 py-4 my-auto rounded-full cursor-default">
+			<span class="sm-tag text-base grey-background border border-white px-8 py-4 my-auto rounded-full cursor-default">
 				{{
 					task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
 						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
@@ -72,7 +72,7 @@
 				<div class="flex flex-row flex-wrap gap-4">
 					<span
 						*ngFor="let timespan of timespanGroup"
-						class="sm-tag text-base grey-background px-8 py-4 rounded-full border border-grey-very-light group-hover:border-primary transition-all"
+						class="sm-tag text-base grey-background px-8 py-4 rounded-full border border-white group-hover:border-primary transition-all"
 					>
 						{{
 							timespan.start.toDate().getCloseToTodayString() ??
@@ -105,12 +105,12 @@
 		<ng-container *ngIf="loading">
 			<div *ngFor="let timespanGroup of [1, 2, 3, 4, 5]" class="flex flex-row group hover:cursor-default">
 				<div class="flex flex-row flex-wrap gap-4">
-					<span class="sm-tag text-base grey-background px-8 py-4 border border-grey-very-light rounded-full loading w-72">&nbsp;</span>
+					<span class="sm-tag text-base grey-background px-8 py-4 border border-white rounded-full loading w-72">&nbsp;</span>
 				</div>
 			</div>
 		</ng-container>
 		<p *ngIf="noOptionsAvailable">
-			It seems there is no time available for reschuling this work unit. Please change the tasks workload or move
+			It seems there is no time available for rescheduling this work unit. Please change the tasks workload or move
 			events in your calendar.
 		</p>
 	</div>

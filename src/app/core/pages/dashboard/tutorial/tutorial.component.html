@@ -1,11 +1,11 @@
-<div *ngIf="isShowing" class="fixed w-screen z-10 h-screen bg-black opacity-30 top-0 left-0"></div>
+<div *ngIf="isShowing" class="fixed w-screen z-20 h-screen bg-black opacity-30 top-0 left-0"></div>
 <form
 	*ngIf="isShowing"
 	@flyInOut
 	class="
 		!fixed
 		inset-center
-		z-20
+		z-30
 		px-16
 		pt-16
 		flex flex-col
@@ -42,7 +42,7 @@
 					<p class="text-lg text-grey-dark">
 						Create a task by clicking the "Add task" button in the top right corner. Besides the usual
 						fields you probably already know from other apps like name, description and tags in Timeliness
-						you set a due date and a workload.
+						you set a <b>due date and a workload</b>.
 						<br />
 						The workload is the amount of time you expect to spend on the task. It is impossible to
 						determine this beforehand with great accuracy, but that's fine, just go for an estimate, as you
@@ -50,7 +50,7 @@
 						<br />
 						<br />
 						When you save a task, Timeliness will add an event to your calendar representing the due date
-						(indicated by the 📅emoji). Also depending on your availabilty and workload Timeliness will add
+						(indicated by the 📅emoji). Also depending on your availability and workload Timeliness will add
 						events to your calendar that block out time for you to work on your specific task.
 						<br />
 						These events are called "work units" (indicated by the ⚙️emoji in your calendar).
@@ -61,16 +61,12 @@
 				<div class="flex flex-col gap-8 md:px-4">
 					<h3>Work units</h3>
 					<p class="text-grey-dark text-lg">
-						You will find all of the events, that Timeliness creates or moves in a separate calendar, that
-						Timeliness will create, so they won't pollute your existing calendars.
-						<br />
-						<br />
 						Work units play a central role in Timeliness. They are not only the main way to track your
-						progress through a tasks life cycle but also a way to portion larger tasks into smaller
-						managable chunks.
-						<br />
-						After a work unit event ended, Timeliness will ask you to review the work unit and decide if you
-						are done with it. You the mark the work unit as done and it accounts towards the tasks progress
+						progress through a tasks life cycle but also a way to portion larger tasks into 
+						<b>smaller manageable chunks</b>.
+						<br /><br>
+						After a work unit event has ended, Timeliness will ask you to review the work unit and decide if you
+						are done with it. You then <b>mark the work unit as done</b> and it accounts towards the tasks progress
 						or you simply reschedule it.
 					</p>
 				</div>
@@ -79,39 +75,48 @@
 				<div class="flex flex-col gap-8 md:px-4">
 					<h3>Calendar features</h3>
 					<p class="text-grey-dark text-lg">
-						Having your right in your calendar is not only very helpful regarding visibility, but also very
+						Having your tasks right inside your calendar is not only very helpful regarding visibility, but also very
 						convenient for moving things around.
-						<br />
-						<br />
-						So what exactly can you do?
+						<br>
+						You will find all of the events, that Timeliness creates or moves <b>in a separate calendar</b>, that
+						Timeliness will create, so they won't pollute your existing calendars.
 					</p>
-					<ul class="list-disc text-grey-dark pl-16">
-						<li class="text-lg">
-							You can move work units and due dates around as much as you like. They are all synced back
-							to Timeliness.
-						</li>
-						<li class="text-lg">
-							You can delete work units, which reduces the tasks workload or even delete due dates which
-							simply deletes the task with all of its work units.
-						</li>
-						<li class="text-lg">
-							You can move more important events or work unit on top of work units, wait a few seconds,
-							and see them automatically reschedule.
-						</li>
-						<li class="text-lg">
-							You can move work units directly next to each other (or overlap them) as merge them together
-							to one work unit.
-						</li>
-					</ul>
+					<h4>
+						So what exactly can you do?
+					</h4>
+					<div>
+						<p class="text-lg text-grey-dark">You can...</p>
+						<ul class="flex flex-col list-disc text-grey-dark mt-2 pl-16 gap-4">
+							<li class="text-lg">
+								↕️ <b>move work units and due dates</b> around as much as you like. They are all synced back
+								to Timeliness.
+							</li>
+							<li class="text-lg">
+								🔄 move more important events or work units on top of work units, wait a few seconds,
+								and see them <b>automatically reschedule</b>.
+							</li>
+							<li class="text-lg">
+								📅 move the tasks deadline event before its work unit events and see them automatically reschedule 
+							</li>
+							<li class="text-lg">
+								↔️ move work units directly next to each other (or overlap them) as <b>merge them together</b>
+								to one work unit.
+							</li>
+							<li class="text-lg">
+								🚮 <b>delete work units</b>, which reduces the tasks workload or even <b>delete due dates</b> which
+								simply deletes the task with all of its work units.
+							</li>
+						</ul>
+					</div>
 				</div>
 			</splide-slide>
 			<splide-slide>
 				<div class="flex flex-col gap-8 md:px-4">
 					<h3>Timeliness is currently in early access</h3>
 					<p class="text-grey-dark text-lg">
-						Since we are still in early access expect to encouter bugs, problems or unfinished features.
+						Since we are still in early access expect to encounter bugs, problems or unfinished features.
 						<br />
-						But also we would love to hear about problems you encounter, as well as general feedback to our
+						However we would love to hear about problems you encounter, as well as more general feedback regarding our
 						apps features and capabilities.
 						<br />
 						You can write us at
