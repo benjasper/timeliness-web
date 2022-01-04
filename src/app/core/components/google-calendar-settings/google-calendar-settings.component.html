@@ -2,19 +2,25 @@
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
 		<div class="mb-8 text-left">
 			<h4 class="text-lg text-primary">Connection {{ connection.id }}</h4>
-			<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
-				Calendars indicating your availability
-			</span>
-			<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
-				<input
-					[id]="calendar.calendarId"
-					class="mr-4 my-auto"
-					type="checkbox"
-					[checked]="calendar.isActive"
-					(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendars.get(connection.id) ?? [])"
-				/>
-				<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
-			</div>
+
+			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
+				<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
+					Calendars indicating your availability
+				</span>
+				<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
+					<input
+						[id]="calendar.calendarId"
+						class="mr-4 my-auto"
+						type="checkbox"
+						[checked]="calendar.isActive"
+						(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendars.get(connection.id) ?? [])"
+					/>
+					<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">
+				It seems like your Google Calendar connection expired. Please click the button below to reconnect.
+			</ng-container>
 		</div>
 		<div class="flex flex-row justify-between">
 			<button class="mr-auto with-border" role="button" [ngSwitch]="connection.status" (click)="connect(connection.id)">
