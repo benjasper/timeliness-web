@@ -25,6 +25,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	connections: {id: string, status: CalendarConnectionStatus, calendars: Calendars}[] = []
 
 	calendars: Map<string, Calendars> = new Map()
+	connectionLoading: Map<string, boolean> = new Map()
 
 	ngOnInit(): void {
 		this.authService.user.subscribe(user => {
@@ -45,14 +46,17 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 			})
 
 			user.googleCalendarConnections.forEach(connection => {
+				this.connectionLoading.set(connection.id, false)
 				if (connection.status !== CalendarConnectionStatus.Active) {
 					return
 				}
 
+				this.connectionLoading.set(connection.id, true)
 				this.authService.fetchCalendarsByConnection(connection.id).subscribe(response => {
 					this.calendars = this.calendars.set(connection.id, response.calendars.sort((a,b) => {
 						return a.name.localeCompare(b.name)
 					}))
+					this.connectionLoading.set(connection.id, false)
 				})
 			})
 		})
