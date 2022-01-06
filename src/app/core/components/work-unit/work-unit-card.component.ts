@@ -8,6 +8,7 @@ import { ModalService } from 'src/app/services/modal.service'
 import { Toast, ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
 import { Duration } from 'src/app/models/duration'
+import { MarkDoneModalComponent } from '../../modals/mark-done-modal/mark-done-modal.component'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -75,9 +76,14 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	}
 
 	private checkIfRightNow(): void {
-		if (this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() <= this.today.getTime() && this.today.getTime() <= this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime()) {
+		if (
+			this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() <= this.today.getTime() &&
+			this.today.getTime() <= this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime()
+		) {
 			this.scheduleState = WorkUnitScheduleType.Now
-		} else if (this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() > this.today.getTime()) {
+		} else if (
+			this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() > this.today.getTime()
+		) {
 			this.scheduleState = WorkUnitScheduleType.Future
 		} else {
 			this.scheduleState = WorkUnitScheduleType.Past
@@ -85,7 +91,11 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	}
 
 	public durationToEnd(): string {
-		return new Duration(Math.abs(this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime() - this.today.getTime())).toStringWithoutSeconds()
+		return new Duration(
+			Math.abs(
+				this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime() - this.today.getTime()
+			)
+		).toStringWithoutSeconds()
 	}
 
 	public getWorkUnitProgress(now: Date): number {
@@ -110,12 +120,36 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	}
 
 	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
+		const timeLeft = MarkDoneModalComponent.calculateTimeLeft(task, workUnitIndex)
+
+		if (
+			!task.workUnits[workUnitIndex].isDone &&
+			timeLeft > 5 * 1000 && timeLeft < task.workUnits[workUnitIndex].workload / 1000 &&
+			task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getTime() < this.today.getTime() &&
+			task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().getTime() > this.today.getTime()
+		) {
+			this.modalService.addModal(MarkDoneModalComponent, { task, workUnitIndex }).subscribe((result) => {
+				if (!result.hasValue) {
+					return
+				}
+
+				this.sendWorkUnitDoneRequest(task, workUnitIndex, true, result.result.timeLeft)
+			})
+			return
+		}
+
+		this.sendWorkUnitDoneRequest(task, workUnitIndex, done)
+
+		return
+	}
+
+	private sendWorkUnitDoneRequest(task: Task, workUnitIndex: number, done = true, timeLeft = new Duration(0)): void {
 		this.loading = true
-		const observable = this.taskService.markWorkUnitAsDone(task, workUnitIndex, done)
+		const observable = this.taskService.markWorkUnitAsDone(task, workUnitIndex, done, timeLeft)
 
 		let message = 'Work unit marked as done'
 		if (done === false) {
-			message = 'Work unit marked as un-done'
+			message = 'Work unit marked as not done'
 		}
 
 		const toast = new Toast(ToastType.Success, message)
@@ -151,7 +185,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 							this.loading = false
 						}
 					)
-					
+
 					const toast = new Toast(ToastType.Success, 'Work unit rescheduled')
 					toast.loading = observable.toPromise()
 					this.modalService.addToast(toast)
@@ -180,5 +214,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 }
 
 export enum WorkUnitScheduleType {
-	Past, Now, Future,
+	Past,
+	Now,
+	Future,
 }

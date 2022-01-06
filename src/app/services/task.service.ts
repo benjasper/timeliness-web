@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
-import { DurationUnit } from '../models/duration'
+import { Duration, DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
 import { Task, TaskAgenda, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
@@ -320,9 +320,9 @@ export class TaskService {
 		return observable
 	}
 
-	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): Observable<Task> {
+	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true, timeLeft: Duration): Observable<Task> {
 		const observable = this.http
-			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}`, { isDone: done })
+			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/done`, { isDone: done, timeLeft: timeLeft.toNanoseconds() })
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {

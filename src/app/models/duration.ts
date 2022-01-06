@@ -18,83 +18,30 @@ export class Duration {
 	}
 
 	private buildDurationString(noSeconds = false): string {
-		let duration = this.milliseconds
+		const days = Math.floor(this.milliseconds / (1000 * 60 * 60 * 24))
+		const hours = Math.floor((this.milliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+		const minutes = Math.floor((this.milliseconds % (1000 * 60 * 60)) / (1000 * 60))
+		const seconds = Math.floor((this.milliseconds % (1000 * 60)) / 1000)
 
-		if (duration === 0) {
-			return '0h'
+		let result = ''
+
+		if (days > 0) {
+			result += `${days}d `
 		}
 
-		if (duration < 1000) {
-			return ''
+		if (hours > 0) {
+			result += `${hours}h `
 		}
 
-		duration /= 1000
-
-		if (duration < 60) {
-			if (noSeconds) {
-				return ''
-			}
-
-			return Math.floor(duration) + 's'
+		if (minutes > 0) {
+			result += `${minutes}m `
 		}
 
-		duration /= 60
-
-		if (duration < 60) {
-			if (duration % 1 !== 0) {
-				return (
-					Math.floor(duration) +
-					'm' +
-					' ' +
-					new Duration((duration % 1) * 60000).buildDurationString(noSeconds)
-				)
-			}
-
-			return duration + 'm'
+		if (!noSeconds && seconds > 0) {
+			result += `${seconds}s`
 		}
 
-		duration /= 60
-
-		if (duration < 24) {
-			if (duration % 1 !== 0) {
-				return (
-					Math.floor(duration) +
-					'h' +
-					' ' +
-					new Duration((duration % 1) * 3.6e6).buildDurationString(noSeconds)
-				)
-			}
-
-			return duration + 'h'
-		}
-
-		duration /= 24
-
-		if (duration < 30.4167) {
-			if (duration % 1 !== 0) {
-				return (
-					Math.floor(duration) +
-					'd' +
-					' ' +
-					new Duration((duration % 1) * 8.64e7).buildDurationString(noSeconds)
-				)
-			}
-
-			return duration + 'd'
-		}
-
-		duration /= 30.4167
-
-		if (duration % 1 !== 0) {
-			return (
-				Math.floor(duration) +
-				'mo' +
-				' ' +
-				new Duration((duration % 1) * 2.628e9).buildDurationString(noSeconds)
-			)
-		}
-
-		return duration + 'mo'
+		return result === '' ? '0h' : result
 	}
 
 	public toNanoseconds(): number {
