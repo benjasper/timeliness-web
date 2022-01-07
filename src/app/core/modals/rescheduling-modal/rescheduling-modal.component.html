@@ -44,7 +44,7 @@
 				{{ task.workUnits[workUnitIndex].workload.toDuration(DURATION_UNIT.Nanoseconds).toString() }}
 			</span>
 		</div>
-		<p class="text-grey-dark mt-1">Choose a time out of the options below that works for you.</p>
+		<p *ngIf="!noOptionsAvailable" class="text-grey-dark mt-1">Choose a time out of the options below that works for you.</p>
 	</div>
 	<div class="flex flex-col gap-8 mt-8">
 		<ng-container *ngIf="!loading">
@@ -110,7 +110,7 @@
 			</div>
 		</ng-container>
 		<p *ngIf="noOptionsAvailable">
-			It seems there is no time available for rescheduling this work unit. Please change the tasks workload or move
+			It seems like there is no time available for rescheduling this work unit. Please change the tasks workload or move
 			events in your calendar.
 		</p>
 	</div>
