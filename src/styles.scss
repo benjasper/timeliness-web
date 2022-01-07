@@ -273,6 +273,7 @@ input,
 
 			&.ng-option-selected {
 				background-color: $color-light-grey !important;
+				cursor: default;
 
 				.ng-option-label {
 					font-weight: inherit;
