@@ -143,7 +143,6 @@ input[type='email'] {
 }
 
 input[type='text'],
-input[type='datetime-local'],
 input[type='time'],
 textarea,
 input,
@@ -273,6 +272,7 @@ input,
 
 			&.ng-option-selected {
 				background-color: $color-light-grey !important;
+				cursor: default;
 
 				.ng-option-label {
 					font-weight: inherit;
