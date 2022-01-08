@@ -1,52 +1,65 @@
-<span class="input min-w-max whitespace-nowrap" title="{{(selected.getTime() - today.getTime()).toDuration().toStringWithoutSeconds()}}{{ selected.getTime() - today.getTime() < 0 ? 'ago' : '' }}"
-	  (click)="toggleDropdown()">{{ selected.toLocaleDateString('default',{day: '2-digit', month: 'short', year: 'numeric'}) }} | {{ selected.toLocaleTimeString('default',{hour:
-	'numeric', minute:'2-digit'}) }}</span>
+<span
+	class="input min-w-max whitespace-nowrap"
+	title="{{ (selected.getTime() - today.getTime()).toDuration().toStringWithoutSeconds() }}{{
+		selected.getTime() - today.getTime() < 0 ? 'ago' : ''
+	}}"
+	(click)="toggleDropdown()"
+>
+	{{ selected.toLocaleDateString('default', { day: '2-digit', month: 'short', year: 'numeric' }) }} |
+	{{ selected.toLocaleTimeString('default', { hour: 'numeric', minute: '2-digit' }) }}
+</span>
 
-<div *ngIf="isFocused"
-	 class="dropdown" @fade>
+<div *ngIf="isFocused" class="dropdown" @fade>
 	<div class="top">
-		<button type="button"
-				class="with-border today"
-				(click)="goToMonth(today.getMonth(), today.getFullYear())">Today</button>
-		<span class="month-year">{{getDateByMonthAndYear(month, year).toLocaleDateString('default', {month: 'long',
-			year: 'numeric'})}}</span>
+		<button type="button" class="with-border today" (click)="goToMonth(today.getMonth(), today.getFullYear())">
+			Today
+		</button>
+		<span class="month-year">
+			{{ getDateByMonthAndYear(month, year).toLocaleDateString('default', { month: 'long', year: 'numeric' }) }}
+		</span>
 		<div class="navigation">
-			<button type="button"
-					class="tiny-button with-border previous-month"
-					(click)="previousMonth($event)">
-				<svg-icon class="img"
-						  src="/assets/icons/icon-arrow-down.svg"
-						  alt="Previous month"></svg-icon>
+			<button
+				type="button"
+				class="tiny-button with-border previous-month flex-shrink-0"
+				(click)="previousMonth($event)"
+			>
+				<svg-icon class="img" src="/assets/icons/icon-arrow-down.svg" alt="Previous month"></svg-icon>
 			</button>
-			<button type="button"
-					class="tiny-button with-border next-month"
-					(click)="nextMonth($event)">
-				<svg-icon class="img"
-						  src="/assets/icons/icon-arrow-down.svg"
-						  alt="Next month"></svg-icon>
+			<button type="button" class="tiny-button with-border next-month flex-shrink-0" (click)="nextMonth($event)">
+				<svg-icon class="img" src="/assets/icons/icon-arrow-down.svg" alt="Next month"></svg-icon>
 			</button>
 		</div>
-
 	</div>
-	<div class="calendar"
-		 #calendar>
-		<div class="date weekday"
-			 *ngFor="let weekday of weekdays">{{weekday.toLocaleDateString('default', {weekday: 'narrow'})}}</div>
-		<div *ngFor="let empty of emptyDays"
-			 class="date empty-day">
+	<div class="calendar" #calendar>
+		<div class="date weekday" *ngFor="let weekday of weekdays">
+			{{ weekday.toLocaleDateString('default', { weekday: 'narrow' }) }}
 		</div>
-		<button class="date day disabled:!text-grey-dark disabled:!cursor-default"
-			 *ngFor="let date of monthDates"
-			 [disabled]="date.getTime() < this.today.getTime()"
-			 [class.active]="date.getDate() === selected.getDate() && date.getMonth() === selected.getMonth() && date.getFullYear() === selected.getFullYear()"
-			 [class.today]="date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()"
-			 (click)="selectDate($event, date)">
+		<div *ngFor="let empty of emptyDays" class="date empty-day"></div>
+		<button
+			class="date day disabled:!text-grey-dark disabled:!cursor-default"
+			*ngFor="let date of monthDates"
+			[disabled]="date.getTime() < this.today.getTime()"
+			[class.active]="
+				date.getDate() === selected.getDate() &&
+				date.getMonth() === selected.getMonth() &&
+				date.getFullYear() === selected.getFullYear()
+			"
+			[class.today]="
+				date.getDate() === today.getDate() &&
+				date.getMonth() === today.getMonth() &&
+				date.getFullYear() === today.getFullYear()
+			"
+			(click)="selectDate($event, date)"
+		>
 			{{ date.getDate() }}
 		</button>
 	</div>
 
-	<div class="date">
-		<ng-select [ngModel]="selected.getTime()"
+	<div class="date flex flex-col justify-center">
+		<label for="time" class="label mx-auto">Time</label>
+		<ng-select 
+		id="time"
+					[ngModel]="selected.getTime()"
 				   (change)="onTimeChange($event)"
 				   (click)="$event.stopPropagation()"
 				   [clearable]="false"
