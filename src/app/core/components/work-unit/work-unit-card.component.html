@@ -11,14 +11,27 @@
 			<h3 class="truncate-text">{{ task.name }}</h3>
 		</a>
 		<h3 *ngIf="small" class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>
-		<a
-			*ngIf="!small"
-			class="btn tiny-button with-border"
-			[routerLink]="['task', task.id]"
-			[ngClass]="getColorClass(tag ? tag.color : '', 'color')"
-		>
-			<svg-icon class="img" src="/assets/icons/icon-edit.svg"></svg-icon>
-		</a>
+		<app-dropdown [ngClass]="getColorClass(tag ? tag.color : '', 'background')">
+			<a
+				*ngIf="!small"
+				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
+				[routerLink]="['task', task.id]"
+			>
+				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-edit.svg"></svg-icon>
+				<span>Edit task</span>
+			</a>
+			<a
+				*ngIf="
+					!task.workUnits[workUnitIndex].isDone &&
+					task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().getTime() < today.getTime()
+				"
+				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
+				(click)="markWorkUnitAsDone(task, workUnitIndex, true, true)"
+			>
+				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-check.svg"></svg-icon>
+				<span>Mark work unit done partly</span>
+			</a>
+		</app-dropdown>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">

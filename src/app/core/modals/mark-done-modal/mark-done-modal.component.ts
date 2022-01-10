@@ -39,23 +39,47 @@ export class MarkDoneModalComponent
 	selectedDuration: number = 0
 
 	times: number[] = []
+	isModeAfterEnd = false
 
 	ngOnInit(): void {
 		this.isOpen = true
 
-		const timeLeft = MarkDoneModalComponent.calculateTimeLeft(this.task, this.workUnitIndex)
-		let durationPointer = 0
+		let timeLeft = MarkDoneModalComponent.calculateTimeLeft(this.task, this.workUnitIndex)
 
+		if (this.task.workUnits[this.workUnitIndex].scheduledAt.date.end.toDate().getTime() < new Date().getTime()) {
+			this.isModeAfterEnd = true
+
+			timeLeft = this.task.workUnits[this.workUnitIndex].workload.toDuration(
+				DurationUnit.Nanoseconds
+			).milliseconds
+			if (timeLeft - 60000 * 5 > 0) {
+				timeLeft -= 60000 * 5
+			}
+		}
+
+		let durationPointer = 0
+		
 		while (durationPointer < timeLeft) {
 			durationPointer += 60000 * 5
 			this.times.push(durationPointer)
 		}
 
-		this.selectedDuration = this.times[this.times.length - 1]
+		let selectedIndex = Math.round((this.times.length - 1) / 2)
 
-		while (durationPointer < this.task.workUnits[this.workUnitIndex].workload / 1e6 && durationPointer < this.selectedDuration + 60000 * 30) {
-			durationPointer += 60000 * 5
-			this.times.push(durationPointer)
+		if (!this.isModeAfterEnd) {
+			selectedIndex = this.times.length - 1
+		}
+
+		this.selectedDuration = this.times[selectedIndex]
+
+		if (!this.isModeAfterEnd) {
+			while (
+				durationPointer < this.task.workUnits[this.workUnitIndex].workload / 1e6 &&
+				durationPointer < this.selectedDuration + 60000 * 30
+			) {
+				durationPointer += 60000 * 5
+				this.times.push(durationPointer)
+			}
 		}
 	}
 

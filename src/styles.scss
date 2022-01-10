@@ -427,7 +427,7 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 			transition: background-color 0.2s ease-in-out;
 
 			&:hover:not(:disabled) {
-				background-color: $color-light-grey;
+				background-color: transparent;
 			}
 
 			.img {

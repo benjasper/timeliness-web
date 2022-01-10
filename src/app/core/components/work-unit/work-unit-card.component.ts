@@ -119,14 +119,14 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		return progress
 	}
 
-	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true): void {
+	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true, partly = false): void {
 		const timeLeft = MarkDoneModalComponent.calculateTimeLeft(task, workUnitIndex)
 
 		if (
 			!task.workUnits[workUnitIndex].isDone &&
 			timeLeft > 5 * 1000 && timeLeft < task.workUnits[workUnitIndex].workload / 1000 &&
 			task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getTime() < this.today.getTime() &&
-			task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().getTime() > this.today.getTime()
+			task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().getTime() > this.today.getTime() || partly
 		) {
 			this.modalService.addModal(MarkDoneModalComponent, { task, workUnitIndex }).subscribe((result) => {
 				if (!result.hasValue) {

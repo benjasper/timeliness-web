@@ -11,12 +11,22 @@
 >
 	<div class="flex flex-col">
 		<label class="label !pb-10">Mark work unit {{ workUnitIndex + 1 }} done</label>
-		<h2 class="truncate min-w-0 flex-shrink-0">You seem to be done early!</h2>
-		<p class="text-grey-dark mt-1">
-			Are you done early with this work unit? If so, we can reschedule the amount of time left of this work unit.
-			<br />
-			This work unit will be marked done and the end time will be reduced by the amount of time left.
-		</p>
+		<ng-container *ngIf="!isModeAfterEnd">
+			<h2 class="truncate min-w-0 flex-shrink-0">You seem to be done early!</h2>
+			<p class="text-grey-dark mt-1">
+				Are you done early with this work unit? If so, we can reschedule the amount of time left.
+				<br />
+				This work unit will be marked done and the end time will be reduced by the amount of time left.
+			</p>
+		</ng-container>
+		<ng-container *ngIf="isModeAfterEnd">
+			<h2 class="truncate min-w-0 flex-shrink-0">Did you finish earlier than planned?</h2>
+			<p class="text-grey-dark mt-1">
+				Are you done early with this work unit? If so, we can change the work units end date after the fact and reschedule the amount of time left.
+				<br />
+				This work unit will be marked done and the end time will be reduced by the amount of time left.
+			</p>
+		</ng-container>
 	</div>
 	<div class="flex flex-col gap-8 mt-8">
 		<label class="label" for="timeLeft">Time left</label>
