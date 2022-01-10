@@ -28,7 +28,9 @@
 				</ng-container>
 			</ng-container>
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">
-				It seems like your Google Calendar connection expired. Please click the button below to reconnect.
+				<p class="text-red mt-4">
+					It seems like your Google Calendar connection expired. <br>Please click the button below to reconnect.
+				</p>
 			</ng-container>
 		</div>
 		<div class="flex flex-row justify-between">

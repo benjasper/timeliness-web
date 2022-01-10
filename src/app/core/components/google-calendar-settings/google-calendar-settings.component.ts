@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastType } from 'src/app/models/toast';
+import { Toast, ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
 import { AuthService, Calendar, Calendars } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -57,6 +57,12 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 						return a.name.localeCompare(b.name)
 					}))
 					this.connectionLoading.set(connection.id, false)
+				}, () => {
+					const index = user.googleCalendarConnections?.findIndex(x => x.id === connection.id)
+					if (index !== undefined && this.user !== undefined && this.user.googleCalendarConnections) {
+						this.user.googleCalendarConnections[index].status = CalendarConnectionStatus.Expired
+					}
+					this.connectionLoading.set(connection.id, false)
 				})
 			})
 		})
@@ -68,7 +74,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 			const w = window.open(response.url, "_blank");
 			setTimeout(() => {
 				if (w === null) {
-					this.modalService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 0, {title: 'link', link: response.url})
+					this.modalService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 20, {title: 'link', link: response.url})
 				}
 			}, 50)
 		})
@@ -86,9 +92,14 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	saveChanges(connectionId: string, calendars: Calendars) {
 		this.loading = true
-		this.authService.updateCalendarsForConnection(connectionId, calendars).subscribe(response => {
+		const observable = this.authService.updateCalendarsForConnection(connectionId, calendars)
+
+		const toast = new Toast(ToastType.Success, `Calendars saved`)
+		toast.loading = observable.toPromise()
+		this.modalService.addToast(toast)
+		
+		observable.subscribe(() => {
 			this.loading = false
-			this.modalService.newToast(ToastType.Success, `Calendars updated`)
 		}, () => {
 			this.loading = false
 			this.authService.forceUserUpdate()
