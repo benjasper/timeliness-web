@@ -250,9 +250,9 @@ export class AuthService {
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
 
-		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
+		console.error(`API returned a bad response: ${apiError.error.message} with status ${apiError.status}`)
 
-		let message = 'An error occured.'
+		let message = `An error occurred: "${apiError.error.message}"`
 		if (error.status >= 400 && error.status < 500) {
 			message = 'That did not work.'
 		}

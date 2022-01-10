@@ -369,7 +369,7 @@ export class TaskService {
 		
 		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
 		
-		let userMessage = "We\'ve encoutered an error, we are on it!"
+		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
 
 		this.modalService.newToast(ToastType.Error, userMessage)
 		// Return an observable with a user-facing error message.
