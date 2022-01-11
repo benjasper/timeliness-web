@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate, state } from '@angular/animations';
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown',
@@ -15,6 +15,8 @@ import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 export class DropdownComponent implements OnInit {
 
   isFocused = false
+
+  @Input() colorClasses = "text-primary"
 
   constructor(private elementRef: ElementRef) { }
 
