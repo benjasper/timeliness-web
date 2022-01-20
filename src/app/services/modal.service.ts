@@ -45,13 +45,13 @@ export class ModalService extends SimpleModalService {
 	public newToast(
 		type: ToastType,
 		message: string,
-		dismissable = false,
+		dismissible = false,
 		seconds = 5,
 		link?: { title: string; link: string },
 		loading?: Promise<void|any>,
 		loadingText?: string
 	) {
-		const toast = new Toast(type, message, dismissable, seconds, link, loading, loadingText)
+		const toast = new Toast(type, message, dismissible, seconds, link, loading, loadingText)
 		this.toastQueue.push(toast)
 		this.runNextToast()
 	}
