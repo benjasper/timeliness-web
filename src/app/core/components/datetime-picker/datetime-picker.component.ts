@@ -104,6 +104,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 				this.times.push(time)
 			}
 		}
+
+		if (this.selected && !this.times.includes(this.selected)) {
+			this.times.push(this.selected)
+			this.times.sort((a, b) => a.getTime() - b.getTime())
+		}
 	}
 
 	private updateCalendarView() {

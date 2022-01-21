@@ -245,6 +245,11 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 				this.durations.push(new Duration(duration))
 			}
 		}
+		
+		if (task && this.durations.includes(task.workloadOverall.toDuration(DurationUnit.Nanoseconds)) === false) {
+			this.durations.push(task.workloadOverall.toDuration(DurationUnit.Nanoseconds))
+			this.durations.sort((a, b) => a.milliseconds - b.milliseconds)
+		}
 	}
 
 	private patchForm(task: Task): void {

@@ -57,17 +57,16 @@
 
 	<div class="date flex flex-col justify-center">
 		<label for="time" class="label mx-auto">Time</label>
-		<ng-select 
-		id="time"
-					[ngModel]="selected.getTime()"
-				   (change)="onTimeChange($event)"
-				   (click)="$event.stopPropagation()"
-				   [clearable]="false"
-				   [dropdownPosition]="'top'">
-			<ng-option *ngFor="let time of times"
-					   class="time-item"
-					   [value]="time.getTime()">{{ time.toLocaleTimeString('default', {hour: 'numeric',
-				minute:'2-digit'}) }}
+		<ng-select
+			id="time"
+			[ngModel]="selected.getTime()"
+			(change)="onTimeChange($event)"
+			(click)="$event.stopPropagation()"
+			[clearable]="false"
+			[dropdownPosition]="'top'"
+		>
+			<ng-option *ngFor="let time of times" class="time-item" [value]="time.getTime()">
+				{{ time.toLocaleTimeString('default', { hour: 'numeric', minute: '2-digit' }) }}
 			</ng-option>
 		</ng-select>
 	</div>
