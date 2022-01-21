@@ -42,7 +42,7 @@ export class StatsSectionComponent implements OnInit {
 			const today = new Date(this.now)
 			this.updateTaskAndWorkUnitCounter()
 
-			const unwounds = this.taskService
+			const unwounds = TaskService
 				.taskToUnwound(task)
 				.filter(
 					(x) =>

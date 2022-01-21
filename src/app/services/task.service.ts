@@ -152,7 +152,7 @@ export class TaskService {
 		return observable
 	}
 
-	public taskToUnwound(task: Task) {
+	public static taskToUnwound(task: Task) {
 		const tasks: TaskUnwound[] = []
 
 		task.workUnits.forEach((workunit, index) => {
