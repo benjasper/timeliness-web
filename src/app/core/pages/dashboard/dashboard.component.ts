@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	private recevieTaskUnwoundUpdate(task: Task) {
 		// TODO we can optimize this, eg by checking if the new task should be displayed
 		// If not refetch them
-		const unwoundTasks = this.taskService.taskToUnwound(task)
+		const unwoundTasks = TaskService.taskToUnwound(task)
 
 		this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id)
 
@@ -128,7 +128,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 			const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
 			if (offset > 0) {
-				this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound - 1, offset)
+				this.tasksUnwound.splice(DashboardComponent.pageSizeTasksUnwound + 1, offset)
 			}
 		}
 
