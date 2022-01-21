@@ -21,8 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	
 	public startIndex = 0
 
-	static pageSizeTasks = 10
-	static pageSizeTasksUnwound = 10
+	static pageSizeTasks = 25
+	static pageSizeTasksUnwound = 25
 
 	public loadingTasks = true
 	public loadingWorkUnits = true
@@ -48,13 +48,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 			this.groupTasksUnwound(this.tasksUnwound)
 		})
 
-		this.taskService.getTasksByDeadlines().subscribe((response) => {
+		this.taskService.getTasksByDeadlines(undefined, 0, DashboardComponent.pageSizeTasks).subscribe((response) => {
 			this.tasks = response.results
 			this.groupTasks(response.results)
 			this.loadingTasks = false
 		}, () => {this.loadingTasks = false})
 
-		this.taskService.getTasksByWorkunits().subscribe((response) => {
+		this.taskService.getTasksByWorkunits(undefined, 0, DashboardComponent.pageSizeTasksUnwound).subscribe((response) => {
 			this.tasksUnwound = response.results
 			this.groupTasksUnwound(response.results)
 			this.loadingWorkUnits = false
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 		// TODO we can optimize this, eg by checking if the new task should be displayed
 		// If not refetch them
 		this.loadingTasks = true
-		this.taskService.getTasksByDeadlines().subscribe((newTasks) => {
+		this.taskService.getTasksByDeadlines(undefined, 0, DashboardComponent.pageSizeTasks).subscribe((newTasks) => {
 			this.tasks = newTasks.results
 			this.groupTasks(this.tasks)
 			this.loadingTasks = false
