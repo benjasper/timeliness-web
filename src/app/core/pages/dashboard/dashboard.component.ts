@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Title } from '@angular/platform-browser'
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { Task, TaskUnwound } from 'src/app/models/task'
+import { PageComponent } from 'src/app/pages/page'
 import { TaskService } from 'src/app/services/task.service'
 import { UtilityService } from 'src/app/services/utility.service'
 
@@ -8,8 +11,10 @@ import { UtilityService } from 'src/app/services/utility.service'
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-	constructor(private taskService: TaskService) { }
+export class DashboardComponent extends PageComponent implements OnInit, OnDestroy {
+	constructor(private taskService: TaskService, protected titleService: Title, private router: Router) {
+		super(titleService)
+	 }
 
 	public today = new Date()
 	public groupedDeadlines: TaskDateGroup[] = []
@@ -38,6 +43,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	public syncInterval?: NodeJS.Timeout
 
 	ngOnInit(): void {
+		this.setTitle('Dashboard')
+
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd && event.url.endsWith('/dashboard')) {
+				this.setTitle('Dashboard')
+			}
+		})
+
 		this.taskService.now.subscribe((date) => {
 			this.today = date
 			this.checkNextUpMessage()

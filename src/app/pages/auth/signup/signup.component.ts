@@ -1,20 +1,26 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
+import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { ToastType } from 'src/app/models/toast'
 import { AuthService } from 'src/app/services/auth.service'
 import { ModalService } from 'src/app/services/modal.service'
+import { PageComponent } from '../../page'
 
 @Component({
 	selector: 'app-signup',
 	templateUrl: './signup.component.html',
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent extends PageComponent implements OnInit {
 	loading = false
 
-	constructor(private authService: AuthService, private modalService: ModalService, private router: Router) {}
+	constructor(private authService: AuthService, private modalService: ModalService, private router: Router, protected titleService: Title) {
+		super(titleService)
+	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.setTitle('Sign up')
+	}
 
 	get firstname() {
 		return this.form.get('firstname')

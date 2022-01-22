@@ -1,21 +1,26 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ToastType } from 'src/app/models/toast'
 import { ModalService } from 'src/app/services/modal.service'
 import { AuthService } from '../../../services/auth.service'
+import { PageComponent } from '../../page'
 
 @Component({
 	selector: 'app-signin',
 	templateUrl: './signin.component.html',
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent extends PageComponent implements OnInit {
 	constructor(
 		private authService: AuthService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private modalService: ModalService
-	) {}
+		private modalService: ModalService,
+		protected titleService: Title
+	) {
+		super(titleService)
+	}
 
 	signinForm = new FormGroup({
 		email: new FormControl('', [Validators.required, Validators.email]),
@@ -27,6 +32,8 @@ export class SigninComponent implements OnInit {
 	loading = false
 
 	ngOnInit(): void {
+		this.setTitle('Sign in')
+		
 		this.route.queryParams.subscribe((params) => {
 			this.returnUrl = params.returnUrl ?? ''
 		})
