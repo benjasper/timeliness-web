@@ -22,7 +22,7 @@
 		<a
 			class="deadline-name truncate-text text-underline text-black"
 			title="{{ task.name }}"
-			[routerLink]="['task', task.id]"
+			[routerLink]="['task', task.id]" [queryParams]="{ workUnit: task.workUnits[task.workUnitIndex].id}"
 		>
 			{{ task.name }}
 		</a>

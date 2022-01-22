@@ -13,6 +13,8 @@ import { smoothHeight } from 'src/app/animations'
 import { ModalService } from 'src/app/services/modal.service'
 import { Toast, ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
+import { Title } from '@angular/platform-browser'
+import { PageComponent } from 'src/app/pages/page'
 
 @Component({
 	selector: 'app-modal-edit-task',
@@ -33,13 +35,14 @@ import { ConfirmationModalComponent } from '../../modals/confirmation-modal/conf
 		smoothHeight,
 	],
 })
-export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnDestroy {
+export class ModalEditTaskComponent extends PageComponent implements OnInit, OnDestroy {
 	taskId!: string
 	task!: Task
 	loaded = true
 	modalBackground = false
 	isNew = false
 	loading = false
+	workUnitId?: string
 
 	startIndex = 0
 
@@ -63,15 +66,27 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 	editTask!: FormGroup
 
+	getRemainingWorkload = TaskComponent.getRemainingWorkload
+	getFinishedWorkload = TaskComponent.getFinishedWorkload
+	getProgress = TaskComponent.getProgress
+	getColorClass = TaskComponent.getColorClass
+
 	constructor(
 		private router: Router,
 		private route: ActivatedRoute,
 		private taskService: TaskService,
-		private modalService: ModalService
+		private modalService: ModalService,
+		protected titleService: Title
 	) {
-		super()
+		super(titleService)
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
+		})
+
+		this.route.queryParamMap.subscribe((param) => {
+			if (param.has('workUnit')) {
+				this.workUnitId = param.get('workUnit') ?? undefined
+			}
 		})
 
 		const interval = 60 * 60 * 1000
@@ -128,6 +143,7 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 
 		if (this.taskId === 'new') {
 			this.isNew = true
+			this.setTitle('New Task')
 			return
 		}
 
@@ -189,6 +205,21 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 		this.editTask.markAsDirty()
 	}
 
+	workUnitSliderMove(event: any) {
+		const index: number = event[2]
+		this.workUnitId = this.task.workUnits[index].id
+
+		// Set queryParam workUnit to new id
+	
+		this.router.navigate([], {
+			relativeTo: this.route.parent,
+			replaceUrl: true,
+			queryParams: {
+				workUnit: this.workUnitId
+			}
+		})
+	}
+
 	private arraymove(arr: any, fromIndex: number, toIndex: number) {
 		var element = arr[fromIndex]
 		arr.splice(fromIndex, 1)
@@ -201,7 +232,13 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			return
 		}
 
-		const index = this.task.workUnits.findIndex((x) => !x.isDone)
+		let index = 0
+
+		if (this.workUnitId) {
+			index = this.task.workUnits.findIndex((x) => x.id === this.workUnitId)
+		} else {
+			index = this.task.workUnits.findIndex((x) => !x.isDone)
+		}
 
 		setTimeout(() => {
 			this.startIndex = index === -1 ? 0 : index
@@ -268,6 +305,8 @@ export class ModalEditTaskComponent extends TaskComponent implements OnInit, OnD
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 		})
 		this.generateDurations(task)
+
+		this.setTitle(task.name)
 	}
 
 	public changeTag(tag: Tag, newValue: TagModified) {

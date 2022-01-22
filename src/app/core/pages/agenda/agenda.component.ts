@@ -5,14 +5,18 @@ import { TaskService } from 'src/app/services/task.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { forkJoin, pipe } from 'rxjs';
 import { share } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { PageComponent } from 'src/app/pages/page';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-agenda',
 	templateUrl: './agenda.component.html',
 })
-export class AgendaComponent implements OnInit, OnDestroy {
+export class AgendaComponent extends PageComponent implements OnInit, OnDestroy {
 
-	constructor(private taskService: TaskService) {
+	constructor(private taskService: TaskService, protected titleService: Title, private router: Router) {
+		super(titleService)
 		this.today.setHours(0, 0, 0, 0)
 	}
 
@@ -37,6 +41,14 @@ export class AgendaComponent implements OnInit, OnDestroy {
 	@ViewChild('todayElement') todayElement!: ElementRef
 
 	ngOnInit(): void {
+		this.setTitle('Agenda')
+
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd && event.url.endsWith('/agenda')) {
+				this.setTitle('Agenda')
+			}
+		})
+
 		this.fetchAgenda().subscribe(() => {
 			this.loading = false
 		}, () => {this.loading = false})

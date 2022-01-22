@@ -5,7 +5,12 @@ import { TaskService } from '../services/task.service'
 export class TaskComponent {
 	public constructor() { }
 
-	public getRemainingWorkload(task: Task): string {
+	getRemainingWorkload = TaskComponent.getRemainingWorkload
+	getFinishedWorkload = TaskComponent.getFinishedWorkload
+	getProgress = TaskComponent.getProgress
+	getColorClass = TaskComponent.getColorClass
+
+	public static getRemainingWorkload(task: Task): string {
 		let doneWorkload = 0
 
 		task.workUnits
@@ -17,7 +22,7 @@ export class TaskComponent {
 		return (task.workloadOverall - doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
 	}
 
-	public getFinishedWorkload(task: Task): string {
+	public static getFinishedWorkload(task: Task): string {
 		let doneWorkload = 0
 
 		task.workUnits
@@ -29,7 +34,7 @@ export class TaskComponent {
 		return (doneWorkload).toDuration(DurationUnit.Nanoseconds).toString()
 	}
 
-	public getProgress(task: Task): string {
+	public static getProgress(task: Task): string {
 		let doneWorkload = 0
 
 		if (!task || !task.workUnits || task.workUnits.length === 0) {
@@ -47,7 +52,7 @@ export class TaskComponent {
 		return percentage.toFixed(0)
 	}
 
-	getColorClass(color: string, kind: string): string {
+	public static getColorClass(color: string, kind: string): string {
 		if (color === '') {
 			color = 'no-color'
 		}

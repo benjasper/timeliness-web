@@ -1,6 +1,8 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
+import { PageComponent } from 'src/app/pages/page'
 
 @Component({
 	selector: 'app-tutorial',
@@ -12,8 +14,10 @@ import { Router } from '@angular/router'
 		]),
 	],
 })
-export class TutorialComponent implements OnInit, OnDestroy {
-	constructor(private router: Router) {}
+export class TutorialComponent extends PageComponent implements OnInit, OnDestroy {
+	constructor(private router: Router, protected titleService: Title) {
+		super(titleService)
+	}
 
 	isShowing = true
 	numberOfSlides = 0
@@ -21,7 +25,9 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
 	slideOnTheMove = false
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.setTitle('Getting started')
+	}
 
 	close() {
 		this.isShowing = false

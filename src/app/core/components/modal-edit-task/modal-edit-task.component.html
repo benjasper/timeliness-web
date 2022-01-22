@@ -41,7 +41,7 @@
 										[small]="true"></app-work-unit-card>
 				</splide-slide>
 			</splide>
-			<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [(selectedSlideIndex)]="startIndex" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
+			<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [(selectedSlideIndex)]="startIndex" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }" (onMoved)="workUnitSliderMove($event)">
 				<splide-slide *ngFor="let workUnit of task.workUnits; let i = index">
 					<app-work-unit-card [task]="task"
 										[workUnitIndex]="i"

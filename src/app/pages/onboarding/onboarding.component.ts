@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core'
+import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, Router } from '@angular/router'
 import { OnboardingStep } from 'src/app/models/onboarding-step'
 import { CalendarConnectionStatus } from 'src/app/models/user'
 import { AuthService } from 'src/app/services/auth.service'
+import { PageComponent } from '../page'
 
 @Component({
 	selector: 'app-onboarding',
 	templateUrl: './onboarding.component.html',
 })
-export class OnboardingComponent implements OnInit {
-	constructor(private authService: AuthService, private router: Router) {}
+export class OnboardingComponent extends PageComponent implements OnInit {
+	constructor(private authService: AuthService, private router: Router, protected titleService: Title) {
+		super(titleService)
+	}
 
 	steps: OnboardingStep[] = [
 		{
@@ -37,6 +41,7 @@ export class OnboardingComponent implements OnInit {
 	selectedStep = 0
 
 	ngOnInit(): void {
+		this.setTitle('Onboarding')
 	}
 
 	updateValidStatus(identifier: string, validStatus: boolean) {
