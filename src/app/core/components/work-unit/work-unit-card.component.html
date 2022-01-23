@@ -7,7 +7,12 @@
 	[ngClass]="getColorClass(tag ? tag.color : '', 'background')"
 >
 	<div class="card-header" [ngClass]="getColorClass(tag ? tag.color : '', 'color')">
-		<a class="header-link" *ngIf="!small" [routerLink]="['task', task.id]" [queryParams]="{ workUnit: task.workUnits[workUnitIndex].id}">
+		<a
+			class="header-link"
+			*ngIf="!small"
+			[routerLink]="['task', task.id]"
+			[queryParams]="{ workUnit: task.workUnits[workUnitIndex].id }"
+		>
 			<h3 class="truncate-text">{{ task.name }}</h3>
 		</a>
 		<h3 *ngIf="small" class="truncate-text">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</h3>
@@ -15,7 +20,8 @@
 			<a
 				*ngIf="!small"
 				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
-				[routerLink]="['task', task.id]" [queryParams]="{ workUnit: task.workUnits[workUnitIndex].id }"
+				[routerLink]="['task', task.id]"
+				[queryParams]="{ workUnit: task.workUnits[workUnitIndex].id }"
 			>
 				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-edit.svg"></svg-icon>
 				<span>Edit task</span>
@@ -37,27 +43,38 @@
 		<div class="card-section infos">
 			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
 			<span *ngIf="small"></span>
-			<div
-				class="info-segment"
-				[class.red]="
-					task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
-					!task.workUnits[workUnitIndex].isDone
-				"
-			>
+			<div class="info-segment">
 				<ng-container [ngSwitch]="scheduleState">
 					<span *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
 					<span *ngSwitchCase="SCHEDULE_TYPE.Future">
-						{{
-							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
-								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
-									weekday: 'short',
-									month: 'long',
-									day: '2-digit',
-									year: 'numeric'
-								})
-						}}
+						<ng-container
+							*ngIf="today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
+						>
+							Today • in {{ durationToStart() }}
+						</ng-container>
+						<ng-container
+							*ngIf="!today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
+						>
+							{{
+								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
+									task.workUnits[workUnitIndex].scheduledAt.date.start
+										.toDate()
+										.toLocaleDateString([], {
+											weekday: 'short',
+											month: 'long',
+											day: '2-digit',
+											year: 'numeric'
+										})
+							}}
+						</ng-container>
 					</span>
-					<span *ngSwitchCase="SCHEDULE_TYPE.Past">
+					<span
+						*ngSwitchCase="SCHEDULE_TYPE.Past"
+						[class.font-bold]="
+							task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
+							!task.workUnits[workUnitIndex].isDone
+						"
+					>
 						{{
 							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
 								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
@@ -67,6 +84,9 @@
 									year: 'numeric'
 								})
 						}}
+						<ng-container *ngIf="!task.workUnits[workUnitIndex].isDone">
+							• ended {{ durationToEnd() }} ago
+						</ng-container>
 					</span>
 				</ng-container>
 

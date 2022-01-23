@@ -31,7 +31,7 @@ export class TaskService {
 
 		setInterval(() => {
 			this.trackTimeAndDate()
-		}, 10000)
+		}, 2000)
 	}
 
 	public lastTaskSync: Date = new Date(0)
