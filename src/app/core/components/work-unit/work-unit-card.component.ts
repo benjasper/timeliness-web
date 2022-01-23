@@ -98,6 +98,14 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		).toStringWithoutSeconds()
 	}
 
+	public durationToStart(): string {
+		return new Duration(
+			Math.abs(
+				this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime() - this.today.getTime()
+			)
+		).toStringWithoutSeconds()
+	}
+
 	public getWorkUnitProgress(now: Date): number {
 		const start = this.task.workUnits[this.workUnitIndex].scheduledAt.date.start.toDate().getTime()
 		if (start > now.getTime()) {
