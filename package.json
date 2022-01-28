@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "ng serve",
     "debug": "ng serve --configuration=\"debug\"",
     "staging": "ng serve --configuration=\"staging\"",
     "build": "ng build",

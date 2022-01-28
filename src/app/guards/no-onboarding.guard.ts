@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
-import { first } from 'rxjs/operators'
+import { first, take } from 'rxjs/operators'
 import { AuthService } from '../services/auth.service'
 
 @Injectable({
@@ -15,7 +15,7 @@ export class NoOnboardingGuard implements CanActivate {
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		return new Promise(async (resolve, reject) => {
-			this.authService.user.pipe(first()).subscribe((user) => {
+			this.authService.user.pipe(take(2)).subscribe((user) => {
 				if (user && user.emailVerified && !user.settings.onboardingCompleted) {
 					this.router.navigate(['/onboarding'])
 					resolve(false)

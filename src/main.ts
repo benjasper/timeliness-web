@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 
 import { AppModule } from './app/app.module'
 import { Duration, DurationUnit } from './app/models/duration'
+import { AuthService } from './app/services/auth.service'
 import { environment } from './environments/environment'
 
 if (environment.production) {

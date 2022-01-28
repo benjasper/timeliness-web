@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
-import { first, map, switchMap } from 'rxjs/operators'
+import { first, map, switchMap, take } from 'rxjs/operators'
 import { User } from '../models/user'
 import { AuthService } from '../services/auth.service'
 
@@ -16,7 +16,7 @@ export class NotVerifiedGuard implements CanActivate {
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		return new Promise(async (resolve, reject) => {
-			this.authService.user.pipe(first()).subscribe(user => {
+			this.authService.user.pipe(take(2)).subscribe(user => {
 				if (user && !user.emailVerified) {
 					this.router.navigate(['/auth/verify'])
 					resolve(false)

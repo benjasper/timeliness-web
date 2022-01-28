@@ -9,6 +9,7 @@ export interface User {
 	googleCalendarConnections?: {
 		status: CalendarConnectionStatus,
 		id: string
+		email: string
 	}[],
 	settings: UserSettings
 	emailVerified: boolean
