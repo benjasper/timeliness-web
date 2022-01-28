@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-16">
-	<div *ngIf="!success && initiatedHere" class="flex flex-col">
+	<div *ngIf="!success && initiatedHere" class="flex flex-col gap-4">
 		<h1 class="m-auto">Almost there...</h1>
 		<p class="text-center text-lg w-3/4 mx-auto">
-			We just sent you an email containing a verification link. Please click the link to verify your email.
+			We just sent an email to <span class="text-primary inline-block text-lg">"{{ user?.email }}"</span>, containing a verification link. Please click the link to verify your email address.
 		</p>
 	</div>
 
@@ -18,7 +18,7 @@
 			</div>
 			<div class="flex flex-col">
 				<p class="text-black text-xl">Welcome aboard! Let's get you set up...</p>
-				<button class="large text-center mt-8 !mx-auto" routerLink="/onboarding">Continue</button>
+				<button class="large text-center !mt-16 !mx-auto" routerLink="/onboarding">Continue</button>
 			</div>
 		</div>
 		

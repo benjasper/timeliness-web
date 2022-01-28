@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Toast, ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
@@ -18,6 +18,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	loading = false
 
+	@Input() allowMoreThanOneConnection = true
 	@Output() valid = new EventEmitter<boolean>()
 
 	CONNECTION_STATUS = CalendarConnectionStatus

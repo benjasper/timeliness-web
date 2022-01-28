@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute } from '@angular/router'
+import { User } from 'src/app/models/user'
 import { AuthService } from 'src/app/services/auth.service'
 import { PageComponent } from '../../page'
 
@@ -16,6 +17,7 @@ export class VerificationComponent extends PageComponent implements OnInit {
 	success = false
 	error = false
 	initiatedHere = true
+	user?: User
 
 	ngOnInit(): void {
 		this.setTitle('Email verification')
@@ -29,6 +31,7 @@ export class VerificationComponent extends PageComponent implements OnInit {
 				this.initiatedHere = false
 			} else {
 				this.authService.user.subscribe(user => {
+					this.user = user
 					if (user?.emailVerified) {
 						this.success = true
 					}

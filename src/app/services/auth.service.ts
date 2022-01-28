@@ -42,6 +42,23 @@ export class AuthService {
 		return observable
 	}
 
+	public authenticateWithGoogleToken(token: string): Observable<AuthResponse> {
+		const observable = this.http
+			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login/google`, JSON.stringify({ token: token }))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
+
+		observable.subscribe((response) => {
+			this.setAccessToken(response.accessToken)
+			this.setRefreshToken(response.refreshToken)
+			this.userSubject.next(response.result)
+		})
+
+		return observable
+	}
+
 	public register(credentials: {
 		firstname: string
 		lastname: string

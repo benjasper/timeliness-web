@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
 		<div class="mb-8 text-left">
-			<h4 class="text-lg text-primary">Connection {{ connection.id }}</h4>
+			<h4 class="text-lg text-primary">Connection {{ connection.email }}</h4>
 
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
 				<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
@@ -36,7 +36,7 @@
 		<div class="flex flex-row justify-between">
 			<button class="mr-auto with-border" role="button" [ngSwitch]="connection.status" (click)="connect(connection.id)">
 				<ng-container *ngSwitchCase="CONNECTION_STATUS.Inactive">
-					Connect to Google Calendar
+					Grant access
 				</ng-container>
 				<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect</ng-container>
 				<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect</ng-container>
@@ -47,7 +47,7 @@
 			</button>
 		</div>
 	</div>
-	<button class="!mr-auto !rounded-full flex-shrink-0 w-16 h-16 p-0" role="button" (click)="connect()">
+	<button *ngIf="user.googleCalendarConnections?.length === 0 || allowMoreThanOneConnection" class="!mr-auto !rounded-full flex-shrink-0 w-16 h-16 p-0" role="button" (click)="connect()">
 		<svg-icon class="img !m-auto" src="/assets/icons/icon-plus.svg"></svg-icon>
 	</button>
 </div>

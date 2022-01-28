@@ -22,7 +22,7 @@
 						<div class="flex flex-col gap-16 text-center">
 							<h4>Google Calendar</h4>
 							<img class="w-32 mx-auto" src="/assets/images/google_calendar.png" alt="Google Calendar" />
-							<app-google-calendar-settings (valid)="updateValidStatus('calendar', $event)"></app-google-calendar-settings>
+							<app-google-calendar-settings [allowMoreThanOneConnection]="false" (valid)="updateValidStatus('calendar', $event)"></app-google-calendar-settings>
 						</div>
 						<div class="flex flex-col filter grayscale gap-16 text-center">
 							<h4>Microsoft Office Calendar</h4>
@@ -31,7 +31,7 @@
 								src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTMwIDdIMlYzLjE0M0ExLjI0OSAxLjI0OSAwIDAxMy4zMzMgMmgyNS4zMzRBMS4yNDkgMS4yNDkgMCAwMTMwIDMuMTQzeiIgZmlsbD0iIzAzNjRiOCIvPjxwYXRoIGQ9Ik0yIDIxaDEwdjlIMy4zMDlBMS4zMDkgMS4zMDkgMCAwMTIgMjguNjkxVjIxeiIgZmlsbD0iIzA2NGE4YyIvPjxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0wIDBoMzJ2MzJIMHoiLz48cGF0aCBmaWxsPSIjMDM2NGI4IiBkPSJNMiAxM2gxMHY5SDJ6Ii8+PHBhdGggZmlsbD0iIzAzNjRiOCIgZD0iTTExIDIxaDExdjlIMTF6Ii8+PHBhdGggZmlsbD0iIzAwNzhkNCIgZD0iTTIgNmgxMHY4SDJ6Ii8+PHBhdGggZmlsbD0iIzAwNzhkNCIgZD0iTTExIDEzaDExdjlIMTF6Ii8+PHBhdGggZmlsbD0iIzI4YThlYSIgZD0iTTExIDZoMTB2OEgxMXoiLz48cGF0aCBkPSJNMjEgMjFoOXY3LjY5MUExLjMwOSAxLjMwOSAwIDAxMjguNjkxIDMwSDIxdi05eiIgZmlsbD0iIzAwNzhkNCIvPjxwYXRoIGZpbGw9IiM1MGQ5ZmYiIGQ9Ik0yMSA2aDl2OWgtOXoiLz48cGF0aCBmaWxsPSIjMjhhOGVhIiBkPSJNMjEgMTRoOXY4aC05eiIvPjwvc3ZnPg=="
 								alt="Microsoft Office Calendar"
 							/>
-							<button type="button" disabled class="mx-auto">Not available yet</button>
+							<button type="button" disabled class="!mx-auto">Not available yet</button>
 						</div>
 					</div>
 				</div>

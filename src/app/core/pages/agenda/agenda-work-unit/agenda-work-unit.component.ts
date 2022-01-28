@@ -25,7 +25,7 @@ export class AgendaWorkUnitComponent extends TaskComponent implements OnInit {
 			return
 		}
 
-		if (this.task.tags[0]) {
+		if (this.task.tags && this.task.tags[0]) {
 			this.taskService.tagsObservable.subscribe((newTags) => {
 				this.tags = []
 				this.task.tags.forEach((tagId) => {
