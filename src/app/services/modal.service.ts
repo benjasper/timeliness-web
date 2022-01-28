@@ -19,7 +19,6 @@ export class ModalResult<T> {
 export class ModalService extends SimpleModalService {
 	modalEntries: ModalEntry[] = []
 	toastQueue: Toast[] = []
-	toastBeingShown: Toast | undefined
 
 	addModal<T, ModalResult>(
 		component: Type<SimpleModalComponent<T, ModalResult>>,
@@ -48,7 +47,7 @@ export class ModalService extends SimpleModalService {
 		dismissible = false,
 		seconds = 5,
 		link?: { title: string; link: string },
-		loading?: Promise<void|any>,
+		loading?: Promise<void | any>,
 		loadingText?: string
 	) {
 		const toast = new Toast(type, message, dismissible, seconds, link, loading, loadingText)
@@ -56,62 +55,49 @@ export class ModalService extends SimpleModalService {
 		this.runNextToast()
 	}
 
-	public addToast(
-		toast: Toast
-	) {
+	public addToast(toast: Toast) {
 		this.toastQueue.push(toast)
 		this.runNextToast()
 	}
 
 	public runNextToast() {
-		if (this.toastBeingShown) {
-			return
-		}
-
 		const toast = this.toastQueue.shift()
-		this.toastBeingShown = toast
 
 		if (!toast) {
 			return
 		}
 
-		let observable = super.addModal(ToastComponent, { toast }, {
-			closeOnEscape: false,
-			closeOnClickOutside: false,
-		})
+		let observable = super.addModal(
+			ToastComponent,
+			{ toast },
+			{
+				closeOnEscape: false,
+				closeOnClickOutside: false,
+			}
+		)
 
 		observable = observable.pipe(share())
+		const subscription = observable.subscribe()
 
 		if (toast.loading) {
 			toast.loading.then(() => {
-				const timeout = setTimeout(() => {
-					subscription.unsubscribe()
-					this.finishToast(toast)
-				}, toast.seconds * 1000)
-
-				const subscription = observable.subscribe(() => {
-					this.finishToast(toast)
-					clearTimeout(timeout)
-				})
+				if (toast.seconds > 0) {
+					setTimeout(() => {
+						subscription.unsubscribe()
+					}, toast.seconds * 1000)
+				}
+			}, () => {
+				subscription.unsubscribe()
 			})
 
 			return
 		}
 
-		const timeout = setTimeout(() => {
-			subscription.unsubscribe()
-			this.finishToast(toast)
-		}, toast.seconds * 1000)
-
-		const subscription = observable.subscribe(() => {
-			this.finishToast(toast)
-			clearTimeout(timeout)
-		})
-	}
-
-	private finishToast(toast: Toast) {
-		this.toastBeingShown = undefined
-		this.runNextToast()
+		if (toast.seconds > 0) {
+			setTimeout(() => {
+				subscription.unsubscribe()
+			}, toast.seconds * 1000)
+		}
 	}
 
 	hasOpenModals(): boolean {
