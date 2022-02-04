@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 
 import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { ApiError } from '../models/error'
-import { ToastType } from '../models/toast'
+import { Toast, ToastType } from '../models/toast'
 import { User, UserSettings } from '../models/user'
 import { ModalService } from './modal.service'
 

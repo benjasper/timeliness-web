@@ -1,7 +1,10 @@
-<div class="flex flex-col gap-44 md:px-20 justify-between">
+<div class="flex flex-col gap-44 md:px-20 justify-between transition-all">
 	<div class="mx-auto text-center">
-		<h2 class="mx-auto">Sign in to continue</h2>
-		<div class="mt-16 mx-auto relative">
+		<h2 class="mx-auto">
+			<ng-container *ngIf="!loading">Sign in to continue</ng-container>
+			<ng-container *ngIf="loading">Signing you in...</ng-container>
+		</h2>
+		<div *ngIf="!loading" class="mt-16 mx-auto relative">
 			<div
 				id="g_id_onload"
 				data-client_id="570716917094-tq9jjv09rtgdgqe60rd9hvnvb143cf3p.apps.googleusercontent.com"
@@ -11,15 +14,20 @@
 			></div>
 
 			<div
-				class="g_id_signin absolute inset-center"
-				data-type="standard"
-				data-shape="pill"
-				data-theme="outline"
-				data-text="signin_with"
-				data-size="large"
-				data-logo_alignment="left"
+			class="g_id_signin absolute inset-center"
+			data-type="standard"
+			data-shape="pill"
+			data-theme="outline"
+			data-text="signin_with"
+			data-size="large"
+			data-logo_alignment="left"
 			></div>
 		</div>
+		<svg-icon
+				*ngIf="loading"
+				class="block m-auto text-primary w-24 my-auto animate-spin-slow"
+				src="/assets/icons/icon-loading.svg"
+			></svg-icon>
 	</div>
 
 	<div class="flex flex-row w-full gap-4 justify-center">

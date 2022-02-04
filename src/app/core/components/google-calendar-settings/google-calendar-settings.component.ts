@@ -70,14 +70,14 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	}
 
 	connect(connectionId?: string) {
+		const w = window.open("", "Timeliness | Google Calendar");
 		this.authService.connectGoogleCalendar(connectionId).subscribe(response => {
 			document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
-			const w = window.open(response.url, "_blank");
-			setTimeout(() => {
-				if (w === null) {
-					this.modalService.newToast(ToastType.Warning, "Your browser seems to have blocked the new tab. Please open it via this", true, 20, {title: 'link', link: response.url})
-				}
-			}, 50)
+			if (w === null) {
+				this.modalService.newToast(ToastType.Warning, "Your browser seems to have blocked the new window. Please open it via this", true, 20, {title: 'link', link: response.url})
+				return
+			}
+			w.location = response.url
 		})
 	}
 
