@@ -29,21 +29,22 @@ export class SigninComponent extends PageComponent implements OnInit {
 		const _global = (window /* browser */ || global) /* node */ as any
 
 		_global.signInWithGoogleToken = (response: { credential: string }) => {
-			this.loading = true
-			
-			this.authService.authenticateWithGoogleToken(response.credential).subscribe(
-				() => {
-					this.zone.run(() => {
+			this.zone.run(() => {
+				this.loading = true
+
+				this.authService.authenticateWithGoogleToken(response.credential).subscribe(
+					() => {
 						this.router.navigate(['/'])
 						this.modalService.newToast(ToastType.Success, 'You are now logged in!')
-					})
-					this.loading = false
-				},
-				() => {
-					this.loading = false
-				}
+
+						this.loading = false
+					},
+					() => {
+						this.loading = false
+					}
 				)
-			}
+			})
+		}
 	}
 
 	signinForm = new FormGroup({
@@ -52,7 +53,7 @@ export class SigninComponent extends PageComponent implements OnInit {
 	})
 
 	returnUrl = ''
-	
+
 	loading = false
 
 	ngOnInit(): void {
