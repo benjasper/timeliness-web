@@ -1,8 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
-import { Subject } from 'rxjs'
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
+import { async, Subject } from 'rxjs'
 import { switchMap, takeUntil } from 'rxjs/operators'
 import { Duration, DurationUnit } from 'src/app/models/duration'
 import { EventModified, Task, TaskModified } from 'src/app/models/task'
@@ -79,6 +79,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		protected titleService: Title
 	) {
 		super(titleService)
+
 		this.route.paramMap.subscribe((param) => {
 			this.taskId = param.get('id') ?? ''
 		})
@@ -210,13 +211,13 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.workUnitId = this.task.workUnits[index].id
 
 		// Set queryParam workUnit to new id
-	
+
 		this.router.navigate([], {
 			relativeTo: this.route.parent,
 			replaceUrl: true,
 			queryParams: {
-				workUnit: this.workUnitId
-			}
+				workUnit: this.workUnitId,
+			},
 		})
 	}
 
@@ -282,7 +283,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 				this.durations.push(new Duration(duration))
 			}
 		}
-		
+
 		if (task && this.durations.includes(task.workloadOverall.toDuration(DurationUnit.Nanoseconds)) === false) {
 			this.durations.push(task.workloadOverall.toDuration(DurationUnit.Nanoseconds))
 			this.durations.sort((a, b) => a.milliseconds - b.milliseconds)
@@ -492,6 +493,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 					this.taskId = task.id
 					this.isNew = false
 					this.loading = false
+					this.setTitle(task.name)
 
 					this.router.navigate(['task', task.id], {
 						relativeTo: this.route.parent,
@@ -521,7 +523,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 			const toast = new Toast(ToastType.Success, 'Task updated')
 			toast.loading = observable.toPromise()
-			toast.loadingText = "Updating task..."
+			toast.loadingText = 'Updating task...'
 			this.modalService.addToast(toast)
 		}
 

@@ -8,10 +8,10 @@
 		(change)="change()"
 	>
 		<ng-option *ngFor="let option of options" [value]="option.toNanoseconds()">
-			<span *ngIf="option.milliseconds !== 0">
+			<span class="text-lg" *ngIf="option.milliseconds !== 0">
 				{{ option }}
 			</span>
-			<span *ngIf="option.milliseconds === 0">
+			<span class="text-lg" *ngIf="option.milliseconds === 0">
 				No spacing
 			</span>
 		</ng-option>
