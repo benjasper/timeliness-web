@@ -50,7 +50,7 @@
 						<ng-container
 							*ngIf="today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
 						>
-							Today • in {{ durationToStart() }}
+							Today • starts in {{ durationToStart() }}
 						</ng-container>
 						<ng-container
 							*ngIf="!today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
