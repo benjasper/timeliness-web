@@ -23,12 +23,13 @@ const routes: Routes = [
 	{
 		path: '',
 		component: CoreComponent,
+		data: { animation: 'core' },
 		canActivate: [AuthGuard, NotVerifiedGuard, NoOnboardingGuard],
 		children: [
 			{
 				path: 'dashboard',
 				component: DashboardComponent,
-				data: { animation: 'dashboard' },
+				data: { animation: 0 },
 				children: [
 					{
 						path: 'task/:id',
@@ -42,7 +43,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'agenda',
-				data: { animation: 'agenda' },
+				data: { animation: 1 },
 				component: AgendaComponent,
 				children: [
 					{
@@ -54,7 +55,7 @@ const routes: Routes = [
 			{
 				path: 'settings',
 				component: SettingsComponent,
-				data: { animation: 'settings' },
+				data: { animation: 2 },
 				children: [
 					{ path: '', redirectTo: '/settings/general', pathMatch: 'full', data: { animation: 'settings' }, },
 					{ path: 'general', component: GeneralComponent, pathMatch: 'full', data: { animation: 'settings' }, },
@@ -67,10 +68,12 @@ const routes: Routes = [
 	{
 		path: 'auth',
 		component: AuthComponent,
+		data: { animation: 'auth' },
 		children: [
 			{
 				path: 'signin',
 				component: SigninComponent,
+				data: { animation: 'signin' },
 				canActivate: [NoAuthGuard],
 			},
 			{
@@ -80,6 +83,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'verify',
+				data: { animation: 'verify' },
 				component: VerificationComponent,
 			},
 			{ path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
@@ -87,6 +91,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'onboarding',
+		data: { animation: 'onboarding' },
 		component: OnboardingComponent,
 	},
 	{
