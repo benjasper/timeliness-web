@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
-		<div class="mb-8 text-left">
+		<div class="mb-8 text-left min-w-[44rem]">
 			<h4 class="text-lg text-primary">Connection {{ connection.email }}</h4>
 
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
@@ -14,7 +14,10 @@
 							class="mr-4 my-auto"
 							type="checkbox"
 							[checked]="calendar.isActive"
-							(change)="calendar.isActive = !calendar.isActive; saveChanges(connection.id, calendars.get(connection.id) ?? [])"
+							(change)="
+								calendar.isActive = !calendar.isActive;
+								saveChanges(connection.id, calendars.get(connection.id) ?? [])
+							"
 						/>
 						<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
 					</div>
@@ -22,32 +25,61 @@
 				<ng-container *ngIf="connectionLoading.get(connection.id)">
 					<div *ngFor="let calendar of [1, 2, 3, 4, 5]" class="flex flex-row group hover:cursor-default">
 						<div class="flex flex-row flex-wrap gap-4">
-							<span class="sm-tag text-base grey-background px-8 py-1 border border-white rounded-full loading w-72">&nbsp;</span>
+							<span
+								class="
+									sm-tag
+									text-base
+									grey-background
+									px-8
+									py-1
+									border border-white
+									rounded-full
+									loading
+									w-72
+								"
+							>
+								&nbsp;
+							</span>
 						</div>
 					</div>
 				</ng-container>
 			</ng-container>
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">
 				<p class="text-red mt-4">
-					It seems like your Google Calendar connection expired. <br>Please click the button below to reconnect.
+					It seems like your Google Calendar connection expired.
+					<br />
+					Please click the button below to reconnect.
 				</p>
 			</ng-container>
 		</div>
 		<div class="flex flex-row justify-between">
-			<button class="mr-auto with-border" role="button" [ngSwitch]="connection.status" (click)="connect(connection.id)">
-				<ng-container *ngSwitchCase="CONNECTION_STATUS.Inactive">
-					Grant access
-				</ng-container>
-				<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect</ng-container>
-				<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect</ng-container>
-				<ng-container *ngSwitchDefault>Reconnect</ng-container>
+			<button
+				class="mr-auto with-border !border-none shadow !px-5 !py-5"
+				role="button"
+				[ngSwitch]="connection.status"
+				(click)="connect(connection.id)"
+			>
+				<svg-icon class="w-8 my-auto mr-6" src="/assets/icons/google.svg"></svg-icon>
+				<span class="my-auto font-google font-medium text-grey-google">
+					<ng-container *ngSwitchCase="CONNECTION_STATUS.Inactive">
+						Grant access to Google Calendar
+					</ng-container>
+					<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect Google Calendar</ng-container>
+					<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect Google Calendar</ng-container>
+					<ng-container *ngSwitchDefault>Reconnect Google Calendar</ng-container>
+				</span>
 			</button>
-			<button role="button" class="danger" (click)="disconnect(connection.id)">
-				Disconnect
+			<button role="button" class="danger h-full" (click)="disconnect(connection.id)">
+				<span class="my-auto">Disconnect</span>
 			</button>
 		</div>
 	</div>
-	<button *ngIf="user.googleCalendarConnections?.length === 0 || allowMoreThanOneConnection" class="!mr-auto !rounded-full flex-shrink-0 w-16 h-16 p-0" role="button" (click)="connect()">
+	<button
+		*ngIf="user.googleCalendarConnections?.length === 0 || allowMoreThanOneConnection"
+		class="!mr-auto !rounded-full flex-shrink-0 w-16 h-16 p-0"
+		role="button"
+		(click)="connect()"
+	>
 		<svg-icon class="img !m-auto" src="/assets/icons/icon-plus.svg"></svg-icon>
 	</button>
 </div>
