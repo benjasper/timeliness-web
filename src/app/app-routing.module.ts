@@ -29,7 +29,7 @@ const routes: Routes = [
 			{
 				path: 'dashboard',
 				component: DashboardComponent,
-				data: { animation: 'dashboard' },
+				data: { animation: 0 },
 				children: [
 					{
 						path: 'task/:id',
@@ -43,7 +43,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'agenda',
-				data: { animation: 'agenda' },
+				data: { animation: 1 },
 				component: AgendaComponent,
 				children: [
 					{
@@ -55,7 +55,7 @@ const routes: Routes = [
 			{
 				path: 'settings',
 				component: SettingsComponent,
-				data: { animation: 'settings' },
+				data: { animation: 2 },
 				children: [
 					{ path: '', redirectTo: '/settings/general', pathMatch: 'full', data: { animation: 'settings' }, },
 					{ path: 'general', component: GeneralComponent, pathMatch: 'full', data: { animation: 'settings' }, },
