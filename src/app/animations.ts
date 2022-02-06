@@ -26,7 +26,7 @@ export const sliderRoutes = trigger('routeAnimations', [
 			}),
 		]),
 		// Animate the new page in
-		query(':enter', [animate('600ms ease', style({ opacity: 1, transform: 'scale(1)' }))]),
+		query(':enter', [animate('2000ms ease', style({ opacity: 1, transform: 'scale(1)' }))]),
 	]),
 ])
 
@@ -39,12 +39,12 @@ export const fader = trigger('routeAnimations', [
 				left: 0,
 				width: '100%',
 				opacity: 0,
-				transform: 'scale(0) translateY(100%)',
 			}),
-		]),
+		], {optional: true}),
 		
 		// Animate the new page in
-		query(':enter', [animate('600ms ease', style({ opacity: 1, transform: 'scale(1) translateY(0)' }))]),
+		query(':enter', [animate('2000ms ease', style({ opacity: 1, transform: 'scale(1) translateY(0)' }))], {optional: true}),
+		animateChild()
 	]),
 ])
 
@@ -66,8 +66,8 @@ function slideTo(direction: string) {
 		),
 		query(':enter', [style({ [direction]: '-100%' })]),
 		group([
-			query(':leave', [animate('600ms ease', style({ [direction]: '100%' }))], optional),
-			query(':enter', [animate('600ms ease', style({ [direction]: '0%' }))]),
+			query(':leave', [animate('2000ms ease', style({ [direction]: '100%' }))], optional),
+			query(':enter', [animate('2000ms ease', style({ [direction]: '0%' }))]),
 		]),
 		// Normalize the page style... Might not be necessary
 

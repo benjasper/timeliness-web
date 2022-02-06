@@ -23,6 +23,7 @@ const routes: Routes = [
 	{
 		path: '',
 		component: CoreComponent,
+		data: { animation: 'core' },
 		canActivate: [AuthGuard, NotVerifiedGuard, NoOnboardingGuard],
 		children: [
 			{
@@ -67,10 +68,12 @@ const routes: Routes = [
 	{
 		path: 'auth',
 		component: AuthComponent,
+		data: { animation: 'auth' },
 		children: [
 			{
 				path: 'signin',
 				component: SigninComponent,
+				data: { animation: 'signin' },
 				canActivate: [NoAuthGuard],
 			},
 			{
@@ -80,6 +83,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'verify',
+				data: { animation: 'verify' },
 				component: VerificationComponent,
 			},
 			{ path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
@@ -87,6 +91,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'onboarding',
+		data: { animation: 'onboarding' },
 		component: OnboardingComponent,
 	},
 	{
