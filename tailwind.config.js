@@ -22,7 +22,8 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				signature: ['Karla', ...defaultTheme.fontFamily.sans],
-				sans: ['"noto-sans"', ...defaultTheme.fontFamily.sans]
+				sans: ['"noto-sans"', ...defaultTheme.fontFamily.sans],
+				google: ['Roboto', ...defaultTheme.fontFamily.sans],
 			},
 			gridTemplateColumns: {
 				'modal': '65rem 42rem',
@@ -56,7 +57,8 @@ module.exports = {
 				light: '#f4f4f4',
 				'very-light': '#F5F7FB',
 				dark: '#707a8b',
-				'very-dark': '#15181C'
+				'very-dark': '#15181C',
+				'google': 'rgba(0, 0, 0, 0.54)'
 			},
 			black: '#040f0f',
 			white: {
