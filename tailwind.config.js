@@ -7,6 +7,7 @@ module.exports = {
 	darkMode: 'class',
 	theme: {
 		fontSize: {
+			'xss': '1rem',
 			'xs': '1.2rem',
 			'sm': '1.4rem',
 			'base': '1.6rem',
@@ -65,7 +66,7 @@ module.exports = {
 				DEFAULT: '#fff'
 			},
 			red: {
-				DEFAULT: '#ef233c',
+				DEFAULT: '#E00000',
 				light: '#ffe6e9'
 			},
 			green: {

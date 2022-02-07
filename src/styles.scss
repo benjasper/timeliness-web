@@ -348,16 +348,14 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 	display: inline-flex;
 	background-color: $color-primary;
 	box-sizing: border-box;
-	border-radius: 0.5rem;
 	color: $color-white;
-	padding: 0.8rem 1.4rem;
 	cursor: pointer;
 	user-select: none;
 	transition: background-color 0.2s;
 	font-size: 1.6rem;
 	line-height: 1;
 	margin: auto 0;
-	@apply transition-all;
+	@apply transition-all rounded-2xl px-5 py-3;
 
 	span {
 		display: inline-flex;
@@ -480,7 +478,7 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 	}
 
 	&.danger {
-		@apply bg-white text-red border border-solid border-red;
+		@apply text-red bg-red-light rounded-2xl;
 	}
 }
 

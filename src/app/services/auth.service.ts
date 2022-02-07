@@ -271,7 +271,7 @@ export class AuthService {
 		
 		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
 
-		this.modalService.newToast(ToastType.Error, userMessage)
+		this.modalService.newToast(ToastType.Error, userMessage, true, 0)
 		// Return an observable with a user-facing error message.
 		return throwError(userMessage)
 	}
