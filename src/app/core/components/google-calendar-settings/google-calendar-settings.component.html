@@ -1,60 +1,72 @@
 <div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
-		<div class="mb-8 text-left min-w-[44rem]">
+		<div class="mb-8 text-left">
 			<h4 class="text-lg text-primary">Connection {{ connection.email }}</h4>
 
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
-				<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mt-4 text-grey-dark">
-					Calendars indicating your availability
-				</span>
-				<ng-container *ngIf="!connectionLoading.get(connection.id)">
-					<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
-						<input
-							[id]="calendar.calendarId"
-							class="mr-4 my-auto"
-							type="checkbox"
-							[checked]="calendar.isActive"
-							(change)="
-								calendar.isActive = !calendar.isActive;
-								saveChanges(connection.id, calendars.get(connection.id) ?? [])
-							"
-						/>
-						<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
-					</div>
-				</ng-container>
-				<ng-container *ngIf="connectionLoading.get(connection.id)">
-					<div *ngFor="let calendar of [1, 2, 3, 4, 5]" class="flex flex-row group hover:cursor-default">
-						<div class="flex flex-row flex-wrap gap-4">
-							<span
-								class="
-									sm-tag
-									text-base
-									grey-background
-									px-8
-									py-1
-									border border-white
-									rounded-full
-									loading
-									w-72
+				<div class="text-black mt-4 bg-grey-very-light rounded-2xl p-4">
+					<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mb-2 text-grey-dark">
+						Calendars indicating your availability
+					</span>
+					<ng-container *ngIf="!connectionLoading.get(connection.id)">
+						<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
+							<input
+								[id]="calendar.calendarId"
+								class="mr-4 my-auto"
+								type="checkbox"
+								[checked]="calendar.isActive"
+								(change)="
+									calendar.isActive = !calendar.isActive;
+									saveChanges(connection.id, calendars.get(connection.id) ?? [])
 								"
-							>
-								&nbsp;
-							</span>
+							/>
+							<label [for]="calendar.calendarId" class="text-base text-black">{{ calendar.name }}</label>
 						</div>
-					</div>
-				</ng-container>
+					</ng-container>
+					<ng-container *ngIf="connectionLoading.get(connection.id)">
+						<div *ngFor="let calendar of [1, 2, 3, 4, 5]" class="flex flex-row group hover:cursor-default">
+							<div class="flex flex-row flex-wrap gap-4">
+								<span
+									class="
+										sm-tag
+										text-base
+										grey-background
+										px-8
+										py-1
+										border border-white
+										rounded-full
+										loading
+										w-72
+									"
+								>
+									&nbsp;
+								</span>
+							</div>
+						</div>
+					</ng-container>
+				</div>
 			</ng-container>
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">
-				<p class="text-red mt-4">
+				<p class="text-black mt-4 bg-red-light rounded-2xl p-4">
 					It seems like your Google Calendar connection expired.
 					<br />
 					Please click the button below to reconnect.
 				</p>
 			</ng-container>
+			<ng-container *ngIf="connection.status === CONNECTION_STATUS.MissingScopes">
+				<p class="text-black mt-4 bg-red-light rounded-2xl p-4">
+					We are missing permissions to access your Google Calendar.<br />These are needed in order for Timeliness to work correctly.
+					<br />
+					Please make sure to select all checkboxes, when prompted.
+					<br />
+					<br />
+					Please click the Google button below to give the missing permissions.
+				</p>
+			</ng-container>
 		</div>
-		<div class="flex flex-row justify-between">
+		<div class="flex flex-row justify-between flex-wrap md:flex-nowrap gap-8">
 			<button
-				class="mr-auto with-border !border-none shadow !px-5 !py-5"
+				class="mr-auto with-border !border-none shadow !px-5 !py-5 hover:shadow-md"
 				role="button"
 				[ngSwitch]="connection.status"
 				(click)="connect(connection.id)"
@@ -66,6 +78,7 @@
 					</ng-container>
 					<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect Google Calendar</ng-container>
 					<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect Google Calendar</ng-container>
+					<ng-container *ngSwitchCase="CONNECTION_STATUS.MissingScopes">Grant missing permissions to Google Calendar</ng-container>
 					<ng-container *ngSwitchDefault>Reconnect Google Calendar</ng-container>
 				</span>
 			</button>

@@ -5,6 +5,7 @@ import { CalendarConnectionStatus, User } from 'src/app/models/user';
 import { AuthService, Calendar, Calendars } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { Output, EventEmitter } from '@angular/core';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
 	selector: 'app-google-calendar-settings',
@@ -15,8 +16,6 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	constructor(private authService: AuthService, private modalService: ModalService) { }
 
 	user?: User
-
-	loading = false
 
 	@Input() allowMoreThanOneConnection = true
 	@Output() valid = new EventEmitter<boolean>()
@@ -92,7 +91,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	}
 
 	saveChanges(connectionId: string, calendars: Calendars) {
-		this.loading = true
+		this.connectionLoading.set(connectionId, true)
 		const observable = this.authService.updateCalendarsForConnection(connectionId, calendars)
 
 		const toast = new Toast(ToastType.Success, `Calendars saved`)
@@ -100,17 +99,25 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 		this.modalService.addToast(toast)
 		
 		observable.subscribe(() => {
-			this.loading = false
+			this.connectionLoading.set(connectionId, false)
 		}, () => {
-			this.loading = false
+			this.connectionLoading.set(connectionId, false)
 			this.authService.forceUserUpdate()
 		})
 	}
 
 	disconnect(connectionId: string) {
-		this.authService.deleteConnection(connectionId).subscribe(response => {
-			this.modalService.newToast(ToastType.Success, `Connection deleted`)
-			this.authService.forceUserUpdate()
+		this.modalService.addModal(ConfirmationModalComponent, {title: 'Disconnect Google Calendar?', message: 'Are you sure you want to disconnect this Google Calendar connection? Your Account will still be accessible with the Google Account you first logged in with.'}).subscribe(result => {
+			if (result && result.result === true) {
+				this.connectionLoading.set(connectionId, true)
+
+				this.authService.deleteConnection(connectionId).subscribe(response => {
+					this.modalService.newToast(ToastType.Success, `Connection deleted`)
+					this.authService.forceUserUpdate()
+				}, () => {
+					this.connectionLoading.set(connectionId, true)
+				})
+			}
 		})
 	}
 }

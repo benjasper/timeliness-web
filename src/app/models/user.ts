@@ -30,5 +30,5 @@ export enum TimingPreferences {
 }
 
 export enum CalendarConnectionStatus {
-	Inactive = '', Active = 'active', Expired = 'expired', Unverified = 'unverified'
+	Inactive = '', Active = 'active', Expired = 'expired', Unverified = 'unverified', MissingScopes = 'missing_scopes'
 }
