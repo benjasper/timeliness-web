@@ -1,10 +1,13 @@
 <div class="w-full flex flex-col md:flex-row gap-16" *ngIf="user">
 	<div *ngFor="let connection of user.googleCalendarConnections" class="flex flex-col">
 		<div class="mb-8 text-left">
-			<h4 class="text-lg text-primary">Connection {{ connection.email }}</h4>
+			<div class="flex flex-col">
+				<span class="!text-xs font-bold text-grey-dark mr-auto !normal-case">Connection</span>
+				<h4 class="text-lg text-primary">{{ connection.email }}</h4>
+			</div>
 
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
-				<div class="text-black mt-4 bg-grey-very-light rounded-2xl p-4">
+				<div class="text-black mt-4 bg-grey-very-light rounded-2xl p-6">
 					<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mb-2 text-grey-dark">
 						Calendars indicating your availability
 					</span>
@@ -46,43 +49,69 @@
 					</ng-container>
 				</div>
 			</ng-container>
+			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Inactive">
+				<div class="flex flex-row text-ice-blue-dark mt-4 bg-ice-blue rounded-2xl p-6">
+					<p>ℹ️</p>
+					<p>
+						When granting Timeliness access to Google Calendar,
+						<br />
+						make sure to check all permission checkboxes.
+					</p>
+				</div>
+			</ng-container>
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Expired">
-				<p class="text-black mt-4 bg-red-light rounded-2xl p-4">
-					It seems like your Google Calendar connection expired.
-					<br />
-					Please click the button below to reconnect.
-				</p>
+				<div class="flex flex-row text-red mt-4 bg-red-light rounded-2xl p-6">
+					<p>❗️</p>
+					<p>
+						It seems like your Google Calendar connection expired.
+						<br />
+						Please click the Google button below to reconnect.
+					</p>
+				</div>
 			</ng-container>
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.MissingScopes">
-				<p class="text-black mt-4 bg-red-light rounded-2xl p-4">
-					We are missing permissions to access your Google Calendar.<br />These are needed in order for Timeliness to work correctly.
-					<br />
-					Please make sure to select all checkboxes, when prompted.
-					<br />
-					<br />
-					Please click the Google button below to give the missing permissions.
-				</p>
+				<div class="flex flex-row text-red mt-4 bg-red-light rounded-2xl p-6">
+					<p>❗️</p>
+					<p>
+						We are missing permissions to access your Google Calendar.
+						<br />
+						These are needed in order for Timeliness to work correctly.
+						<br />
+						Please make sure to select all checkboxes, when prompted.
+						<br />
+						<br />
+						Please click the Google button below to give the missing permissions.
+					</p>
+				</div>
 			</ng-container>
 		</div>
 		<div class="flex flex-row justify-between flex-wrap md:flex-nowrap gap-8">
 			<button
-				class="mr-auto with-border !border-none shadow !px-5 !py-5 hover:shadow-md"
+				class="mr-auto with-border !border-none shadow !px-5 !py-5 hover:shadow-md transition-all"
 				role="button"
 				[ngSwitch]="connection.status"
 				(click)="connect(connection.id)"
+				*ngIf="connection.status !== CONNECTION_STATUS.Active"
 			>
 				<svg-icon class="w-8 my-auto mr-6" src="/assets/icons/google.svg"></svg-icon>
 				<span class="my-auto font-google font-medium text-grey-google">
 					<ng-container *ngSwitchCase="CONNECTION_STATUS.Inactive">
 						Grant access to Google Calendar
 					</ng-container>
-					<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">Force reconnect Google Calendar</ng-container>
 					<ng-container *ngSwitchCase="CONNECTION_STATUS.Expired">Reconnect Google Calendar</ng-container>
-					<ng-container *ngSwitchCase="CONNECTION_STATUS.MissingScopes">Grant missing permissions to Google Calendar</ng-container>
+					<ng-container *ngSwitchCase="CONNECTION_STATUS.MissingScopes">
+						Grant missing permissions to Google Calendar
+					</ng-container>
 					<ng-container *ngSwitchDefault>Reconnect Google Calendar</ng-container>
 				</span>
 			</button>
-			<button role="button" class="danger h-full" (click)="disconnect(connection.id)">
+			<button
+				*ngIf="connection.status !== CONNECTION_STATUS.Inactive"
+				role="button"
+				class="danger h-full"
+				(click)="disconnect(connection.id)"
+			>
+				<svg-icon class="block !my-auto mr-2 !w-8" src="/assets/icons/icon-trash.svg"></svg-icon>
 				<span class="my-auto">Disconnect</span>
 			</button>
 		</div>

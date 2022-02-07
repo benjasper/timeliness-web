@@ -480,7 +480,7 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 	}
 
 	&.danger {
-		@apply bg-white text-red border border-solid border-red;
+		@apply text-red bg-red-light rounded-2xl;
 	}
 }
 

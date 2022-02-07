@@ -71,7 +71,7 @@ export class ModalService extends SimpleModalService {
 			ToastComponent,
 			{ toast },
 			{
-				closeOnEscape: false,
+				closeOnEscape: toast.dismissible,
 				closeOnClickOutside: false,
 			}
 		)
