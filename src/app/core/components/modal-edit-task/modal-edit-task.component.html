@@ -172,16 +172,17 @@
 				<button type="button"
 						class="btn large save secondary"
 						(click)="close()">
-					<svg-icon class="img"
+					<svg-icon class="block w-6 mr-2 fill-current"
 							  src="/assets/icons/icon-exit.svg"></svg-icon>
 					<span>Cancel</span>
 				</button>
 				<button type="submit"
 						class="btn large save"
 						[disabled]="!editTask.valid || !editTask.dirty || loading">
-					<svg-icon class="img"
+					<svg-icon class="block w-6 mr-2 fill-current"
 							  src="/assets/icons/icon-save.svg"></svg-icon>
-					<span>Save</span>
+					<span *ngIf="task">Save</span>
+					<span *ngIf="!task">Create</span>
 				</button>
 			</div>
 		</div>
