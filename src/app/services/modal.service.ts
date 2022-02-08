@@ -1,6 +1,6 @@
 import { Injectable, Type } from '@angular/core'
 import { SimpleModalComponent, SimpleModalOptions, SimpleModalService } from 'ngx-simple-modal'
-import { asyncScheduler, Observable, pipe, queueScheduler } from 'rxjs'
+import { asyncScheduler, Observable, pipe, queueScheduler, Subscription } from 'rxjs'
 import { publishReplay, share, take } from 'rxjs/operators'
 import { ToastComponent } from '../core/modals/toast/toast.component'
 import { Toast, ToastType } from '../models/toast'
@@ -19,6 +19,7 @@ export class ModalResult<T> {
 export class ModalService extends SimpleModalService {
 	modalEntries: ModalEntry[] = []
 	toastQueue: Toast[] = []
+	lastToastSubscription?: Subscription
 
 	addModal<T, ModalResult>(
 		component: Type<SimpleModalComponent<T, ModalResult>>,
@@ -66,7 +67,11 @@ export class ModalService extends SimpleModalService {
 		if (!toast) {
 			return
 		}
-
+		
+		if (this.lastToastSubscription) {
+			this.lastToastSubscription.unsubscribe()
+		}
+		
 		let observable = super.addModal(
 			ToastComponent,
 			{ toast },
@@ -74,10 +79,12 @@ export class ModalService extends SimpleModalService {
 				closeOnEscape: toast.dismissible,
 				closeOnClickOutside: false,
 			}
-		)
-
+			)
+			
+			
 		observable = observable.pipe(share())
 		const subscription = observable.subscribe()
+		this.lastToastSubscription = subscription
 
 		if (toast.loading) {
 			toast.loading.then(() => {
