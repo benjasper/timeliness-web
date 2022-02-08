@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
 import { Toast, ToastType } from 'src/app/models/toast'
+import { ModalService } from 'src/app/services/modal.service'
 
 export interface ToastComponentData {
 	toast: Toast
@@ -21,6 +22,10 @@ export class ToastComponent
 	extends SimpleModalComponent<ToastComponentData, undefined>
 	implements OnInit, ToastComponentData
 {
+	constructor(private modalService: ModalService) {
+		super()
+	}
+
 	toast!: Toast
 	TOAST_TYPE = ToastType
 
@@ -51,5 +56,15 @@ export class ToastComponent
 
 	dismiss() {
 		this.close()
+	}
+
+	copyToClipboard(text: string) {
+		navigator.clipboard.writeText(text).then(() => {
+			this.close()
+			this.modalService.newToast(ToastType.Success, 'Copied to clipboard! Please attach it to your bug report.')
+		}, () => {
+			this.toast.message = `Could not copy to clipboard: The error code is: ${this.toast.trackId}`
+			this.toast.trackId = ''
+		})
 	}
 }

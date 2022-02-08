@@ -9,17 +9,18 @@ import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
 import { Tag, TagModified } from '../models/tag'
-import { ApiError } from '../models/error'
+import { ApiError, ApiErrorTypes } from '../models/error'
 import { ModalService } from './modal.service'
-import { ToastType } from '../models/toast'
+import { Toast, ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
 import { AuthService } from './auth.service'
+import { Router } from '@angular/router'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient, private modalService: ModalService, private authService: AuthService) {
+	constructor(private http: HttpClient, private modalService: ModalService, private authService: AuthService, private router: Router) {
 		this.authService.user.subscribe(user => {
 			if (!user) {
 				this.tagsSubject.next([])
@@ -76,7 +77,7 @@ export class TaskService {
 		
 		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
-			.pipe(shareReplay(), retry(3), catchError((err) => this.handleError(err)))
+			.pipe(shareReplay(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((response) => {
 			if (sync) {
@@ -104,7 +105,7 @@ export class TaskService {
 
 		const observable = this.http
 			.get<TasksAgendaResponse>(`${environment.apiBaseUrl}/v1/tasks/agenda?` + filters.join('&'))
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 
 		return observable
 	}
@@ -211,7 +212,7 @@ export class TaskService {
 
 		this.http
 			.get<TagsGetResponse>(`${environment.apiBaseUrl}/v1/tags?` + filters.join('&'))
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 			.subscribe((response) => {
 				if (sync) {
 					if (response.pagination.resultCount === 0) {
@@ -253,13 +254,13 @@ export class TaskService {
 
 		return this.http
 			.get<TasksByWorkunitsGetResponse>(`${environment.apiBaseUrl}/v1/tasks/workunits?` + filters.join('&'))
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 	}
 
 	public getTask(id: string): Observable<Task> {
 		return this.http
 			.get<Task>(`${environment.apiBaseUrl}/v1/tasks/` + id)
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 	}
 
 	public getTaskBetween(from: Date, to: Date): Observable<{count: number}> {
@@ -270,7 +271,7 @@ export class TaskService {
 
 		return this.http
 			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/between?` + query.join('&'))
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 	}
 
 	public getWorkUnitsBetween(from: Date, to: Date): Observable<{count: number}> {
@@ -281,7 +282,7 @@ export class TaskService {
 
 		return this.http
 			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/workunits/between?` + query.join('&'))
-			.pipe(retry(3), catchError((err) => this.handleError(err)))
+			.pipe(catchError((err) => this.handleError(err)))
 	}
 
 	public patchTask(id: string, task: TaskModified): Observable<Task> {
@@ -367,11 +368,18 @@ export class TaskService {
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
 		
-		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
+		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
 		
-		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
+		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
-		this.modalService.newToast(ToastType.Error, userMessage, true, 0)
+		const toast = new Toast(ToastType.Error, userMessage, true, 0)
+		toast.trackId = apiError.error.trackId
+		this.modalService.addToast(toast)
+
+		if (apiError.error.type === ApiErrorTypes.Calendar) {
+			this.router.navigate(['/settings/calendars'])
+		}
+
 		// Return an observable with a user-facing error message.
 		return throwError(userMessage)
 	}

@@ -5,7 +5,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs'
 import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
-import { ApiError } from '../models/error'
+import { ApiError, ApiErrorTypes } from '../models/error'
 import { Toast, ToastType } from '../models/toast'
 import { User, UserSettings } from '../models/user'
 import { ModalService } from './modal.service'
@@ -267,11 +267,14 @@ export class AuthService {
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
 		
-		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status}`)
+		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
 		
-		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
+		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
-		this.modalService.newToast(ToastType.Error, userMessage, true, 0)
+		const toast = new Toast(ToastType.Error, userMessage, true, 0)
+		toast.trackId = apiError.error.trackId
+		this.modalService.addToast(toast)
+
 		// Return an observable with a user-facing error message.
 		return throwError(userMessage)
 	}
