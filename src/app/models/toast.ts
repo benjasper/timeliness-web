@@ -6,7 +6,8 @@ export class Toast {
 		public seconds = 5,
 		public link?: { title: string; link: string },
 		public loading?: Promise<void|any>,
-		public loadingText?: string
+		public loadingText?: string,
+		public trackId?: string
 	) {}
 }
 

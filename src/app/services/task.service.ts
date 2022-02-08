@@ -11,7 +11,7 @@ import { element } from 'protractor'
 import { Tag, TagModified } from '../models/tag'
 import { ApiError, ApiErrorTypes } from '../models/error'
 import { ModalService } from './modal.service'
-import { ToastType } from '../models/toast'
+import { Toast, ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
 import { AuthService } from './auth.service'
 import { Router } from '@angular/router'
@@ -370,9 +370,11 @@ export class TaskService {
 		
 		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
 		
-		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
+		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
-		this.modalService.newToast(ToastType.Error, userMessage, true, 0)
+		const toast = new Toast(ToastType.Error, userMessage, true, 0)
+		toast.trackId = apiError.error.trackId
+		this.modalService.addToast(toast)
 
 		if (apiError.error.type === ApiErrorTypes.Calendar) {
 			this.router.navigate(['/settings/calendars'])

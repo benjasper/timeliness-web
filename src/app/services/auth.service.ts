@@ -269,9 +269,11 @@ export class AuthService {
 		
 		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
 		
-		let userMessage = `We\'ve encountered an error: ${apiError.error.message}`
+		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
-		this.modalService.newToast(ToastType.Error, userMessage, true, 0)
+		const toast = new Toast(ToastType.Error, userMessage, true, 0)
+		toast.trackId = apiError.error.trackId
+		this.modalService.addToast(toast)
 
 		// Return an observable with a user-facing error message.
 		return throwError(userMessage)

@@ -54,6 +54,7 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 			this.loading = false
 		}, () => {
 			this.loading = false
+			this.close()
 		})
 	}
 

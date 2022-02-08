@@ -4,7 +4,9 @@
 	class="
 		fixed
 		w-full
+		md:w-auto
 		max-w-2xl
+		md:max-w-3xl
 		text-base
 		flex flex-row
 		center-x
@@ -24,12 +26,12 @@
 	[ngClass]="{'text-red bg-pink': TOAST_TYPE.Error === toast.type && !isLoading}"
 >
 	<div *ngIf="!isLoading" class="flex flex-row text-lg font-bold my-auto" [ngSwitch]="toast.type">
-		<div class="flex w-12 h-12 rounded-full border-2 mr-4">
+		<div class="flex w-12 h-12 rounded-full border mr-4">
 			<ng-container *ngSwitchCase="TOAST_TYPE.Error">
 				<svg-icon class="img w-5 fill-current m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 			</ng-container>
 			<ng-container *ngSwitchCase="TOAST_TYPE.Warning">
-				<span class="text-base m-auto">!</span>
+				<span class="text-base m-auto">❗️</span>
 			</ng-container>
 			<ng-container *ngSwitchCase="TOAST_TYPE.Success">
 				<svg-icon class="img w-5 fill-current m-auto" src="/assets/icons/icon-check.svg"></svg-icon>
@@ -49,16 +51,20 @@
 		</svg>
 		<span class="my-auto">Loading...</span>
 	</div>
-	<span *ngIf="!isLoading" class="text-base my-auto">
-		{{ toast.message }}
-		<a *ngIf="toast.link" class="inline-block text-base my-auto" target="_blank" [href]="toast.link.link">
+	<span *ngIf="!isLoading" class="inline-block text-base my-auto">
+		<span class="inline">{{ toast.message }}</span>
+		<a *ngIf="toast.link" class="inline text-base my-auto" target="_blank" [href]="toast.link.link">
 			{{ toast.link.title }}
 		</a>
+		<button *ngIf="toast.trackId" class="!bg-red !text-white !text-sm !inline-flex flex-nowrap !px-2 !py-1 !ml-3" (click)="copyToClipboard(toast.trackId)">
+			<svg-icon class="block w-8 fill-current" src="/assets/icons/icon-clipboard.svg"></svg-icon>
+			<span class="my-auto">Copy error code</span>
+		</button>
 	</span>
 	<button
 		*ngIf="toast.dismissible && !isLoading"
 		(click)="dismiss()"
-		class="ml-4 tiny-button !w-10 !h-10 flex-shrink-0 my-auto !text-grey-dark"
+		class="!ml-4 tiny-button !w-10 !h-10 flex-shrink-0 my-auto !text-grey-dark"
 	>
 		<svg-icon class="img !w-5 m-auto !text-grey-dark fill-current" src="/assets/icons/icon-exit.svg"></svg-icon>
 	</button>
