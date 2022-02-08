@@ -56,7 +56,10 @@
 	</div>
 
 	<div class="date flex flex-col justify-center">
-		<label for="time" class="label mx-auto">Time</label>
+		<label for="time" class="label mx-auto flex flex-row">
+			<svg-icon class="block w-8 mr-1" src="/assets/icons/icon-clock.svg" alt="Time"></svg-icon>
+			<div>Time</div>
+		</label>
 		<ng-select
 			id="time"
 			[ngModel]="selected.getTime()"

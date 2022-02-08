@@ -9,20 +9,30 @@
 	<div class="flex flex-col w-auto bg-white dark:bg-black dark:text-white p-16 md:rounded-l-2xl gap-16">
 		<div>
 			<label *ngIf="task"
-				   class="label inset !pb-10">Edit task</label>
+				   class="label inset flex flex-row !pb-10">
+				   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-edit.svg"></svg-icon>
+				   <div class="my-auto">Edit task</div>
+				</label>
 			<label *ngIf="!task"
-				   class="label inset !pb-10">New task</label>
+				   class="label inset flex flex-row !pb-10">
+				   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-plus.svg"></svg-icon>
+				   <div class="my-auto">New task</div>
+				</label>
 			<input id="title"
+					#title
 				   tabindex="1"
 				   type="text"
-				   class="!text-2xl edit font-bold w-full !leading-none"
+				   class="!text-2xl edit font-bold w-full !leading-none mt-5"
 				   placeholder="Title"
 				   formControlName="name"
 				   autocomplete="off" />
 		</div>
 		<div>
 			<label for="task-description"
-				   class="label inset">Description</label>
+				   class="label inset flex flex-row">
+				   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-text.svg"></svg-icon>
+				   <div class="my-auto">Description</div>
+				</label>
 			<textarea tabindex="2"
 					  type="textarea"
 					  id="task-description"
@@ -34,7 +44,10 @@
 		</div>
 		<div>
 			<label *ngIf="(task && task.workUnits.length > 0) || loading"
-				   class="label inset">Work units</label>
+				   class="label inset flex flex-row">
+					<svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-work-unit.svg"></svg-icon>
+					<div class="my-auto">Work units</div>
+				</label>
 			<splide *ngIf="loading" class="w-full" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
 				<splide-slide *ngFor="let workUnit of [1,2,3] let i = index">
 					<app-work-unit-card [loading]="true"
@@ -82,7 +95,10 @@
 			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="label my-auto w-48 flex-shrink-0">Due date</label>
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						<svg-icon class="block w-8 fill-current mr-2" src="/assets/icons/icon-deadline.svg"></svg-icon>
+						<div class="my-auto">Due date</div>
+					</label>
 					<app-datetime-picker id="due-date"
 										 class="edit"
 										 tabindex="3"
@@ -90,7 +106,10 @@
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
-						   class="label my-auto w-48 flex-shrink-0">Workload</label>
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-clock.svg"></svg-icon>
+						   <div class="my-auto">Workload</div>
+						</label>
 					<ng-select class="edit w-40 cursor-text"
 							   id="workload-hour"
 							   formControlName="workload"
@@ -105,7 +124,10 @@
 				<div *ngIf="task && task.notScheduled !== 0"
 					 class="flex flex-row">
 					<label for="not-scheduled"
-						   class="label my-auto w-48 flex-shrink-0">Not scheduled</label>
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-warning.svg"></svg-icon>
+						   <div class="my-auto">Not scheduled</div>
+						</label>
 					<div *ngIf="task.notScheduled !== 0"
 						 class="sm-tag bg-pink flex flex-row relative ml-4">
 						<span class="text-red text-base">{{ task.notScheduled.toDuration(NANOSECONDS) }} not scheduled</span>
@@ -119,7 +141,10 @@
 				<div *ngIf="task"
 					 class="flex flex-col">
 					<label for="progress-bar"
-						   class="label pb-2">Progress</label>
+						   class="label pb-2 flex flex-row">
+						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-statistics.svg"></svg-icon>
+						   <div class="my-auto">Progress</div>
+						</label>
 					<app-circular-progress id="progress-bar"
 										   [progress]="+getProgress(task)"
 										   [radius]="10"
@@ -148,7 +173,10 @@
 				</div>
 				<div class="flex flex-col flex-shrink-0 min-h-[20rem] w-full" [class.empty]="tags.length === 0">
 					<label for="tags"
-						   class="label pb-2">Tags</label>
+						   class="label pb-2 flex flex-row">
+						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-tag.svg"></svg-icon>
+						   <div class="my-auto">Tags</div>
+						</label>
 					<ul class="flex flex-row flex-shrink-0 flex-wrap gap-4 w-full">
 						<app-tag *ngFor="let tag of tags; let i = index"
 								 [tag]="tag"
@@ -179,7 +207,7 @@
 				<button type="submit"
 						class="btn large save"
 						[disabled]="!editTask.valid || !editTask.dirty || loading">
-					<svg-icon class="block w-6 mr-2 fill-current"
+					<svg-icon class="block w-8 mr-2 scale-110 fill-current"
 							  src="/assets/icons/icon-save.svg"></svg-icon>
 					<span *ngIf="task">Save</span>
 					<span *ngIf="!task">Create</span>

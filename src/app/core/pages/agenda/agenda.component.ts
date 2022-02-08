@@ -116,7 +116,7 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 		this.tasksPastClicked = true
 		setTimeout(() => {
 			this.todayElement.nativeElement.scrollIntoView({ behavior: 'auto', inline: 'start', block: 'start' })
-		}, 1)
+		}, 0)
 	}
 }
 

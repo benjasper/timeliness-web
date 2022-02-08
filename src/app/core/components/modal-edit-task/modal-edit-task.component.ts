@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { async, Subject } from 'rxjs'
@@ -35,7 +35,7 @@ import { PageComponent } from 'src/app/pages/page'
 		smoothHeight,
 	],
 })
-export class ModalEditTaskComponent extends PageComponent implements OnInit, OnDestroy {
+export class ModalEditTaskComponent extends PageComponent implements OnInit, OnDestroy, AfterViewInit {
 	taskId!: string
 	task!: Task
 	loaded = true
@@ -70,6 +70,8 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	getFinishedWorkload = TaskComponent.getFinishedWorkload
 	getProgress = TaskComponent.getProgress
 	getColorClass = TaskComponent.getColorClass
+
+	@ViewChild('title') titleElement!: ElementRef;
 
 	constructor(
 		private router: Router,
@@ -177,6 +179,15 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
 			this.today = date
 		})
+	}
+
+	ngAfterViewInit(): void {
+		if (!this.isNew) {
+			return
+		}
+		setTimeout(()=>{ // this will make the execution after the above boolean has changed
+			this.titleElement.nativeElement.focus();
+		  },0);
 	}
 
 	registerForTags() {
