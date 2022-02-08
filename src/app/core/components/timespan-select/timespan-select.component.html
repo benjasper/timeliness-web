@@ -23,8 +23,8 @@
 	</div>
 	<div>
 		<button type="button" class="!ml-4 !mr-auto with-border" (click)="addEntry()">
-			<svg-icon class="img !my-auto" src="/assets/icons/icon-plus.svg"></svg-icon>
-			<span class="ml-2">Add timeslot</span>
+			<svg-icon class="block w-8 !my-auto scale-110" src="/assets/icons/icon-plus.svg"></svg-icon>
+			<span class="ml-2 !my-auto">Add timeslot</span>
 		</button>
 	</div>
 	<div class="flex flex-row gap-4 mr-auto" *ngIf="wasEdited">
@@ -33,7 +33,7 @@
 			<span class="ml-2">Cancel</span>
 		</button>
 		<button type="button" class="!ml-4 !mr-auto" (click)="save()" [disabled]="!wasEdited">
-			<svg-icon class="img !my-auto" src="/assets/icons/icon-save.svg"></svg-icon>
+			<svg-icon class="block w-6 scale-110 !my-auto" src="/assets/icons/icon-save.svg"></svg-icon>
 			<span class="ml-2">Save</span>
 		</button>
 	</div>
