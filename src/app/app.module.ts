@@ -49,7 +49,7 @@ import { TimingPreferenceComponent } from './core/components/timing-preference/t
 import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/rescheduling-modal.component'
 import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 import { ConfirmationModalComponent } from './core/modals/confirmation-modal/confirmation-modal.component'
-import { ToastComponent } from './core/modals/toast/toast.component';
+import { ToastComponent } from './core/modals/toast/toast.component'
 import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component'
 
 @NgModule({
@@ -91,7 +91,7 @@ import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-
 		ReschedulingModalComponent,
 		ConfirmationModalComponent,
 		ToastComponent,
-  MarkDoneModalComponent,
+		MarkDoneModalComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -119,7 +119,6 @@ import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-
 			}
 		),
 	],
-	entryComponents: [ReschedulingModalComponent, ConfirmationModalComponent, ToastComponent, MarkDoneModalComponent],
 	providers: [httpInterceptorProviders, TaskService, AuthService],
 	bootstrap: [AppComponent],
 })

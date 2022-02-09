@@ -56,8 +56,8 @@
 		<a *ngIf="toast.link" class="inline text-base my-auto" target="_blank" [href]="toast.link.link">
 			{{ toast.link.title }}
 		</a>
-		<button *ngIf="toast.trackId" class="!bg-red !text-white !text-sm !inline-flex flex-nowrap !px-2 !py-1 !ml-3" (click)="copyToClipboard(toast.trackId)">
-			<svg-icon class="block w-8 fill-current" src="/assets/icons/icon-clipboard.svg"></svg-icon>
+		<button *ngIf="toast.trackId" class="!bg-red !text-white !text-xs !inline-flex flex-nowrap !px-2 !py-1 !ml-3" (click)="copyToClipboard(toast.trackId)">
+			<svg-icon class="block w-6 fill-current" src="/assets/icons/icon-clipboard.svg"></svg-icon>
 			<span class="my-auto">Copy error code</span>
 		</button>
 	</span>
