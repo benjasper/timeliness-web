@@ -355,7 +355,7 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 	font-size: 1.6rem;
 	line-height: 1;
 	margin: auto 0;
-	@apply transition-all rounded-2xl px-5 py-3;
+	@apply transition-all rounded-xl px-5 py-3;
 
 	span {
 		display: inline-flex;
