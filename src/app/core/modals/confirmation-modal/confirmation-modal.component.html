@@ -18,6 +18,7 @@
 	</div>
 	<div class="flex flex-row gap-8 mt-16 justify-end">
 		<button class="secondary" type="button" (click)="apply(false)">Cancel</button>
-		<button type="button" (click)="apply(true)">Confirm</button>
+		<button *ngIf="!confirmationModalOptions" type="button" (click)="apply(true)">Confirm</button>
+		<button *ngFor="let option of confirmationModalOptions" type="button" (click)="apply(true, option.key)">{{ option.label }}</button>
 	</div>
 </div>

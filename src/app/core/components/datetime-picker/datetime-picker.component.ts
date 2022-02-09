@@ -101,6 +101,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 				time.setMinutes(minutes, 0, 0)
 				time.setHours(i)
 				time.setMilliseconds(0)
+
+				if (time.getTime() < new Date().getTime() + 1000 * 60 * 15) {
+					continue
+				}
+
 				this.times.push(time)
 			}
 		}

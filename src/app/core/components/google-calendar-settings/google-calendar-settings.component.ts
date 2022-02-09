@@ -108,7 +108,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	disconnect(connectionId: string) {
 		this.modalService.addModal(ConfirmationModalComponent, {title: 'Disconnect Google Calendar?', message: 'Are you sure you want to disconnect this Google Calendar connection? Your Account will still be accessible with the Google Account you first logged in with.'}).subscribe(result => {
-			if (result && result.result === true) {
+			if (result && result.result.result === true) {
 				this.connectionLoading.set(connectionId, true)
 
 				this.authService.deleteConnection(connectionId).subscribe(response => {

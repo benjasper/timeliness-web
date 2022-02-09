@@ -43,6 +43,8 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	isNew = false
 	loading = false
 	workUnitId?: string
+	isDirty = false
+	lastTagsHash: string[] = []
 
 	startIndex = 0
 
@@ -144,6 +146,10 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.modalBackground = true
 		this.generateDurations()
 
+		this.editTask.valueChanges.subscribe(() => {
+			this.onFormChange()
+		})
+
 		if (this.taskId === 'new') {
 			this.isNew = true
 			this.setTitle('New Task')
@@ -153,16 +159,16 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.loading = true
 		this.taskService.getTask(this.taskId).subscribe(
 			(task) => {
-				this.patchForm(task)
 				this.task = task
+				this.patchForm(task)
 				this.loading = false
 
 				this.setStartsAtWorkUnit()
 
 				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
 					if (task.id === this.task.id) {
-						this.patchForm(task)
 						this.task = task
+						this.patchForm(task)
 						this.loading = false
 
 						this.setStartsAtWorkUnit()
@@ -203,6 +209,8 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			})
 
 			this.tags = this.tags.filter((x) => !removalList.includes(x.id))
+			this.lastTagsHash = this.tags.map((x) => x.id + x.color + x.value)
+			this.onFormChange()
 		})
 	}
 
@@ -214,7 +222,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	promoteToFirst(tag: Tag) {
 		const index = this.tags.findIndex((x) => x.value === tag.value)
 		this.arraymove(this.tags, index, 0)
-		this.editTask.markAsDirty()
+		this.onFormChange()
 	}
 
 	workUnitSliderMove(event: any) {
@@ -309,6 +317,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 				this.tags.push(tag)
 			}
 		})
+		this.lastTagsHash = this.tags.map((x) => x.id + x.color + x.value)
 
 		this.editTask.setValue({
 			name: task.name,
@@ -319,6 +328,8 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.generateDurations(task)
 
 		this.setTitle(task.name)
+
+		this.onFormChange()
 	}
 
 	public changeTag(tag: Tag, newValue: TagModified) {
@@ -361,13 +372,12 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			}
 		}
 
-		this.editTask.markAsDirty()
+		this.onFormChange()
 	}
 
 	public deleteTag(id: string, value: string) {
 		this.tags = this.tags.filter((x) => x.value !== value)
-		// this.taskService.deleteTagFromTask(id)
-		this.editTask.markAsDirty()
+		this.onFormChange()
 	}
 
 	public close(): boolean {
@@ -398,7 +408,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 				message: 'Are you sure you want to delete this task?',
 			})
 			.subscribe((result) => {
-				if (result.hasValue && result.result) {
+				if (result.hasValue && result.result.result) {
 					this.loading = true
 					this.taskService.deleteTask(this.task).subscribe(
 						() => {
@@ -412,8 +422,45 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			})
 	}
 
+	private serializeTask(task: Task): string {
+		const taskModified: TaskModified = {
+			name: task.name,
+			description: task.description,
+			dueAt: { date: { start: task.dueAt.date.start.toDate().toISOString() } },
+			workloadOverall: task.workloadOverall,
+			tags: this.lastTagsHash,
+		}
+		return JSON.stringify(
+			taskModified
+		)
+	}
+
+	private serializeForm(): string {
+		const taskModified: TaskModified = {
+			name: this.editTask.get('name')?.value,
+			description: this.editTask.get('description')?.value,
+			dueAt: { date: { start: new Date(this.editTask.get('dueAt')?.value).toISOString() } },
+			workloadOverall: this.editTask.get('workload')?.value.toDuration().toNanoseconds(),
+			tags: this.tags.map(x => x.id + x.color + x.value),
+		}
+		return JSON.stringify(
+			taskModified
+		)
+	}
+
+	onFormChange() {
+		if (this.isNew && this.editTask.valid) {
+			this.isDirty = true
+			return
+		} else if (this.isNew && !this.editTask.valid) {
+			return
+		}
+
+		this.isDirty = this.serializeForm() !== this.serializeTask(this.task)
+	}
+
 	public async save(): Promise<boolean> {
-		if (!this.editTask.dirty) {
+		if (!this.isDirty) {
 			return false
 		}
 

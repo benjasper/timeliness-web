@@ -6,6 +6,12 @@ import { ModalResult } from 'src/app/services/modal.service'
 export interface ConfirmationModalData {
 	title: string
 	message: string
+	confirmationModalOptions?: ConfirmationModalOption[]
+}
+
+export interface ConfirmationModalOption {
+	key: string
+	label: string
 }
 
 @Component({
@@ -23,14 +29,15 @@ export interface ConfirmationModalData {
 	],
 })
 export class ConfirmationModalComponent
-	extends SimpleModalComponent<ConfirmationModalData, ModalResult<boolean>>
+	extends SimpleModalComponent<ConfirmationModalData, ModalResult<{result: boolean, resultKey?: string}>>
 	implements OnInit, ConfirmationModalData
 {
 	title!: string
 	message!: string
+	confirmationModalOptions?: ConfirmationModalOption[]
 
 	isOpen = false
-	result: ModalResult<boolean> = new ModalResult(false, false)
+	result: ModalResult<{result: boolean, resultKey?: string}> = new ModalResult({result: false}, false)
 
 	ngOnInit(): void {
 		this.isOpen = true
@@ -41,8 +48,8 @@ export class ConfirmationModalComponent
 		return super.close()
 	}
 
-	apply(result: boolean) {
-		this.result = new ModalResult(result, true)
+	apply(result: boolean, resultKey?: string) {
+		this.result = new ModalResult({result: result, resultKey}, true)
 		this.close()
 	}
 }
