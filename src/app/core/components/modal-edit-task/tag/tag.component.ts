@@ -1,8 +1,10 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { ConfirmationModalComponent } from 'src/app/core/modals/confirmation-modal/confirmation-modal.component'
 import { TaskComponent } from 'src/app/core/task.component'
 import { Tag, TagModified } from 'src/app/models/tag'
+import { ModalService } from 'src/app/services/modal.service'
 import { TaskService } from 'src/app/services/task.service'
 
 @Component({
@@ -21,7 +23,7 @@ import { TaskService } from 'src/app/services/task.service'
 	],
 })
 export class TagComponent extends TaskComponent implements OnInit {
-	constructor(private elementRef: ElementRef, private taskService: TaskService) {
+	constructor(private elementRef: ElementRef, private taskService: TaskService, private modalService: ModalService) {
 		super()
 	}
 
@@ -32,7 +34,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 		{ name: 'Green', key: 'green' },
 		{ name: 'Yellow', key: 'yellow' },
 		{ name: 'Mango', key: 'mango' },
-		{ name: 'Pink', key: 'pink' }
+		{ name: 'Pink', key: 'pink' },
 	]
 
 	actualContent = ''
@@ -41,7 +43,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 
 	@Input() tag!: Tag
 	@Input() new = false
-	@Input() existingTags: Tag[]  = []
+	@Input() existingTags: Tag[] = []
 	@Input() isFirst = false
 	@Output() valueChange = new EventEmitter<TagModified>()
 	@Output() onDelete = new EventEmitter<string>()
@@ -110,9 +112,40 @@ export class TagComponent extends TaskComponent implements OnInit {
 		event.stopPropagation()
 		event.preventDefault()
 
-		this.onDelete.emit(this.tag.id)
-		this.allowSave = false
-		this.isFocused = false
+		if (this.tag.id === '') {
+			this.onDelete.emit(this.tag.id)
+			this.allowSave = false
+			this.isFocused = false
+
+			return
+		}
+
+		this.modalService.addModal(ConfirmationModalComponent, {
+			title: 'Delete tag',
+			message: 'How do you want to delete this tag? When you delete the tag itself it will be deleted from all other tasks using this tag as well.',
+			confirmationModalOptions: [
+				{ label: 'Delete tag itself', key: 'delete-tag' },
+				{ label: 'Delete tag from task only', key: 'delete-from-task' },
+			],
+		}).subscribe((result) => {
+			if (!result.hasValue) {
+				return
+			}
+
+			switch (result.result.resultKey) {
+				case 'delete-tag':
+					this.taskService.deleteTag(this.tag.id)
+					break;
+				case 'delete-from-task':
+					break;
+				default:
+					throw new Error('Unsupported result key')
+			}
+
+			this.onDelete.emit(this.tag.id)
+			this.allowSave = false
+			this.isFocused = false
+		})
 	}
 
 	leaveFocus() {
@@ -147,8 +180,10 @@ export class TagComponent extends TaskComponent implements OnInit {
 			suggestions = this.taskService.getTagsBySearch(prompt)
 		}
 
-		suggestions = suggestions.filter((x) => x.value !== prompt || (x.value === prompt && x.color !== this.selectedColor))
-		const exisitngTagValues = this.existingTags.map(x => x.value)
+		suggestions = suggestions.filter(
+			(x) => x.value !== prompt || (x.value === prompt && x.color !== this.selectedColor)
+		)
+		const exisitngTagValues = this.existingTags.map((x) => x.value)
 		suggestions = suggestions.filter((x) => !exisitngTagValues.includes(x.value))
 		this.suggestions = suggestions
 	}

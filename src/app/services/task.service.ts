@@ -153,6 +153,20 @@ export class TaskService {
 		return observable
 	}
 
+	public deleteTag(tagId: string): Observable<Object> {
+		const observable = this.http
+			.delete(`${environment.apiBaseUrl}/v1/tags/${tagId}`)
+			.pipe(share(), catchError((err) => this.handleError(err)))
+
+		observable.subscribe(() => {
+			const tags = this.tagsSubject.getValue()
+			tags.splice(tags.findIndex((x) => x.id === tagId), 1)
+			this.tagsSubject.next(tags)
+		})
+
+		return observable
+	}
+
 	public static taskToUnwound(task: Task) {
 		const tasks: TaskUnwound[] = []
 
@@ -167,11 +181,6 @@ export class TaskService {
 		})
 
 		return tasks
-	}
-
-	public deleteTagFromTask(id: string): void {
-		const newTags = this.tagsSubject.getValue().filter((x) => x.id !== id)
-		this.tagsSubject.next(newTags)
 	}
 
 	public changeTag(id: string, tag: TagModified): Observable<Tag> {

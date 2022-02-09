@@ -7,7 +7,7 @@
 	  *ngIf="loaded"
 	  (ngSubmit)="save()">
 	<div class="flex flex-col w-auto bg-white dark:bg-black dark:text-white p-16 md:rounded-l-2xl gap-16">
-		<div>
+		<div class="mt-3">
 			<label *ngIf="task"
 				   class="label inset flex flex-row !pb-10">
 				   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-edit.svg"></svg-icon>
@@ -66,7 +66,7 @@
 	<div class="flex flex-col p-16 bg-grey-very-light md:rounded-r-2xl">
 		<div class="absolute flex flex-row justify-end pb-6 gap-4 right-16 top-16">
 			<button class="tiny-button no-background"
-					[disabled]="!editTask.dirty || isNew"
+					[disabled]="!isDirty || isNew"
 					type="button"
 					(click)="undo()">
 				<svg-icon class="img !fill-current text-primary"
@@ -206,7 +206,7 @@
 				</button>
 				<button type="submit"
 						class="btn large save"
-						[disabled]="!editTask.valid || !editTask.dirty || loading">
+						[disabled]="!editTask.valid || !isDirty || loading">
 					<svg-icon class="block w-8 mr-2 scale-110 fill-current"
 							  src="/assets/icons/icon-save.svg"></svg-icon>
 					<span *ngIf="task">Save</span>
