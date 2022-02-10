@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { Task, TaskUnwound } from 'src/app/models/task'
@@ -14,7 +14,7 @@ import { UtilityService } from 'src/app/services/utility.service'
 export class DashboardComponent extends PageComponent implements OnInit, OnDestroy {
 	constructor(private taskService: TaskService, protected titleService: Title, private router: Router) {
 		super(titleService)
-	 }
+	}
 
 	public today = new Date()
 	public groupedDeadlines: TaskDateGroup[] = []
@@ -23,11 +23,11 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	private tasks: Task[] = []
 	private tasksUnwound: TaskUnwound[] = []
-	
+
 	public startIndex = 0
 
-	static pageSizeTasks = 25
-	static pageSizeTasksUnwound = 25
+	static pageSizeTasks = 12
+	static pageSizeTasksUnwound = 12
 
 	public loadingTasks = true
 	public loadingWorkUnits = true
@@ -41,6 +41,14 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 	public workUnitYears = new Map<Number, Number[]>()
 
 	public syncInterval?: NodeJS.Timeout
+
+	@ViewChild('scrollContainer', { static: true }) scrollContainerWorkUnitElement!: ElementRef
+	@ViewChild('scrollContainerTasks', { static: true }) scrollContainerTasksElement!: ElementRef
+	totalWorkUnitPages = 0
+	onWorkUnitPageLoaded = new EventEmitter<boolean>()
+
+	totalTasksPages = 0
+	onTasksPageLoaded = new EventEmitter<boolean>()
 
 	ngOnInit(): void {
 		this.setTitle('Dashboard')
@@ -61,17 +69,8 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			this.groupTasksUnwound(this.tasksUnwound)
 		})
 
-		this.taskService.getTasksByDeadlines(undefined, 0, DashboardComponent.pageSizeTasks).subscribe((response) => {
-			this.tasks = response.results
-			this.groupTasks(response.results)
-			this.loadingTasks = false
-		}, () => {this.loadingTasks = false})
-
-		this.taskService.getTasksByWorkunits(undefined, 0, DashboardComponent.pageSizeTasksUnwound).subscribe((response) => {
-			this.tasksUnwound = response.results
-			this.groupTasksUnwound(response.results)
-			this.loadingWorkUnits = false
-		}, () => {this.loadingWorkUnits = false})
+		this.loadTasksPage(0)
+		this.loadWorkUnitsPage(0)
 
 		// Register for task updates update tasks and unwound
 		this.taskService.tasksObservable.subscribe((task) => {
@@ -90,9 +89,41 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		}
 	}
 
+	loadWorkUnitsPage(page: number){
+		this.taskService.getTasksByWorkunits(undefined, page, DashboardComponent.pageSizeTasksUnwound).subscribe(
+			(response) => {
+				this.tasksUnwound.push(...response.results)
+				this.totalWorkUnitPages = response.pagination.pages
+				this.groupTasksUnwound(this.tasksUnwound)
+				this.loadingWorkUnits = false
+				this.onWorkUnitPageLoaded.emit(true)
+			},
+			() => {
+				this.loadingWorkUnits = false
+				this.onWorkUnitPageLoaded.emit(false)
+			}
+		)
+	}
+
+	loadTasksPage(page: number) {
+		this.taskService.getTasksByDeadlines(undefined, page, DashboardComponent.pageSizeTasks).subscribe(
+			(response) => {
+				this.totalTasksPages = response.pagination.pages
+				this.tasks.push(...response.results)
+				this.groupTasks(this.tasks)
+				this.loadingTasks = false
+				this.onTasksPageLoaded.emit(true)
+			},
+			() => {
+				this.loadingTasks = false
+				this.onTasksPageLoaded.emit(false)
+			}
+		)
+	}
+
 	private recevieTaskUpdate(task: Task) {
 		if (task.deleted) {
-			this.tasks = this.tasks.filter(x => x.id !== task.id)
+			this.tasks = this.tasks.filter((x) => x.id !== task.id)
 			this.groupTasks(this.tasks)
 			return
 		}
@@ -118,11 +149,16 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		// TODO we can optimize this, eg by checking if the new task should be displayed
 		// If not refetch them
 		this.loadingTasks = true
-		this.taskService.getTasksByDeadlines(undefined, 0, DashboardComponent.pageSizeTasks).subscribe((newTasks) => {
-			this.tasks = newTasks.results
-			this.groupTasks(this.tasks)
-			this.loadingTasks = false
-		}, () => {this.loadingTasks = false})
+		this.taskService.getTasksByDeadlines(undefined, 0, DashboardComponent.pageSizeTasks).subscribe(
+			(newTasks) => {
+				this.tasks = newTasks.results
+				this.groupTasks(this.tasks)
+				this.loadingTasks = false
+			},
+			() => {
+				this.loadingTasks = false
+			}
+		)
 	}
 
 	private recevieTaskUnwoundUpdate(task: Task) {
@@ -130,13 +166,16 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		// If not refetch them
 		const unwoundTasks = TaskService.taskToUnwound(task)
 
-		this.tasksUnwound = this.tasksUnwound.filter(x => x.id !== task.id)
+		this.tasksUnwound = this.tasksUnwound.filter((x) => x.id !== task.id)
 
 		if (!task.deleted) {
 			this.tasksUnwound.push(...unwoundTasks)
 
 			this.tasksUnwound.sort((a, b) => {
-				return a.workUnit.scheduledAt.date.start.toDate().getTime() - b.workUnit.scheduledAt.date.start.toDate().getTime()
+				return (
+					a.workUnit.scheduledAt.date.start.toDate().getTime() -
+					b.workUnit.scheduledAt.date.start.toDate().getTime()
+				)
 			})
 
 			const offset = this.tasksUnwound.length - DashboardComponent.pageSizeTasksUnwound
@@ -209,7 +248,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			if (
 				groupedDeadlines[groupedDeadlines.length - 1] &&
 				groupedDeadlines[groupedDeadlines.length - 1].date.setHours(0, 0, 0, 0) ===
-				task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
+					task.dueAt.date.start.toDate().setHours(0, 0, 0, 0)
 			) {
 				groupedDeadlines[groupedDeadlines.length - 1].tasks.push(task)
 				return
@@ -221,14 +260,17 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			groupedDeadlines.push(dateGroup)
 		})
 
-		this.deadlineYears = UtilityService.checkIfYearNeedsToBeShown(groupedDeadlines.map(group => group.date), this.today)
+		this.deadlineYears = UtilityService.checkIfYearNeedsToBeShown(
+			groupedDeadlines.map((group) => group.date),
+			this.today
+		)
 
-		this.groupedDeadlines = groupedDeadlines;
+		this.groupedDeadlines = groupedDeadlines
 	}
 
 	private groupTasksUnwound(tasks: TaskUnwound[]): void {
-		const nextUp: TaskUnwound[] = [];
-		const groupedUpcoming: TaskUnwoundDateGroup[] = [];
+		const nextUp: TaskUnwound[] = []
+		const groupedUpcoming: TaskUnwoundDateGroup[] = []
 
 		const nextWeek = this.today.addDays(7).getWeekNumber(true)
 
@@ -236,7 +278,8 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			const now = new Date(this.today)
 			if (
 				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0) ||
-				task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) && !task.workUnit.isDone
+				(task.workUnit.scheduledAt.date.start.toDate().setHours(0, 0, 0, 0) <= now.setHours(0, 0, 0, 0) &&
+					!task.workUnit.isDone)
 			) {
 				nextUp.push(task)
 				return
@@ -264,15 +307,18 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			groupedUpcoming.push(dateGroup)
 		})
 
-		this.workUnitYears = UtilityService.checkIfYearNeedsToBeShown(groupedUpcoming.map(group => group.date), this.today)
+		this.workUnitYears = UtilityService.checkIfYearNeedsToBeShown(
+			groupedUpcoming.map((group) => group.date),
+			this.today
+		)
 
-		this.groupedUpcoming = groupedUpcoming;
-		this.nextUp = nextUp;
+		this.groupedUpcoming = groupedUpcoming
+		this.nextUp = nextUp
 
 		setTimeout(() => {
 			this.setStartsAtWorkUnit()
 		}, 50)
-		
+
 		this.checkNextUpMessage()
 	}
 
@@ -303,5 +349,5 @@ enum NextUpState {
 	WorkUnitFinish,
 	NoTasks,
 	NextTask,
-	Default
+	Default,
 }

@@ -7,8 +7,9 @@
 				<span class="!hidden md:!block">New task</span>
 			</a>
 		</div>
-		<ul class="flex flex-col scroller h-full overflow-y-auto overflow-x-hidden pb-8">
-			<ng-container *ngIf="tasksPastClicked">
+		<ul class="flex flex-col scroller h-full overflow-y-auto overflow-x-hidden pb-8" #scrollContainer>
+			<ng-container *ngIf="tasksPastClicked && groupedTasksPast.length > 0">
+				<app-pagination [scrollContainer]="scrollContainerElement" [isLoading]="loading" [totalPages]="totalPagesPast" [onPageLoaded]="onPastPageLoaded" (onPageLoad)="fetchTasksPast($event)"></app-pagination>
 				<li *ngFor="let group of groupedTasksPast"
 					class="flex flex-row">
 					<app-agenda-date-group-item class="w-full"
@@ -17,10 +18,12 @@
 												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
 			</ng-container>
-			<button *ngIf="!tasksPastClicked && !loading && groupedTasksPast.length > 0"
+			<button *ngIf="!tasksPastClicked && !loading"
 					type="button"
 					class="!mx-auto !my-0 text-lg"
-					(click)="showPastTasks()">View past</button>
+					(click)="showPastTasks()"
+					(mouseenter)="!pastPreloaded ? fetchTasksPast(0) : undefined"
+					>View past</button>
 			<li *ngIf="!loading"
 				class="flex flex-row"
 				#todayElement>
@@ -54,6 +57,7 @@
 												[today]="today"
 												[dateYears]="dateYears"></app-agenda-date-group-item>
 				</li>
+				<app-pagination [scrollContainer]="scrollContainerElement" [isLoading]="loading" [totalPages]="totalPagesFuture" [onPageLoaded]="onFuturePageLoaded" (onPageLoad)="fetchAgendaFuture($event)"></app-pagination>
 			</ng-container>
 
 			<ng-container *ngIf="loading">

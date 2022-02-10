@@ -95,17 +95,19 @@ export class TaskService {
 		return observable
 	}
 
-	public getAgenda(date: Date, sort = 0, page = 0): Observable<TasksAgendaResponse> {
+	public getAgenda(date: Date, sort = 0, page = 0, pageSize = 20): Observable<TasksAgendaResponse> {
 		const filters = [
 			`date=${date.toISOString()}`,
 			`sort=${sort}`,
-			`pageSize=${25}`,
+			`pageSize=${pageSize}`,
 			`page=${page}`,
 		]
 
 		const observable = this.http
 			.get<TasksAgendaResponse>(`${environment.apiBaseUrl}/v1/tasks/agenda?` + filters.join('&'))
 			.pipe(catchError((err) => this.handleError(err)))
+
+		this.lastTaskSync = new Date()
 
 		return observable
 	}

@@ -94,7 +94,7 @@
 					src="/assets/images/no-workunits.svg"
 					alt="No upcoming"
 				/>
-				<ul class="upcoming-work-units-list scroller">
+				<ul class="upcoming-work-units-list scroller" #scrollContainer>
 					<ng-container *ngIf="loadingWorkUnits">
 						<li *ngFor="let index of [1, 2, 3]">
 							<app-work-unit-upcoming [loading]="true"></app-work-unit-upcoming>
@@ -137,6 +137,7 @@
 								</li>
 							</ul>
 						</li>
+						<app-pagination [scrollContainer]="scrollContainerWorkUnitElement" [isLoading]="loadingWorkUnits" [totalPages]="totalWorkUnitPages" [onPageLoaded]="onWorkUnitPageLoaded" (onPageLoad)="loadWorkUnitsPage($event)"></app-pagination>
 					</ng-container>
 				</ul>
 			</div>
@@ -160,7 +161,7 @@
 				Upcoming deadlines
 			</h2>
 		</div>
-		<ul class="deadline-list scroller">
+		<ul class="deadline-list scroller" #scrollContainerTasks>
 			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks" class="list-message">
 				<span class="text-2xl font-bold">No tasks right now?</span>
 				<span>That's awesome! But in case you have something to do tap "New task" to create a task.</span>
@@ -196,6 +197,7 @@
 						</li>
 					</ul>
 				</li>
+				<app-pagination [scrollContainer]="scrollContainerTasksElement" [isLoading]="loadingTasks" [totalPages]="totalTasksPages" [onPageLoaded]="onTasksPageLoaded" (onPageLoad)="loadTasksPage($event)"></app-pagination>
 			</ng-container>
 		</ul>
 	</div>
