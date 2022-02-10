@@ -165,8 +165,14 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 				this.setStartsAtWorkUnit()
 
-				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe((task) => {
-					if (task.id === this.task.id) {
+				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(async (task) => {
+					if (task.id === this.task.id && (this.serializeForm() !== this.serializeTask(task) || this.serializeWorkUnits(task) !== this.serializeWorkUnitsInForm())) {
+						if (this.isDirty) {
+							const promise = await this.modalService.addModal(ConfirmationModalComponent, {title: 'Task update', message: 'There is an update available for this task. Do you want to apply it? Your current changes would be lost.'}).toPromise()
+							if (!promise.hasValue || !promise.result.result) {
+								return
+							}
+						}
 						this.task = task
 						this.patchForm(task)
 						this.loading = false
@@ -432,6 +438,18 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		}
 		return JSON.stringify(
 			taskModified
+		)
+	}
+
+	private serializeWorkUnits(task: Task): string {
+		return JSON.stringify(
+			task.workUnits.map(x => x.id + x.isDone + x.workload + x.scheduledAt.date.start.toDate().toISOString() + x.scheduledAt.date.end.toDate().toISOString()).join('')
+		)
+	}
+
+	private serializeWorkUnitsInForm(): string {
+		return JSON.stringify(
+			this.task.workUnits.map(x => x.id + x.isDone + x.workload + x.scheduledAt.date.start.toDate().toISOString() + x.scheduledAt.date.end.toDate().toISOString()).join('')
 		)
 	}
 

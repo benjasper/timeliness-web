@@ -50,7 +50,8 @@ import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/res
 import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 import { ConfirmationModalComponent } from './core/modals/confirmation-modal/confirmation-modal.component'
 import { ToastComponent } from './core/modals/toast/toast.component'
-import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component'
+import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component';
+import { PaginationComponent } from './core/components/pagination/pagination.component'
 
 @NgModule({
 	declarations: [
@@ -92,6 +93,7 @@ import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-
 		ConfirmationModalComponent,
 		ToastComponent,
 		MarkDoneModalComponent,
+  PaginationComponent,
 	],
 	imports: [
 		BrowserModule,
