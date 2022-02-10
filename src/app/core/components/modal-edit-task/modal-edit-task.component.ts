@@ -394,7 +394,6 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 	public undo(): void {
 		this.patchForm(this.task)
-		this.editTask.markAsPristine()
 
 		this.generateDurations(this.task)
 	}
@@ -564,7 +563,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			const observable = this.taskService.newTask(updatingTask)
 			observable.subscribe(
 				(task) => {
-					this.editTask.markAsPristine()
+					this.isDirty = false
 					this.task = task
 					this.taskId = task.id
 					this.isNew = false
@@ -573,6 +572,9 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 					this.router.navigate(['task', task.id], {
 						relativeTo: this.route.parent,
+					}).then(() => {
+						this.ngOnDestroy()
+						this.ngOnInit()
 					})
 				},
 				() => {
@@ -585,14 +587,15 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			toast.loadingText = 'Creating task...'
 			this.modalService.addToast(toast)
 		} else {
+			this.isDirty = false
 			const observable = this.taskService.patchTask(this.taskId, updatingTask)
 			observable.subscribe(
 				(task) => {
-					this.editTask.markAsPristine()
 					this.loading = false
 					this.setStartsAtWorkUnit()
 				},
 				() => {
+					this.isDirty = true
 					this.loading = false
 				}
 			)

@@ -29,6 +29,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	progress = 0
 
 	tag?: Tag
+	tags: Tag[] = []
 
 	public today = new Date()
 	@Input() task!: Task
@@ -50,12 +51,18 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 			throw Error('Missing required arguments!')
 		}
 
-		if (this.task.tags[0]) {
-			this.taskService.tagsObservable.subscribe((newTags) => {
-				const foundTag = newTags.find((x) => x.id === this.task.tags[0])
-				if (foundTag) {
-					this.tag = foundTag
-				}
+		if (this.task.tags && this.task.tags[0]) {
+			this.taskService.tagsObservable.subscribe(newTags => {
+				this.tags = []
+				this.task.tags.forEach(tagId => {
+					const foundTag = newTags.find(x => x.id === tagId)
+					if (!foundTag) {
+						return
+					}
+					this.tags.push(foundTag)
+				})
+
+				this.tag = this.tags[0]
 			})
 		}
 
