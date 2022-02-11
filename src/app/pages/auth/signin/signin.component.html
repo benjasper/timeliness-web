@@ -1,27 +1,11 @@
-<div class="flex flex-col gap-44 md:px-20 justify-between transition-all">
+<div class="flex flex-col md:w-[40rem] h-[20rem] gap-32 md:px-20 justify-between transition-all">
 	<div class="mx-auto text-center">
 		<h2 class="mx-auto">
 			<ng-container *ngIf="!loading">Sign in to continue</ng-container>
 			<ng-container *ngIf="loading">Signing you in...</ng-container>
 		</h2>
-		<div *ngIf="!loading" class="mt-16 mx-auto relative">
-			<div
-				id="g_id_onload"
-				data-client_id="570716917094-tq9jjv09rtgdgqe60rd9hvnvb143cf3p.apps.googleusercontent.com"
-				data-context="signin"
-				data-callback="signInWithGoogleToken"
-				data-auto_prompt="false"
-			></div>
-
-			<div
-			class="g_id_signin absolute inset-center"
-			data-type="standard"
-			data-shape="pill"
-			data-theme="outline"
-			data-text="signin_with"
-			data-size="large"
-			data-logo_alignment="left"
-			></div>
+		<div *ngIf="!loading" class="mt-8 mx-auto relative">
+			<div class="mt-8 mx-auto absolute inset-center" #buttonContainer></div>
 		</div>
 		<svg-icon
 				*ngIf="loading"
