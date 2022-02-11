@@ -74,9 +74,9 @@
 			justify-content: center;
 
 			&.active {
-				background-color: $color-primary-pastelle;
+				background-color: $color-primary;
 				cursor: default;
-				color: $color-primary;
+				color: $color-white;
 			}
 
 			&.today {
