@@ -166,7 +166,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 				this.setStartsAtWorkUnit()
 
 				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(async (task) => {
-					if (task.id === this.task.id && (this.serializeForm() !== this.serializeTask(task) || this.serializeWorkUnits(task) !== this.serializeWorkUnitsInForm())) {
+					if (task.id === this.task.id && !this.loading && (this.serializeForm() !== this.serializeTask(task) || this.serializeWorkUnits(task) !== this.serializeWorkUnitsInForm())) {
 						if (this.isDirty) {
 							const promise = await this.modalService.addModal(ConfirmationModalComponent, {title: 'Task update', message: 'There is an update available for this task. Do you want to apply it? Your current changes would be lost.'}).toPromise()
 							if (!promise.hasValue || !promise.result.result) {
@@ -175,7 +175,6 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 						}
 						this.task = task
 						this.patchForm(task)
-						this.loading = false
 
 						this.setStartsAtWorkUnit()
 					}
@@ -331,6 +330,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			dueAt: task.dueAt.date.start.toDate(),
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 		})
+		this.task = task
 		this.generateDurations(task)
 
 		this.setTitle(task.name)
@@ -591,6 +591,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			const observable = this.taskService.patchTask(this.taskId, updatingTask)
 			observable.subscribe(
 				(task) => {
+					this.patchForm(task)
 					this.loading = false
 					this.setStartsAtWorkUnit()
 				},
