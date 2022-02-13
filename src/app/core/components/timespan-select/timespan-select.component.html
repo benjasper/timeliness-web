@@ -27,7 +27,7 @@
 			<span class="ml-2 !my-auto">Add timeslot</span>
 		</button>
 	</div>
-	<div class="flex flex-row gap-4 mr-auto" *ngIf="wasEdited">
+	<div class="flex flex-row gap-4 mr-auto" *ngIf="wasEdited && !saveOnDestroy">
 		<button type="button" class="secondary !ml-4 !mr-auto" (click)="cancel()" [disabled]="!wasEdited">
 			<svg-icon class="img !my-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 			<span class="ml-2">Cancel</span>

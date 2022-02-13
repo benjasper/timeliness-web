@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnDestroy, OnInit } from '@angular/core'
 import { start } from 'repl'
 import { Timespan, TimespanWithDate } from 'src/app/models/timespan'
 import { ToastType } from 'src/app/models/toast'
@@ -10,8 +10,10 @@ import { ModalService } from 'src/app/services/modal.service'
 	selector: 'app-timespan-select',
 	templateUrl: './timespan-select.component.html',
 })
-export class TimespanSelectComponent implements OnInit {
+export class TimespanSelectComponent implements OnInit, OnDestroy {
 	constructor(private authService: AuthService, private modalService: ModalService) {}
+
+	@Input() saveOnDestroy = false
 
 	timespans: TimespanWithDate[] = []
 	user?: User
@@ -26,6 +28,12 @@ export class TimespanSelectComponent implements OnInit {
 			this.timespans = this.toDateTimespan(user.settings.scheduling?.allowedTimespans ?? [])
 			this.user = user
 		})
+	}
+
+	ngOnDestroy(): void {
+		if (this.saveOnDestroy && this.wasEdited) {
+			this.save()
+		}
 	}
 
 	addEntry() {
@@ -88,7 +96,7 @@ export class TimespanSelectComponent implements OnInit {
 			.subscribe(
 				() => {
 					this.wasEdited = false
-					this.modalService.newToast(ToastType.Success, 'Saved scheduling times')
+					this.modalService.newToast(ToastType.Success, 'Saved allowed timeslots')
 				},
 				() => {
 					this.cancel()

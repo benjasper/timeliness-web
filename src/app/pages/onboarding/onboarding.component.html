@@ -54,7 +54,7 @@
 							Of course when Timeliness schedules your tasks your calendar availability is also taken into account. The purpose of this is so we don't schedule tasks while you are e.g. sleeping.
 						</p>
 					</div>
-					<app-timespan-select class="mx-auto text-left w-2/3"></app-timespan-select>
+					<app-timespan-select [saveOnDestroy]="true" class="mx-auto text-left w-2/3"></app-timespan-select>
 				</div>
 
 				<div *ngSwitchCase="'spacing'" class="flex flex-col gap-16 max-w-4xl ">
