@@ -96,7 +96,10 @@ export class TimespanSelectComponent implements OnInit, OnDestroy {
 			.subscribe(
 				() => {
 					this.wasEdited = false
-					this.modalService.newToast(ToastType.Success, 'Saved allowed timeslots')
+
+					if (!this.saveOnDestroy) {
+						this.modalService.newToast(ToastType.Success, 'Saved allowed timeslots')
+					}
 				},
 				() => {
 					this.cancel()
