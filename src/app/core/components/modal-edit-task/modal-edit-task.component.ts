@@ -73,7 +73,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	getProgress = TaskComponent.getProgress
 	getColorClass = TaskComponent.getColorClass
 
-	@ViewChild('title') titleElement!: ElementRef;
+	@ViewChild('title') titleElement!: ElementRef
 
 	constructor(
 		private router: Router,
@@ -156,36 +156,26 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			return
 		}
 
-		this.loading = true
-		this.taskService.getTask(this.taskId).subscribe(
-			(task) => {
-				this.task = task
-				this.patchForm(task)
-				this.loading = false
+		if (this.task) {
+			this.registerForTagUpdates()
+			this.registerForTaskUpdates()
+		} else {
+			this.loading = true
+			this.taskService.getTask(this.taskId).subscribe(
+				(task) => {
+					this.patchFormAndSetTask(task)
+					this.loading = false
 
-				this.setStartsAtWorkUnit()
+					this.setStartsAtWorkUnit()
 
-				this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(async (task) => {
-					if (task.id === this.task.id && !this.loading && (this.serializeForm() !== this.serializeTask(task) || this.serializeWorkUnits(task) !== this.serializeWorkUnitsInForm())) {
-						if (this.isDirty) {
-							const promise = await this.modalService.addModal(ConfirmationModalComponent, {title: 'Task update', message: 'There is an update available for this task. Do you want to apply it? Your current changes would be lost.'}).toPromise()
-							if (!promise.hasValue || !promise.result.result) {
-								return
-							}
-						}
-						this.task = task
-						this.patchForm(task)
-
-						this.setStartsAtWorkUnit()
-					}
-				})
-
-				this.registerForTags()
-			},
-			() => {
-				this.router.navigate(['.'], { relativeTo: this.route.parent })
-			}
-		)
+					this.registerForTagUpdates()
+					this.registerForTaskUpdates()
+				},
+				() => {
+					this.router.navigate(['.'], { relativeTo: this.route.parent })
+				}
+			)
+		}
 
 		this.taskService.now.pipe(takeUntil(this.ngUnsubscribe)).subscribe((date) => {
 			this.today = date
@@ -196,12 +186,13 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		if (!this.isNew) {
 			return
 		}
-		setTimeout(()=>{ // this will make the execution after the above boolean has changed
-			this.titleElement.nativeElement.focus();
-		  },0);
+		setTimeout(() => {
+			// this will make the execution after the above boolean has changed
+			this.titleElement.nativeElement.focus()
+		}, 0)
 	}
 
-	registerForTags() {
+	private registerForTagUpdates() {
 		this.taskService.tagsObservable.subscribe((newTags) => {
 			const removalList: string[] = []
 			this.task.tags.forEach((tag, index) => {
@@ -216,6 +207,33 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			this.tags = this.tags.filter((x) => !removalList.includes(x.id))
 			this.lastTagsHash = this.tags.map((x) => x.id + x.color + x.value)
 			this.onFormChange()
+		})
+	}
+
+	private registerForTaskUpdates() {
+		this.taskService.tasksObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(async (task) => {
+			if (
+				task.id === this.task.id &&
+				!this.loading &&
+				(this.serializeForm() !== this.serializeTask(task) ||
+					this.serializeWorkUnits(task) !== this.serializeWorkUnitsInForm())
+			) {
+				if (this.isDirty) {
+					const promise = await this.modalService
+						.addModal(ConfirmationModalComponent, {
+							title: 'Task update',
+							message:
+								'There is an update available for this task. Do you want to apply it? Your current changes would be lost.',
+						})
+						.toPromise()
+					if (!promise.hasValue || !promise.result.result) {
+						return
+					}
+				}
+				this.patchFormAndSetTask(task)
+
+				this.setStartsAtWorkUnit()
+			}
 		})
 	}
 
@@ -314,7 +332,9 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		}
 	}
 
-	private patchForm(task: Task): void {
+	private patchFormAndSetTask(task: Task): void {
+		this.task = task
+
 		this.tags = []
 		task.tags.forEach((id) => {
 			const tag = this.taskService.getTag(id)
@@ -330,7 +350,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			dueAt: task.dueAt.date.start.toDate(),
 			workload: task.workloadOverall.toDuration(DurationUnit.Nanoseconds).milliseconds,
 		})
-		this.task = task
+
 		this.generateDurations(task)
 
 		this.setTitle(task.name)
@@ -393,7 +413,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	}
 
 	public undo(): void {
-		this.patchForm(this.task)
+		this.patchFormAndSetTask(this.task)
 
 		this.generateDurations(this.task)
 	}
@@ -415,14 +435,22 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			.subscribe((result) => {
 				if (result.hasValue && result.result.result) {
 					this.loading = true
-					this.taskService.deleteTask(this.task).subscribe(
+					const observable = this.taskService.deleteTask(this.task)
+
+					const toast = new Toast(ToastType.Success, 'Task deleted', false)
+					toast.loading = observable.toPromise()
+					toast.loadingText = 'Deleting task...'
+					this.modalService.addToast(toast)
+
+					observable.subscribe(
+						() => {},
 						() => {
-							this.closeModal()
-						},
-						() => {
-							this.loading = false
+							this.router.navigate(['task', this.task.id], {
+								relativeTo: this.route.parent,
+							})
 						}
 					)
+					this.closeModal()
 				}
 			})
 	}
@@ -435,20 +463,36 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			workloadOverall: task.workloadOverall,
 			tags: this.lastTagsHash,
 		}
-		return JSON.stringify(
-			taskModified
-		)
+		return JSON.stringify(taskModified)
 	}
 
 	private serializeWorkUnits(task: Task): string {
 		return JSON.stringify(
-			task.workUnits.map(x => x.id + x.isDone + x.workload + x.scheduledAt.date.start.toDate().toISOString() + x.scheduledAt.date.end.toDate().toISOString()).join('')
+			task.workUnits
+				.map(
+					(x) =>
+						x.id +
+						x.isDone +
+						x.workload +
+						x.scheduledAt.date.start.toDate().toISOString() +
+						x.scheduledAt.date.end.toDate().toISOString()
+				)
+				.join('')
 		)
 	}
 
 	private serializeWorkUnitsInForm(): string {
 		return JSON.stringify(
-			this.task.workUnits.map(x => x.id + x.isDone + x.workload + x.scheduledAt.date.start.toDate().toISOString() + x.scheduledAt.date.end.toDate().toISOString()).join('')
+			this.task.workUnits
+				.map(
+					(x) =>
+						x.id +
+						x.isDone +
+						x.workload +
+						x.scheduledAt.date.start.toDate().toISOString() +
+						x.scheduledAt.date.end.toDate().toISOString()
+				)
+				.join('')
 		)
 	}
 
@@ -458,11 +502,9 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			description: this.editTask.get('description')?.value,
 			dueAt: { date: { start: new Date(this.editTask.get('dueAt')?.value).toISOString() } },
 			workloadOverall: this.editTask.get('workload')?.value.toDuration().toNanoseconds(),
-			tags: this.tags.map(x => x.id + x.color + x.value),
+			tags: this.tags.map((x) => x.id + x.color + x.value),
 		}
-		return JSON.stringify(
-			taskModified
-		)
+		return JSON.stringify(taskModified)
 	}
 
 	onFormChange() {
@@ -564,25 +606,27 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			observable.subscribe(
 				(task) => {
 					this.isDirty = false
-					this.task = task
+					this.patchFormAndSetTask(task)
 					this.taskId = task.id
 					this.isNew = false
 					this.loading = false
 					this.setTitle(task.name)
 
-					this.router.navigate(['task', task.id], {
-						relativeTo: this.route.parent,
-					}).then(() => {
-						this.ngOnDestroy()
-						this.ngOnInit()
-					})
+					this.router
+						.navigate(['task', task.id], {
+							relativeTo: this.route.parent,
+						})
+						.then(() => {
+							this.ngOnDestroy()
+							this.ngOnInit()
+						})
 				},
 				() => {
 					this.loading = false
 				}
 			)
 
-			const toast = new Toast(ToastType.Success, `New task "${updatingTask.name}" created`)
+			const toast = new Toast(ToastType.Success, `New task created`)
 			toast.loading = observable.toPromise()
 			toast.loadingText = 'Creating task...'
 			this.modalService.addToast(toast)
@@ -591,7 +635,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			const observable = this.taskService.patchTask(this.taskId, updatingTask)
 			observable.subscribe(
 				(task) => {
-					this.patchForm(task)
+					this.patchFormAndSetTask(task)
 					this.loading = false
 					this.setStartsAtWorkUnit()
 				},
