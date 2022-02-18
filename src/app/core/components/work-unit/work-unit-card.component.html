@@ -54,8 +54,8 @@
 				<div class="flex flex-row gap-2">
 					<svg-icon class="w-8 flex-shrink-0 mb-auto mt-1" src="/assets/icons/icon-deadline.svg"></svg-icon>
 					<ng-container [ngSwitch]="scheduleState">
-						<span class="my-auto" *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
-						<span class="my-auto" *ngSwitchCase="SCHEDULE_TYPE.Future">
+						<span class="my-auto leading-[normal]" *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
+						<span class="my-auto leading-[normal]" *ngSwitchCase="SCHEDULE_TYPE.Future">
 							<ng-container
 								*ngIf="today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
 							>
@@ -78,7 +78,7 @@
 							</ng-container>
 						</span>
 						<span
-							class="my-auto"
+							class="my-auto leading-[normal]"
 							*ngSwitchCase="SCHEDULE_TYPE.Past"
 							[class.font-bold]="
 								task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
@@ -103,7 +103,7 @@
 
 				<div class="flex flex-row gap-2">
 					<svg-icon class="w-8 flex-shrink-0 my-auto" src="/assets/icons/icon-clock.svg"></svg-icon>
-					<span class="my-auto">
+					<span class="my-auto leading-[normal]">
 						{{
 							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
 								hour: '2-digit',
