@@ -37,75 +37,88 @@
 				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-check.svg"></svg-icon>
 				<span>Mark work unit done partly</span>
 			</a>
+			<a
+				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
+				(click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)"
+			>
+				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-deadline.svg"></svg-icon>
+				<span>View in calendar</span>
+			</a>
 		</app-dropdown>
 	</div>
 	<div class="card-sections">
 		<div class="card-section infos">
 			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
 			<span *ngIf="small"></span>
-			<div class="info-segment">
-				<ng-container [ngSwitch]="scheduleState">
-					<span *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
-					<span *ngSwitchCase="SCHEDULE_TYPE.Future">
-						<ng-container
-							*ngIf="today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
-						>
-							Today • starts in {{ durationToStart() }}
-						</ng-container>
-						<ng-container
-							*ngIf="!today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
+			<div class="info-segment hover:cursor-pointer" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" title="View in calendar">
+				<div class="flex flex-row gap-2">
+					<svg-icon class="w-8 flex-shrink-0 mb-auto mt-[0.15rem]" src="/assets/icons/icon-deadline.svg"></svg-icon>
+					<ng-container [ngSwitch]="scheduleState">
+						<span *ngSwitchCase="SCHEDULE_TYPE.Now">Right now • ends in {{ durationToEnd() }}</span>
+						<span *ngSwitchCase="SCHEDULE_TYPE.Future">
+							<ng-container
+								*ngIf="today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
+							>
+								Today • starts in {{ durationToStart() }}
+							</ng-container>
+							<ng-container
+								*ngIf="!today.isSameDay(task.workUnits[workUnitIndex].scheduledAt.date.start.toDate())"
+							>
+								{{
+									task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
+										task.workUnits[workUnitIndex].scheduledAt.date.start
+											.toDate()
+											.toLocaleDateString([], {
+												weekday: 'short',
+												month: 'long',
+												day: '2-digit',
+												year: 'numeric'
+											})
+								}}
+							</ng-container>
+						</span>
+						<span
+							*ngSwitchCase="SCHEDULE_TYPE.Past"
+							[class.font-bold]="
+								task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
+								!task.workUnits[workUnitIndex].isDone
+							"
 						>
 							{{
 								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
-									task.workUnits[workUnitIndex].scheduledAt.date.start
-										.toDate()
-										.toLocaleDateString([], {
-											weekday: 'short',
-											month: 'long',
-											day: '2-digit',
-											year: 'numeric'
-										})
+									task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
+										weekday: 'short',
+										month: 'long',
+										day: '2-digit',
+										year: 'numeric'
+									})
 							}}
-						</ng-container>
-					</span>
-					<span
-						*ngSwitchCase="SCHEDULE_TYPE.Past"
-						[class.font-bold]="
-							task.workUnits[workUnitIndex].scheduledAt.date.end.toDate() <= today &&
-							!task.workUnits[workUnitIndex].isDone
-						"
-					>
-						{{
-							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().getCloseToTodayString() ??
-								task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleDateString([], {
-									weekday: 'short',
-									month: 'long',
-									day: '2-digit',
-									year: 'numeric'
-								})
-						}}
-						<ng-container *ngIf="!task.workUnits[workUnitIndex].isDone">
-							• ended {{ durationToEnd() }} ago
-						</ng-container>
-					</span>
-				</ng-container>
+							<ng-container *ngIf="!task.workUnits[workUnitIndex].isDone">
+								• ended {{ durationToEnd() }} ago
+							</ng-container>
+						</span>
+					</ng-container>
+				</div>
 
-				<span>
-					{{
-						task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
-							hour: '2-digit',
-							minute: '2-digit'
-						})
-					}}
-					-
-					{{
-						task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().toLocaleTimeString([], {
-							hour: '2-digit',
-							minute: '2-digit'
-						})
-					}}
-					• {{ task.workUnits[workUnitIndex].workload.toDuration(1).toString() }}
-				</span>
+				<div class="flex flex-row gap-2">
+					<svg-icon class="w-8 flex-shrink-0 mb-auto mt-[0.15rem]" src="/assets/icons/icon-clock.svg"></svg-icon>
+					<span>
+						{{
+							task.workUnits[workUnitIndex].scheduledAt.date.start.toDate().toLocaleTimeString([], {
+								hour: '2-digit',
+								minute: '2-digit'
+							})
+						}}
+						-
+						{{
+							task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().toLocaleTimeString([], {
+								hour: '2-digit',
+								minute: '2-digit'
+							})
+						}}
+						• {{ task.workUnits[workUnitIndex].workload.toDuration(1).toString() }}
+					</span>
+				</div>
 			</div>
 			<div class="info-segment">
 				<div class="labels">
@@ -134,7 +147,7 @@
 		<button
 			class="btn with-border no-background"
 			[class.icon-only]="task.workUnits[workUnitIndex].isDone"
-			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as un-done' : 'Mark as done' }}"
+			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as not done' : 'Mark as done' }}"
 			[ngClass]="getColorClass(tag ? tag.color : '', 'color')"
 			(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)"
 		>

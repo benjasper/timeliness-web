@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 
 import { catchError, retry, share, shareReplay, tap, windowTime } from 'rxjs/operators'
 import { Duration, DurationUnit } from '../models/duration'
 import { Pagination } from '../models/paginations'
-import { Task, TaskAgenda, TaskModified, TaskUnwound } from '../models/task'
+import { CalendarType, PersistedEvent, Task, TaskAgenda, TaskModified, TaskUnwound } from '../models/task'
 import { environment } from '../../environments/environment'
 import { WorkUnit } from '../models/workunit'
 import { element } from 'protractor'
@@ -274,6 +274,25 @@ export class TaskService {
 			.pipe(catchError((err) => this.handleError(err)))
 	}
 
+	public getTaskDueDateCalendarData(id: string): Observable<PersistedEvent> {
+		return this.http
+			.get<PersistedEvent>(`${environment.apiBaseUrl}/v1/tasks/${id}/calendar`)
+			.pipe(catchError((err) => this.handleError(err)))
+	}
+
+	public getWorkUnitDateCalendarData(taskId: string, workUnitId: string): Observable<PersistedEvent> {
+		return this.http
+			.get<PersistedEvent>(`${environment.apiBaseUrl}/v1/tasks/${taskId}/workunits/${workUnitId}/calendar`)
+			.pipe(catchError((err) => this.handleError(err)))
+	}
+
+	public getLinkToCalendarEvent(persistedEvent: PersistedEvent): string {
+		switch (persistedEvent.calendarType) {
+			case CalendarType.GoogleCalendar:
+				return `https://www.google.com/calendar/event?eid=${persistedEvent.calendarEventId}`
+		}
+	}
+
 	public getTaskBetween(from: Date, to: Date): Observable<{count: number}> {
 		const query = [
 			`from=${from.toISOString()}`,
@@ -332,9 +351,9 @@ export class TaskService {
 		return observable
 	}
 
-	public markWorkUnitAsDone(task: Task, workUnitIndex: number, done = true, timeLeft: Duration): Observable<Task> {
+	public markWorkUnitAsDone(task: Task, workUnitId: string, done = true, timeLeft: Duration): Observable<Task> {
 		const observable = this.http
-			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/done`, { isDone: done, timeLeft: timeLeft.toNanoseconds() })
+			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/done`, { isDone: done, timeLeft: timeLeft.toNanoseconds() })
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {
@@ -344,9 +363,9 @@ export class TaskService {
 		return observable
 	}
 
-	public rescheduleWorkUnitWithTimespans(task: Task, workUnitIndex: number, timespans: Timespan[]): Observable<Task> {
+	public rescheduleWorkUnitWithTimespans(task: Task, workUnitId: string, timespans: Timespan[]): Observable<Task> {
 		const observable = this.http
-			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/reschedule`, { chosenTimespans: timespans })
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, { chosenTimespans: timespans })
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {
@@ -368,9 +387,9 @@ export class TaskService {
 		return observable
 	}
 
-	public fetchReschedulingSuggestions(task: Task, workUnitIndex: number): Observable<Timespan[][]> {
+	public fetchReschedulingSuggestions(task: Task, workUnitId: string): Observable<Timespan[][]> {
 		const observable = this.http
-			.get<Timespan[][]>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitIndex}/reschedule`, {})
+			.get<Timespan[][]>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, {})
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		return observable

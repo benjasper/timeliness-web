@@ -27,6 +27,15 @@ export type TaskAgenda = Task & {
 	workUnitIndex: number
 }
 
+export enum CalendarType {
+	GoogleCalendar = "google_calendar",
+}
+export interface PersistedEvent {
+	calendarEventId: string
+	calendarType: CalendarType
+	userId: string
+}
+
 export class TaskModified {
 	name?: string
 	description?: string

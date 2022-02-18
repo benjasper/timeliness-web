@@ -82,6 +82,14 @@
 							  alt="Delete"></svg-icon>
 					<span class="text-base">Delete</span>
 				</li>
+				<li class="flex flex-row"
+					*ngIf="task"
+					(click)="goToCalendarEvent(task)">
+					<svg-icon class="w-8"
+							  src="/assets/icons/icon-deadline.svg"
+							  alt="Calendar icon"></svg-icon>
+					<span class="text-base">View in calendar</span>
+				</li>
 			</app-dropdown>
 			<button class="tiny-button no-background"
 					type="button"
@@ -95,7 +103,11 @@
 			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row"
+						   [class.hover:cursor-pointer]="task"
+						   [title]="task ? 'View in calendar' : undefined"
+						   (click)="task ? goToCalendarEvent(task) : undefined"
+						   >
 						<svg-icon class="block w-8 fill-current mr-2" src="/assets/icons/icon-deadline.svg"></svg-icon>
 						<div class="my-auto">Due date</div>
 					</label>
