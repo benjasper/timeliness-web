@@ -46,7 +46,7 @@ export class ReschedulingModalComponent extends SimpleModalComponent<Reschedulin
 		this.isOpen = true
 
 		this.loading = true
-		this.taskService.fetchReschedulingSuggestions(this.task, this.workUnitIndex).subscribe((timespanGroups) => {
+		this.taskService.fetchReschedulingSuggestions(this.task, this.task.workUnits[this.workUnitIndex].id).subscribe((timespanGroups) => {
 			this.timespanGroups = timespanGroups
 			if (timespanGroups.length === 0) {
 				this.noOptionsAvailable = true

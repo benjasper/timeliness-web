@@ -426,6 +426,20 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		}, 200)
 	}
 
+	goToCalendarEvent(task: Task): void {
+		const w = window.open("", "Timeliness | Getting calendar data...")
+		if (!w) {
+			return
+		}
+
+		this.taskService.getTaskDueDateCalendarData(task.id).subscribe((data) => {
+			const link = this.taskService.getLinkToCalendarEvent(data)
+			w.location.href = link
+		}, () => {
+			w.close()
+		})
+	}
+
 	public delete(): void {
 		this.modalService
 			.addModal(ConfirmationModalComponent, {

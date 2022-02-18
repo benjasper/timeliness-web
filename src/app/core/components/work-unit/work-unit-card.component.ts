@@ -148,19 +148,19 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 					return
 				}
 
-				this.sendWorkUnitDoneRequest(task, workUnitIndex, true, result.result.timeLeft)
+				this.sendWorkUnitDoneRequest(task, task.workUnits[workUnitIndex].id, true, result.result.timeLeft)
 			})
 			return
 		}
 
-		this.sendWorkUnitDoneRequest(task, workUnitIndex, done)
+		this.sendWorkUnitDoneRequest(task, task.workUnits[workUnitIndex].id, done)
 
 		return
 	}
 
-	private sendWorkUnitDoneRequest(task: Task, workUnitIndex: number, done = true, timeLeft = new Duration(0)): void {
+	private sendWorkUnitDoneRequest(task: Task, workUnitId: string, done = true, timeLeft = new Duration(0)): void {
 		this.loading = true
-		const observable = this.taskService.markWorkUnitAsDone(task, workUnitIndex, done, timeLeft)
+		const observable = this.taskService.markWorkUnitAsDone(task, workUnitId, done, timeLeft)
 
 		let message = 'Work unit marked as done'
 		if (done === false) {
@@ -179,6 +179,20 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 				this.loading = false
 			}
 		)
+	}
+
+	goToCalendarEvent(task: Task, workUnitId: string): void {
+		const w = window.open("", "Timeliness | Getting calendar data...")
+		if (!w) {
+			return
+		}
+
+		this.taskService.getWorkUnitDateCalendarData(task.id, workUnitId).subscribe((data) => {
+			const link = this.taskService.getLinkToCalendarEvent(data)
+			w.location.href = link
+		}, () => {
+			w.close()
+		})
 	}
 
 	public rescheduleWorkUnit(task: Task): void {
@@ -207,7 +221,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 				} else {
 					const observable = this.taskService.rescheduleWorkUnitWithTimespans(
 						task,
-						this.workUnitIndex,
+						task.workUnits[this.workUnitIndex].id,
 						result.result
 					)
 					observable.subscribe(

@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate, state } from '@angular/animations';
-import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown',
@@ -17,6 +17,7 @@ export class DropdownComponent implements OnInit {
   isFocused = false
 
   @Input() colorClasses = "text-primary"
+  @ViewChild('dropdown', { static: false }) dropdownElement!: ElementRef
 
   constructor(private elementRef: ElementRef) { }
 
@@ -27,6 +28,10 @@ export class DropdownComponent implements OnInit {
 		if (!clickedInside) {
 			this.isFocused = false
 		} else {
+			if (this.isFocused && this.dropdownElement.nativeElement.contains(event.target)) {
+				this.isFocused = false
+				return
+			}
 			this.isFocused = true
 		}
 	}

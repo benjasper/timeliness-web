@@ -37,6 +37,13 @@
 				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-check.svg"></svg-icon>
 				<span>Mark work unit done partly</span>
 			</a>
+			<a
+				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
+				(click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)"
+			>
+				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-deadline.svg"></svg-icon>
+				<span>View in calendar</span>
+			</a>
 		</app-dropdown>
 	</div>
 	<div class="card-sections">
