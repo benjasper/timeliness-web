@@ -50,7 +50,7 @@
 		<div class="card-section infos">
 			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
 			<span *ngIf="small"></span>
-			<div class="info-segment">
+			<div class="info-segment hover:cursor-pointer" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" title="View in calendar">
 				<div class="flex flex-row gap-2">
 					<svg-icon class="w-8 flex-shrink-0 mb-auto mt-[0.15rem]" src="/assets/icons/icon-deadline.svg"></svg-icon>
 					<ng-container [ngSwitch]="scheduleState">
