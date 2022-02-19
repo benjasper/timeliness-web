@@ -16,7 +16,7 @@
 					<app-time-select [(selected)]="timespan.end" (selectedChange)="timespanChanged()"></app-time-select>
 				</span>
 				<button type="button" class="with-border tiny-button no-icon flex-shrink-0" (click)="removeEntry(i)">
-					<svg-icon class="img !w-5" src="/assets/icons/icon-exit.svg"></svg-icon>
+					<svg-icon class="flex w-6 scale-125 !m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 				</button>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 	</div>
 	<div class="flex flex-row gap-4 mr-auto" *ngIf="wasEdited && !saveOnDestroy">
 		<button type="button" class="secondary !ml-4 !mr-auto" (click)="cancel()" [disabled]="!wasEdited">
-			<svg-icon class="img !my-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
+			<svg-icon class="block w-6 scale-125 !my-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 			<span class="ml-2">Cancel</span>
 		</button>
 		<button type="button" class="!ml-4 !mr-auto" (click)="save()" [disabled]="!wasEdited">

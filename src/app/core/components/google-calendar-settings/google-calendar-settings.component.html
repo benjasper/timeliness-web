@@ -106,13 +106,21 @@
 				</span>
 			</button>
 			<button
-				*ngIf="connection.status !== CONNECTION_STATUS.Inactive"
+				*ngIf="allowMoreThanOneConnection"
 				role="button"
 				class="danger h-full"
 				(click)="disconnect(connection.id)"
 			>
-				<svg-icon class="block !my-auto mr-2 !w-8" src="/assets/icons/icon-trash.svg"></svg-icon>
-				<span class="my-auto">Disconnect</span>
+			<ng-container [ngSwitch]="connection.status" class="my-auto">
+				<ng-container *ngSwitchCase="CONNECTION_STATUS.Active">
+					<svg-icon class="block !my-auto mr-1 !w-8 fill-current" src="/assets/icons/icon-exit.svg"></svg-icon>
+					<span>Revoke access</span>
+				</ng-container>
+				<ng-container *ngSwitchDefault>
+						<svg-icon class="block !my-auto mr-2 !w-8" src="/assets/icons/icon-trash.svg"></svg-icon>
+						<span>Remove</span>
+					</ng-container>
+				</ng-container>
 			</button>
 		</div>
 	</div>

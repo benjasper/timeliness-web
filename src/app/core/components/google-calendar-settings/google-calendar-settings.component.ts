@@ -107,17 +107,36 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	}
 
 	disconnect(connectionId: string) {
-		this.modalService.addModal(ConfirmationModalComponent, {title: 'Disconnect Google Calendar?', message: 'Are you sure you want to disconnect this Google Calendar connection? Your Account will still be accessible with the Google Account you first logged in with.'}).subscribe(result => {
-			if (result && result.result.result === true) {
-				this.connectionLoading.set(connectionId, true)
+		const connection = this.user?.googleCalendarConnections?.find(x => x.id === connectionId)
+		if (!connection) {
+			return
+		}
 
-				this.authService.deleteConnection(connectionId).subscribe(response => {
-					this.modalService.newToast(ToastType.Success, `Connection deleted`)
-					this.authService.forceUserUpdate()
-				}, () => {
+		if (connection.status === CalendarConnectionStatus.Active) {
+			this.modalService.addModal(ConfirmationModalComponent, {title: 'Revoke access to Google Calendar?', message: 'Are you sure you want to revoke access to this Google Calendar connection? Your will have to grant access again to revert this action.'}).subscribe(result => {
+				if (result && result.result.result === true) {
 					this.connectionLoading.set(connectionId, true)
-				})
-			}
-		})
+	
+					this.authService.revokeGoogleConnection(connectionId).subscribe(response => {
+						this.modalService.newToast(ToastType.Success, `Connection revoked`)
+					}, () => {
+						this.connectionLoading.set(connectionId, true)
+					})
+				}
+			})
+		} else {
+			this.modalService.addModal(ConfirmationModalComponent, {title: 'Remove Google Calendar connection?', message: 'Are you sure you want to disconnect this Google Calendar connection? Your Account will still be accessible with the Google Account you first logged in with.'}).subscribe(result => {
+				if (result && result.result.result === true) {
+					this.connectionLoading.set(connectionId, true)
+	
+					this.authService.deleteConnection(connectionId).subscribe(response => {
+						this.modalService.newToast(ToastType.Success, `Connection deleted`)
+						this.authService.forceUserUpdate()
+					}, () => {
+						this.connectionLoading.set(connectionId, true)
+					})
+				}
+			})
+		}
 	}
 }
