@@ -27,7 +27,7 @@ module.exports = {
 				google: ['Roboto', ...defaultTheme.fontFamily.sans],
 			},
 			gridTemplateColumns: {
-				'modal': '65rem 42rem',
+				'modal': '65rem 45rem',
 				'sidebar': 'auto 1fr'
 			},
 			gridTemplateRows: {
