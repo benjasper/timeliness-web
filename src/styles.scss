@@ -192,6 +192,11 @@ input,
 }
 
 .ng-select {
+	&:focus-visible {
+		border-radius: 5px;
+		outline: 2px solid $color-primary;
+	}
+
 	.ng-input {
 		top: auto !important;
 		padding: 0 1.5rem !important;

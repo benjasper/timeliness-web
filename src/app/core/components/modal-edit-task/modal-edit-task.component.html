@@ -85,16 +85,14 @@
 				<li class="flex flex-row"
 					*ngIf="task"
 					(click)="goToCalendarEvent(task)">
-					<svg-icon class="w-8"
-							  src="/assets/icons/icon-deadline.svg"
-							  alt="Calendar icon"></svg-icon>
-					<span class="text-base">View in calendar</span>
+					<svg-icon class="w-8 flex-shrink-0 my-auto" src="/assets/icons/icon-share.svg"></svg-icon>
+					<span class="my-auto leading-[normal]">View in calendar</span>
 				</li>
 			</app-dropdown>
 			<button class="tiny-button no-background"
 					type="button"
 					(click)="close()">
-				<svg-icon class="img !fill-current text-primary"
+				<svg-icon class="img !fill-current !w-12 !h-full transform scale-150 text-primary"
 						  src="/assets/icons/icon-exit.svg"
 						  alt="Exit"></svg-icon>
 			</button>
@@ -103,11 +101,7 @@
 			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="label my-auto w-52 flex-shrink-0 flex flex-row"
-						   [class.hover:cursor-pointer]="task"
-						   [title]="task ? 'View in calendar' : undefined"
-						   (click)="task ? goToCalendarEvent(task) : undefined"
-						   >
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
 						<svg-icon class="block w-8 fill-current mr-2" src="/assets/icons/icon-deadline.svg"></svg-icon>
 						<div class="my-auto">Due date</div>
 					</label>
@@ -115,6 +109,7 @@
 										 class="edit"
 										 tabindex="3"
 										 formControlName="dueAt"></app-datetime-picker>
+					<svg-icon *ngIf="task" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" title="View in calendar"></svg-icon>
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
@@ -212,7 +207,7 @@
 				<button type="button"
 						class="btn large save secondary"
 						(click)="close()">
-					<svg-icon class="block w-6 mr-2 fill-current"
+					<svg-icon class="block w-8 mr-2 scale-110 fill-current"
 							  src="/assets/icons/icon-exit.svg"></svg-icon>
 					<span>Cancel</span>
 				</button>

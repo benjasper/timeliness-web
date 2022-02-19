@@ -179,6 +179,18 @@ export class AuthService {
 		return observable
 	}
 
+	public revokeGoogleConnection(connectionId: string) {
+		const observable = this.http.post<User>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google/revoke`, {}).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
+		observable.subscribe((user) => {
+			this.userSubject.next(user)
+		})
+
+		return observable
+	}
+
 	public connectGoogleCalendar(connectionId?: string) {
 		let stringWithConnection = ''
 		if (connectionId) {

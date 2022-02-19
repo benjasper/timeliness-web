@@ -41,8 +41,8 @@
 				class="flex flex-row px-6 py-4 whitespace-nowrap hover:no-underline rounded-lg hover:bg-grey-very-light"
 				(click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)"
 			>
-				<svg-icon class="w-6 mr-2 flex-shrink-0" src="/assets/icons/icon-deadline.svg"></svg-icon>
-				<span>View in calendar</span>
+				<svg-icon class="w-8 mr-2 flex-shrink-0 my-auto" src="/assets/icons/icon-share.svg"></svg-icon>
+				<span class="my-auto leading-[normal]">View in calendar</span>
 			</a>
 		</app-dropdown>
 	</div>
@@ -50,7 +50,7 @@
 		<div class="card-section infos">
 			<span *ngIf="!small">Unit {{ this.workUnitIndex + 1 }}/{{ task.workUnits.length }}</span>
 			<span *ngIf="small"></span>
-			<div class="info-segment hover:cursor-pointer" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" title="View in calendar">
+			<div class="info-segment">
 				<div class="flex flex-row gap-2">
 					<svg-icon class="w-8 flex-shrink-0 mb-auto mt-1" src="/assets/icons/icon-deadline.svg"></svg-icon>
 					<ng-container [ngSwitch]="scheduleState">
@@ -99,6 +99,7 @@
 							</ng-container>
 						</span>
 					</ng-container>
+					<svg-icon class="w-8 flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" title="View in calendar"></svg-icon>
 				</div>
 
 				<div class="flex flex-row gap-2">
