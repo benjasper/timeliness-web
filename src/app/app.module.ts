@@ -52,6 +52,7 @@ import { ConfirmationModalComponent } from './core/modals/confirmation-modal/con
 import { ToastComponent } from './core/modals/toast/toast.component'
 import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component';
 import { PaginationComponent } from './core/components/pagination/pagination.component'
+import { MaxWorkUnitDurationComponent } from './core/pages/settings/components/max-work-unit-duration/max-work-unit-duration.component'
 
 @NgModule({
 	declarations: [
@@ -93,7 +94,8 @@ import { PaginationComponent } from './core/components/pagination/pagination.com
 		ConfirmationModalComponent,
 		ToastComponent,
 		MarkDoneModalComponent,
-  PaginationComponent,
+		MaxWorkUnitDurationComponent,
+  		PaginationComponent,
 	],
 	imports: [
 		BrowserModule,

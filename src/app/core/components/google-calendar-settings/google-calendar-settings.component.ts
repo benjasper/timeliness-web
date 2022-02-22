@@ -6,6 +6,7 @@ import { AuthService, Calendar, Calendars } from 'src/app/services/auth.service'
 import { ModalService } from 'src/app/services/modal.service';
 import { Output, EventEmitter } from '@angular/core';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-google-calendar-settings',
@@ -27,8 +28,14 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 	calendars: Map<string, Calendars> = new Map()
 	connectionLoading: Map<string, boolean> = new Map()
 
+	userSubscription!: Subscription
+
+	ngOnDestroy() {
+		this.userSubscription.unsubscribe()
+	}
+
 	ngOnInit(): void {
-		this.authService.user.subscribe(user => {
+		this.userSubscription = this.authService.user.subscribe(user => {
 			if (!user) {
 				return
 			}
