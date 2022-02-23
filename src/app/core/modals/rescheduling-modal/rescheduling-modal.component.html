@@ -72,7 +72,7 @@
 				<div class="flex flex-row flex-wrap gap-4">
 					<span
 						*ngFor="let timespan of timespanGroup"
-						class="sm-tag text-base grey-background px-8 py-4 rounded-full border border-white group-hover:border-primary transition-all"
+						class="sm-tag flex flex-row text-base grey-background px-8 py-4 rounded-full border border-white group-hover:border-primary transition-all"
 					>
 						{{
 							timespan.start.toDate().getCloseToTodayString() ??
@@ -98,6 +98,7 @@
 						}}
 						|
 						{{ timespanToDuration(timespan) }}
+						<svg-icon *ngIf="isNeighbor(timespan)" title="This time slot is a neighbor of a work unit and will be merged with it." class="inline-block w-7 my-auto ml-2" src="/assets/icons/icon-union.svg"></svg-icon>
 					</span>
 				</div>
 			</div>
