@@ -375,9 +375,9 @@ export class TaskService {
 		return observable
 	}
 
-	public rescheduleWorkUnit(task: Task, index: number): Observable<Task> {
+	public rescheduleWorkUnit(task: Task, workUnitId: string): Observable<Task> {
 		const observable = this.http
-			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${index}/reschedule`, {})
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, {})
 			.pipe(share(), catchError((err) => this.handleError(err)))
 
 		observable.subscribe((newTask) => {

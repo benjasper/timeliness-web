@@ -205,7 +205,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 
 				this.loading = true
 				if (result.result.length === 0) {
-					const observable = this.taskService.rescheduleWorkUnit(task, this.workUnitIndex)
+					const observable = this.taskService.rescheduleWorkUnit(task, this.task.workUnits[this.workUnitIndex].id)
 					observable.subscribe(
 						() => {
 							this.loading = false

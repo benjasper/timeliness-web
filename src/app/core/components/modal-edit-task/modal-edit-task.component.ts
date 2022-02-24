@@ -407,7 +407,20 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	}
 
 	public close(): boolean {
-		this.closeModal()
+		if (this.task && this.isDirty) {
+			this.modalService
+			.addModal(ConfirmationModalComponent, {
+				title: 'Discard changes?',
+				message: 'You\'ve made changes to this task. Are you sure you want to discard them?',
+			})
+			.subscribe((result) => {
+				if (result.hasValue && result.result.result) {
+					this.closeModal()
+				}
+			})
+		} else {
+			this.closeModal()
+		}
 
 		return false
 	}
