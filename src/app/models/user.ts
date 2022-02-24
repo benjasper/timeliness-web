@@ -22,6 +22,7 @@ export interface UserSettings {
 		allowedTimespans?: Timespan[]
 		busyTimeSpacing?: number
 		timingPreference?: TimingPreferences
+		maxWorkUnitDuration?: number
 	}
 }
 

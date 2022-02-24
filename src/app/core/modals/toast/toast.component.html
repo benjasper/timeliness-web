@@ -28,7 +28,7 @@
 	<div *ngIf="!isLoading" class="flex flex-row text-lg font-bold my-auto" [ngSwitch]="toast.type">
 		<div class="flex w-12 h-12 rounded-full border mr-4">
 			<ng-container *ngSwitchCase="TOAST_TYPE.Error">
-				<svg-icon class="img w-5 fill-current m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
+				<svg-icon class="img w-8 scale-125 fill-current m-auto" src="/assets/icons/icon-exit.svg"></svg-icon>
 			</ng-container>
 			<ng-container *ngSwitchCase="TOAST_TYPE.Warning">
 				<span class="text-base m-auto">❗️</span>
@@ -67,6 +67,6 @@
 		(click)="dismiss()"
 		class="!ml-4 tiny-button !w-10 !h-10 flex-shrink-0 my-auto !text-grey-dark"
 	>
-		<svg-icon class="img !w-5 m-auto !text-grey-dark fill-current" src="/assets/icons/icon-exit.svg"></svg-icon>
+		<svg-icon class="img !w-8 scale-125 m-auto !text-white fill-current" src="/assets/icons/icon-exit.svg"></svg-icon>
 	</button>
 </div>

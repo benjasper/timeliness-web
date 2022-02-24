@@ -17,18 +17,18 @@
 		</div>
 		<div
 			class="absolute h-full w-2 flex-shrink-0 bg-grey-very-light dark:bg-grey-dark left-[1.25rem] md:left-[16.25rem] transform transition-all"
-			[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
+			[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime() || (task.date.type === AGENDA_TYPE.DueAt && task.date.date.start.toDate().getTime() < now.getTime())"
 		></div>
 		<div class="flex flex-shrink-0 my-auto w-12 h-12 z-10 rounded-full"
-			[class.bg-grey-very-light]="task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime()">
+			[class.bg-grey-very-light]="task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime() && task.date.type === AGENDA_TYPE.WorkUnit">
 			<div
 				class="flex flex-shrink-0 w-8 h-8 bg-grey-very-light dark:bg-grey-dark rounded-full m-auto z-10"
 				[class.bg-primary]="task.date.date.end.toDate().getTime() < now.getTime()"
 				[ngClass]="{
 					'!w-8 !h-8': task.date.date.end.toDate().getTime() < now.getTime(),
 					'bg-primary': task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime() || task.date.date.end.toDate().getTime() < now.getTime(),
-					'animate-ping': task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime(),
-					'!w-6 !h-6': task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime()
+					'animate-ping': task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime() && task.date.type === AGENDA_TYPE.WorkUnit,
+					'!w-6 !h-6': task.date.date.start.toDate().getTime() <= now.getTime() && task.date.date.end.toDate().getTime() > now.getTime() && task.date.type === AGENDA_TYPE.WorkUnit
 				}"
 			>
 			</div>
