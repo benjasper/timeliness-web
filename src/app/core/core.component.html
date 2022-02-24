@@ -67,8 +67,8 @@
 		<div class="hidden md:flex flex-col gap-8 mb-12">
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
-				href="mailto:feedback@timeliness.app?subject=Feedback/Bugs/Suggestions&body=Fill in what you want to suggest/report"
-				title="Feedback"
+				(click)="triggerFeedback()"
+				title="Give feedback"
 			>
 				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-feedback.svg"></svg-icon>
 			</a>

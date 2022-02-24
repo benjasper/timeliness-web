@@ -30,4 +30,8 @@ export class CoreComponent implements OnInit {
 	public logout(): void {
 		this.authService.logout()
 	}
+
+	public triggerFeedback(): void {
+		(window as any).freddyWidget.show();
+	}
 }

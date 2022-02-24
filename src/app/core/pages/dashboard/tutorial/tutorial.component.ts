@@ -32,6 +32,10 @@ export class TutorialComponent extends PageComponent implements OnInit, OnDestro
 	close() {
 		this.isShowing = false
 		setTimeout(() => {
+			setTimeout(() => {
+				(window as any).freddyWidget.show();
+			}, 60000 * 5)
+
 			this.router.navigate(['/dashboard'])
 		}, 200)
 	}
