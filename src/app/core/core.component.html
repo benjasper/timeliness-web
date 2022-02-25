@@ -3,8 +3,9 @@
 		<router-outlet #outlet="outlet"></router-outlet>
 	</div>
 	<div class="md:order-1 flex flex-col justify-between w-full md:w-48 shadow-2xl md:shadow-none bg-grey-very-light dark:!bg-grey-very-dark">
-		<h1 class="hidden md:block px-14 mt-20">
+		<h1 class="hidden relative md:block px-14 mt-20">
 			<img class="w-full h-full" src="/assets/images/timeliness_logo_small.svg" loading="eager" alt="Timeliness logo" />
+			<span class="sm-tag bg-primary text-white absolute -bottom-9 left-1/2 transform -translate-x-1/2 !text-[0.9rem] whitespace-nowrap flex-shrink-0 cursor-default" tooltip="Hi there! Good job on finding this easter egg! Have a cookie 🍪" [delay]="10">Early Access</span>
 		</h1>
 		<div>
 			<div *ngIf="user" class="hidden md:flex w-24 h-24 rounded-full flex-shrink-0 bg-secondary mx-auto">
@@ -20,7 +21,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/dashboard"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Dashboard"
+							[tooltip]="'Dashboard'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -33,7 +34,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/agenda"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Agenda"
+							[tooltip]="'Agenda'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -43,7 +44,7 @@
 					</li>
 					<!--
 					<li>
-						<a class="text-underline transition-all !text-grey-dark hover:!bg-transparent !cursor-default" routerLinkActive="active" title="Contacts">
+						<a class="text-underline transition-all !text-grey-dark hover:!bg-transparent !cursor-default" routerLinkActive="active" [tooltip]="'Contacts'">
 							<svg-icon class="img transition-all" src="/assets/icons/icon-users.svg"></svg-icon>
 						</a>
 					</li>
@@ -53,7 +54,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/settings"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Settings"
+							[tooltip]="'Settings'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -68,14 +69,14 @@
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 				(click)="triggerFeedback()"
-				title="Give feedback"
+				[tooltip]="'Give feedback'"
 			>
 				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-feedback.svg"></svg-icon>
 			</a>
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 				(click)="logout()"
-				title="Log out"
+				[tooltip]="'Log out'"
 			>
 				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-logout.svg"></svg-icon>
 			</a>

@@ -99,7 +99,7 @@
 							</ng-container>
 						</span>
 					</ng-container>
-					<svg-icon class="w-8 flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" title="View in calendar"></svg-icon>
+					<svg-icon class="w-8 flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task, task.workUnits[workUnitIndex].id)" [tooltip]="'View in calendar'"></svg-icon>
 				</div>
 
 				<div class="flex flex-row gap-2">
@@ -151,7 +151,8 @@
 		<button
 			class="btn with-border no-background"
 			[class.icon-only]="task.workUnits[workUnitIndex].isDone"
-			title="{{ task.workUnits[workUnitIndex].isDone ? 'Mark as not done' : 'Mark as done' }}"
+			[tooltip]="task.workUnits[workUnitIndex].isDone ? 'Mark work unit as not done' : 'Mark work unit as done'"
+			position="bottom"
 			[ngClass]="getColorClass(tag ? tag.color : '', 'color')"
 			(click)="markWorkUnitAsDone(task, workUnitIndex, !task.workUnits[workUnitIndex].isDone)"
 		>

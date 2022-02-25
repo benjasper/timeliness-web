@@ -13,7 +13,9 @@
 	<div class="deadline-info">
 		<a
 			class="deadline-name truncate-text text-underline text-black"
-			title="{{ task.name }}"
+			[tooltip]="task.name"
+			[delay]="1.5"
+			[position]="tooltipDirection"
 			[routerLink]="['task', task.id]"
 		>
 			{{ task.name }}

@@ -21,7 +21,8 @@
 	<div class="deadline-info">
 		<a
 			class="deadline-name truncate-text text-underline text-black"
-			title="{{ task.name }}"
+			[tooltip]="task.name"
+			[delay]="1.5"
 			[routerLink]="['task', task.id]" [queryParams]="{ workUnit: task.workUnits[task.workUnitIndex].id}"
 		>
 			{{ task.name }}

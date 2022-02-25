@@ -33,7 +33,7 @@
 			>
 			</div>
 		</div>
-		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt" class="my-auto w-full" [task]="task"></app-deadline>
+		<app-deadline *ngIf="task.date.type === AGENDA_TYPE.DueAt" class="my-auto w-full" [task]="task" tooltipDirection="right"></app-deadline>
 		<app-agenda-work-unit
 			*ngIf="task.date.type === AGENDA_TYPE.WorkUnit"
 			class="my-auto w-full"
