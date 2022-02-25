@@ -21,10 +21,10 @@
 		<button class="btn small" [disabled]="new" (click)="delete($event)">
 			<svg-icon class="img scale-150" src="/assets/icons/icon-trash.svg"></svg-icon>
 		</button>
-		<button class="btn small" (click)="promoteToFirst($event)" *ngIf="!isFirst && !new" title="Promote to first tag">
+		<button class="btn small" (click)="promoteToFirst($event)" *ngIf="!isFirst && !new" [tooltip]="'Promote to first tag'">
 			<svg-icon class="img back-arrow" src="/assets/icons/icon-arrow.svg"></svg-icon>
 		</button>
-		<button class="btn small" (click)="toggleDropdown($event)" title="Change color">
+		<button class="btn small" (click)="toggleDropdown($event)" [tooltip]="'Change color'">
 			<svg-icon class="img" src="/assets/icons/icon-arrow-down.svg" [class.isOpen]="showColorDropdown"></svg-icon>
 		</button>
 	</div>

@@ -20,6 +20,7 @@ export class DeadlineComponent extends TaskComponent implements OnInit {
 
 	@Input() task!: Task
 	@Input() loading = false
+	@Input() tooltipDirection: 'left' | 'right' = 'left'
 
 	now = new Date()
 

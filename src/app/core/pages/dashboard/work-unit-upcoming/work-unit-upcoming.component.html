@@ -9,7 +9,8 @@
 		<div class="work-unit-info">
 			<a
 				class="task-title truncate-text text-underline text-black"
-				title="{{ task.name }}"
+				[tooltip]="task.name"
+				[delay]="1.5"
 				[routerLink]="['task', task.id]" [queryParams]="{ workUnit: task.workUnit.id}"
 			>
 				{{ task.name }}

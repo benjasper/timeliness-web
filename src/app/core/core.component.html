@@ -20,7 +20,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/dashboard"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Dashboard"
+							[tooltip]="'Dashboard'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -33,7 +33,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/agenda"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Agenda"
+							[tooltip]="'Agenda'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -43,7 +43,7 @@
 					</li>
 					<!--
 					<li>
-						<a class="text-underline transition-all !text-grey-dark hover:!bg-transparent !cursor-default" routerLinkActive="active" title="Contacts">
+						<a class="text-underline transition-all !text-grey-dark hover:!bg-transparent !cursor-default" routerLinkActive="active" [tooltip]="'Contacts'">
 							<svg-icon class="img transition-all" src="/assets/icons/icon-users.svg"></svg-icon>
 						</a>
 					</li>
@@ -53,7 +53,7 @@
 							class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 							routerLink="/settings"
 							[routerLinkActive]="['bg-primary', 'text-white', 'hover:!bg-primary', 'cursor-default']"
-							title="Settings"
+							[tooltip]="'Settings'"
 						>
 							<svg-icon
 								class="block m-auto w-14 transition-all"
@@ -68,14 +68,14 @@
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 				(click)="triggerFeedback()"
-				title="Give feedback"
+				[tooltip]="'Give feedback'"
 			>
 				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-feedback.svg"></svg-icon>
 			</a>
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 				(click)="logout()"
-				title="Log out"
+				[tooltip]="'Log out'"
 			>
 				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-logout.svg"></svg-icon>
 			</a>

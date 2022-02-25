@@ -109,7 +109,7 @@
 										 class="edit"
 										 tabindex="3"
 										 formControlName="dueAt"></app-datetime-picker>
-					<svg-icon *ngIf="task" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" title="View in calendar"></svg-icon>
+					<svg-icon *ngIf="task" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" [tooltip]="'View in calendar'"></svg-icon>
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
