@@ -2,7 +2,9 @@ import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, ViewChild } fro
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { Task, TaskUnwound } from 'src/app/models/task'
+import { User } from 'src/app/models/user'
 import { PageComponent } from 'src/app/pages/page'
+import { AuthService } from 'src/app/services/auth.service'
 import { TaskService } from 'src/app/services/task.service'
 import { UtilityService } from 'src/app/services/utility.service'
 
@@ -12,9 +14,11 @@ import { UtilityService } from 'src/app/services/utility.service'
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent extends PageComponent implements OnInit, OnDestroy {
-	constructor(private taskService: TaskService, protected titleService: Title, private router: Router) {
+	constructor(private taskService: TaskService, protected titleService: Title, private router: Router, private authService: AuthService) {
 		super(titleService)
 	}
+
+	public user?: User
 
 	public today = new Date()
 	public groupedDeadlines: TaskDateGroup[] = []
@@ -62,6 +66,10 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		this.taskService.now.subscribe((date) => {
 			this.today = date
 			this.checkNextUpMessage()
+		})
+
+		this.authService.user.subscribe((user) => {
+			this.user = user
 		})
 
 		this.taskService.dateChangeObservable.subscribe(() => {
