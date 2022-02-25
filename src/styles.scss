@@ -642,7 +642,7 @@ progress {
 }
 
 .tooltip {
-	@apply w-auto bg-white px-6 py-2 absolute z-50 rounded-xl shadow-md pointer-events-none text-base text-black;
+	@apply w-auto bg-white px-6 py-2 absolute z-50 rounded-xl shadow-md pointer-events-none text-base text-black max-w-lg;
 	animation: expand 0.2s ease-in-out;
 }
 
