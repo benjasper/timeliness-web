@@ -8,9 +8,10 @@
 
 			<ng-container *ngIf="connection.status === CONNECTION_STATUS.Active">
 				<div class="text-black mt-4 bg-grey-very-light rounded-2xl p-6">
-					<span *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="label mb-2 text-grey-dark">
-						Calendars indicating your availability
-					</span>
+					<label *ngIf="calendars.get(connection.id)?.length ?? 0 > 0" class="flex flex-row mb-2 text-grey-dark">
+						<span class="label my-auto">Calendars indicating your availability</span>
+						<svg-icon class="inline-block w-8 my-auto ml-1 cursor-pointer" src="/assets/icons/icon-info.svg" tooltip="These are all your calendars from your Google Calendar. Mark the ones you want Timeliness to use for checking if your available." position="top"></svg-icon>
+					</label>
 					<ng-container *ngIf="!connectionLoading.get(connection.id)">
 						<div *ngFor="let calendar of calendars.get(connection.id)" class="flex flex-row">
 							<input
