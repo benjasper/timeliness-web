@@ -70,6 +70,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 		this.authService.user.subscribe((user) => {
 			this.user = user
+			this.checkNextUpMessage()
 		})
 
 		this.taskService.dateChangeObservable.subscribe(() => {
@@ -239,6 +240,10 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		}
 
 		if (this.nextUp.length === 0) {
+			if (this.user && this.user.createdAt.toDate().isSameDay(this.today)) {
+				this.nextUpState = NextUpState.IsNew
+				return 
+			}
 			this.nextUpState = NextUpState.NoTasks
 			this.nextUpTaskFocus = undefined
 			return
@@ -358,4 +363,5 @@ enum NextUpState {
 	NoTasks,
 	NextTask,
 	Default,
+	IsNew,
 }

@@ -44,7 +44,8 @@
 		</div>
 		<div>
 			<label *ngIf="(task && task.workUnits.length > 0) || loading"
-				   class="label inset flex flex-row">
+				   class="label inset flex flex-row"
+				   tooltip="Here you can see when Timeliness planned for you to work on this task." position="top" [delay]="0.5">
 					<svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-work-unit.svg"></svg-icon>
 					<div class="my-auto">Work units</div>
 				</label>
@@ -101,7 +102,8 @@
 			<div class="flex flex-col gap-4 pt-8">
 				<div class="flex flex-row">
 					<label for="due-date"
-						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row"
+						   tooltip="Set this to a date and time you want to be done by." position="left" [delay]="0.5">
 						<svg-icon class="block w-8 fill-current mr-2" src="/assets/icons/icon-deadline.svg"></svg-icon>
 						<div class="my-auto">Due date</div>
 					</label>
@@ -113,7 +115,8 @@
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"
-						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
+						   class="label my-auto w-52 flex-shrink-0 flex flex-row"
+						   tooltip="Set here how much time you think this task will take you." position="left" [delay]="0.5">
 						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-clock.svg"></svg-icon>
 						   <div class="my-auto">Workload</div>
 						</label>
