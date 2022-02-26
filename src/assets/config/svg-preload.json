@@ -55,6 +55,10 @@
 		{
 			"iconName": "timeliness_logo_small",
 			"iconPath": "/assets/images/timeliness_logo_small.svg"
+		},
+		{
+			"iconName": "icon-plus",
+			"iconPath": "/assets/icons/icon-plus.svg"
 		}
 	],
 	"customIcons": []
