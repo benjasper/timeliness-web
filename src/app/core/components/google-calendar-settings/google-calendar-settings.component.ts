@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Toast, ToastType } from 'src/app/models/toast';
 import { CalendarConnectionStatus, User } from 'src/app/models/user';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 	selector: 'app-google-calendar-settings',
 	templateUrl: './google-calendar-settings.component.html'
 })
-export class GoogleCalendarSettingsComponent implements OnInit {
+export class GoogleCalendarSettingsComponent implements OnInit, OnDestroy {
 
 	constructor(private authService: AuthService, private modalService: ModalService) { }
 
@@ -32,6 +32,7 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 
 	ngOnDestroy() {
 		this.userSubscription.unsubscribe()
+		document.removeEventListener('visibilitychange', this.handleVisibilityChange)
 	}
 
 	ngOnInit(): void {
@@ -93,7 +94,6 @@ export class GoogleCalendarSettingsComponent implements OnInit {
 		} else {
 			document.title = 'Timeliness'
 			this.authService.forceUserUpdate()
-			document.removeEventListener('visibilitychange', this.handleVisibilityChange)
 		}
 	}
 
