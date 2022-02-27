@@ -32,6 +32,13 @@ export class CoreComponent implements OnInit {
 	}
 
 	public triggerFeedback(): void {
-		(window as any).freddyWidget.show();
+		(window as any).freddyWidget.show(
+			{
+				custom_fields: {
+					user_id: this.user?.id,
+				},
+				url: window.location.href
+			}
+		);
 	}
 }
