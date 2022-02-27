@@ -4,7 +4,7 @@
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
 	Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https://accounts.google.com https://freddyfeedback.com/; style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net https://fonts.googleapis.com https://accounts.google.com; form-action 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://freddyfeedback.com https://cdn.usefathom.com; connect-src 'self' https://api.timeliness.app https://staging.api.timeliness.app https://freddyfeedback.com; img-src 'self' data:; base-uri 'self'; font-src https://use.typekit.net/ https://fonts.gstatic.com"
+    Content-Security-Policy = "default-src 'self' https://accounts.google.com https://freddyfeedback.com/; style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net https://fonts.googleapis.com https://accounts.google.com; form-action 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://freddyfeedback.com https://cdn.usefathom.com; connect-src 'self' https://api.timeliness.app https://staging.api.timeliness.app https://freddyfeedback.com; img-src 'self' data: https://cdn.usefathom.com; base-uri 'self'; font-src https://use.typekit.net/ https://fonts.gstatic.com"
 
 [context.staging]
   command = "ng build --configuration staging"
