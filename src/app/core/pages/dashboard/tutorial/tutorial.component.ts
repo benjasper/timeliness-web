@@ -46,7 +46,6 @@ export class TutorialComponent extends PageComponent implements OnInit, OnDestro
 			(user: User) => {
 				setTimeout(
 					(user: User) => {
-						console.log(user)
 						;(window as any).freddyWidget.show({
 							custom_fields: {
 								user_id: user.id,
