@@ -2,7 +2,9 @@ import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
+import { User } from 'src/app/models/user'
 import { PageComponent } from 'src/app/pages/page'
+import { AuthService } from 'src/app/services/auth.service'
 
 @Component({
 	selector: 'app-tutorial',
@@ -15,7 +17,7 @@ import { PageComponent } from 'src/app/pages/page'
 	],
 })
 export class TutorialComponent extends PageComponent implements OnInit, OnDestroy {
-	constructor(private router: Router, protected titleService: Title) {
+	constructor(private router: Router, protected titleService: Title, private authService: AuthService) {
 		super(titleService)
 	}
 
@@ -24,20 +26,43 @@ export class TutorialComponent extends PageComponent implements OnInit, OnDestro
 	slideIndex: number = 0
 
 	slideOnTheMove = false
+	user?: User
 
 	ngOnInit(): void {
 		this.setTitle('Getting started')
+
+		this.authService.user.subscribe((user) => {
+			if (user) {
+				this.user = user
+			}
+		})
 	}
 
-	close() {
+	async close() {
 		this.isShowing = false
-		setTimeout(() => {
-			setTimeout(() => {
-				(window as any).freddyWidget.show();
-			}, 60000 * 5)
 
-			this.router.navigate(['/dashboard'])
-		}, 200)
+		const user = this.user
+		setTimeout(
+			(user: User) => {
+				setTimeout(
+					(user: User) => {
+						console.log(user)
+						;(window as any).freddyWidget.show({
+							custom_fields: {
+								user_id: user.id,
+							},
+							url: window.location.href,
+						})
+					},
+					60000 * 10,
+					user
+				)
+
+				this.router.navigate(['/dashboard'])
+			},
+			200,
+			user
+		)
 	}
 
 	next() {
