@@ -68,6 +68,13 @@
 		<div class="hidden md:flex flex-col gap-8 mb-12">
 			<a
 				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
+				routerLink="/dashboard/tutorial"
+				[tooltip]="'Read Getting Started Guide'"
+			>
+				<svg-icon class="block m-auto w-14 transition-all" src="/assets/icons/icon-info.svg"></svg-icon>
+			</a>
+			<a
+				class="w-32 py-4 mx-auto transition-all hover:bg-grey rounded-2xl"
 				(click)="triggerFeedback()"
 				[tooltip]="'Give feedback'"
 			>

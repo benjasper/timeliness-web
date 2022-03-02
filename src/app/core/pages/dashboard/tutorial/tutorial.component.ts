@@ -41,26 +41,11 @@ export class TutorialComponent extends PageComponent implements OnInit, OnDestro
 	async close() {
 		this.isShowing = false
 
-		const user = this.user
 		setTimeout(
-			(user: User) => {
-				setTimeout(
-					(user: User) => {
-						;(window as any).freddyWidget.show({
-							custom_fields: {
-								user_id: user.id,
-							},
-							url: window.location.href,
-						})
-					},
-					60000 * 10,
-					user
-				)
-
+			() => {
 				this.router.navigate(['/dashboard'])
 			},
-			200,
-			user
+			200
 		)
 	}
 
