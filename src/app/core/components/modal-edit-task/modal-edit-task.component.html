@@ -134,10 +134,11 @@
 				<div *ngIf="task && task.notScheduled !== 0"
 					 class="flex flex-row">
 					<label for="not-scheduled"
+							tooltip="This task couldn't be fully scheduled because there was not enough free time available in you calendar. Move events in your calendar or change the due date to fix it." position="left" [delay]="0.5"
 						   class="label my-auto w-52 flex-shrink-0 flex flex-row">
 						   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-warning.svg"></svg-icon>
 						   <div class="my-auto">Not scheduled</div>
-						</label>
+					</label>
 					<div *ngIf="task.notScheduled !== 0"
 						 class="sm-tag bg-pink flex flex-row relative ml-4">
 						<span class="text-red text-base">{{ task.notScheduled.toDuration(NANOSECONDS) }} not scheduled</span>

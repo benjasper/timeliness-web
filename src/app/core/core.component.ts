@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service'
 })
 export class CoreComponent implements OnInit {
 	constructor(private authService: AuthService) {}
-	public user: User|undefined = undefined
+	public user?: User
 
 	ngOnInit(): void {
 		this.authService.user.subscribe(user => {
