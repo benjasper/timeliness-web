@@ -292,9 +292,17 @@ input,
 	}
 }
 
+.splide {
+	.splide__list {
+		display: flex;
+		flex-flow: row;
+		gap: 2rem;
+	}
+}
+
 ul.splide__pagination {
-	position: relative;
-	margin-top: 2rem;
+	position: absolute;
+	bottom: -4rem;
 	display: flex;
 	flex-flow: row;
 
@@ -310,7 +318,9 @@ ul.splide__pagination {
 		}
 
 		&:last-child:first-child {
-			display: none;
+			button.splide__pagination__page {
+					transform: scale(1);
+			}
 		}
 	}
 }

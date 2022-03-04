@@ -1,8 +1,7 @@
 <span
-	class="input min-w-max whitespace-nowrap rounded-md"
-	title="{{ (selected.getTime() - today.getTime()).toDuration().toStringWithoutSeconds() }}{{
-		selected.getTime() - today.getTime() < 0 ? 'ago' : ''
-	}}"
+	class="input min-w-[21rem] whitespace-nowrap rounded-md"
+	[tooltip]="(selected.getTime() - today.getTime()).toDuration().toStringWithoutSeconds() + (selected.getTime() - today.getTime() < 0 ? 'ago' : '')"
+	[delay]="2"
 	(click)="toggleDropdown()"
 >
 	{{ selected.toLocaleDateString('default', { day: '2-digit', month: 'short', year: 'numeric' }) }} |

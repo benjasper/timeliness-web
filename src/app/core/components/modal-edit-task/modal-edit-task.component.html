@@ -3,8 +3,9 @@
 	 (click)="close()"></div>
 <form [formGroup]="editTask"
 	  class="!fixed inset-center z-20 flex flex-col w-screen h-screen lg:w-auto lg:h-auto lg:grid grid-cols-modal overflow-y-auto lg:overflow-visible bg-white lg:rounded-3xl dark:bg-black shadow-lg"
-	  @flyInOut
-	  *ngIf="loaded"
+	  @modalFlyInOut
+	  (@modalFlyInOut.done)="animationDone()"
+	  *ngIf="isOpen"
 	  (ngSubmit)="save()">
 	<div class="flex flex-col w-auto bg-white dark:bg-black dark:text-white p-16 lg:rounded-l-2xl gap-16">
 		<div class="mt-3">
@@ -42,26 +43,29 @@
 					  formControlName="description"
 					  autocomplete="off"></textarea>
 		</div>
-		<div>
-			<label *ngIf="(task && task.workUnits.length > 0) || loading"
-				   class="label inset flex flex-row"
-				   tooltip="Here you can see when Timeliness scheduled for you to work on this task." position="top" [delay]="0.5">
+		<div class="flex flex-col" *ngIf="!isNew">
+			<label
+					*ngIf="loading || task.workUnits.length > 0"
+				   class="label inset flex flex-row !mr-auto"
+				   tooltip="Here you can see the time slots Timeliness blocked out time for you to work on this task." position="top" [delay]="0.5">
 					<svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-work-unit.svg"></svg-icon>
 					<div class="my-auto">Work units</div>
 				</label>
-			<splide *ngIf="loading" class="w-full" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
-				<splide-slide *ngFor="let workUnit of [1,2,3] let i = index">
-					<app-work-unit-card [loading]="true"
-										[small]="true"></app-work-unit-card>
-				</splide-slide>
-			</splide>
-			<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [(selectedSlideIndex)]="startIndex" [options]="{ type: 'slide', gap: '2rem', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }" (onMoved)="workUnitSliderMove($event)">
-				<splide-slide *ngFor="let workUnit of task.workUnits; let i = index">
-					<app-work-unit-card [task]="task"
-										[workUnitIndex]="i"
-										[small]="true"></app-work-unit-card>
-				</splide-slide>
-			</splide>
+			<div class="flex flex-row gap-8 pb-16">
+				<splide *ngIf="loading" class="w-full" [options]="{ type: 'slide', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }">
+					<splide-slide *ngFor="let workUnit of [1,2,3] let i = index">
+						<app-work-unit-card [loading]="true"
+											[small]="true"></app-work-unit-card>
+					</splide-slide>
+				</splide>
+				<splide *ngIf="!loading && (task && task.workUnits.length > 0)" class="w-full" [(selectedSlideIndex)]="startIndex" [options]="{ type: 'slide', perPage: 1, perMove: 1, autoWidth: true, trimSpace: false }" (onMoved)="workUnitSliderMove($event)">
+					<splide-slide *ngFor="let workUnit of task.workUnits; let i = index">
+						<app-work-unit-card [task]="task"
+											[workUnitIndex]="i"
+											[small]="true"></app-work-unit-card>
+					</splide-slide>
+				</splide>
+			</div>
 		</div>
 	</div>
 	<div class="flex flex-col p-16 bg-grey-very-light lg:rounded-r-2xl">
