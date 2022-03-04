@@ -1,6 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast'
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { modalFlyInOut } from 'src/app/animations'
 import { ConfirmationModalComponent } from 'src/app/core/modals/confirmation-modal/confirmation-modal.component'
 import { TaskComponent } from 'src/app/core/task.component'
 import { Tag, TagModified } from 'src/app/models/tag'
@@ -12,14 +13,7 @@ import { TaskService } from 'src/app/services/task.service'
 	templateUrl: './tag.component.html',
 	styleUrls: ['./tag.component.scss'],
 	animations: [
-		trigger('appear', [
-			transition(':enter', [style({ opacity: 0 }), animate(200)]),
-			transition(':leave', [animate(200, style({ opacity: 0 }))]),
-		]),
-		trigger('flyInOut', [
-			transition(':enter', [style({ transform: 'translate(-20%, 0)', opacity: 0 }), animate(100)]),
-			transition(':leave', [animate(100, style({ transform: 'translate(-20%, 0)', opacity: 0 }))]),
-		]),
+		
 	],
 })
 export class TagComponent extends TaskComponent implements OnInit {

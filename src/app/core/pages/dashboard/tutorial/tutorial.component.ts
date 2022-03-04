@@ -2,6 +2,7 @@ import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
+import { modalFlyInOut } from 'src/app/animations'
 import { User } from 'src/app/models/user'
 import { PageComponent } from 'src/app/pages/page'
 import { AuthService } from 'src/app/services/auth.service'
@@ -10,10 +11,7 @@ import { AuthService } from 'src/app/services/auth.service'
 	selector: 'app-tutorial',
 	templateUrl: './tutorial.component.html',
 	animations: [
-		trigger('flyInOut', [
-			transition(':enter', [style({ opacity: 0 }), animate(200)]),
-			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
-		]),
+		modalFlyInOut
 	],
 })
 export class TutorialComponent extends PageComponent implements OnInit, OnDestroy {

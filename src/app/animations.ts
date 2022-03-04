@@ -2,11 +2,9 @@ import { animate, animateChild, group, query, style, transition, trigger } from 
 
 const optional = { optional: true }
 
-export const smoothHeight = trigger('grow', [
-	transition('void <=> *', []),
-	transition('* <=> *', [style({ height: '{{startHeight}}px', opacity: 0 }), animate('.5s ease')], {
-		params: { startHeight: 0 },
-	}),
+export const modalFlyInOut = trigger('modalFlyInOut', [
+	transition(':enter', [style({ transform: 'translate(-50%, -50%) scale(0.95)', opacity: 0 }), animate("200ms ease-in-out")]),
+	transition(':leave', [animate("200ms ease-in-out", style({ transform: 'translate(-50%, -50%) scale(0.95)', opacity: 0 }))]),
 ])
 
 export const sliderRoutes = trigger('routeAnimations', [

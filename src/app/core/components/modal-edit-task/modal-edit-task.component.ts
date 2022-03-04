@@ -9,7 +9,7 @@ import { EventModified, Task, TaskModified } from 'src/app/models/task'
 import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
-import { smoothHeight } from 'src/app/animations'
+import { modalFlyInOut } from 'src/app/animations'
 import { ModalService } from 'src/app/services/modal.service'
 import { Toast, ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
@@ -24,27 +24,20 @@ import { PageComponent } from 'src/app/pages/page'
 			transition(':enter', [style({ opacity: 0 }), animate(100)]),
 			transition(':leave', [animate(100, style({ opacity: 0.6 }))]),
 		]),
-		trigger('flyInOut', [
-			transition(':enter', [style({ transform: 'translate(-50%, -150%)', opacity: 0 }), animate(200)]),
-			transition(':leave', [animate(200, style({ transform: 'translate(-50%, 150%)', opacity: 0 }))]),
-		]),
-		trigger('shrinkOut', [
-			state('in', style({ height: '*' })),
-			transition('* => void', [style({ height: '*' }), animate(250, style({ height: '*' }))]),
-		]),
-		smoothHeight,
+		modalFlyInOut
 	],
 })
 export class ModalEditTaskComponent extends PageComponent implements OnInit, OnDestroy, AfterViewInit {
 	taskId!: string
 	task!: Task
-	loaded = true
+	isOpen = true
 	modalBackground = false
 	isNew = false
 	loading = false
 	workUnitId?: string
 	isDirty = false
 	lastTagsHash: string[] = []
+	animationIsDone = false
 
 	startIndex = 0
 
@@ -142,6 +135,15 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		}
 	}
 
+	animationDone(): void {
+		this.animationIsDone = true
+
+		if (this.task) {
+			this.loading = false
+			this.setStartsAtWorkUnit()
+		}
+	}
+
 	ngOnInit(): void {
 		this.modalBackground = true
 		this.generateDurations()
@@ -164,9 +166,11 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			this.taskService.getTask(this.taskId).subscribe(
 				(task) => {
 					this.patchFormAndSetTask(task)
-					this.loading = false
 
-					this.setStartsAtWorkUnit()
+					if (this.animationIsDone) {
+						this.loading = false
+						this.setStartsAtWorkUnit()
+					}
 
 					this.registerForTagUpdates()
 					this.registerForTaskUpdates()
@@ -285,7 +289,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 		setTimeout(() => {
 			this.startIndex = index === -1 ? 0 : index
-		}, 50)
+		}, 10)
 	}
 
 	public generateDurations(task?: Task): void {
@@ -432,7 +436,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	}
 
 	private closeModal(): void {
-		this.loaded = false
+		this.isOpen = false
 		this.modalBackground = false
 		setTimeout(() => {
 			this.router.navigate(['.'], { relativeTo: this.route.parent })

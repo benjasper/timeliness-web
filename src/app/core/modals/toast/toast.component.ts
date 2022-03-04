@@ -12,7 +12,7 @@ export interface ToastComponentData {
 	selector: 'app-toast',
 	templateUrl: './toast.component.html',
 	animations: [
-		trigger('flyInOut', [
+		trigger('toastAnimation', [
 			transition(':enter', [style({ transform: 'translate(-50%, 150%)', opacity: 0 }), animate(300)]),
 			transition(':leave', [animate(300), style({ transform: 'translate(-50%, 150%)', opacity: 0 })]),
 		]),
