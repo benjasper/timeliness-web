@@ -32,14 +32,19 @@
 				></svg-icon>
 				
 				<div class="flex flex-col gap-8">
-					<p class="mx-auto text-left text-lg max-w-3xl">
+					<p class="mx-auto text-left text-lg max-w-5xl">
 						It seems like you have us denied access to your Google Calendar. 🙁
-						<br />
+						<br /><br />
 						We know these permissions look scary, but we only use them to check if you are available and to create events for your tasks in a separate calendar.
 						We won't touch any of your data. ✌️
 						<br>
 						If you changed your mind, simply restart the process.
 						<br /><br />
+						If you didn't deny permissions on purpose, it can also be that in case you were trying to connect a Google Workspace Account, an admin policy prevented you from giving the necessary permissions.
+						<br />
+						Please contact us in this case, we'll try to figure something out.
+						<br /><br />
+
 						If you think this is a mistake, please contact us at <a class="text-lg inline-block" href="mailto:support@timeliness.app">support@timeliness.app</a>.
 					</p>
 					<button class="!mx-auto !mt-8 !text-lg" (click)="close()">Close</button>
