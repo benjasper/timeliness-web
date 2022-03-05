@@ -53,7 +53,8 @@ import { ToastComponent } from './core/modals/toast/toast.component'
 import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component';
 import { PaginationComponent } from './core/components/pagination/pagination.component'
 import { MaxWorkUnitDurationComponent } from './core/pages/settings/components/max-work-unit-duration/max-work-unit-duration.component';
-import { TooltipDirective } from './directives/tooltip.directive'
+import { TooltipDirective } from './directives/tooltip.directive';
+import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
 
 @NgModule({
 	declarations: [
@@ -98,6 +99,7 @@ import { TooltipDirective } from './directives/tooltip.directive'
 		MaxWorkUnitDurationComponent,
   		PaginationComponent,
     TooltipDirective,
+    GoogleErrorComponent,
 	],
 	imports: [
 		BrowserModule,
