@@ -18,6 +18,7 @@ import { SuccessGoogleComponent } from './pages/static/success-google/success-go
 import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { NoOnboardingGuard } from './guards/no-onboarding.guard'
 import { TutorialComponent } from './core/pages/dashboard/tutorial/tutorial.component'
+import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
 
 const routes: Routes = [
 	{
@@ -100,6 +101,10 @@ const routes: Routes = [
 			{
 				path: 'google-connected',
 				component: SuccessGoogleComponent,
+			},
+			{
+				path: 'google-error',
+				component: GoogleErrorComponent,
 			},
 		],
 	},

@@ -1,0 +1,50 @@
+<div class="w-screen h-screen">
+	<div class="w-full h-1/2 bg-secondary"></div>
+	<div class="w-full h-1/2 bg-grey-very-light"></div>
+
+	<div
+		class="
+			absolute
+			inset-center
+			bg-white
+			flex flex-col
+			gap-16
+			px-16
+			py-24
+			rounded-3xl
+			overflow-y-auto
+			max-h-[95vh]
+			h-auto
+			md:h-auto
+			w-[90vw]
+			md:w-auto
+			shadow-lg
+		"
+	>
+		<img class="img w-80 mx-auto" src="/assets/images/timeliness_logo.svg" alt="Timeliness Logo" />
+
+		<div class="flex flex-col gap-16">
+			<div class="flex flex-col gap-24 justify-center">
+				<h1 class="mx-auto">Google Calendar access denied</h1>
+				<svg-icon
+					class="img mx-auto !w-32 !h-32 text-red fill-current border-4 rounded-full p-6 scale-110"
+					src="/assets/icons/icon-exit.svg"
+				></svg-icon>
+				
+				<div class="flex flex-col gap-8">
+					<p class="mx-auto text-left text-lg max-w-3xl">
+						It seems like you have us denied access to your Google Calendar. 🙁
+						<br />
+						We know these permissions look scary, but we only use them to check if you are available and to create events for your tasks in a separate calendar.
+						We won't touch any of your data. ✌️
+						<br>
+						If you changed your mind, simply restart the process.
+						<br /><br />
+						If you think this is a mistake, please contact us at <a class="text-lg inline-block" href="mailto:support@timeliness.app">support@timeliness.app</a>.
+					</p>
+					<button class="!mx-auto !mt-8 !text-lg" (click)="close()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
