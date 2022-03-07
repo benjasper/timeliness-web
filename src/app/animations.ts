@@ -3,8 +3,8 @@ import { animate, animateChild, group, query, style, transition, trigger } from 
 const optional = { optional: true }
 
 export const modalBackground = trigger('modalBackground', [
-	transition(':enter', [style({ opacity: 0 }), animate("200ms")]),
-	transition(':leave', [animate("200ms", style({ opacity: 0.6 }))])
+	transition(':enter', [style({ opacity: 0 }), animate("100ms ease-in-out")]),
+	transition(':leave', [animate("100ms ease-in-out", style({ opacity: 0.6 }))])
 ])
 
 export const modalFlyInOut = trigger('modalFlyInOut', [
