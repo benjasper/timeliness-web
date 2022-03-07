@@ -1,7 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, Input, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
-import { modalFlyInOut } from 'src/app/animations'
+import { modalBackground, modalFlyInOut } from 'src/app/animations'
 import { Duration, DurationUnit } from 'src/app/models/duration'
 import { Task } from 'src/app/models/task'
 import { Timespan } from 'src/app/models/timespan'
@@ -17,10 +17,7 @@ export interface ReschedulingModalData {
 	selector: 'app-rescheduling-modal',
 	templateUrl: './rescheduling-modal.component.html',
 	animations: [
-		trigger('inOut', [
-			transition(':enter', [style({ opacity: 0 }), animate(200)]),
-			transition(':leave', [style({ opacity: 0.5 }), animate(200)]),
-		]),
+		modalBackground,
 		modalFlyInOut
 	],
 })

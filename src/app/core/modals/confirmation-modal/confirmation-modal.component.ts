@@ -1,7 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
-import { modalFlyInOut } from 'src/app/animations'
+import { modalBackground, modalFlyInOut } from 'src/app/animations'
 import { ModalResult } from 'src/app/services/modal.service'
 
 export interface ConfirmationModalData {
@@ -19,10 +19,7 @@ export interface ConfirmationModalOption {
 	selector: 'app-confirmation-modal',
 	templateUrl: './confirmation-modal.component.html',
 	animations: [
-		trigger('inOut', [
-			transition(':enter', [style({ opacity: 0 }), animate(200)]),
-			transition(':leave', [style({ opacity: 0.5 }), animate(200)]),
-		]),
+		modalBackground,
 		modalFlyInOut
 	],
 })
