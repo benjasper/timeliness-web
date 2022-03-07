@@ -9,7 +9,7 @@ import { EventModified, Task, TaskModified } from 'src/app/models/task'
 import { Tag, TagModified } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
 import { TaskComponent } from '../../task.component'
-import { modalFlyInOut } from 'src/app/animations'
+import { modalBackground, modalFlyInOut } from 'src/app/animations'
 import { ModalService } from 'src/app/services/modal.service'
 import { Toast, ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
@@ -20,10 +20,7 @@ import { PageComponent } from 'src/app/pages/page'
 	selector: 'app-modal-edit-task',
 	templateUrl: './modal-edit-task.component.html',
 	animations: [
-		trigger('modalBackground', [
-			transition(':enter', [style({ opacity: 0 }), animate(100)]),
-			transition(':leave', [animate(100, style({ opacity: 0.6 }))]),
-		]),
+		modalBackground,
 		modalFlyInOut
 	],
 })

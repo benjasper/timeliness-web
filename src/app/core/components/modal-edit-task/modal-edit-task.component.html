@@ -1,6 +1,7 @@
 <div class="fixed top-0 left-0 h-screen w-screen bg-black opacity-60 z-10"
-	 *ngIf="modalBackground"
-	 (click)="close()"></div>
+	@modalBackground
+	*ngIf="modalBackground"
+	(click)="close()"></div>
 <form [formGroup]="editTask"
 	  class="!fixed inset-center z-20 flex flex-col w-screen h-screen lg:w-auto lg:h-auto lg:grid grid-cols-modal overflow-y-auto lg:overflow-visible bg-white lg:rounded-3xl dark:bg-black shadow-lg"
 	  @modalFlyInOut
