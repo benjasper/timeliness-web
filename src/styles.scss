@@ -319,7 +319,7 @@ ul.splide__pagination {
 
 		&:last-child:first-child {
 			button.splide__pagination__page {
-					transform: scale(1);
+				transform: scale(1);
 			}
 		}
 	}
@@ -597,6 +597,14 @@ progress {
 	color: grey;
 }
 
+input:checked ~ .dot {
+	transform: translateX(100%);
+}
+
+input:checked ~ .block {
+	@apply bg-green-dark;
+}
+
 .truncate-text {
 	white-space: nowrap;
 	overflow: hidden;
@@ -646,7 +654,7 @@ progress {
 
 @keyframes expand {
 	from {
-		transform: scale(.95);
+		transform: scale(0.95);
 		opacity: 0;
 	}
 }

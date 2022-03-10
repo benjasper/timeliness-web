@@ -23,6 +23,7 @@ export interface UserSettings {
 		busyTimeSpacing?: number
 		timingPreference?: TimingPreferences
 		maxWorkUnitDuration?: number
+		hideDeadlineWhenDone?: boolean
 	}
 }
 
