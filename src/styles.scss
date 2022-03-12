@@ -158,7 +158,7 @@ input,
 	border-radius: 0.5rem;
 	font-size: 1.8rem;
 	@apply dark:bg-black;
-	@apply dark:text-white;
+	@apply dark:text-white focus:ring-0;
 }
 
 .edit {
@@ -192,11 +192,6 @@ input,
 }
 
 .ng-select {
-	&:focus-visible {
-		border-radius: 5px;
-		outline: 2px solid $color-primary;
-	}
-
 	.ng-input {
 		top: auto !important;
 		padding: 0 1.5rem !important;
@@ -216,8 +211,6 @@ input,
 	.ng-select-container {
 		height: auto !important;
 		width: auto !important;
-		border: none !important;
-		outline: none !important;
 		box-shadow: none !important;
 		transition: background-color 0.2s ease-in-out;
 		border-radius: 0.5rem;
@@ -398,10 +391,6 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 		}
 	}
 
-	&:focus {
-		outline: none;
-	}
-
 	&:hover {
 		background-color: $color-primary-light;
 		text-decoration: none;
@@ -495,6 +484,10 @@ button:not(.splide__arrow):not(.splide__pagination__page),
 	&.danger {
 		@apply text-red bg-red-light rounded-2xl;
 	}
+}
+
+input[type='checkbox'] {
+	@apply h-7 w-7 border-grey rounded text-purple focus:ring-purple;
 }
 
 ::-moz-progress-bar {

@@ -56,7 +56,8 @@ import { MaxWorkUnitDurationComponent } from './core/pages/settings/components/m
 import { TooltipDirective } from './directives/tooltip.directive';
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component';
 import { HideDeadlineComponent } from './core/pages/settings/components/hide-deadline/hide-deadline.component';
-import { ToggleComponent } from './core/components/toggle/toggle.component'
+import { ToggleComponent } from './core/components/toggle/toggle.component';
+import { FilterComponent } from './core/components/filter/filter.component'
 
 @NgModule({
 	declarations: [
@@ -104,6 +105,7 @@ import { ToggleComponent } from './core/components/toggle/toggle.component'
     GoogleErrorComponent,
     HideDeadlineComponent,
     ToggleComponent,
+    FilterComponent,
 	],
 	imports: [
 		BrowserModule,
