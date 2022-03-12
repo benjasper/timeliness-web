@@ -602,7 +602,7 @@ input:checked ~ .dot {
 }
 
 input:checked ~ .block {
-	@apply bg-green-dark;
+	@apply bg-purple;
 }
 
 .truncate-text {
