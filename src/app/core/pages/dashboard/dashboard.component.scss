@@ -168,7 +168,7 @@
 
 			.toggle {
 				display: flex;
-				margin-top: 6.3rem;
+				margin-top: 5.5rem;
 
 				.img {
 					transform: rotateZ(90deg);
@@ -211,7 +211,7 @@
 					display: inline-block;
 					position: absolute;
 					left: 2.2rem;
-					margin-top: 6rem;
+					margin-top: 5.5rem;
 				}
 
 				@include for-phone-only {
@@ -267,10 +267,6 @@
 				font-size: 1.8rem;
 				color: $color-tertiary;
 			}
-		}
-
-		h2 {
-			margin-bottom: 3rem;
 		}
 	}
 
