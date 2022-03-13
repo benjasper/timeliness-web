@@ -157,10 +157,13 @@
 			<div class="toggle" (click)="toggleDeadlines()">
 				<svg-icon class="img !mt-6" src="/assets/icons/icon-arrow-down.svg"></svg-icon>
 			</div>
-			<h2 class="hide-collapsed wrapper">
-				<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-deadline.svg"></svg-icon>
-				Upcoming deadlines
-			</h2>
+			<div class="hide-collapsed wrapper flex flex-row flex-wrap gap-4 mb-12">
+				<h2>
+					<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-deadline.svg"></svg-icon>
+					Upcoming deadlines
+				</h2>
+				<app-filter></app-filter>
+			</div>
 		</div>
 		<ul class="deadline-list scroller" #scrollContainerTasks>
 			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks" class="list-message">

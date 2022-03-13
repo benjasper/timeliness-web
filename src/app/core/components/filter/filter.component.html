@@ -1,1 +1,117 @@
-<div></div>
+<div class="flex flex-row flex-wrap gap-4">
+	<div class="flex flex-row flex-wrap gap-4">
+		<ng-container *ngFor="let filter of filters">
+			<ng-container [ngSwitch]="filter.config.type">
+				<div *ngSwitchCase="FILTER_TYPES.Boolean" class="sm-tag bg-grey-light flex flex-row gap-2">
+					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-deadline.svg"></svg-icon>
+					<span class="my-auto">{{ filter.config.label }}</span>
+					<svg-icon
+						class="w-8 my-auto cursor-pointer"
+						src="/assets/icons/icon-exit.svg"
+						(click)="removeFilter(filter)"
+					></svg-icon>
+				</div>
+				<div
+					*ngSwitchCase="FILTER_TYPES.Tags"
+					class="sm-tag flex flex-row gap-2"
+					[ngClass]="getColorClass(getTagByValue(filter.value) ?? 'blue', 'background')"
+				>
+					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-tag.svg"></svg-icon>
+					<span class="my-auto">#{{ filter.value }}</span>
+					<svg-icon
+						class="w-8 my-auto cursor-pointer"
+						src="/assets/icons/icon-exit.svg"
+						(click)="removeFilter(filter)"
+					></svg-icon>
+				</div>
+			</ng-container>
+		</ng-container>
+	</div>
+
+	<div class="relative">
+		<button role="button" class="btn with-border !py-2" (click)="show()">
+			<svg-icon class="w-8" src="/assets/icons/icon-plus.svg"></svg-icon>
+			<span class="my-auto leading-normal">Add filter</span>
+		</button>
+
+		<div
+			*ngIf="isFocused"
+			#dropdown
+			@flyInOutWithTransform
+			class="
+				absolute
+				flex flex-col
+				bg-white
+				rounded-2xl
+				shadow-md
+				text-base
+				z-30
+				whitespace-nowrap
+				left-0
+				top-full
+			"
+		>
+			<ng-container *ngFor="let config of filterConfig">
+				<ng-container [ngSwitch]="config.type">
+					<ng-container *ngSwitchCase="FILTER_TYPES.Boolean">
+						<div
+							*ngIf="config.allowsMultiple || (!config.allowsMultiple && !includesFilter(config))"
+							class="flex flex-row gap-2 px-6 py-4 cursor-pointer hover:bg-grey-very-light"
+							(click)="addToFilter(config, true)"
+						>
+							<svg-icon class="w-8" src="/assets/icons/icon-deadline.svg"></svg-icon>
+							<span>Deadline completed</span>
+						</div>
+					</ng-container>
+					<div
+						(click)="showTagsDropdown()"
+						*ngSwitchCase="FILTER_TYPES.Tags"
+						class="flex flex-row group gap-2 px-6 py-4 cursor-pointer hover:bg-grey-very-light"
+					>
+						<svg-icon class="block w-8" src="/assets/icons/icon-tag.svg"></svg-icon>
+						<span>Tags</span>
+						<svg-icon class="block w-8 ml-auto" src="/assets/icons/icon-arrow-right.svg"></svg-icon>
+					</div>
+				</ng-container>
+			</ng-container>
+		</div>
+
+		<div
+			*ngIf="showTags"
+			#dropdown
+			@flyInOutWithTransform
+			class="
+				absolute
+				flex-col
+				text-base
+				bg-white
+				z-30
+				whitespace-nowrap
+				rounded-2xl
+				shadow-lg
+				max-h-[36rem]
+				scroller
+				overflow-y-auto
+			"
+		>
+			<input #search class="edit !text-base" [(ngModel)]="tagSearch" placeholder="Search for a tag..." />
+			<div
+				*ngFor="let tag of taskService.getTagsBySearch(tagSearch)"
+				class="flex flex-row px-6 py-4 cursor-pointer bg-white group"
+				(click)="addToFilter(showTags, tag.value)"
+			>
+				<input
+					class="my-auto mr-6 bg-grey-very-light cursor-pointer group-hover:bg-purple"
+					type="checkbox"
+					[checked]="includesFilterValue(tag.value)"
+				/>
+				<span
+					class="rounded-full px-4 py-2 bg-grey-very-light"
+					[ngClass]="getColorClass(tag.color, 'background')"
+				>
+					#{{ tag.value }}
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
