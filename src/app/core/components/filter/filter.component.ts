@@ -10,6 +10,7 @@ import {
 	ViewChild,
 	ViewChildren,
 } from '@angular/core'
+import { config } from 'process'
 import { flyInOut, flyInOutWithTransform, modalFlyInOut } from 'src/app/animations'
 import { Tag } from 'src/app/models/tag'
 import { TaskService } from 'src/app/services/task.service'
@@ -20,23 +21,31 @@ export enum FilterTypes {
 	Tags,
 }
 
+export interface FilterOption {
+	label: string
+	operator: string
+	value: string
+	isConstant: boolean
+}
+
 export class FilterConfig {
 	constructor(
 		public identifier: string,
-		public label: string,
-		public labelNegated: string,
+		public name: string,
+		public filterOptions: FilterOption[],
 		public icon: string,
 		public type: FilterTypes,
-		public allowsMultiple: boolean = false
+		public allowsMultiple: boolean = false,
+		public invertible: boolean = true
 	) {}
 }
 
 export class Filter {
-	constructor(public value: boolean | string | number, public isTrue: boolean, public config: FilterConfig) {}
+	constructor(public isInverted: boolean, public config: FilterConfig, public option: FilterOption) {}
 
 	toQueryParameter(): string {
-		const operator = this.isTrue ? '$eq' : '$ne'
-		return `${operator}:${this.value}`
+		const operator = this.option.operator
+		return `${operator}:${this.option.value}`
 	}
 
 	static filtersToQueryParameter(filters: Filter[], filterConfigs: FilterConfig[]): string[] {
@@ -63,7 +72,7 @@ export class Filter {
 			return []
 		}
 		const data = JSON.parse(loadedData) ?? []
-		return data.map((x: any) => new Filter(x.value, x.isTrue, x.config))
+		return data.map((x: any) => new Filter(x.isTrue, x.config, x.option))
 	}
 }
 
@@ -131,6 +140,15 @@ export class FilterComponent extends TaskComponent implements OnInit {
 		this.isFocused = true
 	}
 
+	createTagFilterOption(tag: Tag): FilterOption {
+		return {
+			label: this.filterConfig.find((x) => x.type === FilterTypes.Tags)!.filterOptions[0]!.label,
+			operator: '$eq',
+			value: tag.id,
+			isConstant: false,
+		}
+	}
+
 	showTagsDropdown() {
 		this.showTags = this.filterConfig.find((f) => f.type === FilterTypes.Tags)
 		this.isFocused = false
@@ -151,26 +169,33 @@ export class FilterComponent extends TaskComponent implements OnInit {
 	}
 
 	includesFilterValue(value: any) {
-		return this.filters.some((filter) => filter.value === value)
+		return this.filters.some((filter) => filter.option.value === value)
 	}
 
-	addToFilter(config: FilterConfig, value: any) {
+	addToFilter(config: FilterConfig, option: FilterOption) {
 		this.showTags = undefined
 
-		if (this.includesFilter(config) && this.includesFilterValue(value)) {
-			this.filters = this.filters.filter((f) => !(f.config === config && f.value === value))
+		if (this.includesFilter(config) && this.includesFilterValue(option.value)) {
+			this.filters = this.filters.filter((f) => !(f.config === config && f.option.value === option.value))
 			this.onFilter.emit(this.filters)
 			return
 		}
 
-		this.filters.push(new Filter(value, true, config))
+		this.filters.push(new Filter(false, config, option))
 		this.onFilter.emit(this.filters)
 	}
 
-	updateFilter(filter: Filter, isTrue: boolean, value: any) {
-		filter.isTrue = isTrue
-		filter.value = value
+	invertFilter(filter: Filter) {
+		if (filter.option.isConstant) {
+			filter.option = filter.config.filterOptions.find((x) => x !== filter.option) ?? filter.option
+		} else {
+			filter.option = {...filter.config.filterOptions.find((x) => x.label !== filter.option.label)!, value: filter.option.value}
+		}
 		
 		this.onFilter.emit(this.filters)
+	}
+
+	getTagFromTag(tag: any): Tag {
+		return tag
 	}
 }

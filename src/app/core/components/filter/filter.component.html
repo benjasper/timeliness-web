@@ -4,9 +4,19 @@
 			<ng-container [ngSwitch]="filter.config.type">
 				<div *ngSwitchCase="FILTER_TYPES.Boolean" class="sm-tag bg-grey-light flex flex-row gap-2">
 					<svg-icon class="w-8 my-auto" [src]="'/assets/icons/' + filter.config.icon + '.svg'"></svg-icon>
-					<span class="my-auto cursor-pointer" tooltip="Click to invert" [delay]="0.5" position="bottom" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }}</span>
+					<span
+						class="my-auto cursor-pointer"
+						tooltip="Click to invert"
+						[delay]="0.5"
+						position="bottom"
+						(click)="invertFilter(filter)"
+					>
+						{{ filter.option.label }}
+					</span>
 					<svg-icon
-						tooltip="Remove filter" [delay]="0.5" position="bottom"
+						tooltip="Remove filter"
+						[delay]="0.5"
+						position="bottom"
 						class="w-10 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
 						(click)="removeFilter(filter)"
@@ -15,12 +25,24 @@
 				<div
 					*ngSwitchCase="FILTER_TYPES.Tags"
 					class="sm-tag flex flex-row gap-2"
-					[ngClass]="getColorClass(getTagById(filter.value)?.color ?? 'blue', 'background')"
+					[ngClass]="getColorClass(getTagById(filter.option.value)?.color ?? 'blue', 'background')"
 				>
 					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-tag.svg"></svg-icon>
-					<span class="my-auto cursor-pointer" tooltip="Click to invert" [delay]="0.5" position="bottom" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }} #{{ getTagById(filter.value)?.value }}</span>
+					<span
+						class="my-auto cursor-pointer"
+						tooltip="Click to invert"
+						[delay]="0.5"
+						position="bottom"
+						(click)="invertFilter(filter)"
+					>
+						{{ filter.option.label }} #{{
+							getTagById(filter.option.value)?.value
+						}}
+					</span>
 					<svg-icon
-						tooltip="Remove filter" [delay]="0.5" position="bottom"
+						tooltip="Remove filter"
+						[delay]="0.5"
+						position="bottom"
 						class="w-10 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
 						(click)="removeFilter(filter)"
@@ -60,10 +82,10 @@
 							[tabindex]="i"
 							*ngIf="config.allowsMultiple || (!config.allowsMultiple && !includesFilter(config))"
 							class="flex flex-row gap-2 px-6 py-4 cursor-pointer hover:bg-grey-very-light"
-							(click)="addToFilter(config, true)"
+							(click)="addToFilter(config, config.filterOptions[0])"
 						>
 							<svg-icon class="w-8" src="/assets/icons/icon-deadline.svg"></svg-icon>
-							<span>Deadline completed</span>
+							<span>{{ config.name }}</span>
 						</div>
 					</ng-container>
 					<div
@@ -102,7 +124,7 @@
 			<div
 				*ngFor="let tag of taskService.getTagsBySearch(tagSearch)"
 				class="flex flex-row px-6 py-4 cursor-pointer bg-white group"
-				(click)="addToFilter(showTags, tag.id)"
+				(click)="addToFilter(showTags, createTagFilterOption(tag))"
 			>
 				<input
 					class="my-auto mr-6 bg-grey-very-light cursor-pointer group-hover:bg-purple"

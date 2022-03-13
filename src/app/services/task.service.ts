@@ -16,6 +16,7 @@ import { Timespan } from '../models/timespan'
 import { AuthService } from './auth.service'
 import { Router } from '@angular/router'
 import { Filter, FilterConfig, FilterTypes } from '../core/components/filter/filter.component'
+import { AgendaEventType } from '../models/event'
 
 @Injectable({
 	providedIn: 'root',
@@ -37,17 +38,18 @@ export class TaskService {
 	}
 
 	static agendaFilterConfig = [
-		new FilterConfig('isDone', 'Task is completed', 'Task is not completed', 'icon-deadline', FilterTypes.Boolean),
-		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+		new FilterConfig('isDone', "Task completed" ,[{label: 'Task is completed', value: 'true', operator: '$eq', isConstant: true}, {label: 'Task is not completed', value: 'false', operator: '$eq', isConstant: true}], 'icon-deadline', FilterTypes.Boolean),
+		new FilterConfig('tags', "Tags" ,[{label: 'Contains', value: '', operator: '$eq', isConstant: false}, {label: 'Does not contain', value: '', operator: '$ne', isConstant: false}], 'icon-tag', FilterTypes.Tags),
+		new FilterConfig('date.type', "Event type" ,[{label: 'Is type work unit', value: AgendaEventType.WorkUnit, operator: '$eq', isConstant: true}, {label: 'Is type deadline', value: AgendaEventType.DueAt, operator: '$eq', isConstant: true}], 'icon-deadline', FilterTypes.Boolean),
 	]
 
 	static workUnitFilterConfig = [
-		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+		new FilterConfig('tags', "Tags" ,[{label: 'Contains', value: '', operator: '$eq', isConstant: false}, {label: 'Does not contain', value: '', operator: '$ne', isConstant: false}], 'icon-tag', FilterTypes.Tags),
 	]
 
 	static deadlinesFilterConfig = [
-		new FilterConfig('isDone', 'Task is completed', 'Task is not completed', 'icon-deadline', FilterTypes.Boolean),
-		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+		new FilterConfig('isDone', "Task completed" ,[{label: 'Task is completed', value: 'true', operator: '$eq', isConstant: true}, {label: 'Task is not completed', value: 'false', operator: '$eq', isConstant: true}], 'icon-deadline', FilterTypes.Boolean),
+		new FilterConfig('tags', "Tags" ,[{label: 'Contains', value: '', operator: '$eq', isConstant: false}, {label: 'Does not contain', value: '', operator: '$ne', isConstant: false}], 'icon-tag', FilterTypes.Tags),
 	]
 
 	public lastTaskSync: Date = new Date(0)
