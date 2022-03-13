@@ -7,6 +7,7 @@ import { PageComponent } from 'src/app/pages/page'
 import { AuthService } from 'src/app/services/auth.service'
 import { TaskService } from 'src/app/services/task.service'
 import { UtilityService } from 'src/app/services/utility.service'
+import { Filter } from '../../components/filter/filter.component'
 
 @Component({
 	selector: 'app-dashboard',
@@ -43,6 +44,11 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	public deadlineYears = new Map<Number, Number[]>()
 	public workUnitYears = new Map<Number, Number[]>()
+
+	public currentWorkUnitsFilter: Filter[] = []
+	public currentDeadlinesFilter: Filter[] = []
+	public staticWorkUnitsConfig = TaskService.workUnitFilterConfig
+	public staticDeadlinesConfig = TaskService.deadlinesFilterConfig
 
 	public syncInterval?: NodeJS.Timeout
 
@@ -98,12 +104,13 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		}
 	}
 
-	loadWorkUnitsPage(page: number){
-		this.taskService.getTasksByWorkunits(undefined, page, DashboardComponent.pageSizeTasksUnwound).subscribe(
+	loadWorkUnitsPage(page: number, withNextUp = true){
+		this.loadingWorkUnits = true
+		this.taskService.getTasksByWorkunits(undefined, page, DashboardComponent.pageSizeTasksUnwound, this.currentWorkUnitsFilter).subscribe(
 			(response) => {
 				this.tasksUnwound.push(...response.results)
 				this.totalWorkUnitPages = response.pagination.pages
-				this.groupTasksUnwound(this.tasksUnwound)
+				this.groupTasksUnwound(this.tasksUnwound, withNextUp)
 				this.loadingWorkUnits = false
 				this.onWorkUnitPageLoaded.emit(true)
 			},
@@ -114,8 +121,23 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		)
 	}
 
+	onDeadlinesFilter(filter: Filter[]) {
+		this.currentDeadlinesFilter = filter
+		this.tasks = []
+		this.groupedDeadlines = []
+		this.loadTasksPage(0)
+	}
+
+	onWorkUnitFilter(filter: Filter[]) {
+		this.currentWorkUnitsFilter = filter
+		this.tasksUnwound = []
+		this.groupedUpcoming = []
+		this.loadWorkUnitsPage(0, false)
+	}
+
 	loadTasksPage(page: number) {
-		this.taskService.getTasksByDeadlines(undefined, page, DashboardComponent.pageSizeTasks).subscribe(
+		this.loadingTasks = true
+		this.taskService.getTasksByDeadlines(undefined, page, DashboardComponent.pageSizeTasks, undefined, this.currentDeadlinesFilter).subscribe(
 			(response) => {
 				this.totalTasksPages = response.pagination.pages
 				this.tasks.push(...response.results)
@@ -281,7 +303,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		this.groupedDeadlines = groupedDeadlines
 	}
 
-	private groupTasksUnwound(tasks: TaskUnwound[]): void {
+	private groupTasksUnwound(tasks: TaskUnwound[], withNextUp = true): void {
 		const nextUp: TaskUnwound[] = []
 		const groupedUpcoming: TaskUnwoundDateGroup[] = []
 
@@ -326,7 +348,10 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		)
 
 		this.groupedUpcoming = groupedUpcoming
-		this.nextUp = nextUp
+
+		if (withNextUp) {
+			this.nextUp = nextUp
+		}
 
 		setTimeout(() => {
 			this.setStartsAtWorkUnit()

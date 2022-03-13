@@ -3,8 +3,8 @@
 		<ng-container *ngFor="let filter of filters">
 			<ng-container [ngSwitch]="filter.config.type">
 				<div *ngSwitchCase="FILTER_TYPES.Boolean" class="sm-tag bg-grey-light flex flex-row gap-2">
-					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-deadline.svg"></svg-icon>
-					<span class="my-auto">{{ filter.config.label }}</span>
+					<svg-icon class="w-8 my-auto" [src]="'/assets/icons/' + filter.config.icon + '.svg'"></svg-icon>
+					<span class="my-auto cursor-pointer" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }}</span>
 					<svg-icon
 						class="w-8 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
@@ -14,10 +14,10 @@
 				<div
 					*ngSwitchCase="FILTER_TYPES.Tags"
 					class="sm-tag flex flex-row gap-2"
-					[ngClass]="getColorClass(getTagByValue(filter.value) ?? 'blue', 'background')"
+					[ngClass]="getColorClass(getTagById(filter.value)?.color ?? 'blue', 'background')"
 				>
 					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-tag.svg"></svg-icon>
-					<span class="my-auto">#{{ filter.value }}</span>
+					<span class="my-auto cursor-pointer" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }} #{{ getTagById(filter.value)?.value }}</span>
 					<svg-icon
 						class="w-8 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="relative">
-		<button role="button" class="btn with-border !py-2" (click)="show()">
+		<button role="button" class="btn with-border !py-1" (click)="show()">
 			<svg-icon class="w-8" src="/assets/icons/icon-plus.svg"></svg-icon>
 			<span class="my-auto leading-normal">Add filter</span>
 		</button>
@@ -51,10 +51,11 @@
 				top-full
 			"
 		>
-			<ng-container *ngFor="let config of filterConfig">
+			<ng-container *ngFor="let config of filterConfig; index as i">
 				<ng-container [ngSwitch]="config.type">
 					<ng-container *ngSwitchCase="FILTER_TYPES.Boolean">
 						<div
+							[tabindex]="i"
 							*ngIf="config.allowsMultiple || (!config.allowsMultiple && !includesFilter(config))"
 							class="flex flex-row gap-2 px-6 py-4 cursor-pointer hover:bg-grey-very-light"
 							(click)="addToFilter(config, true)"
@@ -64,6 +65,7 @@
 						</div>
 					</ng-container>
 					<div
+						[tabindex]="i"
 						(click)="showTagsDropdown()"
 						*ngSwitchCase="FILTER_TYPES.Tags"
 						class="flex flex-row group gap-2 px-6 py-4 cursor-pointer hover:bg-grey-very-light"
@@ -98,12 +100,12 @@
 			<div
 				*ngFor="let tag of taskService.getTagsBySearch(tagSearch)"
 				class="flex flex-row px-6 py-4 cursor-pointer bg-white group"
-				(click)="addToFilter(showTags, tag.value)"
+				(click)="addToFilter(showTags, tag.id)"
 			>
 				<input
 					class="my-auto mr-6 bg-grey-very-light cursor-pointer group-hover:bg-purple"
 					type="checkbox"
-					[checked]="includesFilterValue(tag.value)"
+					[checked]="includesFilterValue(tag.id)"
 				/>
 				<span
 					class="rounded-full px-4 py-2 bg-grey-very-light"

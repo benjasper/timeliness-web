@@ -8,6 +8,7 @@ import { share } from 'rxjs/operators'
 import { Title } from '@angular/platform-browser'
 import { PageComponent } from 'src/app/pages/page'
 import { NavigationEnd, Router } from '@angular/router'
+import { Filter } from '../../components/filter/filter.component'
 
 @Component({
 	selector: 'app-agenda',
@@ -41,6 +42,9 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 	onFuturePageLoaded = new EventEmitter<boolean>()
 
 	syncInterval?: NodeJS.Timeout
+	
+	currentFilter: Filter[] = []
+	staticAgendaFilterConfig = TaskService.agendaFilterConfig
 
 	@ViewChild('todayElement') todayElement!: ElementRef
 	@ViewChild('scrollContainer') scrollContainerElement!: ElementRef
@@ -54,17 +58,17 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 			}
 		})
 
-		this.fetchAgendaFuture(0)
+		this.fetchAgendaFuture(0, this.currentFilter)
 
 		this.taskService.dateChangeObservable.subscribe((newDate) => {
 			this.today = newDate
-			this.fetchAgendaFuture(0)
-			this.fetchTasksPast(0)
+			this.fetchAgendaFuture(0, this.currentFilter)
+			this.fetchTasksPast(0, this.currentFilter)
 		})
 
 		this.taskService.tasksObservable.subscribe(() => {
-			this.fetchAgendaFuture(0)
-			this.fetchTasksPast(0)
+			this.fetchAgendaFuture(0, this.currentFilter)
+			this.fetchTasksPast(0, this.currentFilter)
 		})
 
 		this.syncInterval = setInterval(() => {
@@ -78,12 +82,18 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 		}
 	}
 
-	public fetchAgendaFuture(page: number) {
+	public onFilter(filter: Filter[]) {
+		this.currentFilter = filter
+		this.fetchAgendaFuture(0, this.currentFilter)
+		this.fetchTasksPast(0, this.currentFilter)
+	}
+
+	public fetchAgendaFuture(page: number, filter: Filter[]) {
 		if (page === 0) {
 			this.groupedTasksFuture = []
 		}
 
-		this.taskService.getAgenda(this.today, 1, page).subscribe(
+		this.taskService.getAgenda(this.today, 1, page, 20, filter).subscribe(
 			(tasks) => {
 				this.groupedTasksFuture.push(...this.groupTasks(tasks.results))
 				this.totalPagesFuture = tasks.pagination.pages
@@ -105,7 +115,7 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 		)
 	}
 
-	public fetchTasksPast(page: number): Promise<void> {
+	public fetchTasksPast(page: number, filter: Filter[]): Promise<void> {
 		if (this.loadingPast) {
 			return Promise.resolve()
 		}
@@ -117,7 +127,7 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 
 		this.loadingPast = true
 		return new Promise((resolve, reject) => {
-			this.taskService.getAgenda(this.today, -1, page).subscribe(
+			this.taskService.getAgenda(this.today, -1, page, 20, filter).subscribe(
 				(tasks) => {
 					this.totalPagesPast = tasks.pagination.pages
 					this.groupedTasksPast.push(...this.groupTasks(tasks.results.reverse()))

@@ -15,6 +15,7 @@ import { Toast, ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
 import { AuthService } from './auth.service'
 import { Router } from '@angular/router'
+import { Filter, FilterConfig, FilterTypes } from '../core/components/filter/filter.component'
 
 @Injectable({
 	providedIn: 'root',
@@ -34,6 +35,20 @@ export class TaskService {
 			this.trackTimeAndDate()
 		}, 2000)
 	}
+
+	static agendaFilterConfig = [
+		new FilterConfig('isDone', 'Task is completed', 'Task is not completed', 'icon-deadline', FilterTypes.Boolean),
+		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+	]
+
+	static workUnitFilterConfig = [
+		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+	]
+
+	static deadlinesFilterConfig = [
+		new FilterConfig('isDone', 'Task is completed', 'Task is not completed', 'icon-deadline', FilterTypes.Boolean),
+		new FilterConfig('tags', 'Contains', 'Does not contain', 'icon-tag', FilterTypes.Tags),
+	]
 
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
@@ -60,12 +75,13 @@ export class TaskService {
 		}
 	}
 
-	public getTasksByDeadlines(sync: boolean = false, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
+	public getTasksByDeadlines(sync: boolean = false, page = 0, pageSize = 10, date = new Date(), filter: Filter[] = []): Observable<TasksGetResponse> {
 		date.setHours(0,0,0,0)
-		const filters = [
+		const filters: string[] = [
 			`isDoneAndDueAt=${date.toISOString()}`,
 			`page=${page}`,
 			`pageSize=${pageSize}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.deadlinesFilterConfig)
 		]
 
 		if (sync) {
@@ -95,12 +111,14 @@ export class TaskService {
 		return observable
 	}
 
-	public getAgenda(date: Date, sort = 0, page = 0, pageSize = 20): Observable<TasksAgendaResponse> {
-		const filters = [
+	public getAgenda(date: Date, sort = 0, page = 0, pageSize = 20, filter: Filter[]): Observable<TasksAgendaResponse> {
+		
+		const filters: string[] = [
 			`date=${date.toISOString()}`,
 			`sort=${sort}`,
 			`pageSize=${pageSize}`,
 			`page=${page}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.agendaFilterConfig)
 		]
 
 		const observable = this.http
@@ -246,14 +264,15 @@ export class TaskService {
 			})
 	}
 
-	public getTasksByWorkunits(sync?: Date, page = 0, pageSize = 10): Observable<TasksByWorkunitsGetResponse> {
+	public getTasksByWorkunits(sync?: Date, page = 0, pageSize = 10, filter: Filter[] = []): Observable<TasksByWorkunitsGetResponse> {
 		const today = new Date()
 		today.setHours(0, 0, 0, 0)
-		const filters = [
+		const filters: string[] = [
 			'workUnit.isDone=false',
 			`isDoneAndScheduledAt=${today.toISOString()}`,
 			`page=${page}`,
 			`pageSize=${pageSize}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.workUnitFilterConfig)
 		]
 
 		if (sync) {
