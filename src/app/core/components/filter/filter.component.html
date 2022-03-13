@@ -4,9 +4,10 @@
 			<ng-container [ngSwitch]="filter.config.type">
 				<div *ngSwitchCase="FILTER_TYPES.Boolean" class="sm-tag bg-grey-light flex flex-row gap-2">
 					<svg-icon class="w-8 my-auto" [src]="'/assets/icons/' + filter.config.icon + '.svg'"></svg-icon>
-					<span class="my-auto cursor-pointer" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }}</span>
+					<span class="my-auto cursor-pointer" tooltip="Click to invert" [delay]="0.5" position="bottom" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }}</span>
 					<svg-icon
-						class="w-8 my-auto cursor-pointer"
+						tooltip="Remove filter" [delay]="0.5" position="bottom"
+						class="w-10 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
 						(click)="removeFilter(filter)"
 					></svg-icon>
@@ -17,9 +18,10 @@
 					[ngClass]="getColorClass(getTagById(filter.value)?.color ?? 'blue', 'background')"
 				>
 					<svg-icon class="w-8 my-auto" src="/assets/icons/icon-tag.svg"></svg-icon>
-					<span class="my-auto cursor-pointer" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }} #{{ getTagById(filter.value)?.value }}</span>
+					<span class="my-auto cursor-pointer" tooltip="Click to invert" [delay]="0.5" position="bottom" (click)="updateFilter(filter, !filter.isTrue, filter.value)">{{ filter.isTrue ? filter.config.label : filter.config.labelNegated }} #{{ getTagById(filter.value)?.value }}</span>
 					<svg-icon
-						class="w-8 my-auto cursor-pointer"
+						tooltip="Remove filter" [delay]="0.5" position="bottom"
+						class="w-10 my-auto cursor-pointer"
 						src="/assets/icons/icon-exit.svg"
 						(click)="removeFilter(filter)"
 					></svg-icon>

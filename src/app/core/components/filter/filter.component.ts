@@ -52,6 +52,19 @@ export class Filter {
 
 		return filterGroups.map((x) => x[0].config.identifier + '=' + x.map((x) => x.toQueryParameter()).join(','))
 	}
+
+	static saveToLocalStorage(identifier: string, filters: Filter[]) {
+		localStorage.setItem(identifier, JSON.stringify(filters))
+	}
+
+	static loadFromLocalStorage(identifier: string): Filter[] {
+		const loadedData = localStorage.getItem(identifier)
+		if (!loadedData) {
+			return []
+		}
+		const data = JSON.parse(loadedData) ?? []
+		return data.map((x: any) => new Filter(x.value, x.isTrue, x.config))
+	}
 }
 
 @Component({

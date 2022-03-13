@@ -45,14 +45,14 @@
 			</div>
 			<div class="flex flex-row">
 				<img
-					*ngIf="nextUp.length === 0 && !loadingWorkUnits"
+					*ngIf="nextUp.length === 0 && !loadingNextUp"
 					class="next-up-finished w-full mx-auto"
 					src="/assets/images/tasks-done.svg"
 					alt="All done"
 				/>
 
 				<splide
-					*ngIf="nextUp.length > 0 || loadingWorkUnits"
+					*ngIf="nextUp.length > 0 || loadingNextUp"
 					class="next-up-slider w-full"
 					[selectedSlideIndex]="startIndex"
 					[options]="{
@@ -65,12 +65,12 @@
 						pagination: false
 					}"
 				>
-					<ng-container *ngIf="loadingWorkUnits">
+					<ng-container *ngIf="loadingNextUp">
 						<splide-slide *ngFor="let index of [1, 2]">
 							<app-work-unit-card [loading]="true"></app-work-unit-card>
 						</splide-slide>
 					</ng-container>
-					<ng-container *ngIf="nextUp.length > 0 && !loadingWorkUnits">
+					<ng-container *ngIf="nextUp.length > 0 && !loadingNextUp">
 						<splide-slide *ngFor="let task of nextUp">
 							<app-work-unit-card
 								[task]="task"
@@ -88,7 +88,7 @@
 						<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-work-unit.svg"></svg-icon>
 						Upcoming work units
 					</h2>
-					<app-filter class="my-auto" [filterConfig]="staticWorkUnitsConfig" (onFilter)="onWorkUnitFilter($event)"></app-filter>
+					<app-filter class="my-auto" [filters]="currentWorkUnitsFilter" [filterConfig]="staticWorkUnitsConfig" (onFilter)="onWorkUnitFilter($event)"></app-filter>
 				</div>
 				<img
 					*ngIf="groupedUpcoming.length === 0 && !loadingWorkUnits"
@@ -163,7 +163,7 @@
 					<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-deadline.svg"></svg-icon>
 					Upcoming deadlines
 				</h2>
-				<app-filter class="!my-auto" [filterConfig]="staticDeadlinesConfig" (onFilter)="onDeadlinesFilter($event)"></app-filter>
+				<app-filter class="!my-auto" [filters]="currentDeadlinesFilter" [filterConfig]="staticDeadlinesConfig" (onFilter)="onDeadlinesFilter($event)"></app-filter>
 			</div>
 		</div>
 		<ul class="deadline-list scroller" #scrollContainerTasks>

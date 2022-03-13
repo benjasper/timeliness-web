@@ -42,7 +42,7 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 	onFuturePageLoaded = new EventEmitter<boolean>()
 
 	syncInterval?: NodeJS.Timeout
-	
+
 	currentFilter: Filter[] = []
 	staticAgendaFilterConfig = TaskService.agendaFilterConfig
 
@@ -57,6 +57,8 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 				this.setTitle('Agenda')
 			}
 		})
+
+		this.currentFilter = Filter.loadFromLocalStorage('agendaFilter')
 
 		this.fetchAgendaFuture(0, this.currentFilter)
 
@@ -84,6 +86,7 @@ export class AgendaComponent extends PageComponent implements OnInit, OnDestroy 
 
 	public onFilter(filter: Filter[]) {
 		this.currentFilter = filter
+		Filter.saveToLocalStorage('agendaFilter', filter)
 		this.fetchAgendaFuture(0, this.currentFilter)
 		this.fetchTasksPast(0, this.currentFilter)
 	}

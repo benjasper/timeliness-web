@@ -36,6 +36,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	public loadingTasks = true
 	public loadingWorkUnits = true
+	public loadingNextUp = true
 	public deadlinesCollapsed = false
 
 	public nextUpTaskFocus?: TaskUnwound
@@ -84,6 +85,9 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 			this.groupTasksUnwound(this.tasksUnwound)
 		})
 
+		this.currentDeadlinesFilter = Filter.loadFromLocalStorage('deadlinesFilters')
+		this.currentWorkUnitsFilter = Filter.loadFromLocalStorage('workUnitsFilters')
+
 		this.loadTasksPage(0)
 		this.loadWorkUnitsPage(0)
 
@@ -106,15 +110,22 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	loadWorkUnitsPage(page: number, withNextUp = true){
 		this.loadingWorkUnits = true
+
+		if (withNextUp) {
+			this.loadingNextUp = true
+		}
+		
 		this.taskService.getTasksByWorkunits(undefined, page, DashboardComponent.pageSizeTasksUnwound, this.currentWorkUnitsFilter).subscribe(
 			(response) => {
 				this.tasksUnwound.push(...response.results)
 				this.totalWorkUnitPages = response.pagination.pages
 				this.groupTasksUnwound(this.tasksUnwound, withNextUp)
+				this.loadingNextUp = false
 				this.loadingWorkUnits = false
 				this.onWorkUnitPageLoaded.emit(true)
 			},
 			() => {
+				this.loadingNextUp = false
 				this.loadingWorkUnits = false
 				this.onWorkUnitPageLoaded.emit(false)
 			}
@@ -123,6 +134,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	onDeadlinesFilter(filter: Filter[]) {
 		this.currentDeadlinesFilter = filter
+		Filter.saveToLocalStorage('deadlinesFilters', filter)
 		this.tasks = []
 		this.groupedDeadlines = []
 		this.loadTasksPage(0)
@@ -130,6 +142,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	onWorkUnitFilter(filter: Filter[]) {
 		this.currentWorkUnitsFilter = filter
+		Filter.saveToLocalStorage('workUnitsFilters', filter)
 		this.tasksUnwound = []
 		this.groupedUpcoming = []
 		this.loadWorkUnitsPage(0, false)
