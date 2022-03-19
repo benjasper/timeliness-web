@@ -1,0 +1,19 @@
+<form class="flex flex-col" [formGroup]="form">
+	<label class="label inset" for="timezone">Minimum work unit duration</label>
+	<span class="text-grey-dark text-base ml-6 mb-4">
+		This setting determines the minimum duration of a single work unit. Here you can set how short a work unit can be. 
+	</span>
+	<ng-select
+		formControlName="minDuration"
+		[clearable]="false"
+		[dropdownPosition]="'top'"
+		[virtualScroll]="true"
+		(change)="change()"
+	>
+		<ng-option *ngFor="let option of options" [value]="option.toNanoseconds()">
+			<span class="text-lg">
+				{{ option }}
+			</span>
+		</ng-option>
+	</ng-select>
+</form>
