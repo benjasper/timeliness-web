@@ -59,6 +59,22 @@
 		{
 			"iconName": "icon-plus",
 			"iconPath": "/assets/icons/icon-plus.svg"
+		},
+		{
+			"iconName": "icon-text",
+			"iconPath": "/assets/icons/icon-text.svg"
+		},
+		{
+			"iconName": "icon-edit",
+			"iconPath": "/assets/icons/icon-edit.svg"
+		},
+		{
+			"iconName": "icon-clock",
+			"iconPath": "/assets/icons/icon-clock.svg"
+		},
+		{
+			"iconName": "icon-tag",
+			"iconPath": "/assets/icons/icon-tag.svg"
 		}
 	],
 	"customIcons": []
