@@ -86,7 +86,9 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 		})
 
 		this.currentDeadlinesFilter = Filter.loadFromLocalStorage('deadlinesFilters')
-		this.currentWorkUnitsFilter = Filter.loadFromLocalStorage('workUnitsFilters')
+
+		// Persistence for work unit filter commented out because of dependent next up work units
+		//this.currentWorkUnitsFilter = Filter.loadFromLocalStorage('workUnitsFilters')
 
 		this.loadTasksPage(0)
 		this.loadWorkUnitsPage(0)
@@ -142,7 +144,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 	onWorkUnitFilter(filter: Filter[]) {
 		this.currentWorkUnitsFilter = filter
-		Filter.saveToLocalStorage('workUnitsFilters', filter)
+		//Filter.saveToLocalStorage('workUnitsFilters', filter)
 		this.tasksUnwound = []
 		this.groupedUpcoming = []
 		this.loadWorkUnitsPage(0, false)
