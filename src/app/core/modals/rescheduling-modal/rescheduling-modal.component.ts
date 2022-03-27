@@ -108,7 +108,7 @@ export class ReschedulingModalComponent
 				}
 
 				if (timespanGroups.length > 0) {
-					this.nextPage()
+					this.lastPage()
 				}
 				this.loading = false
 			},
