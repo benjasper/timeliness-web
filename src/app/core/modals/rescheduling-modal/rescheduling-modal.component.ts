@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations'
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, HostListener, Input, OnInit } from '@angular/core'
 import { SimpleModalComponent } from 'ngx-simple-modal'
 import { modalBackground, modalFlyInOut } from 'src/app/animations'
 import { Duration, DurationUnit } from 'src/app/models/duration'
@@ -27,11 +27,13 @@ export class ReschedulingModalComponent
 {
 	task!: Task
 	workUnitIndex!: number
-	timespanGroups: Timespan[][] = []
+	timespanGroups: Timespan[][][] = []
 
 	isOpen = false
 	loading = false
 	noOptionsAvailable: boolean = false
+	noMoreOptions: boolean = false
+	currentPage = 0
 
 	result = new ModalResult<Timespan[]>([], false)
 
@@ -41,15 +43,72 @@ export class ReschedulingModalComponent
 		super()
 	}
 
+	@HostListener('document:keydown', ['$event'])
+	handleEscape(event: KeyboardEvent): void {
+		if (event.key === 'ArrowLeft') {
+			this.prevPage()
+			return
+		}
+
+		if (event.key === 'ArrowRight') {
+			this.nextPage()
+			return
+		}
+	}
+
 	ngOnInit(): void {
 		this.isOpen = true
 
 		this.loading = true
-		this.taskService.fetchReschedulingSuggestions(this.task, this.task.workUnits[this.workUnitIndex].id).subscribe(
+		this.taskService.fetchReschedulingSuggestions(this.task, this.task.workUnits[this.workUnitIndex].id, []).subscribe(
 			(timespanGroups) => {
-				this.timespanGroups = timespanGroups
+				this.timespanGroups = [timespanGroups]
 				if (timespanGroups.length === 0) {
 					this.noOptionsAvailable = true
+				}
+
+				if (timespanGroups.length < 5) {
+					this.noMoreOptions = true
+				}
+
+				this.loading = false
+			},
+			() => {
+				this.loading = false
+				this.close()
+			}
+		)
+	}
+
+	nextPage() {
+		if (this.currentPage === this.timespanGroups.length - 1) {
+			return
+		}
+		this.currentPage++
+	}
+
+	prevPage() {
+		if (this.currentPage === 0) {
+			return
+		}
+		this.currentPage--
+	}
+
+	lastPage() {
+		this.currentPage = this.timespanGroups.length - 1
+	}
+
+	loadMore(): void {
+		this.loading = true
+		this.taskService.fetchReschedulingSuggestions(this.task, this.task.workUnits[this.workUnitIndex].id, this.timespanGroups.flat(3)).subscribe(
+			(timespanGroups) => {
+				this.timespanGroups.push(timespanGroups)
+				if (timespanGroups.length < 5) {
+					this.noMoreOptions = true
+				}
+
+				if (timespanGroups.length > 0) {
+					this.nextPage()
 				}
 				this.loading = false
 			},

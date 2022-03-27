@@ -51,7 +51,7 @@
 			[ngClass]="getColorClass(suggestion.color, 'border-hover')"
 			(click)="assignSuggestion(suggestion, $event)"
 		>
-			<div class="tag" [ngClass]="getColorClass(suggestion.color, 'background')" @appear>
+			<div class="tag" [ngClass]="getColorClass(suggestion.color, 'background')">
 				<span class="hashtag">#</span>
 				<span class="tag-content" placeholder="Add a new tag">{{ suggestion.value }}</span>
 			</div>

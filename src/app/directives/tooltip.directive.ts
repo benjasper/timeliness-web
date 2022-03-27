@@ -10,6 +10,7 @@ export class TooltipDirective {
 
 	private popup?: HTMLElement
 	private timer?: NodeJS.Timeout
+	private mutationObserver?: MutationObserver
 
 	constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -35,6 +36,11 @@ export class TooltipDirective {
 			this.timer = undefined
 		}
 
+		if (this.mutationObserver) {
+			this.mutationObserver.disconnect()
+			this.mutationObserver = undefined
+		}
+
 		if (this.popup) {
 			this.renderer.removeChild(document.body, this.popup)
 			this.popup = undefined
@@ -42,6 +48,26 @@ export class TooltipDirective {
 	}
 
 	private createTooltipPopup() {
+		if (this.el.nativeElement.disabled === true) {
+			this.removePopup()
+			return
+		}
+
+		this.mutationObserver = new MutationObserver((mutations) => {
+			mutations.forEach((mutation) => {
+				// Check the modified attributeName is "disabled"
+				if (mutation.attributeName === 'disabled') {
+					setTimeout(() => {
+						if ((mutation.target as HTMLButtonElement).disabled) {
+							this.removePopup()
+						}
+					})
+				}
+			})
+		})
+
+		this.mutationObserver.observe(this.el.nativeElement, { attributes: true })
+
 		let x = this.el.nativeElement.getBoundingClientRect().left + this.el.nativeElement.offsetWidth / 2
 		let y = this.el.nativeElement.getBoundingClientRect().top + this.el.nativeElement.offsetHeight / 2
 
@@ -52,11 +78,11 @@ export class TooltipDirective {
 		this.popup = popup
 
 		this.renderer.appendChild(document.body, this.popup)
-		
+
 		switch (this.position) {
 			case 'right':
 				y -= popup.offsetHeight / 2
-				x += (this.el.nativeElement.getBoundingClientRect().width / 2) + 10
+				x += this.el.nativeElement.getBoundingClientRect().width / 2 + 10
 				break
 			case 'left':
 				y -= popup.offsetHeight / 2
