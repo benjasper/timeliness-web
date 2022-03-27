@@ -30,15 +30,4 @@ export class CoreComponent implements OnInit {
 	public logout(): void {
 		this.authService.logout()
 	}
-
-	public triggerFeedback(): void {
-		(window as any).freddyWidget.show(
-			{
-				custom_fields: {
-					user_id: this.user?.id,
-				},
-				url: window.location.href
-			}
-		);
-	}
 }
