@@ -8,7 +8,7 @@
 	{{ selected.toLocaleTimeString('default', { hour: 'numeric', minute: '2-digit' }) }}
 </span>
 
-<div *ngIf="isFocused" class="dropdown" @fade>
+<div *ngIf="isFocused" class="dropdown" @flyInOutWithTransform>
 	<div class="top">
 		<button type="button" class="with-border today" (click)="goToMonth(today.getMonth(), today.getFullYear())">
 			Today

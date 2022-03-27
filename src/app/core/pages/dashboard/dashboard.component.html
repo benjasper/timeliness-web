@@ -45,14 +45,14 @@
 			</div>
 			<div class="flex flex-row">
 				<img
-					*ngIf="nextUp.length === 0 && !loadingWorkUnits"
+					*ngIf="nextUp.length === 0 && !loadingNextUp"
 					class="next-up-finished w-full mx-auto"
 					src="/assets/images/tasks-done.svg"
 					alt="All done"
 				/>
 
 				<splide
-					*ngIf="nextUp.length > 0 || loadingWorkUnits"
+					*ngIf="nextUp.length > 0 || loadingNextUp"
 					class="next-up-slider w-full"
 					[selectedSlideIndex]="startIndex"
 					[options]="{
@@ -65,12 +65,12 @@
 						pagination: false
 					}"
 				>
-					<ng-container *ngIf="loadingWorkUnits">
+					<ng-container *ngIf="loadingNextUp">
 						<splide-slide *ngFor="let index of [1, 2]">
 							<app-work-unit-card [loading]="true"></app-work-unit-card>
 						</splide-slide>
 					</ng-container>
-					<ng-container *ngIf="nextUp.length > 0 && !loadingWorkUnits">
+					<ng-container *ngIf="nextUp.length > 0 && !loadingNextUp">
 						<splide-slide *ngFor="let task of nextUp">
 							<app-work-unit-card
 								[task]="task"
@@ -83,11 +83,12 @@
 		</section>
 		<section class="lower-dashboard wrapper !pr-12">
 			<div class="upcoming-workunits">
-				<div class="upcoming-work-units-header">
-					<h2 class="upcoming-work-units-title">
+				<div class="upcoming-work-units-header flex flex-row !justify-start !flex-wrap !gap-4">
+					<h2 class="upcoming-work-units-title !my-auto">
 						<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-work-unit.svg"></svg-icon>
 						Upcoming work units
 					</h2>
+					<app-filter class="my-auto" [filters]="currentWorkUnitsFilter" [filterConfig]="staticWorkUnitsConfig" (onFilter)="onWorkUnitFilter($event)"></app-filter>
 				</div>
 				<img
 					*ngIf="groupedUpcoming.length === 0 && !loadingWorkUnits"
@@ -157,15 +158,22 @@
 			<div class="toggle" (click)="toggleDeadlines()">
 				<svg-icon class="img !mt-6" src="/assets/icons/icon-arrow-down.svg"></svg-icon>
 			</div>
-			<h2 class="hide-collapsed wrapper">
-				<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-deadline.svg"></svg-icon>
-				Upcoming deadlines
-			</h2>
+			<div class="hide-collapsed wrapper flex flex-row flex-wrap gap-4 mb-12">
+				<h2 class="!my-auto">
+					<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-deadline.svg"></svg-icon>
+					Upcoming deadlines
+				</h2>
+				<app-filter class="!my-auto" [filters]="currentDeadlinesFilter" [filterConfig]="staticDeadlinesConfig" (onFilter)="onDeadlinesFilter($event)"></app-filter>
+			</div>
 		</div>
 		<ul class="deadline-list scroller" #scrollContainerTasks>
-			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks" class="list-message">
+			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks && currentDeadlinesFilter.length === 0" class="list-message">
 				<span class="text-2xl font-bold">No tasks right now?</span>
 				<span>That's awesome! But in case you have something to do tap "New task" to create a task.</span>
+			</li>
+			<li *ngIf="groupedDeadlines.length === 0 && !loadingTasks && currentDeadlinesFilter.length > 0" class="list-message">
+				<span class="text-2xl font-bold">No results</span>
+				<span>This filter configuration didn't retrieve any results. If you want to see past deadlines use the <a class="inline-block text-lg" routerLink="/agenda">agenda view</a>.</span>
 			</li>
 			<ng-container *ngIf="loadingTasks">
 				<li *ngFor="let index of [1, 2, 3]" class="date-group">

@@ -11,6 +11,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { forwardRef, HostBinding, Input } from '@angular/core'
 import { trigger, transition, style, animate } from '@angular/animations'
+import { flyInOutWithTransform } from 'src/app/animations'
 
 @Component({
 	selector: 'app-datetime-picker',
@@ -24,10 +25,7 @@ import { trigger, transition, style, animate } from '@angular/animations'
 		},
 	],
 	animations: [
-		trigger('fade', [
-			transition(':enter', [style({ opacity: 0 }), animate(50)]),
-			transition(':leave', [animate(50, style({ opacity: 0 }))]),
-		]),
+		flyInOutWithTransform('translateX(-50%)', 50)
 	],
 })
 export class DatetimePickerComponent implements OnInit, ControlValueAccessor {

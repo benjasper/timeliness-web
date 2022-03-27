@@ -1,27 +1,24 @@
-import { trigger, transition, style, animate, state } from '@angular/animations';
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { trigger, transition, style, animate, state } from '@angular/animations'
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core'
+import { flyInOut, flyInOutWithTransform } from 'src/app/animations'
 
 @Component({
-  selector: 'app-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
-  animations: [
-		trigger('fade', [
-			transition(':enter', [style({ opacity: 0 }), animate(50)]),
-			transition(':leave', [animate(50, style({ opacity: 0 }))]),
-		]),
+	selector: 'app-dropdown',
+	templateUrl: './dropdown.component.html',
+	styleUrls: ['./dropdown.component.scss'],
+	animations: [
+		flyInOutWithTransform('translateX(-50%)', 50)
 	],
 })
 export class DropdownComponent implements OnInit {
+	isFocused = false
 
-  isFocused = false
+	@Input() colorClasses = 'text-primary'
+	@ViewChild('dropdown', { static: false }) dropdownElement!: ElementRef
 
-  @Input() colorClasses = "text-primary"
-  @ViewChild('dropdown', { static: false }) dropdownElement!: ElementRef
+	constructor(private elementRef: ElementRef) {}
 
-  constructor(private elementRef: ElementRef) { }
-
-  @HostListener('document:click', ['$event'])
+	@HostListener('document:click', ['$event'])
 	clickout(event: Event) {
 		let clickedInside = this.elementRef.nativeElement.contains(event.target)
 
@@ -36,7 +33,5 @@ export class DropdownComponent implements OnInit {
 		}
 	}
 
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {}
 }

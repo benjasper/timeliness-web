@@ -15,13 +15,20 @@ import { Toast, ToastType } from '../models/toast'
 import { Timespan } from '../models/timespan'
 import { AuthService } from './auth.service'
 import { Router } from '@angular/router'
+import { Filter, FilterConfig, FilterTypes } from '../core/components/filter/filter.component'
+import { AgendaEventType } from '../models/event'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
-	constructor(private http: HttpClient, private modalService: ModalService, private authService: AuthService, private router: Router) {
-		this.authService.user.subscribe(user => {
+	constructor(
+		private http: HttpClient,
+		private modalService: ModalService,
+		private authService: AuthService,
+		private router: Router
+	) {
+		this.authService.user.subscribe((user) => {
 			if (!user) {
 				this.tagsSubject.next([])
 				return
@@ -34,6 +41,75 @@ export class TaskService {
 			this.trackTimeAndDate()
 		}, 2000)
 	}
+
+	static agendaFilterConfig = [
+		new FilterConfig(
+			'isDone',
+			'Task completed',
+			[
+				{ label: 'Task is completed', value: 'true', operator: '$eq', isConstant: true },
+				{ label: 'Task is not completed', value: 'false', operator: '$eq', isConstant: true },
+			],
+			'icon-deadline',
+			FilterTypes.Boolean
+		),
+		new FilterConfig(
+			'tags',
+			'Tags',
+			[
+				{ label: 'Contains', value: '', operator: '$eq', isConstant: false },
+				{ label: 'Does not contain', value: '', operator: '$ne', isConstant: false },
+			],
+			'icon-tag',
+			FilterTypes.Tags
+		),
+		new FilterConfig(
+			'date.type',
+			'Event type',
+			[
+				{ label: 'Is type work unit', value: AgendaEventType.WorkUnit, operator: '$eq', isConstant: true },
+				{ label: 'Is type deadline', value: AgendaEventType.DueAt, operator: '$eq', isConstant: true },
+			],
+			'icon-deadline',
+			FilterTypes.Boolean
+		),
+	]
+
+	static workUnitFilterConfig = [
+		new FilterConfig(
+			'tags',
+			'Tags',
+			[
+				{ label: 'Contains', value: '', operator: '$eq', isConstant: false },
+				{ label: 'Does not contain', value: '', operator: '$ne', isConstant: false },
+			],
+			'icon-tag',
+			FilterTypes.Tags
+		),
+	]
+
+	static deadlinesFilterConfig = [
+		new FilterConfig(
+			'isDone',
+			'Task completed',
+			[
+				{ label: 'Task is completed', value: 'true', operator: '$eq', isConstant: true },
+				{ label: 'Task is not completed', value: 'false', operator: '$eq', isConstant: true },
+			],
+			'icon-deadline',
+			FilterTypes.Boolean
+		),
+		new FilterConfig(
+			'tags',
+			'Tags',
+			[
+				{ label: 'Contains', value: '', operator: '$eq', isConstant: false },
+				{ label: 'Does not contain', value: '', operator: '$ne', isConstant: false },
+			],
+			'icon-tag',
+			FilterTypes.Tags
+		),
+	]
 
 	public lastTaskSync: Date = new Date(0)
 	public lastTaskUnwoundSync: Date = new Date(0)
@@ -60,24 +136,34 @@ export class TaskService {
 		}
 	}
 
-	public getTasksByDeadlines(sync: boolean = false, page = 0, pageSize = 10, date = new Date()): Observable<TasksGetResponse> {
-		date.setHours(0,0,0,0)
-		const filters = [
+	public getTasksByDeadlines(
+		sync: boolean = false,
+		page = 0,
+		pageSize = 10,
+		date = new Date(),
+		filter: Filter[] = []
+	): Observable<TasksGetResponse> {
+		date.setHours(0, 0, 0, 0)
+		const filters: string[] = [
 			`isDoneAndDueAt=${date.toISOString()}`,
 			`page=${page}`,
 			`pageSize=${pageSize}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.deadlinesFilterConfig),
 		]
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${this.lastTaskSync.toISOString()}`)
 			filters.push(`includeDeleted=true`)
 		}
-		
+
 		this.lastTaskSync = new Date()
-		
+
 		const observable = this.http
 			.get<TasksGetResponse>(`${environment.apiBaseUrl}/v1/tasks?` + filters.join('&'))
-			.pipe(shareReplay(), catchError((err) => this.handleError(err)))
+			.pipe(
+				shareReplay(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((response) => {
 			if (sync) {
@@ -95,12 +181,13 @@ export class TaskService {
 		return observable
 	}
 
-	public getAgenda(date: Date, sort = 0, page = 0, pageSize = 20): Observable<TasksAgendaResponse> {
-		const filters = [
+	public getAgenda(date: Date, sort = 0, page = 0, pageSize = 20, filter: Filter[]): Observable<TasksAgendaResponse> {
+		const filters: string[] = [
 			`date=${date.toISOString()}`,
 			`sort=${sort}`,
 			`pageSize=${pageSize}`,
 			`page=${page}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.agendaFilterConfig),
 		]
 
 		const observable = this.http
@@ -142,9 +229,10 @@ export class TaskService {
 			})
 		}
 
-		const observable = this.http
-			.post<Tag>(`${environment.apiBaseUrl}/v1/tags`, JSON.stringify(tag))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.post<Tag>(`${environment.apiBaseUrl}/v1/tags`, JSON.stringify(tag)).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe((tag) => {
 			const tags = this.tagsSubject.getValue()
@@ -156,13 +244,17 @@ export class TaskService {
 	}
 
 	public deleteTag(tagId: string): Observable<Object> {
-		const observable = this.http
-			.delete(`${environment.apiBaseUrl}/v1/tags/${tagId}`)
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.delete(`${environment.apiBaseUrl}/v1/tags/${tagId}`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe(() => {
 			const tags = this.tagsSubject.getValue()
-			tags.splice(tags.findIndex((x) => x.id === tagId), 1)
+			tags.splice(
+				tags.findIndex((x) => x.id === tagId),
+				1
+			)
 			this.tagsSubject.next(tags)
 		})
 
@@ -186,9 +278,10 @@ export class TaskService {
 	}
 
 	public changeTag(id: string, tag: TagModified): Observable<Tag> {
-		const observable = this.http
-			.patch<Tag>(`${environment.apiBaseUrl}/v1/tags/${id}`, JSON.stringify(tag))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.patch<Tag>(`${environment.apiBaseUrl}/v1/tags/${id}`, JSON.stringify(tag)).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		if (tag.value) {
 			const foundTag = this.getTagByValue(tag.value)
@@ -211,9 +304,7 @@ export class TaskService {
 	}
 
 	private async getTags(sync?: Date): Promise<void> {
-		const filters = [
-			'pageSize=100'
-		]
+		const filters = ['pageSize=100']
 
 		if (sync) {
 			filters.push(`lastModifiedAt=${sync.toISOString()}`)
@@ -246,14 +337,20 @@ export class TaskService {
 			})
 	}
 
-	public getTasksByWorkunits(sync?: Date, page = 0, pageSize = 10): Observable<TasksByWorkunitsGetResponse> {
+	public getTasksByWorkunits(
+		sync?: Date,
+		page = 0,
+		pageSize = 10,
+		filter: Filter[] = []
+	): Observable<TasksByWorkunitsGetResponse> {
 		const today = new Date()
 		today.setHours(0, 0, 0, 0)
-		const filters = [
+		const filters: string[] = [
 			'workUnit.isDone=false',
 			`isDoneAndScheduledAt=${today.toISOString()}`,
 			`page=${page}`,
 			`pageSize=${pageSize}`,
+			...Filter.filtersToQueryParameter(filter, TaskService.workUnitFilterConfig),
 		]
 
 		if (sync) {
@@ -293,32 +390,27 @@ export class TaskService {
 		}
 	}
 
-	public getTaskBetween(from: Date, to: Date): Observable<{count: number}> {
-		const query = [
-			`from=${from.toISOString()}`,
-			`to=${to.toISOString()}`,
-		]
+	public getTaskBetween(from: Date, to: Date): Observable<{ count: number }> {
+		const query = [`from=${from.toISOString()}`, `to=${to.toISOString()}`]
 
 		return this.http
-			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/between?` + query.join('&'))
+			.get<{ count: number }>(`${environment.apiBaseUrl}/v1/tasks/between?` + query.join('&'))
 			.pipe(catchError((err) => this.handleError(err)))
 	}
 
-	public getWorkUnitsBetween(from: Date, to: Date): Observable<{count: number}> {
-		const query = [
-			`from=${from.toISOString()}`,
-			`to=${to.toISOString()}`,
-		]
+	public getWorkUnitsBetween(from: Date, to: Date): Observable<{ count: number }> {
+		const query = [`from=${from.toISOString()}`, `to=${to.toISOString()}`]
 
 		return this.http
-			.get<{count: number}>(`${environment.apiBaseUrl}/v1/tasks/workunits/between?` + query.join('&'))
+			.get<{ count: number }>(`${environment.apiBaseUrl}/v1/tasks/workunits/between?` + query.join('&'))
 			.pipe(catchError((err) => this.handleError(err)))
 	}
 
 	public patchTask(id: string, task: TaskModified): Observable<Task> {
-		const observable = this.http
-			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${id}`, JSON.stringify(task)).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe((task) => {
 			this.tasksSubject.next(task)
@@ -328,9 +420,10 @@ export class TaskService {
 	}
 
 	public newTask(task: TaskModified): Observable<Task> {
-		const observable = this.http
-			.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task))
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.post<Task>(`${environment.apiBaseUrl}/v1/tasks`, JSON.stringify(task)).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe((task) => {
 			this.tasksSubject.next(task)
@@ -340,9 +433,10 @@ export class TaskService {
 	}
 
 	public deleteTask(task: Task): Observable<void> {
-		const observable = this.http
-			.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${task.id}`)
-			.pipe(share(), catchError((err) => this.handleError(err)))
+		const observable = this.http.delete<void>(`${environment.apiBaseUrl}/v1/tasks/${task.id}`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		observable.subscribe(() => {
 			task.deleted = true
@@ -353,8 +447,14 @@ export class TaskService {
 
 	public markWorkUnitAsDone(task: Task, workUnitId: string, done = true, timeLeft: Duration): Observable<Task> {
 		const observable = this.http
-			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/done`, { isDone: done, timeLeft: timeLeft.toNanoseconds() })
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.patch<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/done`, {
+				isDone: done,
+				timeLeft: timeLeft.toNanoseconds(),
+			})
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
@@ -365,8 +465,13 @@ export class TaskService {
 
 	public rescheduleWorkUnitWithTimespans(task: Task, workUnitId: string, timespans: Timespan[]): Observable<Task> {
 		const observable = this.http
-			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, { chosenTimespans: timespans })
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, {
+				chosenTimespans: timespans,
+			})
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
@@ -378,7 +483,10 @@ export class TaskService {
 	public rescheduleWorkUnit(task: Task, workUnitId: string): Observable<Task> {
 		const observable = this.http
 			.post<Task>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, {})
-			.pipe(share(), catchError((err) => this.handleError(err)))
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 
 		observable.subscribe((newTask) => {
 			// TODO save in task cache
@@ -387,19 +495,44 @@ export class TaskService {
 		return observable
 	}
 
-	public fetchReschedulingSuggestions(task: Task, workUnitId: string): Observable<Timespan[][]> {
-		const observable = this.http
-			.get<Timespan[][]>(`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`, {})
-			.pipe(share(), catchError((err) => this.handleError(err)))
+	public fetchReschedulingSuggestions(
+		task: Task,
+		workUnitId: string,
+		timespans: Timespan[]
+	): Observable<Timespan[][]> {
+		let observable
+		if (timespans.length === 0) {
+			observable = this.http
+				.get<Timespan[][]>(
+					`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`,
+					{}
+				)
+				.pipe(
+					share(),
+					catchError((err) => this.handleError(err))
+				)
+		} else {
+			observable = this.http
+				.patch<Timespan[][]>(
+					`${environment.apiBaseUrl}/v1/tasks/${task.id}/workunits/${workUnitId}/reschedule`,
+					{ ignoreTimespans: timespans }
+				)
+				.pipe(
+					share(),
+					catchError((err) => this.handleError(err))
+				)
+		}
 
 		return observable
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
-		
-		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
-		
+
+		console.error(
+			`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`
+		)
+
 		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
 		const toast = new Toast(ToastType.Error, userMessage, true, 0)

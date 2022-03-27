@@ -7,7 +7,7 @@
 <div
 	@modalFlyInOut
 	*ngIf="isOpen"
-	class="inset-center !fixed bg-white rounded-2xl p-16 z-50 shadow-xl flex flex-col w-5/6 md:w-auto max-w-screen-sm"
+	class="inset-center !fixed bg-white rounded-2xl p-16 z-50 shadow-xl flex flex-col w-5/6 md:w-full max-w-screen-sm"
 >
 	<div class="flex flex-col">
 		<label class="label !pb-10">Reschedule work unit {{ workUnitIndex + 1 }}</label>
@@ -48,8 +48,9 @@
 	</div>
 	<div class="flex flex-col gap-8 mt-8">
 		<ng-container *ngIf="!loading">
+			
 			<div
-				*ngFor="let timespanGroup of timespanGroups"
+				*ngFor="let timespanGroup of timespanGroups[currentPage]"
 				(click)="apply(timespanGroup)"
 				class="flex flex-row group hover:cursor-pointer -ml-7"
 			>
@@ -110,6 +111,21 @@
 				</div>
 			</div>
 		</ng-container>
+		<div *ngIf="!noOptionsAvailable" class="flex flex-row gap-8 justify-end">
+			<button class="tiny-button" tooltip="Load more suggestions" [delay]="0.5" position="left" [disabled]="noMoreOptions" (click)="loadMore()">
+				<svg-icon class="block w-8 m-auto" src="/assets/icons/icon-refresh.svg"></svg-icon>
+			</button>
+			<div class="flex flex-row gap-4">
+				<span class="my-auto text-grey-dark">{{ currentPage + 1 }}/{{ timespanGroups.length }}</span>
+				<button class="tiny-button with-border" (click)="prevPage()" [disabled]="currentPage === 0" tooltip="Previous page" [delay]="0.5" position="bottom">
+					<svg-icon class="block w-8 m-auto transform rotate-180" src="/assets/icons/icon-arrow-right.svg"></svg-icon>
+				</button>
+
+				<button class="tiny-button with-border" (click)="nextPage()" [disabled]="currentPage === timespanGroups.length - 1" tooltip="Next page" [delay]="0.5" position="bottom">
+					<svg-icon class="block w-8 m-auto" src="/assets/icons/icon-arrow-right.svg"></svg-icon>
+				</button>
+			</div>
+		</div>
 		<p *ngIf="noOptionsAvailable">
 			It seems like there is no time available for rescheduling this work unit. Please change the tasks workload or move
 			events in your calendar.
@@ -117,7 +133,7 @@
 	</div>
 	<div class="flex flex-col md:flex-row gap-8 mt-16 justify-end">
 		<button class="secondary" type="button" (click)="close()">Cancel</button>
-		<button type="button" (click)="apply([])" [disabled]="noOptionsAvailable" [tooltip]="'Reschedules this work unit to a time chosen by Timeliness'">
+		<button type="button" class="secondary" (click)="apply([])" [disabled]="noOptionsAvailable" [tooltip]="'Reschedules this work unit to a time chosen by Timeliness'" position="bottom">
 			I don't care, just not now
 		</button>
 	</div>

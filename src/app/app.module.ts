@@ -50,11 +50,15 @@ import { ReschedulingModalComponent } from './core/modals/rescheduling-modal/res
 import { defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal'
 import { ConfirmationModalComponent } from './core/modals/confirmation-modal/confirmation-modal.component'
 import { ToastComponent } from './core/modals/toast/toast.component'
-import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component';
+import { MarkDoneModalComponent } from './core/modals/mark-done-modal/mark-done-modal.component'
 import { PaginationComponent } from './core/components/pagination/pagination.component'
-import { MaxWorkUnitDurationComponent } from './core/pages/settings/components/max-work-unit-duration/max-work-unit-duration.component';
-import { TooltipDirective } from './directives/tooltip.directive';
+import { MinWorkUnitDurationComponent } from './core/pages/settings/components/min-work-unit-duration/min-work-unit-duration.component'
+import { MaxWorkUnitDurationComponent } from './core/pages/settings/components/max-work-unit-duration/max-work-unit-duration.component'
+import { TooltipDirective } from './directives/tooltip.directive'
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
+import { HideDeadlineComponent } from './core/pages/settings/components/hide-deadline/hide-deadline.component'
+import { ToggleComponent } from './core/components/toggle/toggle.component'
+import { FilterComponent } from './core/components/filter/filter.component'
 
 @NgModule({
 	declarations: [
@@ -96,10 +100,14 @@ import { GoogleErrorComponent } from './pages/static/google-error/google-error.c
 		ConfirmationModalComponent,
 		ToastComponent,
 		MarkDoneModalComponent,
+		MinWorkUnitDurationComponent,
 		MaxWorkUnitDurationComponent,
-  		PaginationComponent,
-    TooltipDirective,
-    GoogleErrorComponent,
+		PaginationComponent,
+		TooltipDirective,
+		GoogleErrorComponent,
+		HideDeadlineComponent,
+		ToggleComponent,
+		FilterComponent,
 	],
 	imports: [
 		BrowserModule,

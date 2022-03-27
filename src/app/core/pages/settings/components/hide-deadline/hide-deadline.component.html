@@ -1,0 +1,5 @@
+<label class="label inset">Hide deadline when task completed</label>
+<span class="text-grey-dark text-base ml-6 mb-4">
+	When enabled, deadline calendar events will be removed when tasks are completed.
+</span>
+<app-toggle [isToggled]="hideWhenToggled" (value)="onChange($event)"></app-toggle>

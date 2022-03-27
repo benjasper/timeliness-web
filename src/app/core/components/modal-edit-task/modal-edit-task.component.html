@@ -38,7 +38,7 @@
 			<textarea tabindex="2"
 					  type="textarea"
 					  id="task-description"
-					  class="edit w-full rounded-2xl"
+					  class="edit w-full rounded-2xl leading-normal"
 					  rows="6"
 					  placeholder="Describe your task here"
 					  formControlName="description"
@@ -89,7 +89,7 @@
 					<span class="text-base">Delete</span>
 				</li>
 				<li class="flex flex-row"
-					*ngIf="task"
+					*ngIf="task && ((task.isDone && !(user?.settings?.scheduling?.hideDeadlineWhenDone ?? false)) || !task.isDone)"
 					(click)="goToCalendarEvent(task)">
 					<svg-icon class="w-8 flex-shrink-0 my-auto" src="/assets/icons/icon-share.svg"></svg-icon>
 					<span class="my-auto leading-[normal]">View in calendar</span>
@@ -116,7 +116,7 @@
 										 class="edit"
 										 tabindex="3"
 										 formControlName="dueAt"></app-datetime-picker>
-					<svg-icon *ngIf="task" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" [tooltip]="'View in calendar'"></svg-icon>
+					<svg-icon *ngIf="task && ((task.isDone && !(user?.settings?.scheduling?.hideDeadlineWhenDone ?? false)) || !task.isDone)" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" [tooltip]="'View in calendar'"></svg-icon>
 				</div>
 				<div class="flex flex-row">
 					<label for="workload-hour"

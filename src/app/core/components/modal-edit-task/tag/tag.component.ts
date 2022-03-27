@@ -122,7 +122,7 @@ export class TagComponent extends TaskComponent implements OnInit {
 				{ label: 'Delete tag from task only', key: 'delete-from-task' },
 			],
 		}).subscribe((result) => {
-			if (!result.hasValue) {
+			if (!result.hasValue || !result.result.result) {
 				return
 			}
 
@@ -177,8 +177,8 @@ export class TagComponent extends TaskComponent implements OnInit {
 		suggestions = suggestions.filter(
 			(x) => x.value !== prompt || (x.value === prompt && x.color !== this.selectedColor)
 		)
-		const exisitngTagValues = this.existingTags.map((x) => x.value)
-		suggestions = suggestions.filter((x) => !exisitngTagValues.includes(x.value))
+		const existingTagValues = this.existingTags.map((x) => x.value)
+		suggestions = suggestions.filter((x) => !existingTagValues.includes(x.value))
 		this.suggestions = suggestions
 	}
 

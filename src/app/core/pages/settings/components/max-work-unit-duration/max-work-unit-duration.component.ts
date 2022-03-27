@@ -13,10 +13,7 @@ import { ModalService } from 'src/app/services/modal.service';
 export class MaxWorkUnitDurationComponent implements OnInit {
 
 	constructor(private authService: AuthService, private modalService: ModalService) { 
-		for (let index = 1; index <= 8; index++) {
-			this.options.push(new Duration(1000 * 60 * 60 * index))
-			
-		}
+		
 	}
 
 	user: User | undefined
@@ -31,9 +28,22 @@ export class MaxWorkUnitDurationComponent implements OnInit {
 		this.authService.user.subscribe(user => {
 			if (user) {
 				this.user = user
+				this.generateDurations()
 				this.form.get('maxDuration')?.setValue(user.settings.scheduling?.maxWorkUnitDuration?.toDuration(DurationUnit.Nanoseconds).toNanoseconds() ?? new Duration(1000 * 60 * 60 * 4).toNanoseconds())
 			}
 		})
+	}
+
+	generateDurations() {
+		this.options = []
+
+		for (let milliseconds = 1000 * 60 * 60; milliseconds <= 1000 * 60 * 60 * 8; milliseconds+=30 * 60 * 1000) {
+			if (milliseconds < (this.user?.settings.scheduling?.minWorkUnitDuration?.toDuration(DurationUnit.Nanoseconds).milliseconds ?? 0)) {
+				continue
+			}
+
+			this.options.push(new Duration(milliseconds))
+		}
 	}
 
 	change() {

@@ -1,0 +1,11 @@
+<label class="flex items-center cursor-pointer ml-6">
+	<div class="relative">
+		<input
+			[ngModel]="isToggled" (ngModelChange)="onInput($event)"
+			type="checkbox"
+			class="sr-only"
+		/>
+		<div class="block bg-grey-light w-[4.5rem] h-10 rounded-full"></div>
+		<div class="dot absolute left-1 top-1 bg-white w-8 h-8 rounded-full transition"></div>
+	</div>
+</label>

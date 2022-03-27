@@ -15,6 +15,8 @@ import { Toast, ToastType } from 'src/app/models/toast'
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component'
 import { Title } from '@angular/platform-browser'
 import { PageComponent } from 'src/app/pages/page'
+import { User } from 'src/app/models/user'
+import { AuthService } from 'src/app/services/auth.service'
 
 @Component({
 	selector: 'app-modal-edit-task',
@@ -35,6 +37,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	isDirty = false
 	lastTagsHash: string[] = []
 	animationIsDone = false
+	user?: User
 
 	startIndex = 0
 
@@ -70,7 +73,8 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		private route: ActivatedRoute,
 		private taskService: TaskService,
 		private modalService: ModalService,
-		protected titleService: Title
+		protected titleService: Title,
+		private authService: AuthService
 	) {
 		super(titleService)
 
@@ -147,6 +151,10 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 		this.editTask.valueChanges.subscribe(() => {
 			this.onFormChange()
+		})
+
+		this.authService.user.subscribe((user) => {
+			this.user = user
 		})
 
 		if (this.taskId === 'new') {
