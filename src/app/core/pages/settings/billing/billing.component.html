@@ -1,0 +1,27 @@
+<app-section name="Payment" description="This is where you can cancel, pause or renew your Timeliness Pro subscription.">
+	<div [ngSwitch]="user?.billing?.status">
+		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.Trial">
+			<span class="sm-tag yellow-background mr-auto">Trial</span>
+			<p>Your Trial will end on {{ user?.billing?.endsAt?.toDate()?.toLocaleDateString()}}.</p>
+			<button class="!mr-auto" role="button" (click)="initiatePayment('monthly')">Buy Timeliness Pro</button>
+		</div>
+		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.Active">
+			<span class="sm-tag bg-green text-green-dark mr-auto">Active</span>
+			<p>Your subscription is active and will renew automatically on {{ user?.billing?.endsAt?.toDate()?.toLocaleDateString()}}.</p>
+			<button class="!mr-auto" role="button" (click)="gotoPaymentPortal()">Manage billing</button>
+		</div>
+		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.Cancelled">
+			<span class="sm-tag bg-red-light text-red mr-auto">Cancelled</span>
+			<p>Your subscription is cancelled and will run out on {{ user?.billing?.endsAt?.toDate()?.toLocaleDateString()}}.</p>
+			<button class="!mr-auto" role="button" (click)="gotoPaymentPortal()">Renew subscription</button>
+		</div>
+		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.PaymentProblem">
+			<span class="sm-tag bg-red-light text-red mr-auto">Payment problem</span>
+			<p>There was a problem with your last payment, please go ahead and fix your payment method as soon as possible.</p>
+			<button class="!mr-auto" role="button" (click)="gotoPaymentPortal()">Update payment method</button>
+		</div>
+		<div *ngSwitchDefault>
+			<p>Unknown billing status</p>
+		</div>
+	</div>
+</app-section>

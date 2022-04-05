@@ -19,6 +19,8 @@ import { OnboardingComponent } from './pages/onboarding/onboarding.component'
 import { NoOnboardingGuard } from './guards/no-onboarding.guard'
 import { TutorialComponent } from './core/pages/dashboard/tutorial/tutorial.component'
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
+import { BillingComponent } from './core/pages/settings/billing/billing.component'
+import { PayComponent } from './core/modals/pay/pay.component'
 
 const routes: Routes = [
 	{
@@ -39,6 +41,10 @@ const routes: Routes = [
 					{
 						path: 'tutorial',
 						component: TutorialComponent,
+					},
+					{
+						path: 'pay',
+						component: PayComponent,
 					},
 				],
 			},
@@ -61,6 +67,7 @@ const routes: Routes = [
 					{ path: '', redirectTo: '/settings/general', pathMatch: 'full', data: { animation: 'settings' }, },
 					{ path: 'general', component: GeneralComponent, pathMatch: 'full', data: { animation: 'settings' }, },
 					{ path: 'calendars', component: CalendarsComponent, pathMatch: 'full', data: { animation: 'settings' }, },
+					{ path: 'billing', component: BillingComponent, pathMatch: 'full', data: { animation: 'settings' }, },
 				],
 			},
 			{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },

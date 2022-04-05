@@ -25,6 +25,19 @@ export class AuthService {
 
 	private userRequestInProgress = false
 
+	public paymentOptions = {
+		monthly: {
+			production: '',
+			price: '4,99€',
+			testing: 'price_1KkWUEFpCYtlYDc5hWg0jpta',
+		},
+		yearly: {
+			production: '',
+			price: '49,99€',
+			testing: 'price_1KkWUEFpCYtlYDc5CJZPRoKD',
+		},
+	}
+
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
@@ -99,7 +112,9 @@ export class AuthService {
 		this.decodedAccessToken = undefined
 		this.userSubject.next(undefined)
 
-		localStorage.clear()
+		localStorage.removeItem('accessToken')
+		localStorage.removeItem('refreshToken')
+
 		this.router.navigate(['/auth/signin'])
 	}
 
@@ -180,10 +195,12 @@ export class AuthService {
 	}
 
 	public revokeGoogleConnection(connectionId: string) {
-		const observable = this.http.post<User>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google/revoke`, {}).pipe(
-			share(),
-			catchError((err) => this.handleError(err))
-		)
+		const observable = this.http
+			.post<User>(`${environment.apiBaseUrl}/v1/connections/${connectionId}/google/revoke`, {})
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
 		observable.subscribe((user) => {
 			this.userSubject.next(user)
 		})
@@ -218,6 +235,26 @@ export class AuthService {
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
 		})
+
+		return observable
+	}
+
+	public initiatePayment(product: string) {
+		const observable = this.http
+			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/user/payment/${product}`, {})
+			.pipe(
+				share(),
+				catchError((err) => this.handleError(err))
+			)
+
+		return observable
+	}
+
+	public getLinkToPaymentSettings() {
+		const observable = this.http.get<{ url: string }>(`${environment.apiBaseUrl}/v1/user/payment`).pipe(
+			share(),
+			catchError((err) => this.handleError(err))
+		)
 
 		return observable
 	}
@@ -278,9 +315,11 @@ export class AuthService {
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
-		
-		console.error(`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`)
-		
+
+		console.error(
+			`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`
+		)
+
 		let userMessage = `We\'ve encountered a problem: ${apiError.error.message}`
 
 		const toast = new Toast(ToastType.Error, userMessage, true, 0)
