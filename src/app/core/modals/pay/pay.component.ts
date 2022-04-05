@@ -11,9 +11,7 @@ import { EnvironmentStatus } from 'src/environments/environment-interface'
 @Component({
 	selector: 'app-pay',
 	templateUrl: './pay.component.html',
-	animations: [
-		modalFlyInOut
-	],
+	animations: [modalFlyInOut],
 })
 export class PayComponent extends PageComponent implements OnInit {
 	constructor(private router: Router, protected titleService: Title, private authService: AuthService) {
@@ -33,7 +31,6 @@ export class PayComponent extends PageComponent implements OnInit {
 				this.user = user
 
 				// TODO Check if we have the success query parameter and if so wait until the user has subscription status active
-				
 
 				if (this.user.billing.status === BillingStatus.Active) {
 					this.close()
@@ -43,8 +40,18 @@ export class PayComponent extends PageComponent implements OnInit {
 	}
 
 	inititatePayment() {
-		const price = environment.environment === EnvironmentStatus.Production ? this.authService.paymentOptions[this.isMonthly ? 'monthly' : 'yearly'].production : this.authService.paymentOptions[this.isMonthly ? 'monthly' : 'yearly'].testing
-		this.authService.initiatePayment(price).subscribe(response => {
+		if (this.user?.billing.status === BillingStatus.Cancelled) {
+			this.authService.getLinkToPaymentSettings().subscribe((response) => {
+				window.location.href = response.url
+			})
+			return
+		}
+
+		const price =
+			environment.environment === EnvironmentStatus.Production
+				? this.authService.paymentOptions[this.isMonthly ? 'monthly' : 'yearly'].production
+				: this.authService.paymentOptions[this.isMonthly ? 'monthly' : 'yearly'].testing
+		this.authService.initiatePayment(price).subscribe((response) => {
 			window.location.href = response.url
 		})
 	}
