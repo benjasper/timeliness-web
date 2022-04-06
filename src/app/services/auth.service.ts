@@ -102,8 +102,8 @@ export class AuthService {
 		return this.userObservable
 	}
 
-	public forceUserUpdate() {
-		this.fetchUser()
+	public forceUserUpdate(): Observable<User> {
+		return this.fetchUser()
 	}
 
 	public logout(): void {
@@ -132,6 +132,7 @@ export class AuthService {
 				share(),
 				catchError((err, caught) => {
 					this.logout()
+					console.error(err)
 					return throwError('Refresh was not successful.')
 				})
 			)
@@ -315,6 +316,14 @@ export class AuthService {
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		const apiError = error.error as ApiError
+
+		if (!('error' in apiError)) {
+			let userMessage = `We\'ve encountered a problem`
+
+			const toast = new Toast(ToastType.Error, userMessage, true, 0)
+			this.modalService.addToast(toast)
+			return throwError(userMessage)
+		}
 
 		console.error(
 			`API returned a bad response: ${apiError.error} with status ${apiError.status} and trackId ${apiError.error.trackId}`

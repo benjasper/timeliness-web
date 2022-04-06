@@ -21,6 +21,7 @@ import { TutorialComponent } from './core/pages/dashboard/tutorial/tutorial.comp
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
 import { BillingComponent } from './core/pages/settings/billing/billing.component'
 import { PayComponent } from './core/modals/pay/pay.component'
+import { PaymentGuard } from './guards/payment.guard'
 
 const routes: Routes = [
 	{
@@ -33,6 +34,7 @@ const routes: Routes = [
 				path: 'dashboard',
 				component: DashboardComponent,
 				data: { animation: 0 },
+				canActivate: [PaymentGuard],
 				children: [
 					{
 						path: 'task/:id',
@@ -52,6 +54,7 @@ const routes: Routes = [
 				path: 'agenda',
 				data: { animation: 1 },
 				component: AgendaComponent,
+				canActivate: [PaymentGuard],
 				children: [
 					{
 						path: 'task/:id',
@@ -63,6 +66,7 @@ const routes: Routes = [
 				path: 'settings',
 				component: SettingsComponent,
 				data: { animation: 2 },
+				canActivate: [PaymentGuard],
 				children: [
 					{ path: '', redirectTo: '/settings/general', pathMatch: 'full', data: { animation: 'settings' }, },
 					{ path: 'general', component: GeneralComponent, pathMatch: 'full', data: { animation: 'settings' }, },
@@ -101,6 +105,7 @@ const routes: Routes = [
 		path: 'onboarding',
 		data: { animation: 'onboarding' },
 		component: OnboardingComponent,
+		canActivate: [AuthGuard, NotVerifiedGuard],
 	},
 	{
 		path: 'static',
