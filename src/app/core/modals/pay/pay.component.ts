@@ -23,6 +23,8 @@ export class PayComponent extends PageComponent implements OnInit {
 		super(titleService)
 	}
 
+	isExitable = false
+
 	isShowing = true
 	isMonthly = true
 	user?: User
@@ -35,6 +37,10 @@ export class PayComponent extends PageComponent implements OnInit {
 		this.authService.user.subscribe((user) => {
 			if (user) {
 				this.user = user
+
+				if ((user.billing.status === BillingStatus.Trial && user.billing.endsAt.toDate().getTime() >= new Date().getTime()) || user.billing.status === BillingStatus.Active) {
+					this.isExitable = true
+				}
 
 				// TODO Check if we have the success query parameter and if so wait until the user has subscription status active
 

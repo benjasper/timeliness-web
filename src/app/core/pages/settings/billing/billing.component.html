@@ -3,7 +3,7 @@
 		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.Trial">
 			<span class="sm-tag yellow-background mr-auto">Trial</span>
 			<p>Your Trial will end on {{ user?.billing?.endsAt?.toDate()?.toLocaleDateString()}}.</p>
-			<button class="!mr-auto" role="button" (click)="initiatePayment('monthly')">Buy Timeliness Pro</button>
+			<a class="btn !mr-auto" routerLink="/dashboard/pay">Buy Timeliness Pro</a>
 		</div>
 		<div class="flex flex-col gap-4" *ngSwitchCase="BILLING_STATUS.Active">
 			<span class="sm-tag bg-green text-green-dark mr-auto">Active</span>
