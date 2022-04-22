@@ -78,7 +78,7 @@ export class MarkDoneModalComponent
 		}
 	}
 
-	// Calculates time left for the given work unit and returns it as milliseconds
+	// Calculates time left for the given do date and returns it as milliseconds
 	static calculateTimeLeft(task: Task, workUnitIndex: number): number {
 		const now = new Date()
 		return task.workUnits[workUnitIndex].scheduledAt.date.end.toDate().getTime() - now.getTime()

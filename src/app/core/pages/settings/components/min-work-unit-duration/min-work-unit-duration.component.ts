@@ -59,7 +59,7 @@ export class MinWorkUnitDurationComponent implements OnInit {
 			.patchUserSettings({ scheduling: { minWorkUnitDuration: minDuration.toNanoseconds() } })
 			.subscribe(
 				() => {
-					this.modalService.newToast(ToastType.Success, 'Updated minimum work unit duration')
+					this.modalService.newToast(ToastType.Success, 'Updated minimum do date duration')
 				}
 			)
 	}
