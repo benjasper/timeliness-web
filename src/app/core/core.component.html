@@ -5,12 +5,16 @@
 	<div class="md:order-1 flex flex-col justify-between w-full md:w-48 shadow-2xl md:shadow-none bg-grey-very-light dark:!bg-grey-very-dark">
 		<h1 class="hidden relative md:block px-14 mt-20">
 			<img class="w-full h-full" src="/assets/images/timeliness_logo_small.svg" loading="eager" alt="Timeliness logo" />
-			<span class="sm-tag bg-primary text-white absolute -bottom-9 left-1/2 transform -translate-x-1/2 !text-[0.9rem] whitespace-nowrap flex-shrink-0 cursor-default" tooltip="Hi there! Good job on finding this easter egg! Have a cookie 🍪" [delay]="10">Early Access</span>
 		</h1>
-		<div>
+		<div class="flex flex-col">
 			<div *ngIf="user" class="hidden md:flex w-24 h-24 rounded-full flex-shrink-0 bg-secondary mx-auto">
 				<span class="text-primary text-3xl m-auto">{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
 			</div>
+			<ng-container *ngIf="user?.billing?.status === BILLING_STATUS.Trial">
+				<span *ngIf="trialExpired" class="mx-auto mt-2 text-sm rounded-full text-grey-dark px-2 right-0 font-bold">Trial expired</span>
+				<span *ngIf="!trialExpired" class="mx-auto mt-2 text-sm rounded-full text-grey-dark px-2 right-0 font-bold">Trial</span>
+				<span *ngIf="!trialExpired" class="mx-auto text-xs rounded-full text-grey-dark px-2 right-0 font-bold" [delay]="0.5" [tooltip]="'ends in ' + getDurationUntilTrialExpiration().toStringWithoutSeconds()">{{ getDaysUntilTrialExpiration() }} days left</span>
+			</ng-container>
 			<div *ngIf="!user" class="hidden md:flex w-24 h-24 rounded-full flex-shrink-0 mx-auto loading">
 				<span>&nbsp;&nbsp;</span>
 			</div>

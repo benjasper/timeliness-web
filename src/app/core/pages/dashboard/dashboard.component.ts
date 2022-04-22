@@ -87,7 +87,7 @@ export class DashboardComponent extends PageComponent implements OnInit, OnDestr
 
 		this.currentDeadlinesFilter = Filter.loadFromLocalStorage('deadlinesFilters')
 
-		// Persistence for work unit filter commented out because of dependent next up work units
+		// Persistence for do date filter commented out because of dependent next up do dates
 		//this.currentWorkUnitsFilter = Filter.loadFromLocalStorage('workUnitsFilters')
 
 		this.loadTasksPage(0)

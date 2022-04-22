@@ -58,7 +58,9 @@ import { TooltipDirective } from './directives/tooltip.directive'
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
 import { HideDeadlineComponent } from './core/pages/settings/components/hide-deadline/hide-deadline.component'
 import { ToggleComponent } from './core/components/toggle/toggle.component'
-import { FilterComponent } from './core/components/filter/filter.component'
+import { FilterComponent } from './core/components/filter/filter.component';
+import { BillingComponent } from './core/pages/settings/billing/billing.component';
+import { PayComponent } from './core/modals/pay/pay.component';
 
 @NgModule({
 	declarations: [
@@ -108,6 +110,8 @@ import { FilterComponent } from './core/components/filter/filter.component'
 		HideDeadlineComponent,
 		ToggleComponent,
 		FilterComponent,
+  BillingComponent,
+  PayComponent,
 	],
 	imports: [
 		BrowserModule,

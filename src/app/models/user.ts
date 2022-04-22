@@ -13,6 +13,17 @@ export interface User {
 	}[],
 	settings: UserSettings
 	emailVerified: boolean
+	billing: {
+		endsAt: string
+		status: BillingStatus
+	}
+}
+
+export enum BillingStatus {
+	Active = "subscriptionActive",
+	Trial = "trial",
+	Cancelled = "subscriptionCancelled",
+	PaymentProblem = "paymentProblem",
 }
 
 export interface UserSettings {

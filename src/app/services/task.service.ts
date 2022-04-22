@@ -67,7 +67,7 @@ export class TaskService {
 			'date.type',
 			'Event type',
 			[
-				{ label: 'Is type work unit', value: AgendaEventType.WorkUnit, operator: '$eq', isConstant: true },
+				{ label: 'Is type do date', value: AgendaEventType.WorkUnit, operator: '$eq', isConstant: true },
 				{ label: 'Is type deadline', value: AgendaEventType.DueAt, operator: '$eq', isConstant: true },
 			],
 			'icon-deadline',

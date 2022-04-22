@@ -1,0 +1,171 @@
+<div *ngIf="isShowing" class="fixed w-screen z-20 h-screen bg-black opacity-30 top-0 left-0"></div>
+<form
+	*ngIf="isShowing"
+	@modalFlyInOut
+	class="
+		!fixed
+		inset-center
+		z-30
+		px-24
+		py-16
+		flex flex-col
+		w-screen
+		h-screen
+		md:w-auto md:h-auto md:grid
+		overflow-y-auto
+		md:overflow-visible
+		bg-white
+		md:rounded-3xl
+		dark:bg-black
+		shadow-lg
+		transition-all
+	"
+>
+	<div class="flex relative">
+		<ng-container *ngIf="!loading && !isExitable">
+			<h2 [ngSwitch]="user?.billing?.status" class="mx-auto">
+				<ng-container *ngSwitchCase="BILLING_STATUS.Trial">Your trial ended</ng-container>
+				<ng-container *ngSwitchCase="BILLING_STATUS.Cancelled">Your subscription ended</ng-container>
+			</h2>
+		</ng-container>
+		<h2 *ngIf="isExitable && !loading" class="mx-auto">Buy Timeliness Pro</h2>
+		<button *ngIf="isExitable && !loading" class="absolute tiny-button no-background right-0" type="button" (click)="close()">
+			<svg-icon
+				class="img !fill-current !w-12 !h-full transform scale-150 text-primary"
+				src="/assets/icons/icon-exit.svg"
+				alt="Exit"
+			></svg-icon>
+		</button>
+		<ng-container *ngIf="loading">
+			<h2 class="mx-auto">Loading...</h2>
+		</ng-container>
+	</div>
+	<div *ngIf="!loading" class="flex flex-col gap-8 md:w-[578px]">
+		<div class="lg:flex gap-12 items-center justify-between mx-auto container py-20 2xl:px-0 px-6">
+			<div class="lg:w-1/2 w-full">
+				<p class="text-base leading-4 text-grey-dark">Choose your plan</p>
+				<h1 role="heading" class="md:text-5xl text-3xl font-bold leading-10 mt-3 text-primary">
+					Our pricing plan
+				</h1>
+				<p role="contentinfo" class="text-basemt-5 my-4 text-black">
+					We like keeping it simple. One plan, two options: You can choose to pay monthly or yearly with a
+					discount. You can cancel anytime. No hidden fees.
+				</p>
+				<div class="w-64">
+					<button
+						(click)="isMonthly = !isMonthly"
+						class="!bg-grey-very-light !p-0 !rounded-full !flex items-center !mt-10"
+					>
+						<div
+							[ngClass]="
+								isMonthly
+									? 'bg-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:outline-none text-base leading-none text-white rounded-full py-4 px-6'
+									: 'bg-grey-very-light focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:outline-none text-base leading-none text-black rounded-full py-4 px-6 mr-1'
+							"
+						>
+							Monthly
+						</div>
+						<div
+							[ngClass]="
+								!isMonthly
+									? 'bg-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:outline-none text-base leading-none text-white rounded-full py-4 px-6'
+									: 'bg-grey-very-light focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:outline-none text-base leading-none text-black rounded-full py-4 px-6 mr-1'
+							"
+						>
+							Annually
+						</div>
+					</button>
+				</div>
+				<p class="text-sm text-grey-dark mt-4">Save 10% when going annually</p>
+			</div>
+			<div class="flex flex-col gap-4 xl:w-1/2 lg:w-7/12 relative w-full lg:mt-0 mt-12 md:px-8" role="list">
+				<img
+					src="/assets/images/circles.png"
+					class="absolute w-full -ml-12 mt-24"
+					alt="background circle images"
+				/>
+
+				<div
+					role="listitem"
+					class="
+						bg-white
+						cursor-pointer
+						group
+						shadow-md
+						hover:shadow-lg
+						transition-all
+						rounded-lg
+						flex
+						relative
+						z-30
+						my-40
+					"
+					(click)="initiatePayment()"
+				>
+					<div
+						class="
+							w-2.5
+							h-auto
+							bg-primary
+							group-hover:bg-primary-light
+							rounded-tl-md rounded-bl-md
+							transition-all
+						"
+					></div>
+					<div class="w-full p-8">
+						<div class="md:flex items-center justify-between">
+							<h2 class="text-2xl font-semibold text-primary">Timeliness Pro</h2>
+							<p
+								*ngIf="isMonthly"
+								class="flex flex-col text-2xl leading-8 md:mt-0 mt-4 font-semibold text-primary"
+							>
+								€4.99
+								<span class="font-normal text-base ml-auto">/mo</span>
+							</p>
+							<p
+								*ngIf="!isMonthly"
+								class="flex flex-col text-2xl leading-8 md:mt-0 mt-4 font-semibold text-primary"
+							>
+								€49.99
+								<span class="font-normal text-base ml-auto">/year</span>
+							</p>
+						</div>
+						<ul class="flex flex-col md:w-90 text-base leading-8 mt-4 text-black">
+							<li class="inline-flex gap-2">
+								<svg-icon
+									src="/assets/icons/icon-check.svg"
+									class="block w-4 text-primary fill-current"
+								></svg-icon>
+								<span>Unlimited tasks</span>
+							</li>
+							<li class="inline-flex gap-2">
+								<svg-icon
+									src="/assets/icons/icon-check.svg"
+									class="block w-4 text-primary fill-current"
+								></svg-icon>
+								<span>Unlimited calendar syncs</span>
+							</li>
+							<li class="inline-flex gap-2">
+								<svg-icon
+									src="/assets/icons/icon-check.svg"
+									class="block w-4 text-primary fill-current"
+								></svg-icon>
+								<span>Automatic scheduling</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<p class="text-grey-dark mx-auto">
+			You are a student? Hit us up at
+			<a class="inline-flex" href="mailto:hello@timeliness.app">hello@timeliness.app</a>
+			to get 50% off.
+		</p>
+	</div>
+	<svg-icon
+		*ngIf="loading"
+		class="block w-36 animate-spin-slow mx-auto fill-primary"
+		src="/assets/icons/icon-loading.svg"
+	></svg-icon>
+</form>

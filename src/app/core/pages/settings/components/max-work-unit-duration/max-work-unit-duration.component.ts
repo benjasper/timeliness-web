@@ -56,7 +56,7 @@ export class MaxWorkUnitDurationComponent implements OnInit {
 			.patchUserSettings({ scheduling: { maxWorkUnitDuration: maxDuration.toNanoseconds() } })
 			.subscribe(
 				() => {
-					this.modalService.newToast(ToastType.Success, 'Updated maximum work unit duration')
+					this.modalService.newToast(ToastType.Success, 'Updated maximum do date duration')
 				}
 			)
 	}

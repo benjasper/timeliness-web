@@ -86,7 +86,7 @@
 				<div class="upcoming-work-units-header flex flex-row !justify-start !flex-wrap !gap-4">
 					<h2 class="upcoming-work-units-title !my-auto">
 						<svg-icon class="img my-auto pr-4 w-16" src="/assets/icons/icon-work-unit.svg"></svg-icon>
-						Upcoming work units
+						Upcoming do dates
 					</h2>
 					<app-filter class="my-auto" [filters]="currentWorkUnitsFilter" [filterConfig]="staticWorkUnitsConfig" (onFilter)="onWorkUnitFilter($event)"></app-filter>
 				</div>
@@ -94,7 +94,7 @@
 					*ngIf="groupedUpcoming.length === 0 && !loadingWorkUnits"
 					class="next-up-finished p-12 lg:p-36 2xl:p-0 2xl:!max-w-[50%] max-h-full !h-auto"
 					src="/assets/images/no-workunits.svg"
-					alt="No upcoming work units"
+					alt="No upcoming do dates"
 				/>
 				<ul class="upcoming-work-units-list scroller" #scrollContainer>
 					<ng-container *ngIf="loadingWorkUnits">
