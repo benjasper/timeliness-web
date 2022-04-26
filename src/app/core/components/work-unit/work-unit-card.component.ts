@@ -9,6 +9,13 @@ import { Toast, ToastType } from 'src/app/models/toast'
 import { ReschedulingModalComponent } from '../../modals/rescheduling-modal/rescheduling-modal.component'
 import { Duration } from 'src/app/models/duration'
 import { MarkDoneModalComponent } from '../../modals/mark-done-modal/mark-done-modal.component'
+import { Editor } from '@tiptap/core'
+import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
+import Typography from '@tiptap/extension-typography'
+import Link from '@tiptap/extension-link'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
 
 @Component({
 	selector: 'app-work-unit-card',
@@ -32,6 +39,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 	tags: Tag[] = []
 
 	public today = new Date()
+	public editor!: Editor
 	@Input() task!: Task
 	@Input() workUnitIndex!: number
 	@Input() small = false
@@ -46,6 +54,16 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		if (this.loading) {
 			return
 		}
+
+		this.editor = new Editor({
+			extensions: [StarterKit, Typography, Link, TaskList, TaskItem],
+			editable: false,
+			editorProps: {
+				attributes: {
+					class: 'prose prose-sm h-full sm:prose lg:prose-lg xl:prose-2xl focus:outline-none input w-full rounded-2xl leading-normal overflow-y-auto',
+				},
+			},
+		})
 
 		if ((this.task === undefined || this.workUnitIndex === undefined) && this.loading === false) {
 			throw Error('Missing required arguments!')

@@ -34,15 +34,10 @@
 				   class="label inset flex flex-row">
 				   <svg-icon class="block w-8 fill-current my-auto mr-2" src="/assets/icons/icon-text.svg"></svg-icon>
 				   <div class="my-auto">Description</div>
-				</label>
-			<textarea tabindex="2"
-					  type="textarea"
-					  id="task-description"
-					  class="edit w-full rounded-2xl leading-normal"
-					  rows="6"
-					  placeholder="Describe your task here"
-					  formControlName="description"
-					  autocomplete="off"></textarea>
+			</label>
+			<div class="h-[18rem]">
+				<tiptap-editor tabindex="2" [editor]="editor" formControlName="description" id="task-description" autocomplete="off"></tiptap-editor>
+			</div>
 		</div>
 		<div class="flex flex-col" *ngIf="!isNew">
 			<label
