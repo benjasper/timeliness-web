@@ -135,7 +135,7 @@
 			</div>
 		</div>
 		<div *ngIf="!small" class="card-section description scroller inverse">
-			{{ task.description }}
+			<tiptap-editor [editor]="editor" [(ngModel)]="task.description"></tiptap-editor>
 		</div>
 	</div>
 	<div class="card-footer">

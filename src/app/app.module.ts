@@ -61,6 +61,7 @@ import { ToggleComponent } from './core/components/toggle/toggle.component'
 import { FilterComponent } from './core/components/filter/filter.component';
 import { BillingComponent } from './core/pages/settings/billing/billing.component';
 import { PayComponent } from './core/modals/pay/pay.component';
+import { NgxTiptapModule } from 'ngx-tiptap'
 
 @NgModule({
 	declarations: [
@@ -138,6 +139,7 @@ import { PayComponent } from './core/modals/pay/pay.component';
 				},
 			}
 		),
+		NgxTiptapModule
 	],
 	providers: [httpInterceptorProviders, TaskService, AuthService],
 	bootstrap: [AppComponent],

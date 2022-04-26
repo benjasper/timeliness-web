@@ -17,14 +17,18 @@ import { Title } from '@angular/platform-browser'
 import { PageComponent } from 'src/app/pages/page'
 import { User } from 'src/app/models/user'
 import { AuthService } from 'src/app/services/auth.service'
+import { Editor } from '@tiptap/core'
+import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
+import Typography from '@tiptap/extension-typography'
+import Link from '@tiptap/extension-link'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
 
 @Component({
 	selector: 'app-modal-edit-task',
 	templateUrl: './modal-edit-task.component.html',
-	animations: [
-		modalBackground,
-		modalFlyInOut
-	],
+	animations: [modalBackground, modalFlyInOut],
 })
 export class ModalEditTaskComponent extends PageComponent implements OnInit, OnDestroy, AfterViewInit {
 	taskId!: string
@@ -56,6 +60,7 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 
 	public today = new Date()
 	public durations: Duration[] = []
+	public editor!: Editor
 
 	private ngUnsubscribe = new Subject()
 
@@ -146,6 +151,15 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	}
 
 	ngOnInit(): void {
+		this.editor = new Editor({
+			extensions: [StarterKit, Placeholder.configure({ placeholder: 'Describe your task here...' }), Typography, Link, TaskList, TaskItem],
+			editorProps: {
+				attributes: {
+					class: 'prose large prose-sm h-full sm:prose lg:prose-lg xl:prose-2xl focus:outline-none edit input w-full rounded-2xl leading-normal overflow-y-auto',
+				},
+			},
+		})
+
 		this.modalBackground = true
 		this.generateDurations()
 
@@ -418,15 +432,15 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	public close(): boolean {
 		if (this.task && this.isDirty) {
 			this.modalService
-			.addModal(ConfirmationModalComponent, {
-				title: 'Discard changes?',
-				message: 'You\'ve made changes to this task. Are you sure you want to discard them?',
-			})
-			.subscribe((result) => {
-				if (result.hasValue && result.result.result) {
-					this.closeModal()
-				}
-			})
+				.addModal(ConfirmationModalComponent, {
+					title: 'Discard changes?',
+					message: "You've made changes to this task. Are you sure you want to discard them?",
+				})
+				.subscribe((result) => {
+					if (result.hasValue && result.result.result) {
+						this.closeModal()
+					}
+				})
 		} else {
 			this.closeModal()
 		}
@@ -449,17 +463,20 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 	}
 
 	goToCalendarEvent(task: Task): void {
-		const w = window.open("", "Timeliness | Getting calendar data...")
+		const w = window.open('', 'Timeliness | Getting calendar data...')
 		if (!w) {
 			return
 		}
 
-		this.taskService.getTaskDueDateCalendarData(task.id).subscribe((data) => {
-			const link = this.taskService.getLinkToCalendarEvent(data)
-			w.location.href = link
-		}, () => {
-			w.close()
-		})
+		this.taskService.getTaskDueDateCalendarData(task.id).subscribe(
+			(data) => {
+				const link = this.taskService.getLinkToCalendarEvent(data)
+				w.location.href = link
+			},
+			() => {
+				w.close()
+			}
+		)
 	}
 
 	public delete(): void {
@@ -540,6 +557,11 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			workloadOverall: this.editTask.get('workload')?.value.toDuration().toNanoseconds(),
 			tags: this.tags.map((x) => x.id + x.color + x.value),
 		}
+
+		if (taskModified.description === '<p></p>') {
+			taskModified.description = ''
+		}
+
 		return JSON.stringify(taskModified)
 	}
 
