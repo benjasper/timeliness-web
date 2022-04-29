@@ -213,6 +213,12 @@ input,
 		height: 0;
 		pointer-events: none;
 	}
+
+	input[type='checkbox'] {
+		width: 1.5rem;
+		height: 1.5rem;
+		margin: auto 0;
+	}
 }
 
 .edit {
