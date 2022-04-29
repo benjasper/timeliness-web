@@ -37,7 +37,7 @@
 		<button
 			class="date day disabled:!text-grey-dark disabled:!cursor-default"
 			*ngFor="let date of monthDates"
-			[disabled]="date.getTime() < this.today.getTime()"
+			[disabled]="date.getTime() < this.today.getTime() + backOffTime.milliseconds"
 			[class.active]="
 				date.getDate() === selected.getDate() &&
 				date.getMonth() === selected.getMonth() &&

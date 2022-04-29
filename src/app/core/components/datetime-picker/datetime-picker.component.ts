@@ -12,6 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { forwardRef, HostBinding, Input } from '@angular/core'
 import { trigger, transition, style, animate } from '@angular/animations'
 import { flyInOutWithTransform } from 'src/app/animations'
+import { Duration } from 'src/app/models/duration'
 
 @Component({
 	selector: 'app-datetime-picker',
@@ -41,13 +42,15 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
 	emptyDays: number[] = []
 	monthDates: Date[] = []
-
+	
 	times: Date[] = []
-
+	
 	weekdays: Date[] = []
-
+	
 	@Input() weekStartsAtMonday = true
 	@Input() disabled = false
+	/** Time select start after it has added the duration when today */
+	@Input() backOffTime: Duration = new Duration(0) 
 	@ViewChild('calendar') calendar!: ElementRef
 
 	@HostListener('document:click', ['$event'])
@@ -100,7 +103,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 				time.setHours(i)
 				time.setMilliseconds(0)
 
-				if (time.getTime() < new Date().getTime() + 1000 * 60 * 15) {
+				if (time.getTime() < new Date().getTime() + this.backOffTime.milliseconds) {
 					continue
 				}
 
@@ -234,6 +237,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 	setDatesByMonth() {
 		let date = new Date()
 		date.setDate(1)
+		date.setHours(23, 59, 59, 0)
 		date.setFullYear(this.year)
 		date.setMonth(this.month)
 

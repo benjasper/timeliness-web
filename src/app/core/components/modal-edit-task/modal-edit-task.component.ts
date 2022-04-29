@@ -429,6 +429,10 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 		this.onFormChange()
 	}
 
+	public getZeroDuration(): Duration {
+		return new Duration(0)
+	}
+
 	public close(): boolean {
 		if (this.task && this.isDirty) {
 			this.modalService
@@ -516,6 +520,11 @@ export class ModalEditTaskComponent extends PageComponent implements OnInit, OnD
 			workloadOverall: task.workloadOverall,
 			tags: this.lastTagsHash,
 		}
+
+		if (taskModified.description === '<p></p>') {
+			taskModified.description = ''
+		}
+
 		return JSON.stringify(taskModified)
 	}
 
