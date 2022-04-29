@@ -110,6 +110,7 @@
 					<app-datetime-picker id="due-date"
 										 class="edit"
 										 tabindex="3"
+										 [backOffTime]="editTask.value.workload ? editTask.value.workload.toDuration() : getZeroDuration()"
 										 formControlName="dueAt"></app-datetime-picker>
 					<svg-icon *ngIf="task && ((task.isDone && !(user?.settings?.scheduling?.hideDeadlineWhenDone ?? false)) || !task.isDone)" class="w-9 block flex-shrink-0 my-auto hover:cursor-pointer" src="/assets/icons/icon-share.svg" (click)="goToCalendarEvent(task)" [tooltip]="'View in calendar'"></svg-icon>
 				</div>
