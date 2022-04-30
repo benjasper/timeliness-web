@@ -180,9 +180,9 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 		this.loading = true
 		const observable = this.taskService.markWorkUnitAsDone(task, workUnitId, done, timeLeft)
 
-		let message = 'Work unit marked as done'
+		let message = 'Do date marked as done'
 		if (done === false) {
-			message = 'Work unit marked as not done'
+			message = 'Do date marked as not done'
 		}
 
 		const toast = new Toast(ToastType.Success, message)
@@ -233,7 +233,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 						}
 					)
 
-					const toast = new Toast(ToastType.Success, 'Work unit rescheduled')
+					const toast = new Toast(ToastType.Success, 'Do date rescheduled')
 					toast.loading = observable.toPromise()
 					this.modalService.addToast(toast)
 				} else {
@@ -251,7 +251,7 @@ export class WorkUnitCardComponent extends TaskComponent implements OnInit {
 						}
 					)
 
-					const toast = new Toast(ToastType.Success, 'Work unit rescheduled')
+					const toast = new Toast(ToastType.Success, 'Do date rescheduled')
 					toast.loading = observable.toPromise()
 					this.modalService.addToast(toast)
 				}
