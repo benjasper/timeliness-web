@@ -66,7 +66,7 @@ export class PayComponent extends PageComponent implements OnInit {
 	}
 
 	initiatePayment() {
-		if (this.user?.billing.status === BillingStatus.Cancelled && this.user?.billing.endsAt.toDate().getTime() < new Date().getTime()) {
+		if (this.user?.billing.status === BillingStatus.Cancelled && this.user?.billing.endsAt.toDate().getTime() > new Date().getTime()) {
 			this.loading = true
 			this.authService.getLinkToPaymentSettings().subscribe(
 				(response) => {
