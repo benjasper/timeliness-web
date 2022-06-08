@@ -17,7 +17,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SigninComponent } from './pages/auth/signin/signin.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { AngularSvgIconModule } from 'angular-svg-icon'
-import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader'
 import { StatsComponent } from './core/pages/dashboard/stats/stats.component'
 import { TagComponent } from './core/components/modal-edit-task/tag/tag.component'
 import { CircularProgressComponent } from './core/components/circular-progress/circular-progress.component'
@@ -58,9 +57,9 @@ import { TooltipDirective } from './directives/tooltip.directive'
 import { GoogleErrorComponent } from './pages/static/google-error/google-error.component'
 import { HideDeadlineComponent } from './core/pages/settings/components/hide-deadline/hide-deadline.component'
 import { ToggleComponent } from './core/components/toggle/toggle.component'
-import { FilterComponent } from './core/components/filter/filter.component';
-import { BillingComponent } from './core/pages/settings/billing/billing.component';
-import { PayComponent } from './core/modals/pay/pay.component';
+import { FilterComponent } from './core/components/filter/filter.component'
+import { BillingComponent } from './core/pages/settings/billing/billing.component'
+import { PayComponent } from './core/modals/pay/pay.component'
 import { NgxTiptapModule } from 'ngx-tiptap'
 
 @NgModule({
@@ -111,8 +110,8 @@ import { NgxTiptapModule } from 'ngx-tiptap'
 		HideDeadlineComponent,
 		ToggleComponent,
 		FilterComponent,
-  BillingComponent,
-  PayComponent,
+		BillingComponent,
+		PayComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -122,9 +121,6 @@ import { NgxTiptapModule } from 'ngx-tiptap'
 		FormsModule,
 		ReactiveFormsModule,
 		AngularSvgIconModule.forRoot(),
-		AngularSvgIconPreloaderModule.forRoot({
-			configUrl: './assets/config/svg-preload.json',
-		}),
 		NgSelectModule,
 		NgxSplideModule,
 		SimpleModalModule.forRoot(
@@ -139,7 +135,7 @@ import { NgxTiptapModule } from 'ngx-tiptap'
 				},
 			}
 		),
-		NgxTiptapModule
+		NgxTiptapModule,
 	],
 	providers: [httpInterceptorProviders, TaskService, AuthService],
 	bootstrap: [AppComponent],
