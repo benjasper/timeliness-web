@@ -27,13 +27,13 @@ export class AuthService {
 
 	public paymentOptions = {
 		monthly: {
-			production: 'price_1KkWUJFpCYtlYDc5j0apOVV6',
-			price: '4,99€',
+			production: 'price_1L8TZfFpCYtlYDc5iXAOdQBP',
+			price: '1,99€',
 			testing: 'price_1KkWUEFpCYtlYDc5hWg0jpta',
 		},
 		yearly: {
-			production: 'price_1KkWUJFpCYtlYDc5YRycfGmq',
-			price: '49,99€',
+			production: 'price_1L8TZBFpCYtlYDc5p8ZYE2wR',
+			price: '19,99€',
 			testing: 'price_1KkWUEFpCYtlYDc5CJZPRoKD',
 		},
 	}
