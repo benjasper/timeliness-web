@@ -17,7 +17,7 @@ export class PayComponent extends PageComponent implements OnInit {
 	constructor(
 		private router: Router,
 		protected titleService: Title,
-		private authService: AuthService,
+		public authService: AuthService,
 		private route: ActivatedRoute
 	) {
 		super(titleService)
