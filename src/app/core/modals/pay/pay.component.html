@@ -119,14 +119,14 @@
 								*ngIf="isMonthly"
 								class="flex flex-col text-2xl leading-8 md:mt-0 mt-4 font-semibold text-primary"
 							>
-								€4.99
+							{{ authService.paymentOptions['monthly'].price}}
 								<span class="font-normal text-base ml-auto">/mo</span>
 							</p>
 							<p
 								*ngIf="!isMonthly"
 								class="flex flex-col text-2xl leading-8 md:mt-0 mt-4 font-semibold text-primary"
 							>
-								€49.99
+								{{ authService.paymentOptions['yearly'].price}}
 								<span class="font-normal text-base ml-auto">/year</span>
 							</p>
 						</div>
