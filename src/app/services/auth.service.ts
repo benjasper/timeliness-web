@@ -25,19 +25,6 @@ export class AuthService {
 
 	private userRequestInProgress = false
 
-	public paymentOptions = {
-		monthly: {
-			production: 'price_1L8TZfFpCYtlYDc5iXAOdQBP',
-			price: '1,99€',
-			testing: 'price_1KkWUEFpCYtlYDc5hWg0jpta',
-		},
-		yearly: {
-			production: 'price_1L8TZBFpCYtlYDc5p8ZYE2wR',
-			price: '19,99€',
-			testing: 'price_1KkWUEFpCYtlYDc5CJZPRoKD',
-		},
-	}
-
 	public authenticate(credentials: { email: string; password: string }): Observable<AuthResponse> {
 		const observable = this.http
 			.post<AuthResponse>(`${environment.apiBaseUrl}/v1/auth/login`, JSON.stringify(credentials))
@@ -236,26 +223,6 @@ export class AuthService {
 		observable.subscribe((response) => {
 			this.userSubject.next(response)
 		})
-
-		return observable
-	}
-
-	public initiatePayment(product: string) {
-		const observable = this.http
-			.post<{ url: string }>(`${environment.apiBaseUrl}/v1/user/payment/${product}`, {})
-			.pipe(
-				share(),
-				catchError((err) => this.handleError(err))
-			)
-
-		return observable
-	}
-
-	public getLinkToPaymentSettings() {
-		const observable = this.http.get<{ url: string }>(`${environment.apiBaseUrl}/v1/user/payment`).pipe(
-			share(),
-			catchError((err) => this.handleError(err))
-		)
 
 		return observable
 	}

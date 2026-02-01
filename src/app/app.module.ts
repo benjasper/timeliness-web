@@ -58,8 +58,6 @@ import { GoogleErrorComponent } from './pages/static/google-error/google-error.c
 import { HideDeadlineComponent } from './core/pages/settings/components/hide-deadline/hide-deadline.component'
 import { ToggleComponent } from './core/components/toggle/toggle.component'
 import { FilterComponent } from './core/components/filter/filter.component'
-import { BillingComponent } from './core/pages/settings/billing/billing.component'
-import { PayComponent } from './core/modals/pay/pay.component'
 import { NgxTiptapModule } from 'ngx-tiptap'
 
 @NgModule({
@@ -110,8 +108,6 @@ import { NgxTiptapModule } from 'ngx-tiptap'
 		HideDeadlineComponent,
 		ToggleComponent,
 		FilterComponent,
-		BillingComponent,
-		PayComponent,
 	],
 	imports: [
 		BrowserModule,
